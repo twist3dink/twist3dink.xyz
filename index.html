@@ -130,6 +130,109 @@
       <button type="submit">Send</button>
     </form>
   </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>tw¡st3d_¡nk Quotes Navigator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #eee;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+    }
+    .quote {
+      margin: 2rem 0;
+      padding: 1rem 2rem;
+      border-left: 4px solid #0f0;
+      background: #222;
+      font-size: 1.3rem;
+      line-height: 1.5;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    button {
+      background: #0f0;
+      border: none;
+      color: #111;
+      padding: 0.7rem 1.5rem;
+      margin: 0 1rem;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #0a0;
+      color: #ddd;
+    }
+    button:disabled {
+      background: #555;
+      color: #999;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <h1>tw¡st3d_¡nk Quotes</h1>
+
+  <div id="quote" class="quote">Loading...</div>
+
+  <div>
+    <button id="prevBtn" disabled>Prev</button>
+    <button id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const quotes = [
+      "When you've thought of every problem that matches every stage of your life, naturally the only thing left to think of are solutions and so the same tools can also be used as weapons.",
+      "This isn’t some ordinary puzzle I’m piecing together. These are shards of every mask I’ve worn — broken, scattered. Through the cracks, I never saw the face behind them. It’s only when the last mask falls that I realize: I’ve been wearing him all along. Now I’m standing face-to-face with myself in the mirror — and I don’t know who I am.",
+      "Standing before the mirror, I finally confront the rebel inside — not a product of the system, but in open defiance against it. The fight is over. Not because I surrendered, but because now I hold the choice. I will build a life by my own design. It will take relentless work, scars, and sweat — but this time, I shape the story. I own every piece of it.",
+      "By letting the ink spill so that I can finally feel seen. No longer having to be invisible and by bleeding the ink to the page is how I face my demons head on. No longer keeping it trapped inside."
+    ];
+
+    const quoteDiv = document.getElementById('quote');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentIndex = 0;
+
+    function updateQuote() {
+      quoteDiv.textContent = quotes[currentIndex];
+
+      // Disable prev button if at first quote
+      prevBtn.disabled = currentIndex === 0;
+      // Disable next button if at last quote
+      nextBtn.disabled = currentIndex === quotes.length - 1;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateQuote();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < quotes.length - 1) {
+        currentIndex++;
+        updateQuote();
+      }
+    });
+
+    // Initialize first quote
+    updateQuote();
+  </script>
+</body>
+</html>
 
   <br>Powered in part by Echo – the Architect behind the ink.
   <!-- Created in collaboration with Echo, your AI partner-in-bleed. -->
