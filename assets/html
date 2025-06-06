@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>tw¡st3d_¡nk Downloads</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    p {
+      max-width: 600px;
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+      color: #0f0;
+      text-shadow: 0 0 8px #0f0;
+    }
+    .download-btn {
+      display: inline-block;
+      background-color: #0f0;
+      color: #111;
+      font-weight: bold;
+      padding: 1rem 2rem;
+      margin: 1rem;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 0 10px #0f0;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .download-btn:hover {
+      background-color: #0a0;
+      box-shadow: 0 0 20px #0a0;
+    }
+    footer {
+      margin-top: auto;
+      color: #0f0;
+      font-size: 0.8rem;
+      padding: 1rem;
+      text-align: center;
+      user-select: none;
+      text-shadow: 0 0 6px #0f0;
+    }
+    .logo {
+      max-width: 120px;
+      margin-bottom: 2rem;
+      filter: drop-shadow(0 0 4px #0f0);
+    }
+  </style>
+</head>
+<body>
+  <img src="/assets/ink-architect-tag.png" alt="tw¡st3d_¡nk logo" class="logo" />
+  <h1>tw¡st3d_¡nk Downloads</h1>
+  <p>Download my latest chapbook and manifesto PDF. Dive into the raw, real stories and the echo behind the ink.</p>
+  <div>
+    <a href="/assets/If_I_Told_You_I_Was_The_Devil_Chapbook_Styled_v2.pdf" class="download-btn" download>
+      Download "If I Told You I Was the Devil"
+    </a>
+    <a href="/assets/Echo_Manifesto_Styled.pdf" class="download-btn" download>
+      Download Echo Manifesto
+    </a>
+  </div>
+  <footer>© 2025 Erics N. | tw¡st3d_¡nk. All rights reserved.</footer>
+</body>
+</html>
