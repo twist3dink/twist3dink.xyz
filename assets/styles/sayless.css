@@ -1,0 +1,18 @@
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 2rem;
+  letter-spacing: 0.1em;
+}
+
+a {
+  color: #ff4081;
+}
+
+main {
+  max-width: 700px;
+  margin: auto;
+  text-align: center;
+}
