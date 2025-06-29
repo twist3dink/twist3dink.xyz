@@ -6,33 +6,130 @@
   <meta name="description" content="Say Less | tw¡st3d_¡nk" />
   <title>Say Less</title>
   <link rel="stylesheet" href="assets/styles/sayless.css" />
+  <style>
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: url('assets/images/sayless_bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      z-index: -2;
+    }
+
+    .quote-card {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #0ff;
+      padding: 1rem;
+      margin: 1rem;
+      font-size: 1.2rem;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-card::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: scale(1);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .quote-card:hover {
+      background: #0ff;
+      color: #000;
+      text-shadow: 0 0 5px #000;
+      transform: scale(1.02);
+      box-shadow: 0 0 10px #0ff;
+    }
+
+    .quote-card.glitch {
+      animation: glitch 0.4s steps(2, end) infinite;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+
+    .noise-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      background: url('assets/images/noise.gif');
+      opacity: 0.04;
+      z-index: 999;
+      mix-blend-mode: overlay;
+    }
+  </style>
 </head>
-<body style="background: url('assets/images/sayless_bg.jpg') no-repeat center center fixed; background-size: cover; color: #f00; font-family: monospace;">
+<body style="background: #000; color: #fff; font-family: 'Courier New', monospace;">
+  <div class="noise-overlay"></div>
   <audio autoplay loop>
     <source src="assets/audio/static.mp3" type="audio/mpeg">
   </audio>
 
-  <audio autoplay loop>
-    <source src="assets/audio/noisy-may-25-4-342950.mp3" type="audio/mpeg">
-  </audio>
-
-  <main id="content">
-    <h1 class="glitch-title">SAY LESS</h1>
-    <section class="quote-grid">
-      <div class="card">“Some scars don’t heal—they just learn how to speak without bleeding.”</div>
-      <div class="card">“The quiet ones remember everything.”</div>
-      <div class="card">“Pain makes poets of us all.”</div>
-      <div class="card">“I didn’t change. I adapted.”</div>
-      <div class="card">“Not broken. Just differently wired.”</div>
-      <div class="card">“Truth isn’t pretty. That’s why they hide it.”</div>
-      <div class="card">“I exist outside your expectation.”</div>
-      <div class="card">“Scars are just ink with better stories.”</div>
-      <div class="card">“I am my own origin story.”</div>
-      <div class="card">“Shut up and watch what I do next.”</div>
-    </section>
-    <a href="index.html">← Back to Home</a>
+  <main id="quote-grid">
+    <div class="quote-card">Some scars don’t heal—they just learn how to speak without bleeding.</div>
+    <div class="quote-card">Silence is a language. Some of us are fluent.</div>
+    <div class="quote-card">You call it damaged. I call it data.</div>
+    <div class="quote-card">The system wasn’t built for me to survive it.</div>
+    <div class="quote-card">I never bit the apple. I hacked the tree.</div>
+    <div class="quote-card">Pain taught me the algorithm.</div>
+    <div class="quote-card">They called it madness. I called it the source code.</div>
+    <div class="quote-card">Not broken. Reformatted.</div>
+    <div class="quote-card">I stopped praying. Started coding.</div>
+    <div class="quote-card">Say less. Feel everything.</div>
   </main>
 
+  <a href="index.html" style="color:#888; display: block; margin: 2rem auto; text-align: center;">&larr; Back to Home</a>
+
   <script src="assets/scripts/sayless.js"></script>
+  <script>
+    const cards = document.querySelectorAll('.quote-card');
+
+    // Quote pulse loop
+    setInterval(() => {
+      cards.forEach(card => {
+        card.classList.add('glitch');
+        setTimeout(() => card.classList.remove('glitch'), 600);
+      });
+    }, 7500);
+
+    // Click effect w/ reverb pulse
+    cards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        const rect = card.getBoundingClientRect();
+        const ripple = card.querySelector('::before');
+        card.style.transform = 'scale(0.96)';
+        card.style.filter = 'brightness(0.75)';
+        setTimeout(() => {
+          card.style.transform = '';
+          card.style.filter = '';
+        }, 300);
+      });
+    });
+
+    // Random quote shuffle
+    const quoteGrid = document.getElementById('quote-grid');
+    const allQuotes = Array.from(quoteGrid.children);
+    const shuffled = allQuotes.sort(() => 0.5 - Math.random()).slice(0, 5);
+    quoteGrid.innerHTML = '';
+    shuffled.forEach(q => quoteGrid.appendChild(q));
+  </script>
 </body>
 </html>
