@@ -8,6 +8,10 @@ body {
   text-shadow: 0 0 5px #f00, 0 0 10px #000;
 }
 
+.overlap {
+  color: #fff;
+}
+
 @keyframes flickerText {
   0%   { opacity: 1; }
   5%   { opacity: 0.4; }
