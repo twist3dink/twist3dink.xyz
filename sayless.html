@@ -16,7 +16,6 @@
       transition: all 0.3s ease-in-out;
       cursor: pointer;
     }
-
     .quote-card:hover {
       background: #0ff;
       color: #000;
@@ -24,11 +23,9 @@
       transform: scale(1.02);
       box-shadow: 0 0 10px #0ff;
     }
-
     .quote-card.glitch {
       animation: glitch 0.4s steps(2, end) infinite;
     }
-
     @keyframes glitch {
       0% { transform: translate(0); }
       20% { transform: translate(-2px, 2px); }
@@ -37,7 +34,6 @@
       80% { transform: translate(2px, -2px); }
       100% { transform: translate(0); }
     }
-
     .modal {
       position: fixed;
       top: 0;
@@ -55,7 +51,6 @@
       z-index: 9999;
       animation: pop 0.5s ease-in-out;
     }
-
     @keyframes pop {
       from { transform: scale(0.8); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
@@ -63,9 +58,6 @@
   </style>
 </head>
 <body style="background: url('assets/images/sayless_bg.jpg') no-repeat center center fixed; background-size: cover; color: #fff; font-family: 'Courier New', monospace;">
-  <audio autoplay loop>
-    <source src="assets/audio/static.mp3" type="audio/mpeg">
-  </audio>
 
   <main id="quote-grid"></main>
 
@@ -95,14 +87,6 @@
       card.textContent = text;
       grid.appendChild(card);
 
-      const clickSound = new Audio('assets/audio/static.mp3');
-
-      card.addEventListener('mouseover', () => {
-        clickSound.currentTime = 0;
-        clickSound.volume = 0.07;
-        clickSound.play();
-      });
-
       card.addEventListener('click', () => {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -111,6 +95,37 @@
         document.body.appendChild(modal);
       });
     });
+  </script>
+
+  <!-- Single global audio -->
+  <audio id="site-audio" preload="auto" loop></audio>
+
+  <script>
+  (() => {
+    const AUDIO_SRC = "assets/audio/theme.mp3"; // your licensed MP3
+    const el = document.getElementById("site-audio");
+    el.src = AUDIO_SRC;
+
+    const tryPlay = () => el.play().catch(() => {});
+    document.addEventListener("DOMContentLoaded", tryPlay);
+    ["pointerdown","keydown","touchstart"].forEach(evt => {
+      window.addEventListener(evt, () => tryPlay(), { once: true, passive: true });
+    });
+
+    // minimal mute/unmute
+    const btn = document.createElement("button");
+    btn.textContent = "Mute";
+    Object.assign(btn.style, {
+      position: "fixed", right: "1rem", bottom: "1rem",
+      zIndex: 9999, padding: "0.5rem 1rem", cursor: "pointer"
+    });
+    btn.addEventListener("click", () => {
+      el.muted = !el.muted;
+      btn.textContent = el.muted ? "Unmute" : "Mute";
+      if (el.paused) tryPlay();
+    });
+    document.body.appendChild(btn);
+  })();
   </script>
 </body>
 </html>
