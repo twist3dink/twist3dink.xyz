@@ -7,25 +7,7 @@
   <title>If I Told You I Was the Devil</title>
   <link rel="stylesheet" href="assets/styles/devil.css" />
 </head>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="If I Told You I Was the Devil | tw¡st3d_¡nk" />
-  <title>If I Told You I Was the Devil</title>
-  <link rel="stylesheet" href="assets/styles/devil.css" />
-</head>
-
 <body style="background: url('assets/images/devil_bg.jpg') no-repeat center center fixed; background-size: cover; color: #f00; font-family: monospace;">
-  <!-- Audio layers -->
-  <audio autoplay loop>
-    <source src="assets/audio/heartbeat.mp3" type="audio/mpeg">
-  </audio>
-
-  <audio autoplay loop>
-    <source src="assets/audio/ambience.mp3" type="audio/mpeg">
-  </audio>
 
   <!-- Main content -->
   <main id="content">
@@ -43,5 +25,36 @@
 
   <!-- Glitch flicker effect script -->
   <script src="assets/scripts/devil.js"></script>
+
+  <!-- Single global audio -->
+  <audio id="site-audio" preload="auto" loop></audio>
+
+  <script>
+  (() => {
+    const AUDIO_SRC = "assets/audio/theme.mp3"; // your licensed MP3
+    const el = document.getElementById("site-audio");
+    el.src = AUDIO_SRC;
+
+    const tryPlay = () => el.play().catch(() => {});
+    document.addEventListener("DOMContentLoaded", tryPlay);
+    ["pointerdown","keydown","touchstart"].forEach(evt => {
+      window.addEventListener(evt, () => tryPlay(), { once: true, passive: true });
+    });
+
+    // minimal mute/unmute
+    const btn = document.createElement("button");
+    btn.textContent = "Mute";
+    Object.assign(btn.style, {
+      position: "fixed", right: "1rem", bottom: "1rem",
+      zIndex: 9999, padding: "0.5rem 1rem", cursor: "pointer"
+    });
+    btn.addEventListener("click", () => {
+      el.muted = !el.muted;
+      btn.textContent = el.muted ? "Unmute" : "Mute";
+      if (el.paused) tryPlay();
+    });
+    document.body.appendChild(btn);
+  })();
+  </script>
 </body>
 </html>
