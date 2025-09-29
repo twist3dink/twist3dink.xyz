@@ -1,1 +1,803 @@
-lessons
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Flipper Zero Mastery - Complete ethical hacking course for the Flipper Zero multi-tool">
+    <title>Flipper Zero Mastery | CyberForge Academy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .top-nav {
+            background: rgba(26, 26, 46, 0.95);
+            border-bottom: 2px solid #00ff41;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .breadcrumb {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #00ff41;
+        }
+
+        .breadcrumb .current {
+            color: #00ff41;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 25px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            color: #e5e7eb;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-text .highlight {
+            color: #00ff41;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #d1d5db;
+        }
+
+        .hero-image {
+            background: linear-gradient(135deg, #1f2937, #374151);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            border: 2px solid #00ff41;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+        }
+
+        .flipper-icon {
+            font-size: 8rem;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00ff41, #00cc33);
+            color: #000;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 255, 65, 0.4);
+        }
+
+        /* Course Overview */
+        .course-overview {
+            padding: 80px 25px;
+            background: rgba(26, 26, 46, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #e5e7eb;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .overview-card {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .overview-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .overview-card h3 {
+            color: #00ff41;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .overview-card p {
+            color: #d1d5db;
+            line-height: 1.5;
+        }
+
+        /* Curriculum Section */
+        .curriculum {
+            padding: 80px 25px;
+        }
+
+        .lessons-grid {
+            display: grid;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .lesson-card {
+            background: linear-gradient(135deg, #1f2937, #374151);
+            border: 2px solid #374151;
+            border-radius: 15px;
+            padding: 25px;
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 25px;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .lesson-card:hover {
+            border-color: #00ff41;
+            transform: translateX(5px);
+        }
+
+        .lesson-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .lesson-number {
+            width: 80px;
+            height: 80px;
+            background: #00ff41;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .lesson-number.locked {
+            background: #374151;
+            color: #6b7280;
+        }
+
+        .lesson-info h3 {
+            color: #e5e7eb;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .lesson-info p {
+            color: #9ca3af;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .lesson-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .lesson-status {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .lesson-status.available {
+            background: #14532d;
+            color: #bbf7d0;
+        }
+
+        .lesson-status.locked {
+            background: #374151;
+            color: #9ca3af;
+        }
+
+        .lesson-status.completed {
+            background: #00ff41;
+            color: #000;
+        }
+
+        /* What You'll Learn */
+        .what-learn {
+            padding: 80px 25px;
+            background: rgba(26, 26, 46, 0.3);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .skill-item {
+            background: rgba(26, 26, 46, 0.6);
+            border-left: 4px solid #00ff41;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .skill-item h4 {
+            color: #00ff41;
+            margin-bottom: 10px;
+        }
+
+        .skill-item p {
+            color: #d1d5db;
+            line-height: 1.5;
+        }
+
+        /* Prerequisites */
+        .prerequisites {
+            padding: 80px 25px;
+        }
+
+        .prereq-card {
+            background: #7c2d12;
+            border: 2px solid #dc2626;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .prereq-card h3 {
+            color: #fca5a5;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .prereq-list {
+            list-style: none;
+            color: #fed7d7;
+        }
+
+        .prereq-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(252, 165, 165, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .prereq-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 25px;
+            text-align: center;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), rgba(0, 204, 51, 0.05));
+            border: 2px solid #00ff41;
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-box h2 {
+            font-size: 2.5rem;
+            color: #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .cta-box p {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(26, 26, 46, 0.95);
+            border-top: 2px solid #374151;
+            padding: 30px 25px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #00ff41;
+        }
+
+        .footer p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .lesson-meta {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="breadcrumb">
+                <a href="../index.html">Academy</a> > <span class="current">Flipper Zero Mastery</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>
+                    <span class="highlight">Flipper Zero</span><br>
+                    Mastery Course
+                </h1>
+                <p>
+                    Master the Swiss Army knife of ethical hacking. From complete beginner to
+                    advanced pentester in 10 comprehensive lessons.
+                </p>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span>📚</span> 10 Lessons
+                    </div>
+                    <div class="meta-item">
+                        <span>⏱️</span> ~8 Hours
+                    </div>
+                    <div class="meta-item">
+                        <span>🎯</span> Beginner Friendly
+                    </div>
+                    <div class="meta-item">
+                        <span>🏆</span> 250 XP
+                    </div>
+                </div>
+                <a href="lesson-01.html" class="btn btn-primary">
+                    🚀 Start Lesson 1
+                </a>
+            </div>
+            <div class="hero-image">
+                <div class="flipper-icon">🐬</div>
+                <p style="color: #9ca3af; font-size: 1.1rem;">
+                    Your journey into hardware hacking begins here
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Overview -->
+    <section class="course-overview">
+        <div class="container">
+            <h2 class="section-title">Course Overview</h2>
+            <p class="section-subtitle">Everything you need to become a Flipper Zero expert</p>
+            
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <div class="icon">🧪</div>
+                    <h3>Interactive Labs</h3>
+                    <p>Cloud-based simulators let you practice without physical hardware</p>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="icon">📹</div>
+                    <h3>Video Tutorials</h3>
+                    <p>Visual guides for every technique and hardware operation</p>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="icon">⚡</div>
+                    <h3>Real-World Scenarios</h3>
+                    <p>Ethical hacking challenges based on actual penetration tests</p>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="icon">🔧</div>
+                    <h3>Firmware Guides</h3>
+                    <p>Support for Official, Unleashed, and RogueMaster firmwares</p>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="icon">📚</div>
+                    <h3>Resource Library</h3>
+                    <p>Curated links to docs, communities, and advanced resources</p>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="icon">🎯</div>
+                    <h3>Progressive Learning</h3>
+                    <p>Each lesson builds on the previous, no overwhelming jumps</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum -->
+    <section class="curriculum">
+        <div class="container">
+            <h2 class="section-title">Complete Curriculum</h2>
+            <p class="section-subtitle">10 lessons from basics to advanced techniques</p>
+            
+            <div class="lessons-grid">
+                <!-- Lesson 1 -->
+                <div class="lesson-card" onclick="window.location.href='lesson-01.html'">
+                    <div class="lesson-number">01</div>
+                    <div class="lesson-info">
+                        <h3>Meet Your Flipper Zero</h3>
+                        <p>Introduction to hardware, firmware types, and basic navigation. Set up your device and understand its capabilities.</p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 45 min</span>
+                            <span>🧪 1 Lab</span>
+                            <span>🏆 25 XP</span>
+                        </div>
+                    </div>
+                    <div class="lesson-status available">Start</div>
+                </div>
+
+                <!-- Lesson 2 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number locked">02</div>
+                    <div class="lesson-info">
+                        <h3>Basic Operations & File System</h3>
+                        <p>Navigate menus, manage files, configure settings, and perform your first backup. Essential operations every user needs.</p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 45 min</span>
+                            <span>🧪 2 Labs</span>
+                            <span>🏆 25 XP</span>
+                        </div>
+                    </div>
+                    <div class="lesson-status locked">🔒 Locked</div>
+                </div>
+
+                <!-- Lesson 3 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number locked">03</div>
+                    <div class="lesson-info">
+                        <h3>NFC & RFID Fundamentals</h3>
+                        <p>Read, save, and emulate contactless cards. Understand frequency ranges and security implications of card cloning.</p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 50 min</span>
+                            <span>🧪 3 Labs</span>
+                            <span>🏆 30 XP</span>
+                        </div>
+                    </div>
+                    <div class="lesson-status locked">🔒 Locked</div>
+                </div>
+
+                <!-- Lesson 4 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number locked">04</div>
+                    <div class="lesson-info">
+                        <h3>Infrared Remote Cloning</h3>
+                        <p>Capture, save, and replay IR signals. Control TVs, air conditioners, and other IR devices. Build universal remotes.</p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 40 min</span>
+                            <span>🧪 2 Labs</span>
+                            <span>🏆 25 XP</span>
+                        </div>
+                    </div>
+                    <div class="lesson-status locked">🔒 Locked</div>
+                </div>
+
+                <!-- Lesson 5 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number locked">05</div>
+                    <div class="lesson-info">
+                        <h3>Sub-GHz Radio Analysis</h3>
+                        <p>Capture and analyze wireless signals. Understand garage doors, car key fobs, and IoT device communication.</p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 55 min</span>
+                            <span>🧪 3 Labs</span>
+                            <span>🏆 30 XP</span>
+                        </div>
+                    </div>
+                    <div class="lesson-status locked">🔒 Locked</div>
+                </div>
+
+                <!-- Lesson 6 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number locked">06</div>
+                    <div class="lesson-info">
+                        <h3>BadUSB & Scripting</h3>
+                        <p>Create automated keystroke injection attacks. Write Ducky Scripts for penetration testing and automation.</p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 50 min</span>
+                            <span>🧪 4 Labs</span>
+                            <span>🏆 30 XP</span>
+                        </div>
+                    </div>
+                    <div class="lesson-status locked">🔒 Locked</div>
+                </div>
+
+                <!-- Lesson 7 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number locked">07</div>
+                    <div class="lesson-info">
+                        <h3>GPIO & Hardware Interfacing</h3>
+                        <p>Connect to external hardware via GPIO pins. UART communication, SPI, I2C, and custom hardware projects.</p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 60 min</span>
+                            <span>🧪 3 Labs</span>
+                            <span>🏆 35 XP</span>
+                        </div>
+                    </div>
+                    <div class="lesson-status locked">🔒 Locked</div>
+                </div>
+
+                <!-- Lesson 8 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number locked">08</div>
+                    <div class="lesson-info">
+                        <h3>Custom Firmware Installation</h3>
+                        <p>Install and configure Unleashed and RogueMaster firmware. Unlock advanced features and customization options.</p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 45 min</span>
+                            <span>🧪 2 Labs</span>
+                            <span>🏆 25 XP</span>
+                        </div>
+                    </div>
+                    <div class="lesson-status locked">🔒 Locked</div>
+                </div>
+
+                <!-- Lesson 9 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number locked">09</div>
+                    <div class="lesson-info">
+                        <h3>Advanced Exploitation Techniques</h3>
+                        <p>Replay attacks, signal analysis, protocol fuzzing, and advanced penetration testing methodologies.</p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 60 min</span>
+                            <span>🧪 4 Labs</span>
+                            <span>🏆 40 XP</span>
+                        </div>
+                    </div>
+                    <div class="lesson-status locked">🔒 Locked</div>
+                </div>
+
+                <!-- Lesson 10 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number locked">10</div>
+                    <div class="lesson-info">
+                        <h3>Real-World Penetration Testing</h3>
+                        <p>Final capstone project. Complete simulated penetration test combining all skills. Earn your certification.</p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 90 min</span>
+                            <span>🧪 1 Final Exam</span>
+                            <span>🏆 50 XP</span>
+                        </div>
+                    </div>
+                    <div class="lesson-status locked">🔒 Locked</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What You'll Learn -->
+    <section class="what-learn">
+        <div class="container">
+            <h2 class="section-title">What You'll Master</h2>
+            <p class="section-subtitle">Comprehensive skills for ethical hacking with Flipper Zero</p>
+            
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <h4>🔐 Access Control Testing</h4>
+                    <p>Clone and analyze RFID/NFC systems, test physical security weaknesses</p>
+                </div>
+                
+                <div class="skill-item">
+                    <h4>📡 Wireless Protocol Analysis</h4>
+                    <p>Capture and decode Sub-GHz signals, understand IoT vulnerabilities</p>
+                </div>
+                
+                <div class="skill-item">
+                    <h4>💻 Automated Exploitation</h4>
+                    <p>Write BadUSB scripts, perform keystroke injection attacks</p>
+                </div>
+                
+                <div class="skill-item">
+                    <h4>🔧 Hardware Hacking</h4>
+                    <p>Interface with embedded systems via GPIO, UART debugging</p>
+                </div>
+                
+                <div class="skill-item">
+                    <h4>📝 Documentation & Reporting</h4>
+                    <p>Professional pentest reporting, ethical disclosure practices</p>
+                </div>
+                
+                <div class="skill-item">
+                    <h4>⚖️ Legal & Ethical Framework</h4>
+                    <p>Understand boundaries, authorization, and responsible disclosure</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prerequisites -->
+    <section class="prerequisites">
+        <div class="container">
+            <h2 class="section-title">Prerequisites</h2>
+            <div class="prereq-card">
+                <h3>What You Need to Start</h3>
+                <ul class="prereq-list">
+                    <li>✅ <strong>No prior coding experience required</strong> - We start from zero</li>
+                    <li>✅ <strong>Flipper Zero device (optional)</strong> - Cloud labs available for practice</li>
+                    <li>✅ <strong>Curiosity & ethical mindset</strong> - Commitment to responsible use</li>
+                    <li>✅ <strong>45 minutes per lesson</strong> - Self-paced, ADHD-friendly format</li>
+                    <li>✅ <strong>Computer with internet</strong> - For labs and resources</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="cta-box">
+            <h2>Ready to Master the Flipper Zero?</h2>
+            <p>
+                Join neurodivergent learners discovering their cybersecurity superpowers.
+                Start with Lesson 1 and unlock your ethical hacking potential.
+            </p>
+            <a href="lesson-01.html" class="btn btn-primary">
+                🚀 Begin Lesson 1: Meet Your Flipper Zero
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="../index.html">← Back to Academy</a>
+            <a href="../../index.html">tw¡st3d_¡nk</a>
+            <a href="#">Resources</a>
+            <a href="#">Community</a>
+        </div>
+        <p>&copy; 2025 CyberForge Academy. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Track lesson progress
+        function trackProgress(lessonNumber) {
+            const progress = JSON.parse(localStorage.getItem('flipperProgress') || '{}');
+            progress[`lesson${lessonNumber}`] = 'completed';
+            localStorage.setItem('flipperProgress', JSON.stringify(progress));
+        }
+
+        // Load progress on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const progress = JSON.parse(localStorage.getItem('flipperProgress') || '{}');
+            
+            // Update lesson cards based on progress
+            document.querySelectorAll('.lesson-card').forEach((card, index) => {
+                const lessonNum = index + 1;
+                if (progress[`lesson${lessonNum}`] === 'completed') {
+                    card.querySelector('.lesson-status').textContent = '✅ Completed';
+                    card.querySelector('.lesson-status').classList.remove('available', 'locked');
+                    card.querySelector('.lesson-status').classList.add('completed');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
