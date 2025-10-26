@@ -1,1 +1,1 @@
-# twist3dink.xyz
+# Source code for twist3dink.xyz & academy
