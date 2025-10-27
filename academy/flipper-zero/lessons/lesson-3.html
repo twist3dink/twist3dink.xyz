@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3: Infrared Mastery - tw¡st3d_¡nk Academy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">tw¡st3d_¡nk</div>
+            <h1>Flipper Zero Academy</h1>
+            <div class="xp-display">
+                <span class="xp-label">XP:</span>
+                <span id="xp-amount">0</span>
+            </div>
+        </header>
+
+        <!-- Lesson Header -->
+        <div class="lesson-header">
+            <h2>Lesson 3: Infrared Mastery</h2>
+            <div class="lesson-meta">
+                <span class="difficulty beginner">Beginner Level</span>
+                <span class="duration">⏱ 25 min</span>
+                <span class="xp-reward">🎯 +200 XP</span>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="lesson-progress">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+            <span class="progress-text">0% Complete</span>
+        </div>
+
+        <!-- Lesson Content -->
+        <div class="content-section" data-section="1">
+            <h3>📺 Introduction to Infrared Technology</h3>
+            
+            <div class="info-box">
+                <h4>What is Infrared (IR)?</h4>
+                <p><strong>Infrared</strong> is invisible light with wavelengths longer than visible light but shorter than radio waves. It's been the standard for remote controls since the 1980s and remains incredibly common today.</p>
+            </div>
+
+            <h4>Why IR for Remote Controls?</h4>
+            <div class="tip-box">
+                <strong>Advantages of Infrared:</strong>
+                <ul>
+                    <li><strong>Extremely cheap:</strong> IR LEDs and receivers cost pennies</li>
+                    <li><strong>No interference:</strong> Doesn't interfere with radio devices</li>
+                    <li><strong>Line of sight:</strong> Won't accidentally control neighbor's TV</li>
+                    <li><strong>Low power:</strong> Batteries last for years</li>
+                    <li><strong>Simple:</strong> Easy to implement and reliable</li>
+                    <li><strong>Universal:</strong> Works across all brands with right codes</li>
+                </ul>
+            </div>
+
+            <h4>Common IR Devices</h4>
+            <p>You interact with IR technology constantly:</p>
+            
+            <div class="command-block">
+<pre>IR-Controlled Devices:
+🖥️  TVs and monitors
+📺  Cable/satellite boxes
+🎬  Blu-ray and DVD players
+🔊  Audio receivers and soundbars
+❄️  Air conditioners
+🌀  Fans
+💡  Smart lights
+📽️  Projectors
+🎮  Some older game consoles
+🚗  Car stereos</pre>
+            </div>
+
+            <h4>How IR Remote Controls Work</h4>
+            <div class="info-box">
+                <p>IR remotes work by flashing an infrared LED in specific patterns. Each button press creates a unique sequence of pulses that the device recognizes.</p>
+            </div>
+
+            <div class="command-block">
+<pre>IR Communication Process:
+┌─────────────────────────────────────┐
+│ 1. Press button on remote           │
+│ 2. Microchip encodes command        │
+│ 3. IR LED flashes pattern (~38kHz)  │
+│ 4. Device receiver detects pulses   │
+│ 5. Device decodes command           │
+│ 6. Action performed (volume up, etc)│
+└─────────────────────────────────────┘
+
+Carrier Frequency: Usually 38kHz
+(Some devices use 36kHz, 40kHz, or 56kHz)</pre>
+            </div>
+
+            <h4>IR Signal Visualization</h4>
+            <div class="example-box">
+                <h4>What an IR Signal Looks Like</h4>
+                <p>When you press a button, the IR LED sends pulses like this:</p>
+                <div class="command-block">
+<pre>Power Button Signal (simplified):
+█████ ███ █ ███ █ █ ███ █████ ███
+ ON  OFF ON OFF  ON OFF  ON  OFF
+
+Each pulse is actually thousands of 38kHz flashes!
+
+Timing matters:
+- Short pulse = 0
+- Long pulse = 1
+- Pattern creates unique command</pre>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ IR Limitations:</strong>
+                <ul>
+                    <li><strong>Line of sight required:</strong> IR doesn't go through walls</li>
+                    <li><strong>Range limited:</strong> Typically 5-10 meters max</li>
+                    <li><strong>Sunlight interference:</strong> Bright light can disrupt signals</li>
+                    <li><strong>Requires aiming:</strong> Must point at device sensor</li>
+                </ul>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(1)">Continue to IR Protocols →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="2">
+            <h3>🔤 IR Protocols & Standards</h3>
+            
+            <h4>Understanding IR Protocols</h4>
+            <div class="info-box">
+                <p>An <strong>IR protocol</strong> is a standardized way of encoding commands. Different manufacturers use different protocols, but many have become industry standards.</p>
+            </div>
+
+            <h4>Common IR Protocols</h4>
+            <div class="command-block">
+<pre>Major IR Protocols:
+
+NEC (Japanese Electronic Control)
+• Most common protocol worldwide
+• Used by: Many Asian brands
+• Encoding: 32-bit commands
+• Address + Command structure
+• Repeat codes for held buttons
+
+RC5 (Philips)
+• European standard
+• Used by: Philips, many European brands
+• Encoding: 14-bit Manchester encoded
+• Toggle bit changes each press
+
+RC6 (Philips Enhanced)
+• Improved version of RC5
+• Used by: Microsoft MCE remotes
+• More reliable than RC5
+• Mode bits for different device types
+
+Samsung
+• Proprietary Samsung protocol
+• Similar to NEC but different timing
+• Used by: Samsung TVs, appliances
+
+Sony SIRC (Sony Infrared Remote Control)
+• Sony's proprietary protocol
+• Multiple versions: 12, 15, 20 bit
+• Used by: Sony TVs, PlayStation, audio
+
+RAW
+• Not a protocol - just timing data
+• Used when protocol is unknown
+• Flipper can learn and replay any signal!</pre>
+            </div>
+
+            <h4>Protocol Characteristics</h4>
+            <div class="tip-box">
+                <strong>What Makes Each Protocol Unique:</strong>
+                <ul>
+                    <li><strong>Carrier Frequency:</strong> Usually 38kHz, but varies (36-56kHz)</li>
+                    <li><strong>Bit Encoding:</strong> How 0s and 1s are represented in timing</li>
+                    <li><strong>Command Structure:</strong> Address, command, checksum layout</li>
+                    <li><strong>Repeat Handling:</strong> What happens when button is held</li>
+                    <li><strong>Error Detection:</strong> Checksums or parity bits</li>
+                </ul>
+            </div>
+
+            <h4>Flipper's IR Protocol Support</h4>
+            <div class="example-box">
+                <h4>Built-in Protocol Recognition</h4>
+                <p>The Flipper Zero can automatically decode these protocols:</p>
+                <ul>
+                    <li>✅ NEC (and NEC Extended)</li>
+                    <li>✅ Samsung32</li>
+                    <li>✅ RC5 and RC6</li>
+                    <li>✅ Sony SIRC (12, 15, 20 bit)</li>
+                    <li>✅ Kaseikyo</li>
+                    <li>✅ RCA</li>
+                    <li>✅ And many more!</li>
+                </ul>
+                <p><strong>Plus:</strong> RAW mode for anything unrecognized</p>
+            </div>
+
+            <h4>Universal vs. Specific Remotes</h4>
+            <div class="command-block">
+<pre>Learning Remotes (like Flipper):
+• Capture any IR signal
+• Store and replay exactly
+• Don't need to know protocol
+• Work with proprietary codes
+• Perfect for unique devices
+
+Database Remotes:
+• Pre-programmed with thousands of codes
+• Select brand and model
+• May not have your exact device
+• Convenient for common devices
+• Flipper has built-in TV database!</pre>
+            </div>
+
+            <h4>Protocol Example: NEC Format</h4>
+            <div class="command-block">
+<pre>NEC Protocol Breakdown:
+
+Complete NEC Command (32 bits):
+[Address 8-bit][~Address 8-bit][Command 8-bit][~Command 8-bit]
+
+Example: Samsung TV Volume Up
+Address: 0x07 (Samsung TV)
+Command: 0x02 (Volume Up)
+Inverted for error checking
+
+Full Signal:
+9ms leader pulse
+4.5ms space
+32 data bits (with timing encoding)
+Final pulse
+
+Flipper captures and decodes all of this!</pre>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(2)">Continue to Using Flipper IR →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="3">
+            <h3>🐬 Flipper Zero IR Features</h3>
+            
+            <h4>Accessing IR Functions</h4>
+            <div class="command-block">
+<pre>Navigation Path:
+Main Menu → Infrared → [Choose Option]
+
+Main Options:
+• Universal Remotes  - Pre-loaded TV controls
+• Learn New Remote   - Capture any IR signal
+• Saved Remotes      - Your captured remotes
+• Debug              - Test IR transmitter</pre>
+            </div>
+
+            <h4>Universal Remotes (TV Database)</h4>
+            <div class="info-box">
+                <p>Flipper comes with a <strong>built-in TV remote database</strong> covering hundreds of brands. Perfect for quickly controlling TVs without learning signals.</p>
+            </div>
+
+            <div class="example-box">
+                <h4>Using Universal TV Remote</h4>
+                <ol>
+                    <li>Infrared → Universal Remotes → TVs</li>
+                    <li>Select brand (Samsung, LG, Sony, etc.)</li>
+                    <li>Point Flipper at TV</li>
+                    <li>Press Power button</li>
+                    <li>If TV responds: You found the right code!</li>
+                    <li>If not: Try next code in list (many brands have multiple)</li>
+                </ol>
+                <p><strong>Tip:</strong> Start with "Power" button to test - most universal function</p>
+            </div>
+
+            <h4>Learning Mode (Capturing IR Signals)</h4>
+            <div class="tip-box">
+                <p><strong>Learn New Remote</strong> mode lets you capture any IR signal from any remote, even proprietary or uncommon devices.</p>
+            </div>
+
+            <div class="command-block">
+<pre>Learning Process:
+1. Infrared → Learn New Remote
+2. Create new remote or add to existing
+3. Name your remote (e.g., "Living_Room_TV")
+4. Select button to learn (e.g., "Power")
+5. Point original remote at Flipper
+6. Press button on original remote
+7. Flipper captures signal
+8. Repeat for all buttons you want
+
+Result: Complete custom remote stored!</pre>
+            </div>
+
+            <h4>Button Layout Options</h4>
+            <div class="command-block">
+<pre>Common Remote Layouts:
+
+TV Remote:
+- Power, Vol+, Vol-, CH+, CH-
+- Mute, Menu, OK, Back
+- Number pad (optional)
+
+AC Remote:
+- Power, Temp+, Temp-
+- Mode (Cool/Heat/Fan)
+- Fan Speed, Timer
+
+Audio Receiver:
+- Power, Vol+, Vol-
+- Input Select, Mute
+- Sound modes
+
+Custom Layout:
+- Name buttons whatever you want
+- Store as many buttons as needed
+- Organize by device or room</pre>
+            </div>
+
+            <h4>RAW vs. Parsed Signals</h4>
+            <div class="info-box">
+                <h4>How Flipper Stores IR Signals</h4>
+                <p><strong>Parsed (Protocol Recognized):</strong></p>
+                <ul>
+                    <li>Flipper decodes the protocol (NEC, Samsung, etc.)</li>
+                    <li>Stores compact data: protocol + command code</li>
+                    <li>File size: Very small (~100 bytes)</li>
+                    <li>Reliable replay</li>
+                </ul>
+
+                <p><strong>RAW (Unknown Protocol):</strong></p>
+                <ul>
+                    <li>Flipper records exact timing patterns</li>
+                    <li>Stores every pulse duration</li>
+                    <li>File size: Larger (~1-5 KB per button)</li>
+                    <li>Works for any signal, even proprietary</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <strong>RAW Signal Limitations:</strong>
+                <ul>
+                    <li>Larger file sizes (SD card space)</li>
+                    <li>May have slight timing variations</li>
+                    <li>Some picky devices might not accept RAW replays</li>
+                    <li><strong>Solution:</strong> Re-learn the signal if RAW doesn't work</li>
+                </ul>
+            </div>
+
+            <h4>Testing Your Captures</h4>
+            <div class="command-block">
+<pre>Replay Captured Signal:
+1. Infrared → Saved Remotes
+2. Select your remote (e.g., "Living_Room_TV")
+3. Select button (e.g., "Power")
+4. Point Flipper at device
+5. Press OK to transmit
+
+Flipper's IR LED transmits the signal!
+
+Troubleshooting:
+✗ Not working? Check distance (get closer)
+✗ Still not working? Check aim (IR is directional)
+✗ Still failing? Try learning again (better capture)</pre>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(3)">Continue to Advanced IR →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="4">
+            <h3>🎯 Advanced IR Techniques</h3>
+            
+            <h4>Multi-Device Control</h4>
+            <div class="info-box">
+                <p>You can store multiple device remotes on your Flipper and switch between them instantly. Perfect for home theater setups!</p>
+            </div>
+
+            <div class="example-box">
+                <h4>Home Theater Setup Example</h4>
+                <p>Create separate remote files for each device:</p>
+                <ul>
+                    <li><strong>TV_Samsung.ir</strong> - TV power, input, volume</li>
+                    <li><strong>SoundBar_Sony.ir</strong> - Audio controls</li>
+                    <li><strong>AppleTV.ir</strong> - Media navigation</li>
+                    <li><strong>AC_Living_Room.ir</strong> - Climate control</li>
+                </ul>
+                <p>Access all from: Infrared → Saved Remotes</p>
+            </div>
+
+            <h4>Creating "Scene" Remotes</h4>
+            <div class="tip-box">
+                <strong>Power User Tip:</strong> Create custom remotes for specific scenarios
+                <ul>
+                    <li><strong>"Movie_Mode"</strong> - Combine TV power, soundbar on, lights dim</li>
+                    <li><strong>"Goodnight"</strong> - Turn off all devices in bedroom</li>
+                    <li><strong>"Presentation"</strong> - Projector on, laptop input select</li>
+                </ul>
+                <p><em>Note: Requires manual button presses, but organized in one file for quick access</em></p>
+            </div>
+
+            <h4>IR Signal Debugging</h4>
+            <div class="command-block">
+<pre>Debug Mode (Advanced):
+Infrared → Debug
+
+Features:
+• Test Flipper's IR transmitter
+• Verify IR LED is working
+• Send test patterns
+• Useful for troubleshooting hardware
+
+How to use:
+1. Enable Debug mode
+2. Point smartphone camera at Flipper
+3. Camera sees IR LED (appears purple/white)
+4. Confirms Flipper is transmitting</pre>
+            </div>
+
+            <h4>Editing IR Files</h4>
+            <div class="info-box">
+                <p>IR remote files are stored as <code>.ir</code> files on the SD card in <code>/infrared/</code> folder. They're human-readable text files!</p>
+            </div>
+
+            <div class="command-block">
+<pre>Example .ir File Contents:
+Filetype: IR signals file
+Version: 1
+#
+name: Power
+type: parsed
+protocol: NEC
+address: 07 00 00 00
+command: 02 00 00 00
+#
+name: Vol_up
+type: parsed
+protocol: NEC
+address: 07 00 00 00
+command: 0F 00 00 00
+
+You can:
+• Edit button names
+• Duplicate buttons
+• Combine multiple files
+• Share with other Flipper users</pre>
+            </div>
+
+            <h4>IR Range Extension</h4>
+            <div class="tip-box">
+                <strong>Improving IR Range:</strong>
+                <ul>
+                    <li><strong>Get closer:</strong> Standard range is 5-7 meters</li>
+                    <li><strong>Aim carefully:</strong> IR is directional, center the beam</li>
+                    <li><strong>Fresh batteries:</strong> Weak Flipper battery = weaker IR signal</li>
+                    <li><strong>Avoid sunlight:</strong> Bright light interferes with IR</li>
+                    <li><strong>Clean lens:</strong> Dust on IR LED reduces power</li>
+                </ul>
+            </div>
+
+            <h4>IR Blaster Projects</h4>
+            <div class="example-box">
+                <h4>Creative Uses for Flipper IR</h4>
+                <ul>
+                    <li><strong>TV-B-Gone:</strong> Turn off TVs in public spaces (responsibly!)</li>
+                    <li><strong>Hotel Room Master:</strong> Control all room devices from one Flipper</li>
+                    <li><strong>Accessibility Aid:</strong> Simplified remote for elderly/disabled</li>
+                    <li><strong>Backup Remote:</strong> Never worry about lost remotes again</li>
+                    <li><strong>Prank Remote:</strong> Confuse friends by controlling their TV</li>
+                    <li><strong>Smart Home Hub:</strong> Integrate non-smart IR devices</li>
+                </ul>
+            </div>
+
+            <h4>IR Signal Libraries</h4>
+            <div class="command-block">
+<pre>Community Resources:
+GitHub: Flipper-IRDB
+• Thousands of pre-captured remotes
+• Organized by manufacturer
+• Download and copy to SD card
+• Instant remote collection!
+
+Format:
+/infrared/
+  ├── TVs/
+  │   ├── Samsung/
+  │   ├── LG/
+  │   └── Sony/
+  ├── ACs/
+  └── Audio/
+
+Just download and use!</pre>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(4)">Continue to Security & Ethics →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="5">
+            <h3>🔒 IR Security & Responsible Use</h3>
+            
+            <h4>IR Security Considerations</h4>
+            <div class="info-box">
+                <p>IR remote control is inherently <strong>insecure by design</strong>. There's no authentication, encryption, or pairing required. Anyone with line of sight can control devices.</p>
+            </div>
+
+            <h4>Why IR Has No Security</h4>
+            <div class="command-block">
+<pre>IR Security (or lack thereof):
+
+❌ No encryption - Commands sent in plain sight
+❌ No authentication - Any remote can control
+❌ No pairing - Device responds to any valid signal
+❌ Easily captured - Point, click, captured
+❌ Easily replayed - Flipper makes this trivial
+
+Why? Legacy design from 1980s
+- Security wasn't a priority
+- Assumed physical access = authorized
+- Simplicity and cost over security</pre>
+            </div>
+
+            <h4>Potential Security Issues</h4>
+            <div class="warning-box">
+                <strong>⚠️ IR Vulnerabilities:</strong>
+                <ul>
+                    <li><strong>Replay attacks:</strong> Capture and replay any command</li>
+                    <li><strong>No access control:</strong> Anyone can control visible devices</li>
+                    <li><strong>Privacy concerns:</strong> Commercial displays, public TVs</li>
+                    <li><strong>Denial of service:</strong> Turn off devices repeatedly</li>
+                    <li><strong>Unauthorized control:</strong> Change settings, channels, volume</li>
+                </ul>
+            </div>
+
+            <h4>Responsible Use Guidelines</h4>
+            <div class="tip-box">
+                <strong>Ethical IR Usage:</strong>
+                <ul>
+                    <li>✅ Control your own devices</li>
+                    <li>✅ Help others with their remotes (with permission)</li>
+                    <li>✅ Create backups of your remotes</li>
+                    <li>✅ Accessibility applications</li>
+                    <li>✅ Educational purposes and learning</li>
+                    <li>❌ Don't control other people's devices without permission</li>
+                    <li>❌ Don't disrupt public spaces (restaurants, airports)</li>
+                    <li>❌ Don't interfere with business operations</li>
+                    <li>❌ Don't harass or annoy others</li>
+                </ul>
+            </div>
+
+            <h4>Legal Considerations</h4>
+            <div class="warning-box">
+                <strong>⚠️ Legal Risks:</strong>
+                <p><strong>Unauthorized device control can violate:</strong></p>
+                <ul>
+                    <li><strong>Computer Fraud laws:</strong> Unauthorized access to systems</li>
+                    <li><strong>Trespass laws:</strong> Interfering with property</li>
+                    <li><strong>Harassment laws:</strong> Repeated unwanted actions</li>
+                    <li><strong>Business disruption:</strong> Interfering with commerce</li>
+                </ul>
+                <p><strong>Even if "just a prank," you can face:</strong></p>
+                <ul>
+                    <li>Civil lawsuits</li>
+                    <li>Criminal charges</li>
+                    <li>Fines and restitution</li>
+                    <li>Permanent record</li>
+                </ul>
+            </div>
+
+            <h4>The "TV-B-Gone" Dilemma</h4>
+            <div class="info-box">
+                <h4>Context Matters</h4>
+                <p><strong>TV-B-Gone</strong> is a device that turns off most TVs. The Flipper can do this too. But should it?</p>
+                
+                <p><strong>Acceptable scenarios:</strong></p>
+                <ul>
+                    <li>Your own TV when remote is lost</li>
+                    <li>Helping someone find their TV remote</li>
+                    <li>Demonstration in controlled environment</li>
+                </ul>
+
+                <p><strong>Unacceptable scenarios:</strong></p>
+                <ul>
+                    <li>Turning off TVs in sports bars during games</li>
+                    <li>Disrupting airport flight information displays</li>
+                    <li>Interfering with business presentations</li>
+                    <li>Annoying people in public spaces</li>
+                </ul>
+
+                <p><strong>Remember:</strong> Just because you CAN doesn't mean you SHOULD.</p>
+            </div>
+
+            <h4>Protecting Your Own Devices</h4>
+            <div class="tip-box">
+                <strong>How to Secure IR Devices:</strong>
+                <ul>
+                    <li><strong>Physical barriers:</strong> IR needs line of sight - block it</li>
+                    <li><strong>Disable IR receiver:</strong> Use only physical buttons or app control</li>
+                    <li><strong>Upgrade to Wi-Fi/BT:</strong> Modern smart devices with authentication</li>
+                    <li><strong>IR blocker tape:</strong> Cover IR receivers (last resort)</li>
+                    <li><strong>Network control:</strong> Use app-based control instead of IR</li>
+                </ul>
+            </div>
+
+            <h4>Responsible Disclosure</h4>
+            <div class="example-box">
+                <p><strong>If you discover an IR security issue:</strong></p>
+                <ol>
+                    <li>Document the vulnerability clearly</li>
+                    <li>Contact the device manufacturer</li>
+                    <li>Give them reasonable time to respond (30-90 days)</li>
+                    <li>Don't publicly disclose until patched or time expires</li>
+                    <li>Share findings with security community responsibly</li>
+                </ol>
+                <p><em>Note: IR is inherently insecure by design, so "vulnerabilities" are usually by design, not bugs.</em></p>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(5)">Continue to Final Challenge →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="6">
+            <h3>🎯 Challenge: The Remote Collection</h3>
+            
+            <div class="challenge-box">
+                <h4>Scenario: The Cluttered Coffee Table</h4>
+                <p>You're visiting your parents' house and notice their coffee table has <strong>SIX different remotes</strong>:</p>
+                <ul>
+                    <li>📺 Samsung TV remote</li>
+                    <li>📡 Cable box remote (unknown brand)</li>
+                    <li>🔊 Soundbar remote (Sony)</li>
+                    <li>❄️ Air conditioner remote</li>
+                    <li>💡 LED strip lights remote (cheap Chinese brand)</li>
+                    <li>🌀 Ceiling fan remote</li>
+                </ul>
+
+                <p><strong>Your Mission:</strong></p>
+                <ol>
+                    <li>Consolidate all 6 remotes into your Flipper Zero</li>
+                    <li>Organize them logically for easy access</li>
+                    <li>Test all functions work correctly</li>
+                    <li>Create a backup on SD card</li>
+                    <li>Teach your parents how to use it (bonus!)</li>
+                </ol>
+
+                <p><strong>Goal:</strong> Replace 6 remotes with 1 Flipper</p>
+            </div>
+
+            <h4>🔍 Solution Walkthrough</h4>
+
+            <div class="solution-step">
+                <h4>Step 1: Assess Device Compatibility</h4>
+                <div class="command-block">
+<pre>Quick Check:
+All devices use IR? ✓ YES
+Line of sight available? ✓ YES
+Remotes working? ✓ YES (fresh batteries)
+
+Strategy:
+1. Try Universal database first (Samsung, Sony)
+2. Learn unknown brands manually
+3. Test each function before moving on</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 2: Samsung TV (Universal Database)</h4>
+                <div class="command-block">
+<pre>Approach: Use built-in database
+
+Process:
+1. Infrared → Universal Remotes → TVs
+2. Scroll to "Samsung"
+3. Point at TV → Press Power
+4. Result: TV turns on! ✓
+
+Captured buttons:
+- Power, Vol+, Vol-, Mute
+- CH+, CH-, Input, Menu
+- Navigation (OK, Back, Home)
+
+Test: All functions working!
+Saved as: Universal remote (built-in)</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 3: Cable Box (Learn Mode)</h4>
+                <div class="command-block">
+<pre>Unknown brand - must learn signals
+
+Process:
+1. Infrared → Learn New Remote
+2. Name: "Cable_Box"
+3. Learn each button:
+   - Power (learned)
+   - CH+ (learned)
+   - CH- (learned)
+   - Guide (learned)
+   - Menu (learned)
+   - OK (learned)
+   - Numbers 0-9 (learned)
+
+Signal Analysis:
+Protocol: NEC (auto-detected)
+All signals captured successfully!
+
+Test: Change channel → ✓ Works
+File: /infrared/Cable_Box.ir</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 4: Sony Soundbar (Universal + Learn)</h4>
+                <div class="command-block">
+<pre>Hybrid Approach:
+
+Step 1: Try Universal
+- Infrared → Universal Remotes → Audio
+- Select "Sony"
+- Test Power → ✓ Works!
+- Test Vol+/Vol- → ✓ Works!
+
+Step 2: Learn Special Functions
+Some buttons not in universal database:
+- Bass+ (learned)
+- Bass- (learned)
+- Sound Mode (learned)
+- Bluetooth Pairing (learned)
+
+Combined remote ready!
+Universal commands + custom learned buttons</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 5: Air Conditioner (Learn Mode)</h4>
+                <div class="command-block">
+<pre>AC remotes are complex - full state in each command!
+
+Process:
+1. Infrared → Learn New Remote
+2. Name: "Living_Room_AC"
+3. Learn common modes:
+   - Power
+   - Cool_72F (entire state)
+   - Cool_68F (entire state)
+   - Fan_High
+   - Fan_Low
+
+Important Discovery:
+Type: RAW signals (protocol unknown)
+Each button = complete AC state
+File size: ~3KB per button (larger than parsed)
+
+Test: Power on → Set to Cool 72°F → ✓ Works!
+File: /infrared/Living_Room_AC.ir</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 6: LED Strip Lights (Learn Mode)</h4>
+                <div class="command-block">
+<pre>Cheap Chinese remote - definitely needs learning
+
+Process:
+1. Infrared → Learn New Remote
+2. Name: "LED_Strip_Lights"
+3. Learn buttons:
+   - Power (learned)
+   - Red (learned)
+   - Green (learned)
+   - Blue (learned)
+   - White (learned)
+   - Brightness+ (learned)
+   - Brightness- (learned)
+   - Flash mode (learned)
+   - Fade mode (learned)
+
+Signal Analysis:
+Type: RAW (no recognized protocol)
+Simple timing patterns
+Very reliable capture
+
+Test: Cycle through colors → ✓ All work!
+File: /infrared/LED_Strip_Lights.ir</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 7: Ceiling Fan (Learn Mode)</h4>
+                <div class="command-block">
+<pre>Final remote - ceiling fan with light
+
+Process:
+1. Infrared → Learn New Remote
+2. Name: "Ceiling_Fan"
+3. Learn buttons:
+   - Light (learned)
+   - Fan_Off (learned)
+   - Fan_Low (learned)
+   - Fan_Med (learned)
+   - Fan_High (learned)
+
+Signal Analysis:
+Protocol: NEC (auto-detected!)
+Simple commands, easy capture
+
+Test: Turn on light, set fan to medium → ✓ Works!
+File: /infrared/Ceiling_Fan.ir</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 8: Organization & Testing</h4>
+                <div class="tip-box">
+                    <strong>Final Remote Collection on Flipper:</strong>
+                    <ol>
+                        <li><strong>TV_Samsung</strong> - Universal (built-in)</li>
+                        <li><strong>Cable_Box</strong> - Custom learned (NEC)</li>
+                        <li><strong>Soundbar_Sony</strong> - Universal + learned</li>
+                        <li><strong>Living_Room_AC</strong> - Custom learned (RAW)</li>
+                        <li><strong>LED_Strip_Lights</strong> - Custom learned (RAW)</li>
+                        <li><strong>Ceiling_Fan</strong> - Custom learned (NEC)</li>
+                    </ol>
+                    
+                    <p><strong>SD Card Organization:</strong></p>
+                    <pre>/infrared/
+├── Cable_Box.ir
+├── Living_Room_AC.ir
+├── LED_Strip_Lights.ir
+├── Ceiling_Fan.ir
+└── Soundbar_Sony_Custom.ir</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 9: Comprehensive Testing</h4>
+                <div class="command-block">
+<pre>Full System Test:
+
+TV Test:
+✓ Power on/off
+✓ Volume control
+✓ Channel changing
+✓ Input switching
+
+Cable Box Test:
+✓ Channel navigation
+✓ Guide access
+✓ Number pad entry
+
+Soundbar Test:
+✓ Volume control
+✓ Bass adjustment
+✓ Sound modes
+
+AC Test:
+✓ Power control
+✓ Temperature settings
+✓ Fan speed changes
+
+LED Lights Test:
+✓ Color changes
+✓ Brightness control
+✓ Effect modes
+
+Ceiling Fan Test:
+✓ Light on/off
+✓ Fan speed control
+✓ Fan off
+
+Result: 100% success rate! 🎉</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 10: Creating Backup</h4>
+                <div class="command-block">
+<pre>Backup Strategy:
+
+1. Remove Flipper's SD card
+2. Insert into computer
+3. Copy /infrared/ folder to computer
+4. Create organized backup:
+   Parents_House_Remotes/
+   ├── All .ir files
+   └── README.txt (notes on each remote)
+
+5. Optional: Upload to personal cloud storage
+6. Share .ir files with parents' other Flipper (if they get one!)
+
+Backup complete! Never lose remote codes again.</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 11: Teaching Parents (Bonus)</h4>
+                <div class="example-box">
+                    <h4>Simplified Instructions for Parents</h4>
+                    <p><strong>Basic Usage:</strong></p>
+                    <ol>
+                        <li>"Turn on Flipper" - Press and hold back button</li>
+                        <li>"Go to Infrared" - Navigate with arrows, press OK</li>
+                        <li>"Saved Remotes" - Select this option</li>
+                        <li>"Pick device" - TV, Cable Box, etc.</li>
+                        <li>"Pick button" - Power, Volume, etc.</li>
+                        <li>"Point and press OK" - Flipper sends signal!</li>
+                    </ol>
+
+                    <p><strong>Quick Tips Shared:</strong></p>
+                    <ul>
+                        <li>📺 TV remote is under "Universal Remotes → TVs → Samsung"</li>
+                        <li>🔊 Most-used buttons: Power, Volume, Channel</li>
+                        <li>💡 LED lights take a second to respond (normal!)</li>
+                        <li>📱 Battery lasts weeks - charge when low battery icon shows</li>
+                    </ul>
+
+                    <p><strong>Parent Reaction:</strong> "This is amazing! One remote for everything!"</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>🎓 Key Lessons Learned</h4>
+                <ul>
+                    <li><strong>Universal database saves time</strong> - Try it first for common brands</li>
+                    <li><strong>Learn mode works on everything</strong> - Even unknown protocols</li>
+                    <li><strong>RAW mode is reliable</strong> - Perfect for proprietary devices</li>
+                    <li><strong>Organization matters</strong> - Name files clearly for easy access</li>
+                    <li><strong>Testing is crucial</strong> - Verify every button before putting away originals</li>
+                    <li><strong>Backups prevent disasters</strong> - Copy files to computer regularly</li>
+                    <li><strong>Real-world value</strong> - Flipper solves actual everyday problems!</li>
+                </ul>
+            </div>
+
+            <div class="completion-box">
+                <h4>🎉 Lesson 3 Complete!</h4>
+                <p>Congratulations! You've mastered Infrared technology:</p>
+                <ul>
+                    <li>✅ Understanding IR communication fundamentals</li>
+                    <li>✅ IR protocol recognition and differences</li>
+                    <li>✅ Using Flipper's Universal Remote database</li>
+                    <li>✅ Learning and capturing custom IR signals</li>
+                    <li>✅ Managing multiple device remotes</li>
+                    <li>✅ Responsible IR usage and ethics</li>
+                    <li>✅ Solving real-world remote control challenges</li>
+                </ul>
+                <p><strong>Next:</strong> Lesson 4 will cover BadUSB attacks!</p>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(6)">Complete Lesson 3 →</button>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="lesson2.html" class="nav-btn prev">← Lesson 2: RFID/NFC</a>
+            <a href="index.html" class="nav-btn">🏠 Academy Home</a>
+            <a href="lesson4.html" class="nav-btn next">Lesson 4: BadUSB →</a>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>tw¡st3d_¡nk Academy - Lesson 3: Infrared Mastery</p>
+            <p class="disclaimer">⚠️ Educational purposes only. Only control devices you own or have explicit permission to use.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Lesson Progress System (Inline for reliability)
+        window.lessonProgress = {
+            currentLesson: 3,
+            totalSections: 6,
+            completedSections: [],
+            
+            init: function(lessonNum, sections) {
+                this.currentLesson = lessonNum;
+                this.totalSections = sections;
+                this.loadProgress();
+                this.updateDisplay();
+            },
+            
+            loadProgress: function() {
+                const saved = localStorage.getItem(`lesson${this.currentLesson}_progress`);
+                if (saved) {
+                    this.completedSections = JSON.parse(saved);
+                }
+            },
+            
+            saveProgress: function() {
+                localStorage.setItem(`lesson${this.currentLesson}_progress`, JSON.stringify(this.completedSections));
+            },
+            
+            completeSection: function(sectionNum) {
+                if (!this.completedSections.includes(sectionNum)) {
+                    this.completedSections.push(sectionNum);
+                    this.saveProgress();
+                    this.awardXP(25); // 25 XP per section
+                }
+                
+                // Show next section
+                const currentSection = document.querySelector(`[data-section="${sectionNum}"]`);
+                const nextSection = document.querySelector(`[data-section="${sectionNum + 1}"]`);
+                
+                if (currentSection) currentSection.classList.add('hidden');
+                if (nextSection) {
+                    nextSection.classList.remove('hidden');
+                    nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                
+                this.updateDisplay();
+                
+                // Check if lesson complete
+                if (this.completedSections.length === this.totalSections) {
+                    this.completeLesson();
+                }
+            },
+            
+            completeLesson: function() {
+                localStorage.setItem(`lesson${this.currentLesson}_complete`, 'true');
+                this.awardXP(50); // Bonus XP for completing lesson
+                
+                // Show completion message
+                setTimeout(() => {
+                    alert(`🎉 Lesson ${this.currentLesson} Complete! +50 Bonus XP!\n\nTotal XP Earned: ${this.getTotalXP()}`);
+                }, 500);
+            },
+            
+            awardXP: function(amount) {
+                let totalXP = parseInt(localStorage.getItem('totalXP') || '0');
+                totalXP += amount;
+                localStorage.setItem('totalXP', totalXP);
+                this.updateXPDisplay();
+            },
+            
+            getTotalXP: function() {
+                return parseInt(localStorage.getItem('totalXP') || '0');
+            },
+            
+            updateXPDisplay: function() {
+                const xpElement = document.getElementById('xp-amount');
+                if (xpElement) {
+                    xpElement.textContent = this.getTotalXP();
+                }
+            },
+            
+            updateDisplay: function() {
+                const progress = (this.completedSections.length / this.totalSections) * 100;
+                const progressFill = document.querySelector('.progress-fill');
+                const progressText = document.querySelector('.progress-text');
+                
+                if (progressFill) progressFill.style.width = progress + '%';
+                if (progressText) progressText.textContent = Math.round(progress) + '% Complete';
+                
+                this.updateXPDisplay();
+            }
+        };
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            window.lessonProgress.init(3, 6);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Say Less | tw¡st3d_¡nk" />
+  <title>Say Less</title>
+  <link rel="stylesheet" href="assets/styles/sayless.css" />
+  <style>
+    .quote-card {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #0ff;
+      padding: 1rem;
+      margin: 1rem;
+      font-size: 1.2rem;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+    }
+    .quote-card:hover {
+      background: #0ff;
+      color: #000;
+      text-shadow: 0 0 5px #000;
+      transform: scale(1.02);
+      box-shadow: 0 0 10px #0ff;
+    }
+    .quote-card.glitch {
+      animation: glitch 0.4s steps(2, end) infinite;
+    }
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #0ff;
+      font-size: 1.8rem;
+      text-align: center;
+      padding: 2rem;
+      z-index: 9999;
+      animation: pop 0.5s ease-in-out;
+    }
+    @keyframes pop {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body style="background: url('assets/images/sayless_bg.jpg') no-repeat center center fixed; background-size: cover; color: #fff; font-family: 'Courier New', monospace;">
+
+  <main id="quote-grid"></main>
+
+  <a href="index.html" style="color:#888; display: block; margin: 2rem auto; text-align: center;">&larr; Back to Home</a>
+
+  <script src="assets/scripts/sayless.js"></script>
+  <script>
+    const quotes = [
+      "Some scars don’t heal—they just learn how to speak without bleeding.",
+      "Silence is a language. Some of us are fluent.",
+      "You call it damaged. I call it data.",
+      "The system wasn’t built for me to survive it.",
+      "I never bit the apple. I hacked the tree.",
+      "Pain taught me the algorithm.",
+      "They called it madness. I called it the source code.",
+      "Not broken. Reformatted.",
+      "I stopped praying. Started coding.",
+      "Say less. Feel everything."
+    ];
+
+    const grid = document.getElementById('quote-grid');
+    quotes.sort(() => 0.5 - Math.random()); // shuffle
+
+    quotes.forEach(text => {
+      const card = document.createElement('div');
+      card.className = 'quote-card';
+      card.textContent = text;
+      grid.appendChild(card);
+
+      card.addEventListener('click', () => {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `<p>${text}</p>`;
+        modal.addEventListener('click', () => modal.remove());
+        document.body.appendChild(modal);
+      });
+    });
+  </script>
+
+  <!-- Single global audio -->
+  <audio id="site-audio" preload="auto" loop></audio>
+
+  <script>
+  (() => {
+    const AUDIO_SRC = "assets/audio/theme.mp3"; // your licensed MP3
+    const el = document.getElementById("site-audio");
+    el.src = AUDIO_SRC;
+
+    const tryPlay = () => el.play().catch(() => {});
+    document.addEventListener("DOMContentLoaded", tryPlay);
+    ["pointerdown","keydown","touchstart"].forEach(evt => {
+      window.addEventListener(evt, () => tryPlay(), { once: true, passive: true });
+    });
+
+    // minimal mute/unmute
+    const btn = document.createElement("button");
+    btn.textContent = "Mute";
+    Object.assign(btn.style, {
+      position: "fixed", right: "1rem", bottom: "1rem",
+      zIndex: 9999, padding: "0.5rem 1rem", cursor: "pointer"
+    });
+    btn.addEventListener("click", () => {
+      el.muted = !el.muted;
+      btn.textContent = el.muted ? "Unmute" : "Mute";
+      if (el.paused) tryPlay();
+    });
+    document.body.appendChild(btn);
+  })();
+  </script>
+</body>
+</html>
