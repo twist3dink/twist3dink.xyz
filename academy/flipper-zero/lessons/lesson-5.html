@@ -3,1225 +3,1522 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 5: Wi-Fi Networks - tw¡st3d_¡nk Academy</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Lesson 5: BadUSB Attacks | Flipper Zero Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-medium: #1a1a1a;
+            --bg-light: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #00ff88;
+            --accent-dim: #00cc6a;
+            --border: #333333;
+            --warning: #ff6b6b;
+            --info: #4dabf7;
+            --success: #51cf66;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-top: 120px;
+        }
+
+        .accessibility-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-medium);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+            z-index: 1000;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .accessibility-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-control {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn-control:hover {
+            background: var(--bg-dark);
+            border-color: var(--accent);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 52px;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--bg-medium);
+            border-bottom: 2px solid var(--border);
+            z-index: 999;
+            padding: 0.75rem 1rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .xp-badge {
+            background: var(--accent);
+            color: var(--bg-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dim));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .nav-breadcrumb {
+            background: var(--bg-medium);
+            padding: 1rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            color: var(--text-secondary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .lesson-number {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .lesson-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .objectives-box {
+            background: var(--bg-medium);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .objectives-box h2 {
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .objectives-list {
+            list-style: none;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .objectives-list li {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: var(--bg-light);
+            border-radius: 4px;
+        }
+
+        .objectives-list li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .content-section {
+            margin: 2rem 0;
+        }
+
+        .content-section h2 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .content-section h3 {
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .content-section ul,
+        .content-section ol {
+            margin: 1rem 0 1rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .content-section li {
+            margin: 0.5rem 0;
+        }
+
+        .info-box {
+            background: var(--bg-medium);
+            border-left: 4px solid var(--info);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .info-box.warning {
+            border-left-color: var(--warning);
+        }
+
+        .info-box.success {
+            border-left-color: var(--success);
+        }
+
+        .info-box h3 {
+            color: var(--info);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-box.warning h3 {
+            color: var(--warning);
+        }
+
+        .info-box.success h3 {
+            color: var(--success);
+        }
+
+        .info-box ul {
+            margin-left: 1.5rem;
+        }
+
+        .code-block {
+            background: var(--bg-medium);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .script-example {
+            background: var(--bg-light);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .script-example h4 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .script-example p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .exercise-box {
+            background: var(--bg-medium);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .exercise-box h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .exercise-steps {
+            counter-reset: step-counter;
+            list-style: none;
+        }
+
+        .exercise-steps li {
+            counter-increment: step-counter;
+            margin: 1rem 0;
+            padding-left: 3rem;
+            position: relative;
+        }
+
+        .exercise-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--accent);
+            color: var(--bg-dark);
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .btn-complete {
+            background: var(--accent);
+            color: var(--bg-dark);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-complete:hover {
+            background: var(--accent-dim);
+            transform: scale(1.02);
+        }
+
+        .btn-complete.completed {
+            background: var(--success);
+        }
+
+        .break-reminder {
+            background: linear-gradient(135deg, var(--bg-medium), var(--bg-light));
+            border: 2px solid var(--warning);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .break-reminder h3 {
+            color: var(--warning);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .break-reminder p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .break-timer {
+            font-size: 3rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin: 1rem 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .break-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-break {
+            background: var(--warning);
+            color: var(--bg-dark);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-break:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .btn-break.secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .attack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .attack-card {
+            background: var(--bg-medium);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+        }
+
+        .attack-card h4 {
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .attack-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 0.5rem 0;
+        }
+
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn.primary {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border: none;
+        }
+
+        .nav-btn.secondary {
+            background: var(--bg-medium);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 140px;
+            }
+
+            .lesson-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .lesson-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .attack-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-navigation {
+                flex-direction: column;
+            }
+        }
+
+        body.dyslexia-friendly {
+            letter-spacing: 0.05em;
+            word-spacing: 0.1em;
+        }
+
+        body.high-contrast {
+            --bg-dark: #000000;
+            --bg-medium: #1a1a1a;
+            --border: #ffffff;
+        }
+
+        .reduce-motion * {
+            animation: none !important;
+            transition: none !important;
+        }
+    </style>
 </head>
 <body>
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+        <div class="accessibility-controls">
+            <div class="control-group">
+                <label for="font-size">Text Size:</label>
+                <button class="btn-control" onclick="adjustFontSize(-1)">A-</button>
+                <button class="btn-control" onclick="adjustFontSize(1)">A+</button>
+            </div>
+            <button class="btn-control" onclick="toggleDyslexiaMode()">Dyslexia Mode</button>
+            <button class="btn-control" onclick="toggleHighContrast()">High Contrast</button>
+            <button class="btn-control" onclick="toggleReducedMotion()">Reduce Motion</button>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-info">
+            <span class="progress-text">Lesson Progress: <span id="progress-percent">0</span>%</span>
+            <span class="xp-badge">+50 XP</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb Navigation -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../../index.html">Academy</a>
+            <span>→</span>
+            <a href="../index.html">Flipper Zero</a>
+            <span>→</span>
+            <span>Lesson 5</span>
+        </div>
+    </nav>
+
     <div class="container">
-        <!-- Header -->
-        <header>
-            <div class="logo">tw¡st3d_¡nk</div>
-            <h1>Flipper Zero Academy</h1>
-            <div class="xp-display">
-                <span class="xp-label">XP:</span>
-                <span id="xp-amount">0</span>
+        <!-- Lesson Header -->
+        <header class="lesson-header">
+            <div class="lesson-number">LESSON 5 OF 6</div>
+            <h1>BadUSB Attacks</h1>
+            <div class="lesson-meta">
+                <div class="meta-item">
+                    <span>⏱️</span>
+                    <span>~45 minutes</span>
+                </div>
+                <div class="meta-item">
+                    <span>📊</span>
+                    <span>Advanced</span>
+                </div>
+                <div class="meta-item">
+                    <span>🎯</span>
+                    <span>Hands-on: 3 exercises</span>
+                </div>
             </div>
         </header>
 
-        <!-- Lesson Header -->
-        <div class="lesson-header">
-            <h2>Lesson 5: Wi-Fi Networks</h2>
-            <div class="lesson-meta">
-                <span class="difficulty expert">Expert Level</span>
-                <span class="duration">⏱ 45 min</span>
-                <span class="xp-reward">🎯 +200 XP</span>
-            </div>
-        </div>
-
-        <!-- Progress Bar -->
-        <div class="progress-container">
-            <div class="progress-bar" id="lesson-progress">
-                <div class="progress-fill" style="width: 0%"></div>
-            </div>
-            <span class="progress-text">0% Complete</span>
-        </div>
-
-        <!-- Lesson Content -->
-        <div class="content-section" data-section="1">
-            <h3>📡 Understanding Wi-Fi Technology</h3>
-            
-            <div class="info-box">
-                <h4>What is Wi-Fi?</h4>
-                <p><strong>Wi-Fi</strong> is a wireless networking technology that uses radio waves to provide network connectivity. It's based on IEEE 802.11 standards and operates primarily on 2.4 GHz and 5 GHz frequency bands.</p>
-            </div>
-
-            <h4>Wi-Fi Standards Evolution</h4>
-            <div class="command-block">
-<pre>Wi-Fi Generations:
-
-802.11b (1999) - Wi-Fi 1
-• 2.4 GHz only
-• Max speed: 11 Mbps
-• Range: ~35 meters indoor
-
-802.11g (2003) - Wi-Fi 3
-• 2.4 GHz only
-• Max speed: 54 Mbps
-• Backward compatible with 802.11b
-
-802.11n (2009) - Wi-Fi 4
-• 2.4 GHz and 5 GHz
-• Max speed: 600 Mbps
-• MIMO technology
-
-802.11ac (2014) - Wi-Fi 5
-• 5 GHz only
-• Max speed: 3.5 Gbps
-• MU-MIMO
-
-802.11ax (2019) - Wi-Fi 6/6E
-• 2.4 GHz, 5 GHz, 6 GHz
-• Max speed: 9.6 Gbps
-• OFDMA technology</pre>
-            </div>
-
-            <h4>How Wi-Fi Networks Work</h4>
-            <div class="tip-box">
-                <strong>Basic Components:</strong>
-                <ul>
-                    <li><strong>Access Point (AP):</strong> Router or hotspot broadcasting Wi-Fi</li>
-                    <li><strong>SSID:</strong> Network name (Service Set Identifier)</li>
-                    <li><strong>Channel:</strong> Specific frequency within the band</li>
-                    <li><strong>Encryption:</strong> WEP, WPA, WPA2, WPA3</li>
-                    <li><strong>Authentication:</strong> Password verification method</li>
-                </ul>
-            </div>
-
-            <h4>Wi-Fi Channels</h4>
-            <div class="command-block">
-<pre>2.4 GHz Band:
-• Channels 1-14 (most countries: 1-11)
-• Only 3 non-overlapping: 1, 6, 11
-• Crowded band (many devices)
-• Better range, worse speed
-
-5 GHz Band:
-• Channels 36-165
-• Many non-overlapping channels
-• Less interference
-• Shorter range, better speed
-
-6 GHz Band (Wi-Fi 6E):
-• Channels 1-233
-• Brand new, very clean spectrum
-• Fastest speeds, shortest range</pre>
-            </div>
-
-            <h4>Flipper Zero Wi-Fi Capabilities</h4>
-            <div class="warning-box">
-                <strong>Important Limitation:</strong>
-                <p>The <strong>standard Flipper Zero does NOT have built-in Wi-Fi</strong>. However, with the <strong>Wi-Fi Developer Board</strong> add-on (ESP32-based), the Flipper can:</p>
-                <ul>
-                    <li>Scan for Wi-Fi networks</li>
-                    <li>Perform deauthentication attacks</li>
-                    <li>Capture handshakes</li>
-                    <li>Create Evil Twin access points</li>
-                    <li>Beacon spam attacks</li>
-                </ul>
-                <p><strong>This lesson assumes you have the Wi-Fi Dev Board installed.</strong></p>
-            </div>
-
-            <h4>Wi-Fi Security Protocols</h4>
-            <div class="command-block">
-<pre>Security Evolution:
-
-WEP (Wired Equivalent Privacy) - BROKEN
-• 1997 standard
-• Crackable in seconds
-• Never use!
-
-WPA (Wi-Fi Protected Access) - WEAK
-• 2003 improvement over WEP
-• Still vulnerable (TKIP attacks)
-• Avoid if possible
-
-WPA2 (2004) - STANDARD
-• AES encryption (strong!)
-• KRACK attack discovered (2017)
-• Still widely used and reasonably secure
-
-WPA3 (2018) - MODERN
-• Improved encryption (192-bit)
-• Forward secrecy
-• Protection against offline attacks
-• Recommended for new networks</pre>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(1)">Continue to Network Scanning →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="2">
-            <h3>🔍 Wi-Fi Network Scanning</h3>
-            
-            <h4>Understanding Network Discovery</h4>
-            <div class="info-box">
-                <p>Wi-Fi scanning involves listening for <strong>beacon frames</strong> that access points broadcast periodically to announce their presence. These beacons contain valuable information about the network.</p>
-            </div>
-
-            <h4>Information in Beacon Frames</h4>
-            <div class="command-block">
-<pre>Beacon Frame Contents:
-┌─────────────────────────────────────┐
-│ SSID (Network Name)                 │
-│ MAC Address (BSSID)                 │
-│ Channel Number                      │
-│ Encryption Type (Open/WPA/WPA2/WPA3)│
-│ Signal Strength (RSSI)              │
-│ Supported Data Rates                │
-│ Vendor Information                  │
-└─────────────────────────────────────┘</pre>
-            </div>
-
-            <h4>Using Flipper for Wi-Fi Scanning</h4>
-            <div class="example-box">
-                <h4>Basic Network Scan</h4>
-                <p><strong>With Wi-Fi Dev Board installed:</strong></p>
-                <ol>
-                    <li>Apps → GPIO → ESP32 WiFi Marauder</li>
-                    <li>Select "Scan"</li>
-                    <li>Choose "AP Scan" (Access Points)</li>
-                    <li>Wait for scan to complete</li>
-                    <li>View discovered networks</li>
-                </ol>
-                
-                <div class="command-block">
-<pre>Example Scan Results:
-╔════════════════════════════════════╗
-║ SSID: HomeNetwork_5G               ║
-║ BSSID: A4:12:42:8C:3F:21          ║
-║ Channel: 149 (5 GHz)               ║
-║ Security: WPA2-PSK                 ║
-║ Signal: -45 dBm (Strong)           ║
-║ Vendor: TP-Link                    ║
-╚════════════════════════════════════╝
-
-╔════════════════════════════════════╗
-║ SSID: CoffeeShop_Guest             ║
-║ BSSID: 00:1A:2B:3C:4D:5E          ║
-║ Channel: 6 (2.4 GHz)               ║
-║ Security: Open                     ║
-║ Signal: -62 dBm (Fair)             ║
-║ Vendor: Ubiquiti                   ║
-╚════════════════════════════════════╝</pre>
-                </div>
-            </div>
-
-            <h4>Signal Strength Analysis</h4>
-            <div class="tip-box">
-                <strong>Understanding RSSI (Received Signal Strength Indicator):</strong>
-                <ul>
-                    <li><strong>-30 to -50 dBm:</strong> Excellent signal (right next to AP)</li>
-                    <li><strong>-50 to -60 dBm:</strong> Very good signal</li>
-                    <li><strong>-60 to -70 dBm:</strong> Good signal (typical use)</li>
-                    <li><strong>-70 to -80 dBm:</strong> Fair signal (may have issues)</li>
-                    <li><strong>-80 to -90 dBm:</strong> Poor signal (unstable)</li>
-                    <li><strong>Below -90 dBm:</strong> Unusable signal</li>
-                </ul>
-            </div>
-
-            <h4>Client Detection (Station Scan)</h4>
-            <div class="command-block">
-<pre>Finding Connected Devices:
-
-ESP32 WiFi Marauder → Scan → Station Scan
-
-Discovers:
-• MAC addresses of connected clients
-• Which AP they're connected to
-• Signal strength from each client
-• Vendor identification (OUI lookup)
-
-Use Case:
-• Count devices on network
-• Identify unauthorized connections
-• Target specific clients for attacks
-• Network reconnaissance</pre>
-            </div>
-
-            <h4>Hidden SSID Detection</h4>
-            <div class="info-box">
-                <h4>Finding "Hidden" Networks</h4>
-                <p>Some routers hide their SSID from broadcast. However, they're not truly hidden:</p>
-                <ul>
-                    <li>Network still broadcasts beacons (just without SSID)</li>
-                    <li>When clients connect, they reveal the SSID</li>
-                    <li>Probe requests from clients expose the network name</li>
-                    <li>Flipper can capture these probe requests</li>
-                </ul>
-                <p><strong>Hidden SSIDs provide minimal security!</strong></p>
-            </div>
-
-            <h4>Channel Utilization</h4>
-            <div class="command-block">
-<pre>Finding Least Congested Channels:
-
-2.4 GHz Analysis:
-Channel 1:  ████████░░ (8 APs)
-Channel 6:  ███████████ (11 APs) ← Crowded!
-Channel 11: █████░░░░░ (5 APs)  ← Best choice
-
-5 GHz Analysis:
-Channel 36:  ███░░░░░░ (3 APs)
-Channel 149: █░░░░░░░░ (1 AP)  ← Best choice
-
-Recommendation: Choose channel with least overlap</pre>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(2)">Continue to Deauthentication Attacks →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="3">
-            <h3>💥 Deauthentication Attacks</h3>
-            
-            <h4>Understanding Deauth Attacks</h4>
-            <div class="info-box">
-                <p>A <strong>deauthentication attack</strong> exploits a management frame in Wi-Fi protocols that allows an access point to disconnect clients. The attack spoofs these frames to force disconnections.</p>
-            </div>
-
-            <h4>How Deauth Attacks Work</h4>
-            <div class="command-block">
-<pre>Attack Process:
-┌─────────────────────────────────────┐
-│ 1. Attacker scans for target AP     │
-│ 2. Identifies connected clients     │
-│ 3. Crafts fake deauth frames        │
-│ 4. Spoofs AP's MAC address          │
-│ 5. Sends deauth to client(s)        │
-│ 6. Client disconnects from AP       │
-│ 7. (Optional) Client reconnects     │
-│    revealing handshake               │
-└─────────────────────────────────────┘
-
-Key Point: Deauth frames are NOT encrypted
-in WPA2, making spoofing trivial!</pre>
-            </div>
-
-            <h4>Performing Deauth with Flipper</h4>
-            <div class="warning-box">
-                <strong>⚠️ LEGAL WARNING:</strong>
-                <p>Deauthentication attacks are <strong>ILLEGAL</strong> in most jurisdictions when performed on networks you don't own. Penalties include:</p>
-                <ul>
-                    <li><strong>Computer Fraud and Abuse Act (USA)</strong></li>
-                    <li><strong>Wireless Telegraphy Act (UK)</strong></li>
-                    <li><strong>Similar laws worldwide</strong></li>
-                </ul>
-                <p><strong>ONLY test on your own networks with your own permission!</strong></p>
-            </div>
-
-            <div class="example-box">
-                <h4>Deauth Attack Steps</h4>
-                <ol>
-                    <li>ESP32 WiFi Marauder → Scan → AP Scan</li>
-                    <li>Select target network from list</li>
-                    <li>Choose "Deauth" attack</li>
-                    <li>Select target:
-                        <ul>
-                            <li><strong>Broadcast:</strong> Disconnect ALL clients</li>
-                            <li><strong>Specific client:</strong> Disconnect one device</li>
-                        </ul>
-                    </li>
-                    <li>Press OK to start attack</li>
-                    <li>Deauth frames sent continuously</li>
-                    <li>Press BACK to stop</li>
-                </ol>
-            </div>
-
-            <h4>Attack Variations</h4>
-            <div class="command-block">
-<pre>Targeted Deauth:
-• Disconnect specific client by MAC
-• Useful for capturing handshakes
-• Less disruptive than broadcast
-
-Broadcast Deauth:
-• Disconnects ALL clients at once
-• More disruptive (DoS attack)
-• Entire network goes down
-
-Continuous vs Burst:
-• Continuous: Keeps sending deauth frames
-• Burst: Sends X frames then stops
-• Continuous prevents reconnection</pre>
-            </div>
-
-            <h4>Capturing WPA2 Handshakes</h4>
-            <div class="info-box">
-                <h4>Why Capture Handshakes?</h4>
-                <p>When a client reconnects after deauth, it performs a <strong>4-way handshake</strong> with the AP. This handshake contains encrypted password verification data that can be captured and cracked offline.</p>
-            </div>
-
-            <div class="command-block">
-<pre>Handshake Capture Process:
-1. Start packet capture (sniffer mode)
-2. Wait for or trigger deauth
-3. Client disconnects
-4. Client automatically reconnects
-5. 4-way handshake occurs
-6. Capture EAPOL frames
-7. Stop capture, save .pcap file
-8. Transfer to computer
-9. Crack with hashcat/aircrack-ng
-
-EAPOL Frames (Handshake):
-Frame 1: AP → Client (ANonce)
-Frame 2: Client → AP (SNonce, MIC)
-Frame 3: AP → Client (GTK)
-Frame 4: Client → AP (Acknowledgment)
-
-Need Frame 2 and 3 to crack!</pre>
-            </div>
-
-            <h4>Deauth Defense Mechanisms</h4>
-            <div class="tip-box">
-                <strong>How to Protect Against Deauth:</strong>
-                <ul>
-                    <li><strong>WPA3:</strong> Uses Protected Management Frames (PMF)
-                        <br>Deauth frames are encrypted and authenticated</li>
-                    <li><strong>802.11w:</strong> Management Frame Protection (MFP)
-                        <br>Available in WPA2 with PMF enabled</li>
-                    <li><strong>Enterprise Networks:</strong> 802.1X authentication
-                        <br>More robust against deauth attacks</li>
-                    <li><strong>Wireless IDS:</strong> Detect and alert on deauth floods
-                        <br>Can identify attacker location</li>
-                </ul>
-            </div>
-
-            <h4>Ethical Considerations</h4>
-            <div class="warning-box">
-                <strong>When Deauth Might Be "Acceptable":</strong>
-                <ul>
-                    <li>✅ Testing your own home network</li>
-                    <li>✅ Authorized penetration test with signed contract</li>
-                    <li>✅ Controlled lab environment for education</li>
-                    <li>❌ Coffee shop networks (not yours!)</li>
-                    <li>❌ Neighbor's Wi-Fi (illegal!)</li>
-                    <li>❌ Public hotspots (disrupts legitimate users)</li>
-                    <li>❌ "Just testing" without permission (still illegal!)</li>
-                </ul>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(3)">Continue to Evil Twin Attacks →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="4">
-            <h3>👿 Evil Twin & Captive Portal Attacks</h3>
-            
-            <h4>What is an Evil Twin?</h4>
-            <div class="info-box">
-                <p>An <strong>Evil Twin</strong> is a rogue access point that impersonates a legitimate network. Unsuspecting users connect to it, allowing the attacker to intercept their traffic or present fake login pages.</p>
-            </div>
-
-            <h4>Evil Twin Attack Flow</h4>
-            <div class="command-block">
-<pre>Attack Stages:
-┌─────────────────────────────────────┐
-│ 1. Reconnaissance: Identify target  │
-│ 2. Clone: Create identical SSID     │
-│ 3. Deauth: Disconnect real clients  │
-│ 4. Association: Clients connect to  │
-│    fake AP (stronger signal)        │
-│ 5. Captive Portal: Show fake login  │
-│ 6. Credential Harvest: Collect data │
-│ 7. (Optional) MitM: Intercept traffic│
-└─────────────────────────────────────┘</pre>
-            </div>
-
-            <h4>Captive Portal Phishing</h4>
-            <div class="tip-box">
-                <strong>How Captive Portals Work:</strong>
-                <p>When clients connect to the Evil Twin, they're presented with a fake login page that mimics:</p>
-                <ul>
-                    <li>Hotel/Airport Wi-Fi login</li>
-                    <li>Router configuration page</li>
-                    <li>ISP credential verification</li>
-                    <li>Social media login</li>
-                    <li>"Network upgrade" confirmation</li>
-                </ul>
-                <p>Users enter credentials thinking it's legitimate → Attacker captures them</p>
-            </div>
-
-            <h4>Creating Evil Twin with Flipper</h4>
-            <div class="example-box">
-                <h4>Basic Evil Twin Setup</h4>
-                <div class="command-block">
-<pre>ESP32 WiFi Marauder Steps:
-1. Scan for target network
-2. Note SSID, channel, encryption
-3. Select "Evil Twin" mode
-4. Configure:
-   - SSID: (exact match to target)
-   - Channel: (same as target)
-   - Auth: Open or WPA2 (usually Open for portal)
-5. Start Evil Twin AP
-6. Optional: Run deauth on real AP
-7. Wait for clients to connect
-8. Serve captive portal
-9. Harvest credentials
-
-Flipper serves simple portal HTML
-More advanced: Use ESP32 custom firmware</pre>
-                </div>
-            </div>
-
-            <h4>Captive Portal Templates</h4>
-            <div class="command-block">
-<pre>Common Portal Types:
-
-Generic Router Login:
-"Please enter router password to continue"
-[Password: ____________]
-[Submit]
-
-Hotel/Airport Style:
-"Welcome to [Network Name]
- Accept Terms & Conditions
- [I Agree] [Continue]"
-
-Firmware Update Scam:
-"Router firmware update required
- Enter admin password to proceed"
-[Admin Password: ____________]
-
-Social Media Phish:
-"Login with Facebook to access WiFi"
-[Email: ____________]
-[Password: ____________]</pre>
-            </div>
-
-            <h4>Man-in-the-Middle (MitM) Attacks</h4>
-            <div class="info-box">
-                <p>Once clients are connected to the Evil Twin, the attacker can:</p>
-                <ul>
-                    <li><strong>Intercept traffic:</strong> See all unencrypted data</li>
-                    <li><strong>SSL stripping:</strong> Downgrade HTTPS to HTTP</li>
-                    <li><strong>DNS spoofing:</strong> Redirect to malicious sites</li>
-                    <li><strong>Inject code:</strong> Modify web pages in transit</li>
-                    <li><strong>Session hijacking:</strong> Steal cookies and sessions</li>
-                </ul>
-            </div>
-
-            <h4>Detection and Prevention</h4>
-            <div class="warning-box">
-                <strong>How to Avoid Evil Twins:</strong>
-                <ul>
-                    <li><strong>Verify network names:</strong> Check spelling carefully</li>
-                    <li><strong>Check signal strength:</strong> Suspiciously strong signal?</li>
-                    <li><strong>Verify encryption:</strong> Legit network suddenly open?</li>
-                    <li><strong>Look for certificates:</strong> HTTPS warnings are red flags</li>
-                    <li><strong>Use VPN:</strong> Encrypts all traffic regardless of network</li>
-                    <li><strong>Avoid sensitive activities:</strong> Don't bank on public Wi-Fi</li>
-                    <li><strong>Forget networks:</strong> Don't auto-connect to public hotspots</li>
-                </ul>
-            </div>
-
-            <h4>Advanced Evil Twin Techniques</h4>
-            <div class="command-block">
-<pre>Sophisticated Attacks:
-
-Karma Attack:
-• Exploits probe requests from clients
-• Client asks "Is network X here?"
-• Evil AP responds "Yes, that's me!"
-• Client connects without verification
-
-MANA Attack:
-• Enhanced version of Karma
-• Responds to all probe requests
-• Captures EAP credentials
-• Very effective against corporate devices
-
-Known Beacons Attack:
-• Broadcasts many common SSIDs
-• "Starbucks WiFi", "attwifi", "xfinitywifi"
-• Clients with saved networks auto-connect
-• Fully passive (no deauth needed)</pre>
-            </div>
-
-            <h4>Legal Implications</h4>
-            <div class="warning-box">
-                <strong>⚠️ Evil Twin attacks are HIGHLY ILLEGAL:</strong>
-                <ul>
-                    <li><strong>Identity theft</strong> (stealing credentials)</li>
-                    <li><strong>Wiretapping laws</strong> (intercepting communications)</li>
-                    <li><strong>Computer fraud</strong> (unauthorized access)</li>
-                    <li><strong>Phishing</strong> (fraudulent credential collection)</li>
-                </ul>
-                <p><strong>Real-world consequences:</strong> Federal prison time, massive fines, permanent criminal record</p>
-                <p><strong>ONLY test on isolated lab networks you own!</strong></p>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(4)">Continue to Wi-Fi Security →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="5">
-            <h3>🔐 Wi-Fi Security Best Practices</h3>
-            
-            <h4>Securing Your Wi-Fi Network</h4>
-            <div class="info-box">
-                <p>Understanding attacks helps you defend. Here's how to properly secure your wireless network:</p>
-            </div>
-
-            <h4>Router Configuration</h4>
-            <div class="tip-box">
-                <strong>Essential Security Settings:</strong>
-                <ol>
-                    <li><strong>Change Default Credentials</strong>
-                        <ul>
-                            <li>Never use admin/admin or default passwords</li>
-                            <li>Create strong, unique admin password</li>
-                            <li>Change both Wi-Fi password AND router admin password</li>
-                        </ul>
-                    </li>
-                    <li><strong>Use WPA3 (or WPA2 with AES)</strong>
-                        <ul>
-                            <li>Enable WPA3 if supported</li>
-                            <li>Fallback: WPA2-AES only (disable TKIP)</li>
-                            <li>Never use WEP or WPA (original)</li>
-                        </ul>
-                    </li>
-                    <li><strong>Strong Wi-Fi Password</strong>
-                        <ul>
-                            <li>Minimum 16 characters</li>
-                            <li>Mix of uppercase, lowercase, numbers, symbols</li>
-                            <li>Avoid dictionary words, personal info</li>
-                            <li>Use passphrase: "MyD0g!Ate7Purple$Socks"</li>
-                        </ul>
-                    </li>
-                    <li><strong>Disable WPS (Wi-Fi Protected Setup)</strong>
-                        <ul>
-                            <li>WPS PIN is vulnerable to brute force</li>
-                            <li>Can be cracked in hours</li>
-                            <li>Disable completely in router settings</li>
-                        </ul>
-                    </li>
-                </ol>
-            </div>
-
-            <h4>Advanced Security Features</h4>
-            <div class="command-block">
-<pre>Additional Protections:
-
-1. Enable Management Frame Protection (PMF/802.11w)
-   → Prevents deauth attacks
-   → Available in modern WPA2/WPA3 routers
-
-2. MAC Address Filtering (Limited effectiveness)
-   → Whitelist approved devices
-   → Can be bypassed by spoofing
-   → Use as additional layer, not primary security
-
-3. Disable SSID Broadcast (Security through obscurity)
-   → Hides network from casual view
-   → Still detectable by scanning
-   → Minimal security benefit
-
-4. Guest Network Isolation
-   → Separate network for visitors
-   → Isolate from main network
-   → Different VLAN/subnet
-   → Prevents lateral movement
-
-5. Disable Remote Management
-   → No access from internet
-   → Only local admin access
-   → Prevents remote exploits
-
-6. Regular Firmware Updates
-   → Patch security vulnerabilities
-   → Check manufacturer site monthly
-   → Enable auto-update if available</pre>
-            </div>
-
-            <h4>Network Segmentation</h4>
-            <div class="example-box">
-                <h4>Recommended Network Layout</h4>
-                <div class="command-block">
-<pre>Home Network Architecture:
-
-Main Network (WPA3, strong password)
-├── Trusted devices: Laptops, phones, tablets
-├── VLAN 10, 192.168.1.0/24
-└── Full LAN access
-
-Guest Network (WPA3, different password)
-├── Visitors, untrusted devices
-├── VLAN 20, 192.168.2.0/24
-├── Internet only (no LAN access)
-└── Rate limiting enabled
-
-IoT Network (WPA2, isolated)
-├── Smart home devices, cameras
-├── VLAN 30, 192.168.3.0/24
-├── Firewall rules: no outbound except needed
-└── No access to main network</pre>
-                </div>
-            </div>
-
-            <h4>Client-Side Security</h4>
-            <div class="tip-box">
-                <strong>Protecting Your Devices:</strong>
-                <ul>
-                    <li><strong>Forget public networks:</strong> Don't save untrusted Wi-Fi</li>
-                    <li><strong>Disable auto-connect:</strong> Manually choose networks</li>
-                    <li><strong>Use VPN:</strong> Encrypt all traffic on public Wi-Fi</li>
-                    <li><strong>Verify certificates:</strong> Don't ignore HTTPS warnings</li>
-                    <li><strong>Update devices:</strong> Keep OS and apps patched</li>
-                    <li><strong>Firewall enabled:</strong> Block unwanted connections</li>
-                    <li><strong>Antivirus software:</strong> Detect malicious activity</li>
-                </ul>
-            </div>
-
-            <h4>Monitoring for Intrusions</h4>
-            <div class="command-block">
-<pre>Detecting Wi-Fi Attacks:
-
-Router Logs:
-• Check connected device list regularly
-• Look for unknown MAC addresses
-• Monitor authentication failures
-• Check for deauth anomalies
-
-Wireless IDS (Intrusion Detection):
-• Kismet (Linux)
-• Wireshark (packet analysis)
-• Commercial solutions (Aruba, Cisco)
-
-Red Flags:
-⚠ Unknown devices connected
-⚠ Sudden disconnections (deauth attack)
-⚠ Multiple failed auth attempts
-⚠ Duplicate SSID nearby (evil twin)
-⚠ Unexpected traffic patterns
-⚠ Clients connecting to wrong BSSID</pre>
-            </div>
-
-            <h4>Enterprise Wi-Fi Security</h4>
-            <div class="info-box">
-                <h4>802.1X/EAP (Enterprise Authentication)</h4>
-                <p>For businesses, use enterprise-grade security:</p>
-                <ul>
-                    <li><strong>RADIUS server:</strong> Centralized authentication</li>
-                    <li><strong>Individual credentials:</strong> Each user has unique login</li>
-                    <li><strong>Certificate-based:</strong> No shared password</li>
-                    <li><strong>Automatic revocation:</strong> Disable access instantly</li>
-                    <li><strong>Audit trails:</strong> Track who accessed when</li>
-                    <li><strong>VLANs per user:</strong> Dynamic network assignment</li>
-                </ul>
-            </div>
-
-            <h4>Password Cracking Defense</h4>
-            <div class="warning-box">
-                <strong>Making Your Wi-Fi Password Crack-Resistant:</strong>
-                <ul>
-                    <li><strong>Length matters most:</strong> 16+ characters exponentially harder</li>
-                    <li><strong>Avoid common patterns:</strong> No "Password123!" or "WelcomeHome"</li>
-                    <li><strong>Random is best:</strong> Use password manager to generate</li>
-                    <li><strong>Test yourself:</strong> Use hashcat to attempt cracking your own password</li>
-                    <li><strong>Change regularly:</strong> Every 6-12 months</li>
-                </ul>
-                <p><strong>Cracking Timeline Examples:</strong></p>
-                <div class="command-block">
-<pre>8 characters, lowercase only: Minutes
-8 characters, mixed case + numbers: Hours
-12 characters, complex: Days
-16 characters, complex: Years
-20 characters, complex: Centuries</pre>
-                </div>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(5)">Continue to Final Challenge →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="6">
-            <h3>🎯 Challenge: Corporate Wi-Fi Security Audit</h3>
-            
-            <div class="challenge-box">
-                <h4>Scenario: Small Business Security Assessment</h4>
-                <p><strong>Client:</strong> TechStart Inc., a 50-person startup company</p>
-                <p><strong>Engagement:</strong> Wireless security audit (authorized, documented)</p>
-                
-                <p><strong>Current Setup:</strong></p>
-                <ul>
-                    <li>Single Wi-Fi network "TechStart_WiFi"</li>
-                    <li>WPA2-PSK, password shared company-wide</li>
-                    <li>Same network for employees, guests, and IoT devices</li>
-                    <li>Default router admin credentials</li>
-                    <li>No monitoring or logging</li>
-                </ul>
-
-                <p><strong>Your Mission:</strong></p>
-                <ol>
-                    <li>Assess current security posture</li>
-                    <li>Identify vulnerabilities</li>
-                    <li>Demonstrate attack vectors (safely)</li>
-                    <li>Provide detailed recommendations</li>
-                    <li>Create implementation roadmap</li>
-                </ol>
-
-                <div class="warning-box">
-                    <strong>Rules of Engagement:</strong>
+        <!-- Learning Objectives -->
+        <section class="objectives-box">
+            <h2>🎯 What You'll Learn</h2>
+            <ul class="objectives-list">
+                <li>Understand USB HID protocol and how keyboards communicate with computers</li>
+                <li>Learn DuckyScript language for writing BadUSB payloads</li>
+                <li>Create and execute keystroke injection attacks safely</li>
+                <li>Test endpoint security and USB device policies</li>
+                <li>Understand real-world attack scenarios and defenses</li>
+                <li>Conduct responsible Red Team assessments with BadUSB</li>
+            </ul>
+        </section>
+
+        <!-- Main Content -->
+        <article>
+            <!-- Introduction -->
+            <section class="content-section">
+                <h2>Understanding BadUSB Attacks</h2>
+                <p>
+                    BadUSB is a class of USB-based attacks where a device impersonates a keyboard (or other HID device) to automatically inject keystrokes into a target computer. The Flipper Zero can act as a USB keyboard, making it a powerful tool for security testing.
+                </p>
+                <p>
+                    These attacks are effective because computers inherently trust keyboards. When you plug in a keyboard, the system doesn't ask for permission—it just starts accepting input. BadUSB exploits this trust.
+                </p>
+
+                <div class="info-box warning">
+                    <h3>⚠️ CRITICAL LEGAL AND ETHICAL WARNING</h3>
+                    <p>
+                        <strong>BadUSB attacks are extremely powerful and can cause serious harm.</strong>
+                    </p>
                     <ul>
-                        <li>✅ Written authorization from CEO</li>
-                        <li>✅ Testing during off-hours (minimal disruption)</li>
-                        <li>✅ No data exfiltration</li>
-                        <li>✅ Document everything</li>
-                        <li>✅ Coordinate with IT contact</li>
+                        <li><strong>ONLY</strong> use on systems you own or have explicit written authorization to test</li>
+                        <li>Unauthorized computer access is a serious crime in all jurisdictions</li>
+                        <li>Even "harmless" pranks can result in criminal charges</li>
+                        <li>BadUSB can install malware, exfiltrate data, or destroy systems</li>
+                        <li>Always have a documented scope and authorization for any testing</li>
+                        <li>This lesson is for defensive security professionals only</li>
                     </ul>
+                    <p style="margin-top: 0.75rem; font-weight: bold;">
+                        If you're not conducting authorized security assessments, do NOT use these techniques.
+                    </p>
                 </div>
-            </div>
 
-            <h4>🔍 Solution Walkthrough</h4>
+                <h3>How BadUSB Works</h3>
+                <ol>
+                    <li><strong>USB Connection:</strong> Flipper connects to computer via USB-C</li>
+                    <li><strong>HID Enumeration:</strong> Computer recognizes Flipper as a keyboard</li>
+                    <li><strong>Trust Assumption:</strong> OS accepts keyboard input without authentication</li>
+                    <li><strong>Script Execution:</strong> Flipper sends pre-programmed keystrokes</li>
+                    <li><strong>Automated Actions:</strong> Computer executes commands as if user typed them</li>
+                    <li><strong>Payload Delivery:</strong> Malicious actions complete before user can react</li>
+                </ol>
 
-            <div class="solution-step">
-                <h4>Phase 1: Reconnaissance</h4>
-                <div class="command-block">
-<pre>Initial Assessment (Day 1, 7:00 PM):
-
-Equipment:
-• Flipper Zero + Wi-Fi Dev Board
-• Laptop with Kali Linux
-• Alfa AWUS036ACH adapter (high gain)
-• Notepad for documentation
-
-Network Discovery:
-ESP32 WiFi Marauder → AP Scan
-
-Results:
-╔═══════════════════════════════════════╗
-║ SSID: TechStart_WiFi                  ║
-║ BSSID: 00:11:22:33:44:55             ║
-║ Channel: 6 (2.4 GHz)                  ║
-║ Security: WPA2-PSK (AES)              ║
-║ Signal: -35 dBm (Very Strong)         ║
-║ Vendor: Netgear                       ║
-║ Connected Clients: 23 devices         ║
-╚═══════════════════════════════════════╝
-
-Initial Observations:
-⚠ Single network (no segmentation)
-⚠ 2.4 GHz only (outdated, congested)
-⚠ 23 clients connected after hours (suspicious)
-⚠ WPA2 (acceptable but could be better)</pre>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Phase 2: Client Analysis</h4>
-                <div class="command-block">
-<pre>Station Scan Results:
-
-Connected Devices (23 total):
-├── 15 × Smartphones (iOS/Android)
-├── 5 × Laptops (Windows/Mac)
-├── 2 × Smart TVs (conference rooms)
-└── 1 × IP Camera (entrance)
-
-Concerning Findings:
-⚠ IoT devices on same network as workstations
-⚠ Personal devices (BYOD) mixed with corporate
-⚠ IP Camera accessible from main network
-⚠ Smart TVs potentially unsecured
-
-OUI Analysis (Vendor Lookup):
-• Apple devices: 8
-• Samsung: 4
-• Dell: 3
-• Various IoT: 3
-• Unknown: 5 (concerning!)</pre>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Phase 3: Vulnerability Assessment</h4>
-                <div class="example-box">
-                    <h4>Router Access Test</h4>
-                    <ol>
-                        <li>Connected to TechStart_WiFi (authorized)</li>
-                        <li>Scanned for router IP: 192.168.1.1</li>
-                        <li>Accessed web interface: http://192.168.1.1</li>
-                        <li>Attempted default credentials:</li>
-                    </ol>
-                    <div class="command-block">
-<pre>Login Attempts:
-Username: admin / Password: admin → ✗ Failed
-Username: admin / Password: password → ✗ Failed
-Username: admin / Password: [blank] → ✗ Failed
-Username: admin / Password: TechStart → ✓ SUCCESS!
-
-CRITICAL FINDING: Default-like password!</pre>
-                    </div>
-                    <p><strong>Impact:</strong> Anyone on the network can access router settings, change Wi-Fi password, monitor traffic, etc.</p>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Phase 4: WPA2 Handshake Capture</h4>
-                <div class="command-block">
-<pre>Testing Password Strength:
-
-Step 1: Capture handshake
-• Started packet capture on laptop
-• Used Flipper deauth on single test device (my phone)
-• Captured 4-way handshake successfully
-• Saved as: techstart_handshake.cap
-
-Step 2: Password cracking attempt
-Laptop: hashcat -m 22000 techstart_handshake.hc22000 rockyou.txt
-
-Cracking Progress:
-Time: 00:00:15 (15 seconds!)
-Status: Cracked!
-Password: "TechStart2023!"
-
-CRITICAL FINDING: Weak password cracked in 15 seconds!
-Password was in common wordlist (rockyou.txt)
-Predictable pattern: CompanyName + Year + Symbol</pre>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Phase 5: Evil Twin Demonstration</h4>
-                <div class="example-box">
-                    <h4>Controlled Evil Twin Test</h4>
-                    <p><strong>Goal:</strong> Demonstrate risk to executive team</p>
-                    
-                    <ol>
-                        <li>Created Evil Twin: "TechStart_WiFi" (exact match)</li>
-                        <li>Positioned Flipper close to conference room</li>
-                        <li>Deauthed my own test device</li>
-                        <li>Test device connected to Evil Twin (stronger signal)</li>
-                        <li>Served captive portal: "Firmware Update Required"</li>
-                        <li>Test account entered credentials → Captured!</li>
-                    </ol>
-
-                    <p><strong>Demonstration Results:</strong></p>
-                    <ul>
-                        <li>✓ Evil Twin successful in under 60 seconds</li>
-                        <li>✓ Credentials captured (test account only)</li>
-                        <li>✓ Traffic intercepted (demonstrated with HTTP site)</li>
-                        <li>✓ Executive team shocked by ease of attack</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Phase 6: Comprehensive Report</h4>
-                <div class="command-block">
-<pre>WIRELESS SECURITY AUDIT REPORT
-TechStart Inc. - Confidential
-
-Executive Summary:
-┌──────────────────────────────────────┐
-│ Overall Security Rating: HIGH RISK   │
-│ Critical Findings: 3                 │
-│ High Findings: 4                     │
-│ Medium Findings: 5                   │
-│ Recommendation: Immediate Action     │
-└──────────────────────────────────────┘
-
-CRITICAL VULNERABILITIES:
-
-1. Weak WPA2 Password (CRITICAL)
-   Risk: Password cracked in 15 seconds
-   Impact: Complete network compromise
-   CVSS: 9.8 (Critical)
-   
-2. Default Router Credentials (CRITICAL)
-   Risk: Full router administrative access
-   Impact: Network takeover, traffic interception
-   CVSS: 9.1 (Critical)
-   
-3. No Network Segmentation (CRITICAL)
-   Risk: IoT/Guest devices on corporate LAN
-   Impact: Lateral movement, data breach
-   CVSS: 8.5 (High)
-
-HIGH VULNERABILITIES:
-
-4. Single Point of Failure
-   Risk: Only one Wi-Fi network for everything
-   Impact: Total outage if compromised
-   
-5. No Intrusion Detection
-   Risk: Attacks go unnoticed
-   Impact: Persistent access, data exfiltration
-   
-6. BYOD Without Control
-   Risk: Personal devices on corporate network
-   Impact: Malware introduction, data leakage
-   
-7. No Guest Network Isolation
-   Risk: Visitors have LAN access
-   Impact: Unauthorized access to resources</pre>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Phase 7: Remediation Plan</h4>
-                <div class="tip-box">
-                    <h4>Immediate Actions (Week 1)</h4>
-                    <ol>
-                        <li><strong>Change Router Password</strong>
-                            <ul>
-                                <li>Generate 20+ character random password</li>
-                                <li>Store in password manager</li>
-                                <li>Cost: $0 | Time: 5 minutes</li>
-                            </ul>
-                        </li>
-                        <li><strong>Change Wi-Fi Password</strong>
-                            <ul>
-                                <li>Use passphrase: "7Blue$Elephants!Dance@Midnight#Forever"</li>
-                                <li>Distribute securely to employees</li>
-                                <li>Cost: $0 | Time: 30 minutes</li>
-                            </ul>
-                        </li>
-                        <li><strong>Enable WPA3 (if supported)</strong>
-                            <ul>
-                                <li>Check router firmware for WPA3 support</li>
-                                <li>Enable if available, fallback to WPA2</li>
-                                <li>Cost: $0 | Time: 10 minutes</li>
-                            </ul>
-                        </li>
-                    </ol>
-
-                    <h4>Short-Term (Month 1)</h4>
-                    <ol>
-                        <li><strong>Implement Network Segmentation</strong>
-                            <ul>
-                                <li>Purchase business-grade router/APs</li>
-                                <li>Create separate VLANs:
-                                    <ul>
-                                        <li>Corporate (employees only)</li>
-                                        <li>Guest (internet only)</li>
-                                        <li>IoT (isolated)</li>
-                                    </ul>
-                                </li>
-                                <li>Cost: $800 | Time: 1 day</li>
-                            </ul>
-                        </li>
-                        <li><strong>Deploy 5 GHz Network</strong>
-                            <ul>
-                                <li>Upgrade to dual-band APs</li>
-                                <li>Primary corporate on 5 GHz</li>
-                                <li>Better speed and less congestion</li>
-                                <li>Cost: Included in new hardware</li>
-                            </ul>
-                        </li>
-                        <li><strong>Enable Management Frame Protection</strong>
-                            <ul>
-                                <li>Protect against deauth attacks</li>
-                                <li>Configure on all APs</li>
-                                <li>Cost: $0 | Time: 15 minutes</li>
-                            </ul>
-                        </li>
-                    </ol>
-
-                    <h4>Long-Term (Months 2-3)</h4>
-                    <ol>
-                        <li><strong>Implement 802.1X Authentication</strong>
-                            <ul>
-                                <li>Deploy RADIUS server (FreeRADIUS)</li>
-                                <li>Individual user credentials</li>
-                                <li>Certificate-based auth</li>
-                                <li>Cost: $0 (open source) | Time: 3 days</li>
-                            </ul>
-                        </li>
-                        <li><strong>Wireless IDS Deployment</strong>
-                            <ul>
-                                <li>Install Kismet for monitoring</li>
-                                <li>Alert on evil twins, deauths</li>
-                                <li>Daily log review</li>
-                                <li>Cost: $0 | Time: 2 days</li>
-                            </ul>
-                        </li>
-                        <li><strong>Security Awareness Training</strong>
-                            <ul>
-                                <li>Monthly Wi-Fi security sessions</li>
-                                <li>Evil twin demonstrations</li>
-                                <li>VPN usage mandates for public Wi-Fi</li>
-                                <li>Cost: Internal | Time: Ongoing</li>
-                            </ul>
-                        </li>
-                    </ol>
-
-                    <p><strong>Total Investment:</strong> ~$800 hardware + ~40 hours labor</p>
-                    <p><strong>Risk Reduction:</strong> 95% improvement in security posture</p>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Phase 8: Executive Presentation</h4>
                 <div class="info-box">
-                    <h4>Board Meeting Outcomes</h4>
-                    <p><strong>Presentation Delivered:</strong> CEO, CTO, IT Manager, Legal</p>
-                    
-                    <p><strong>Live Demonstrations:</strong></p>
+                    <h3>💡 Why BadUSB is So Effective</h3>
                     <ul>
-                        <li>Password cracking (15 seconds to crack)</li>
-                        <li>Router access with weak credentials</li>
-                        <li>Evil Twin attack with credential capture</li>
-                        <li>Traffic interception demonstration</li>
+                        <li><strong>No malware signature:</strong> Just keyboard input, not executable files</li>
+                        <li><strong>Bypasses many defenses:</strong> Antivirus doesn't scan keystrokes</li>
+                        <li><strong>Fast execution:</strong> Can run complex payloads in seconds</li>
+                        <li><strong>Physical access advantage:</strong> If you can plug it in, you can run it</li>
+                        <li><strong>Cross-platform:</strong> Works on Windows, Mac, Linux</li>
                     </ul>
+                </div>
+            </section>
 
-                    <p><strong>Executive Response:</strong></p>
-                    <ul>
-                        <li>✓ Approved full remediation budget</li>
-                        <li>✓ Authorized immediate password changes</li>
-                        <li>✓ Assigned IT resource for implementation</li>
-                        <li>✓ Scheduled 90-day follow-up audit</li>
-                        <li>✓ Implemented company-wide VPN policy</li>
-                    </ul>
+            <!-- DuckyScript Basics -->
+            <section class="content-section">
+                <h2>DuckyScript Language</h2>
+                <p>
+                    DuckyScript is a simple scripting language originally created for the USB Rubber Ducky. The Flipper Zero uses a compatible syntax, making it easy to write and share BadUSB payloads.
+                </p>
 
-                    <p><strong>Follow-Up (90 days later):</strong></p>
+                <h3>Basic Commands</h3>
+                <div class="code-block">
+                    <code>REM This is a comment
+
+DELAY 1000          // Wait 1000ms (1 second)
+
+STRING Hello World  // Type text exactly as written
+
+ENTER              // Press Enter key
+
+GUI r              // Windows+R (Open Run dialog)
+
+CTRL ALT DELETE    // Press Ctrl+Alt+Del simultaneously
+
+ALT F4             // Alt+F4 (Close window)
+
+DOWNARROW          // Press down arrow key
+
+REPEAT 5           // Repeat previous command 5 times</code>
+                </div>
+
+                <h3>Special Keys</h3>
+                <p>DuckyScript supports all standard keyboard keys:</p>
+                <ul>
+                    <li><strong>Modifiers:</strong> CTRL, ALT, SHIFT, GUI (Windows/Command key)</li>
+                    <li><strong>Function Keys:</strong> F1 through F12</li>
+                    <li><strong>Navigation:</strong> UP, DOWN, LEFT, RIGHT, PAGEUP, PAGEDOWN, HOME, END</li>
+                    <li><strong>Special:</strong> ENTER, TAB, ESCAPE, SPACE, DELETE, BACKSPACE</li>
+                    <li><strong>System:</strong> PRINTSCREEN, SCROLLLOCK, PAUSE, INSERT</li>
+                </ul>
+
+                <h3>Your First Script</h3>
+                <p>Let's create a harmless "Hello World" script:</p>
+
+                <div class="script-example">
+                    <h4>hello_world.txt</h4>
+                    <p><strong>Purpose:</strong> Opens Notepad and types a message</p>
+                    <div class="code-block">
+                        <code>REM Hello World BadUSB Script
+REM Opens Notepad and types a greeting
+
+DELAY 1000
+GUI r
+DELAY 500
+STRING notepad
+ENTER
+DELAY 1000
+STRING Hello from Flipper Zero!
+ENTER
+STRING This is a BadUSB demonstration.
+ENTER
+STRING Stay safe and test responsibly!</code>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>💡 Script Writing Tips</h3>
                     <ul>
-                        <li>✓ All recommendations implemented</li>
-                        <li>✓ Zero unauthorized access attempts detected</li>
-                        <li>✓ Employee training completed (100% participation)</li>
-                        <li>✓ Continuous monitoring operational</li>
-                        <li>✓ Security posture: EXCELLENT</li>
+                        <li><strong>Add delays:</strong> Computers vary in speed; generous delays ensure reliability</li>
+                        <li><strong>Comment your code:</strong> Use REM to document what each section does</li>
+                        <li><strong>Test thoroughly:</strong> Always test on your own system first</li>
+                        <li><strong>Handle errors:</strong> Account for dialogs, prompts, or unexpected windows</li>
+                        <li><strong>Use absolute paths:</strong> Don't rely on current directory or environment</li>
                     </ul>
+                </div>
+            </section>
+
+            <!-- Exercise 1 -->
+            <div class="exercise-box">
+                <h3>🔧 Hands-On Exercise 1: Write and Test Your First Script</h3>
+                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Beginner</p>
+                <p>
+                    <strong>Requirements:</strong> Your own computer for safe testing
+                </p>
+                <ol class="exercise-steps">
+                    <li>Create a new text file on your computer named "test_script.txt"</li>
+                    <li>Write a script that opens Notepad/TextEdit and types your name</li>
+                    <li>Save the file to your Flipper's /badusb/ folder via USB</li>
+                    <li>Navigate to BadUSB menu on Flipper</li>
+                    <li>Select your script</li>
+                    <li>Connect Flipper to your test computer</li>
+                    <li>Execute the script and observe the results</li>
+                    <li>If it doesn't work perfectly, adjust DELAY values and retry</li>
+                    <li>Document what worked and what needed adjustment</li>
+                </ol>
+                <div style="margin-top: 1.5rem;">
+                    <button class="btn-complete" onclick="completeExercise(1)">Mark Exercise Complete</button>
                 </div>
             </div>
 
-            <div class="info-box">
-                <h4>🎓 Key Lessons Learned</h4>
-                <ul>
-                    <li><strong>Professional documentation matters:</strong> Detailed reports drive action</li>
-                    <li><strong>Visual demonstrations convince executives:</strong> Show, don't just tell</li>
-                    <li><strong>Practical recommendations:</strong> Balance security with usability</li>
-                    <li><strong>Budget-conscious solutions:</strong> Open source tools reduce costs</li>
-                    <li><strong>Phased approach:</strong> Quick wins first, complex changes later</li>
-                    <li><strong>Follow-up crucial:</strong> Verify implementations, measure improvement</li>
-                    <li><strong>Education alongside tech:</strong> People are part of security</li>
-                    <li><strong>Authorization essential:</strong> Everything documented and approved</li>
+            <!-- Break Reminder 1 -->
+            <div class="break-reminder">
+                <h3>⏸️ Break Point #1</h3>
+                <p>You've learned BadUSB fundamentals and created your first script. Time for a break!</p>
+                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5 minutes to:</p>
+                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                    <li>💧 Hydrate</li>
+                    <li>🚶 Stand and move</li>
+                    <li>👀 Rest your eyes</li>
                 </ul>
+                <div class="break-timer" id="break-timer">5:00</div>
+                <div class="break-controls">
+                    <button class="btn-break" onclick="startBreakTimer()">Start 5-Min Break</button>
+                    <button class="btn-break secondary" onclick="skipBreak()">Skip Break</button>
+                </div>
             </div>
 
-            <div class="completion-box">
-                <h4>🎉 Lesson 5 Complete!</h4>
-                <p>Congratulations! You've mastered Wi-Fi security:</p>
+            <!-- Platform-Specific Payloads -->
+            <section class="content-section">
+                <h2>Platform-Specific Techniques</h2>
+                <p>
+                    Different operating systems require different approaches. Let's explore platform-specific techniques for Windows, macOS, and Linux.
+                </p>
+
+                <h3>Windows Payloads</h3>
+                <p>Windows scripts typically use the Run dialog (Win+R) or PowerShell:</p>
+
+                <div class="script-example">
+                    <h4>windows_info_gather.txt</h4>
+                    <p><strong>Purpose:</strong> Demonstrates information gathering (educational only)</p>
+                    <div class="code-block">
+                        <code>REM Windows System Info Collector
+REM Educational demonstration only!
+
+DELAY 1000
+GUI r
+DELAY 300
+STRING cmd
+ENTER
+DELAY 500
+STRING systeminfo > C:\temp\sysinfo.txt
+ENTER
+DELAY 2000
+STRING ipconfig /all >> C:\temp\sysinfo.txt
+ENTER
+DELAY 1000
+STRING exit
+ENTER</code>
+                    </div>
+                </div>
+
+                <h3>macOS Payloads</h3>
+                <p>macOS scripts use Spotlight (Cmd+Space) or Terminal:</p>
+
+                <div class="script-example">
+                    <h4>macos_terminal_test.txt</h4>
+                    <p><strong>Purpose:</strong> Opens Terminal and displays system info</p>
+                    <div class="code-block">
+                        <code>REM macOS Terminal Test Script
+
+DELAY 1000
+GUI SPACE
+DELAY 300
+STRING terminal
+DELAY 200
+ENTER
+DELAY 1000
+STRING echo "System: $(uname -a)"
+ENTER
+DELAY 500
+STRING echo "User: $(whoami)"
+ENTER
+DELAY 500
+STRING exit
+ENTER</code>
+                    </div>
+                </div>
+
+                <h3>Linux Payloads</h3>
+                <p>Linux scripts often target terminal or search:</p>
+
+                <div class="script-example">
+                    <h4>linux_terminal_test.txt</h4>
+                    <p><strong>Purpose:</strong> Opens terminal and runs basic commands</p>
+                    <div class="code-block">
+                        <code>REM Linux Terminal Test Script
+
+DELAY 1000
+CTRL ALT t
+DELAY 800
+STRING echo "Testing BadUSB on Linux"
+ENTER
+DELAY 300
+STRING whoami
+ENTER
+DELAY 300
+STRING pwd
+ENTER
+DELAY 300
+STRING exit
+ENTER</code>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>💡 Cross-Platform Considerations</h3>
+                    <ul>
+                        <li><strong>Keyboard layouts:</strong> QWERTY vs AZERTY vs other layouts affect special characters</li>
+                        <li><strong>Language settings:</strong> Non-English systems may have different shortcuts</li>
+                        <li><strong>Execution speed:</strong> Older/slower computers need longer delays</li>
+                        <li><strong>Security software:</strong> EDR/AV may block or slow command execution</li>
+                        <li><strong>User settings:</strong> Disabled shortcuts or custom configurations can break scripts</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Advanced Payloads -->
+            <section class="content-section">
+                <h2>Advanced Payload Techniques</h2>
+                <p>
+                    For professional security testing, you'll need more sophisticated payloads. Here are some advanced techniques used in real assessments.
+                </p>
+
+                <h3>Reverse Shell Demonstration</h3>
+                <p>
+                    In penetration testing, establishing a reverse shell is a common goal. Here's the concept (educational purposes only):
+                </p>
+
+                <div class="script-example">
+                    <h4>Reverse Shell Concept</h4>
+                    <p><strong>WARNING:</strong> This is for understanding attack methodology only. Never use without authorization!</p>
+                    <div class="code-block">
+                        <code>REM Conceptual reverse shell example
+REM DO NOT USE without explicit authorization
+
+REM 1. Open PowerShell as admin
+REM 2. Download and execute remote payload
+REM 3. Establish connection to attacker machine
+REM 4. Clean up traces
+
+REM This demonstrates why endpoint security is critical!</code>
+                    </div>
+                </div>
+
+                <h3>Credential Harvesting Prevention</h3>
+                <p>
+                    Understanding how BadUSB can attempt to harvest credentials helps you defend against it:
+                </p>
                 <ul>
-                    <li>✅ Understanding Wi-Fi protocols and standards</li>
-                    <li>✅ Network scanning and reconnaissance</li>
-                    <li>✅ Deauthentication attack techniques</li>
-                    <li>✅ Evil Twin and captive portal attacks</li>
-                    <li>✅ Wi-Fi security best practices</li>
-                    <li>✅ Professional wireless security auditing</li>
-                    <li>✅ Network segmentation and defense strategies</li>
+                    <li>Scripts can create fake login prompts</li>
+                    <li>Can access browser saved passwords</li>
+                    <li>Can dump credentials from memory (with admin access)</li>
+                    <li>Can keylog subsequent user input</li>
                 </ul>
-                <p><strong>Next:</strong> Lesson 6 covers GPIO & Hardware Hacking!</p>
+
+                <div class="info-box warning">
+                    <h3>⚠️ Defensive Measures</h3>
+                    <p><strong>How to protect against credential harvesting:</strong></p>
+                    <ul>
+                        <li>Use hardware security keys (FIDO2/U2F) instead of passwords</li>
+                        <li>Enable Windows Credential Guard</li>
+                        <li>Implement USB device whitelisting</li>
+                        <li>Use password managers with browser integration</li>
+                        <li>Regular security awareness training</li>
+                    </ul>
+                </div>
+
+                <h3>Data Exfiltration Methods</h3>
+                <p>
+                    BadUSB can exfiltrate data in several ways:
+                </p>
+                <ul>
+                    <li><strong>Cloud Upload:</strong> Upload files to attacker-controlled cloud storage</li>
+                    <li><strong>Email:</strong> Send data via webmail or SMTP</li>
+                    <li><strong>DNS Tunneling:</strong> Encode data in DNS queries</li>
+                    <li><strong>Web Request:</strong> POST data to attacker server</li>
+                    <li><strong>Physical Copy:</strong> Copy data to Flipper's SD card (if mounted as storage)</li>
+                </ul>
+
+                <div class="info-box">
+                    <h3>💡 Detection Methods</h3>
+                    <p>How to detect BadUSB attacks:</p>
+                    <ul>
+                        <li><strong>EDR Software:</strong> Detects rapid command execution patterns</li>
+                        <li><strong>USB Monitoring:</strong> Logs all USB device connections</li>
+                        <li><strong>Command Logging:</strong> Track PowerShell/CMD/Terminal execution</li>
+                        <li><strong>Network Monitoring:</strong> Detect unusual outbound connections</li>
+                        <li><strong>Behavioral Analysis:</strong> AI/ML detects abnormal user behavior</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Exercise 2 -->
+            <div class="exercise-box">
+                <h3>🔧 Hands-On Exercise 2: Multi-Stage Payload</h3>
+                <p><strong>Time:</strong> 20 minutes | <strong>Difficulty:</strong> Intermediate</p>
+                <p>
+                    Create a multi-stage script that performs multiple actions in sequence.
+                </p>
+                <ol class="exercise-steps">
+                    <li>Design a script that opens a text editor</li>
+                    <li>Types system information (OS version, username, date/time)</li>
+                    <li>Saves the file to a specific location</li>
+                    <li>Opens the file location in file explorer</li>
+                    <li>Add appropriate delays between each stage</li>
+                    <li>Test on your system and debug any timing issues</li>
+                    <li>Optimize delays to be as fast as possible while remaining reliable</li>
+                    <li>Document the minimum safe delays for each action</li>
+                </ol>
+                <div style="margin-top: 1.5rem;">
+                    <button class="btn-complete" onclick="completeExercise(2)">Mark Exercise Complete</button>
+                </div>
             </div>
 
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(6)">Complete Lesson 5 →</button>
-        </div>
+            <!-- Break Reminder 2 -->
+            <div class="break-reminder">
+                <h3>⏸️ Break Point #2</h3>
+                <p>Great work! You've learned advanced BadUSB techniques. Time for a break!</p>
+                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5-10 minutes to:</p>
+                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                    <li>💧 Drink water</li>
+                    <li>🚶 Walk around</li>
+                    <li>🧠 Consider how you'd defend against these attacks</li>
+                </ul>
+                <div class="break-timer" id="break-timer-2">5:00</div>
+                <div class="break-controls">
+                    <button class="btn-break" onclick="startBreakTimer2()">Start 5-Min Break</button>
+                    <button class="btn-break secondary" onclick="skipBreak2()">Skip Break</button>
+                </div>
+            </div>
+
+            <!-- Real-World Attack Scenarios -->
+            <section class="content-section">
+                <h2>Real-World Attack Scenarios</h2>
+                <p>
+                    Understanding real-world attack scenarios helps security professionals better defend against them.
+                </p>
+
+                <div class="attack-grid">
+                    <div class="attack-card">
+                        <h4>Scenario 1: Physical Intrusion</h4>
+                        <p><strong>Attack:</strong> Attacker gains brief physical access to target's computer</p>
+                        <p><strong>Payload:</strong> Install backdoor in under 30 seconds</p>
+                        <p><strong>Defense:</strong> Lock screen when away, USB port locks, security cameras</p>
+                    </div>
+
+                    <div class="attack-card">
+                        <h4>Scenario 2: Social Engineering</h4>
+                        <p><strong>Attack:</strong> "IT support" hands target a "driver updater" USB</p>
+                        <p><strong>Payload:</strong> User willingly plugs in malicious device</p>
+                        <p><strong>Defense:</strong> User training, IT-only USB policy, verification procedures</p>
+                    </div>
+
+                    <div class="attack-card">
+                        <h4>Scenario 3: Supply Chain</h4>
+                        <p><strong>Attack:</strong> Compromised USB keyboard contains BadUSB chip</p>
+                        <p><strong>Payload:</strong> Periodic data exfiltration over months</p>
+                        <p><strong>Defense:</strong> Trusted suppliers only, hardware inspection, anomaly detection</p>
+                    </div>
+
+                    <div class="attack-card">
+                        <h4>Scenario 4: Dropped USB</h4>
+                        <p><strong>Attack:</strong> Attacker leaves "lost" USB in parking lot</p>
+                        <p><strong>Payload:</strong> Curious employee plugs it in to identify owner</p>
+                        <p><strong>Defense:</strong> User training, USB policies, technical controls</p>
+                    </div>
+
+                    <div class="attack-card">
+                        <h4>Scenario 5: Charging Station</h4>
+                        <p><strong>Attack:</strong> Public USB charging station is compromised</p>
+                        <p><strong>Payload:</strong> Data theft from connected phones/devices</p>
+                        <p><strong>Defense:</strong> Use AC adapters, USB data blockers, power-only cables</p>
+                    </div>
+
+                    <div class="attack-card">
+                        <h4>Scenario 6: Insider Threat</h4>
+                        <p><strong>Attack:</strong> Malicious employee uses BadUSB device</p>
+                        <p><strong>Payload:</strong> Steal data or sabotage systems before leaving</p>
+                        <p><strong>Defense:</strong> Monitoring, least privilege, exit interviews, USB logging</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Defense Strategies -->
+            <section class="content-section">
+                <h2>Defending Against BadUSB</h2>
+                <p>
+                    As a security professional, your job is to help organizations defend against these threats. Here's a comprehensive defense strategy.
+                </p>
+
+                <h3>Technical Controls</h3>
+                <ul>
+                    <li>
+                        <strong>USB Device Whitelisting:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Only allow approved USB devices by hardware ID</li>
+                            <li>Block HID devices except known keyboards/mice</li>
+                            <li>Use Windows Defender Application Control or similar</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Endpoint Detection and Response (EDR):</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Monitor for rapid command execution</li>
+                            <li>Detect PowerShell/CMD anomalies</li>
+                            <li>Alert on suspicious process creation</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>USB Port Management:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Physically disable unused ports with epoxy/locks</li>
+                            <li>Configure BIOS to disable USB ports</li>
+                            <li>Use USB port blockers for authorized devices</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Privilege Management:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Users run with standard (not admin) privileges</li>
+                            <li>Require UAC prompts for elevated actions</li>
+                            <li>Just-in-time admin access for IT staff</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Script Execution Policies:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>PowerShell Constrained Language Mode</li>
+                            <li>Require script signing</li>
+                            <li>Block execution from user-writable directories</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>Procedural Controls</h3>
+                <ul>
+                    <li><strong>Security Awareness Training:</strong> Educate users about USB threats</li>
+                    <li><strong>Clear Desk Policy:</strong> Lock computers when away</li>
+                    <li><strong>USB Policy:</strong> Document what USB devices are allowed</li>
+                    <li><strong>Incident Response:</strong> Procedures for suspected USB attacks</li>
+                    <li><strong>Regular Audits:</strong> Review USB device logs and user compliance</li>
+                </ul>
+
+                <h3>Physical Controls</h3>
+                <ul>
+                    <li><strong>Access Control:</strong> Limit who can physically access computers</li>
+                    <li><strong>Security Cameras:</strong> Monitor sensitive areas</li>
+                    <li><strong>Screen Privacy:</strong> Position monitors away from public view</li>
+                    <li><strong>Reception Security:</strong> Verify visitors and contractors</li>
+                </ul>
+
+                <div class="info-box success">
+                    <h3>✅ Defense-in-Depth Strategy</h3>
+                    <p>No single control is perfect. Implement multiple layers:</p>
+                    <ul>
+                        <li><strong>Layer 1:</strong> Physical security (prevent access)</li>
+                        <li><strong>Layer 2:</strong> USB device control (prevent connection)</li>
+                        <li><strong>Layer 3:</strong> EDR monitoring (detect execution)</li>
+                        <li><strong>Layer 4:</strong> Privilege management (limit damage)</li>
+                        <li><strong>Layer 5:</strong> User awareness (recognize attacks)</li>
+                        <li><strong>Layer 6:</strong> Incident response (quick containment)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Red Team Usage -->
+            <section class="content-section">
+                <h2>BadUSB in Red Team Assessments</h2>
+                <p>
+                    For security professionals conducting authorized Red Team engagements, BadUSB is a valuable tool for testing physical security and user awareness.
+                </p>
+
+                <h3>Assessment Planning</h3>
+                <ol>
+                    <li>
+                        <strong>Scope Definition:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Document authorized targets and systems</li>
+                            <li>Define what actions are permitted</li>
+                            <li>Establish communication protocols</li>
+                            <li>Set boundaries (what's off-limits)</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Payload Development:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Create non-destructive test payloads</li>
+                            <li>Establish command and control (C2) safely</li>
+                            <li>Include kill switches for emergency stop</li>
+                            <li>Test extensively in lab environment</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Execution:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Document every action taken</li>
+                            <li>Take photos/videos of physical access</li>
+                            <li>Note time, location, and method used</li>
+                            <li>Collect evidence of compromise</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Reporting:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Detail vulnerabilities exploited</li>
+                            <li>Provide specific remediation recommendations</li>
+                            <li>Include evidence and demonstrations</li>
+                            <li>Rate findings by severity and exploitability</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h3>Ethical Considerations</h3>
+                <div class="info-box warning">
+                    <h3>⚠️ Red Team Ethics</h3>
+                    <ul>
+                        <li><strong>Stay in scope:</strong> Never exceed authorized targets</li>
+                        <li><strong>Minimize impact:</strong> Avoid disrupting business operations</li>
+                        <li><strong>Protect data:</strong> Don't access or exfiltrate real sensitive data</li>
+                        <li><strong>Document everything:</strong> Maintain detailed logs of all actions</li>
+                        <li><strong>Report immediately:</strong> Critical findings should be reported ASAP</li>
+                        <li><strong>Clean up:</strong> Remove all backdoors and artifacts after assessment</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Exercise 3 -->
+            <div class="exercise-box">
+                <h3>🔧 Hands-On Exercise 3: Design a Security Assessment</h3>
+                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Advanced</p>
+                <p>
+                    Plan a hypothetical BadUSB security assessment for your organization (or a fictional company).
+                </p>
+                <ol class="exercise-steps">
+                    <li>Define the assessment scope and objectives</li>
+                    <li>Identify target systems and user groups</li>
+                    <li>Design 3 different BadUSB attack scenarios to test</li>
+                    <li>List the defenses you would expect to encounter</li>
+                    <li>Plan how to safely demonstrate vulnerabilities</li>
+                    <li>Outline your reporting structure</li>
+                    <li>Identify metrics for measuring security posture</li>
+                    <li>Create a timeline for the assessment</li>
+                    <li>Document ethical boundaries and limitations</li>
+                </ol>
+                <div style="margin-top: 1.5rem;">
+                    <button class="btn-complete" onclick="completeExercise(3)">Mark Exercise Complete</button>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <section class="content-section">
+                <h2>Best Practices for BadUSB Testing</h2>
+                <p>
+                    Whether you're testing your own systems or conducting professional assessments, follow these best practices.
+                </p>
+
+                <h3>Script Development</h3>
+                <ul>
+                    <li><strong>Test extensively:</strong> Run scripts dozens of times in controlled environment</li>
+                    <li><strong>Account for failures:</strong> Handle unexpected dialogs or prompts</li>
+                    <li><strong>Make scripts resilient:</strong> Use multiple methods to achieve goals</li>
+                    <li><strong>Keep payloads small:</strong> Shorter scripts are more reliable</li>
+                    <li><strong>Document thoroughly:</strong> Comment every section and assumption</li>
+                </ul>
+
+                <h3>Safety Measures</h3>
+                <ul>
+                    <li><strong>Virtual machines:</strong> Test on VMs before physical systems</li>
+                    <li><strong>Backups:</strong> Ensure target systems are backed up</li>
+                    <li><strong>Rollback plan:</strong> Know how to undo any changes made</li>
+                    <li><strong>Kill switch:</strong> Have emergency stop capability</li>
+                    <li><strong>Supervision:</strong> Never leave running scripts unattended</li>
+                </ul>
+
+                <h3>Legal Protection</h3>
+                <ul>
+                    <li><strong>Written authorization:</strong> Always get signed approval</li>
+                    <li><strong>Scope document:</strong> Clearly define what's allowed</li>
+                    <li><strong>Liability coverage:</strong> Ensure proper insurance</li>
+                    <li><strong>NDA compliance:</strong> Protect client information</li>
+                    <li><strong>Evidence handling:</strong> Follow proper chain of custody</li>
+                </ul>
+
+                <div class="info-box success">
+                    <h3>✅ Professional Standards</h3>
+                    <ul>
+                        <li>Follow industry certifications (OSCP, CEH, GPEN, etc.)</li>
+                        <li>Adhere to professional codes of ethics</li>
+                        <li>Maintain client confidentiality</li>
+                        <li>Provide actionable, helpful recommendations</li>
+                        <li>Continue education and skill development</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Lesson Summary -->
+            <section class="content-section">
+                <h2>Lesson Summary</h2>
+                <p>
+                    Excellent work! You've completed an advanced lesson on BadUSB attacks. This is powerful knowledge—use it responsibly.
+                </p>
+
+                <div class="info-box success">
+                    <h3>✅ Key Takeaways</h3>
+                    <ul>
+                        <li>BadUSB exploits the inherent trust computers place in keyboards</li>
+                        <li>DuckyScript provides a simple language for writing keystroke injection payloads</li>
+                        <li>Scripts must account for platform differences and system variability</li>
+                        <li>Defense requires multiple layers of technical, procedural, and physical controls</li>
+                        <li>EDR software is effective at detecting rapid automated command execution</li>
+                        <li>USB device whitelisting is one of the strongest technical defenses</li>
+                        <li>User awareness training is critical for preventing social engineering attacks</li>
+                        <li>Professional assessments require thorough documentation and ethical conduct</li>
+                    </ul>
+                </div>
+
+                <h3>Skills You've Developed</h3>
+                <ul>
+                    <li>✓ Understanding USB HID protocol and BadUSB attack methodology</li>
+                    <li>✓ Writing DuckyScript payloads for different operating systems</li>
+                    <li>✓ Testing and debugging BadUSB scripts</li>
+                    <li>✓ Designing multi-stage attack scenarios</li>
+                    <li>✓ Implementing comprehensive BadUSB defenses</li>
+                    <li>✓ Planning professional security assessments</li>
+                    <li>✓ Understanding ethical and legal considerations</li>
+                    <li>✓ Applying defense-in-depth security principles</li>
+                </ul>
+
+                <h3>What's Next?</h3>
+                <p>
+                    In <strong>Lesson 6: GPIO & Hardware Interfacing</strong>, you'll learn how to:
+                </p>
+                <ul>
+                    <li>Understand GPIO pins and digital communication protocols</li>
+                    <li>Interface with UART, SPI, and I2C devices</li>
+                    <li>Debug hardware communication issues</li>
+                    <li>Read firmware from chips and devices</li>
+                    <li>Build custom hardware projects with Flipper</li>
+                    <li>Conduct hardware security assessments</li>
+                </ul>
+            </section>
+
+            <!-- Completion -->
+            <div class="info-box success">
+                <h3>🎉 Lesson Complete!</h3>
+                <p>
+                    You've earned <strong>50 XP</strong> for completing this lesson. Your progress has been saved automatically.
+                </p>
+                <p style="margin-top: 1rem;">
+                    Ready for the final lesson on hardware interfacing? Continue to Lesson 6!
+                </p>
+            </div>
+        </article>
 
         <!-- Navigation -->
-        <div class="navigation">
-            <a href="lesson4.html" class="nav-btn prev">← Lesson 4: BadUSB</a>
-            <a href="index.html" class="nav-btn">🏠 Academy Home</a>
-            <a href="lesson6.html" class="nav-btn next">Lesson 6: GPIO →</a>
-        </div>
-
-        <!-- Footer -->
-        <footer>
-            <p>tw¡st3d_¡nk Academy - Lesson 5: Wi-Fi Networks</p>
-            <p class="disclaimer">⚠️ Educational purposes only. Wi-Fi attacks are illegal without authorization. Only test on networks you own or have written permission to assess.</p>
-        </footer>
+        <nav class="lesson-navigation">
+            <a href="lesson-4.html" class="nav-btn secondary">
+                ← Previous: Infrared Control
+            </a>
+            <a href="lesson-6.html" class="nav-btn primary">
+                Next: GPIO & Hardware →
+            </a>
+        </nav>
     </div>
 
     <script>
-        // Lesson Progress System (Inline for reliability)
-        window.lessonProgress = {
-            currentLesson: 5,
-            totalSections: 6,
-            completedSections: [],
+        let currentProgress = 0;
+        let exercisesCompleted = [false, false, false];
+
+        function updateProgress() {
+            currentProgress = Math.min(100, (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+            document.getElementById('progress-fill').style.width = currentProgress + '%';
+            document.getElementById('progress-percent').textContent = Math.round(currentProgress);
+            localStorage.setItem('flipper-lesson-5-progress', currentProgress);
+        }
+
+        window.addEventListener('scroll', updateProgress);
+
+        function completeExercise(exerciseNum) {
+            exercisesCompleted[exerciseNum - 1] = true;
+            const btn = event.target;
+            btn.classList.add('completed');
+            btn.textContent = '✓ Exercise Completed!';
+            btn.disabled = true;
+            localStorage.setItem(`flipper-lesson-5-exercise-${exerciseNum}`, 'true');
             
-            init: function(lessonNum, sections) {
-                this.currentLesson = lessonNum;
-                this.totalSections = sections;
-                this.loadProgress();
-                this.updateDisplay();
-            },
-            
-            loadProgress: function() {
-                const saved = localStorage.getItem(`lesson${this.currentLesson}_progress`);
-                if (saved) {
-                    this.completedSections = JSON.parse(saved);
-                }
-            },
-            
-            saveProgress: function() {
-                localStorage.setItem(`lesson${this.currentLesson}_progress`, JSON.stringify(this.completedSections));
-            },
-            
-            completeSection: function(sectionNum) {
-                if (!this.completedSections.includes(sectionNum)) {
-                    this.completedSections.push(sectionNum);
-                    this.saveProgress();
-                    this.awardXP(25); // 25 XP per section
-                }
-                
-                // Show next section
-                const currentSection = document.querySelector(`[data-section="${sectionNum}"]`);
-                const nextSection = document.querySelector(`[data-section="${sectionNum + 1}"]`);
-                
-                if (currentSection) currentSection.classList.add('hidden');
-                if (nextSection) {
-                    nextSection.classList.remove('hidden');
-                    nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-                
-                this.updateDisplay();
-                
-                // Check if lesson complete
-                if (this.completedSections.length === this.totalSections) {
-                    this.completeLesson();
-                }
-            },
-            
-            completeLesson: function() {
-                localStorage.setItem(`lesson${this.currentLesson}_complete`, 'true');
-                this.awardXP(50); // Bonus XP for completing lesson
-                
-                // Show completion message
-                setTimeout(() => {
-                    alert(`🎉 Lesson ${this.currentLesson} Complete! +50 Bonus XP!\n\nTotal XP Earned: ${this.getTotalXP()}`);
-                }, 500);
-            },
-            
-            awardXP: function(amount) {
-                let totalXP = parseInt(localStorage.getItem('totalXP') || '0');
-                totalXP += amount;
-                localStorage.setItem('totalXP', totalXP);
-                this.updateXPDisplay();
-            },
-            
-            getTotalXP: function() {
-                return parseInt(localStorage.getItem('totalXP') || '0');
-            },
-            
-            updateXPDisplay: function() {
-                const xpElement = document.getElementById('xp-amount');
-                if (xpElement) {
-                    xpElement.textContent = this.getTotalXP();
-                }
-            },
-            
-            updateDisplay: function() {
-                const progress = (this.completedSections.length / this.totalSections) * 100;
-                const progressFill = document.querySelector('.progress-fill');
-                const progressText = document.querySelector('.progress-text');
-                
-                if (progressFill) progressFill.style.width = progress + '%';
-                if (progressText) progressText.textContent = Math.round(progress) + '% Complete';
-                
-                this.updateXPDisplay();
+            if (exercisesCompleted.every(e => e)) {
+                localStorage.setItem('flipper-lesson-5-complete', 'true');
             }
-        };
-        
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            window.lessonProgress.init(5, 6);
+        }
+
+        let breakInterval, breakInterval2;
+        let breakTimeRemaining = 300;
+        let breakTimeRemaining2 = 300;
+
+        function startBreakTimer() {
+            breakTimeRemaining = 300;
+            const timerDisplay = document.getElementById('break-timer');
+            const startBtn = event.target;
+            startBtn.disabled = true;
+            startBtn.textContent = 'Break in Progress...';
+            
+            breakInterval = setInterval(() => {
+                breakTimeRemaining--;
+                const minutes = Math.floor(breakTimeRemaining / 60);
+                const seconds = breakTimeRemaining % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (breakTimeRemaining <= 0) {
+                    clearInterval(breakInterval);
+                    timerDisplay.textContent = 'Break Complete! ✓';
+                    startBtn.disabled = false;
+                    startBtn.textContent = 'Start Another Break';
+                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
+                }
+            }, 1000);
+        }
+
+        function skipBreak() {
+            if (breakInterval) clearInterval(breakInterval);
+            document.getElementById('break-timer').textContent = '5:00';
+        }
+
+        function startBreakTimer2() {
+            breakTimeRemaining2 = 300;
+            const timerDisplay = document.getElementById('break-timer-2');
+            const startBtn = event.target;
+            startBtn.disabled = true;
+            startBtn.textContent = 'Break in Progress...';
+            
+            breakInterval2 = setInterval(() => {
+                breakTimeRemaining2--;
+                const minutes = Math.floor(breakTimeRemaining2 / 60);
+                const seconds = breakTimeRemaining2 % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (breakTimeRemaining2 <= 0) {
+                    clearInterval(breakInterval2);
+                    timerDisplay.textContent = 'Break Complete! ✓';
+                    startBtn.disabled = false;
+                    startBtn.textContent = 'Start Another Break';
+                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
+                }
+            }, 1000);
+        }
+
+        function skipBreak2() {
+            if (breakInterval2) clearInterval(breakInterval2);
+            document.getElementById('break-timer-2').textContent = '5:00';
+        }
+
+        let fontSize = 16;
+        const minFontSize = 12;
+        const maxFontSize = 24;
+
+        function adjustFontSize(change) {
+            fontSize += change * 2;
+            fontSize = Math.max(minFontSize, Math.min(maxFontSize, fontSize));
+            document.documentElement.style.fontSize = fontSize + 'px';
+            localStorage.setItem('fontSize', fontSize);
+        }
+
+        function toggleDyslexiaMode() {
+            document.body.classList.toggle('dyslexia-friendly');
+            localStorage.setItem('dyslexiaMode', document.body.classList.contains('dyslexia-friendly'));
+        }
+
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+            localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
+        }
+
+        function toggleReducedMotion() {
+            document.body.classList.toggle('reduce-motion');
+            localStorage.setItem('reducedMotion', document.body.classList.contains('reduce-motion'));
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedFontSize = localStorage.getItem('fontSize');
+            if (savedFontSize) {
+                fontSize = parseInt(savedFontSize);
+                document.documentElement.style.fontSize = fontSize + 'px';
+            }
+
+            if (localStorage.getItem('dyslexiaMode') === 'true') {
+                document.body.classList.add('dyslexia-friendly');
+            }
+            if (localStorage.getItem('highContrast') === 'true') {
+                document.body.classList.add('high-contrast');
+            }
+            if (localStorage.getItem('reducedMotion') === 'true') {
+                document.body.classList.add('reduce-motion');
+            }
+
+            for (let i = 1; i <= 3; i++) {
+                if (localStorage.getItem(`flipper-lesson-5-exercise-${i}`) === 'true') {
+                    exercisesCompleted[i - 1] = true;
+                    const exercises = document.querySelectorAll('.exercise-box');
+                    if (exercises[i - 1]) {
+                        const btn = exercises[i - 1].querySelector('.btn-complete');
+                        if (btn) {
+                            btn.classList.add('completed');
+                            btn.textContent = '✓ Exercise Completed!';
+                            btn.disabled = true;
+                        }
+                    }
+                }
+            }
+
+            const savedProgress = localStorage.getItem('flipper-lesson-5-progress');
+            if (savedProgress) {
+                currentProgress = parseFloat(savedProgress);
+                document.getElementById('progress-fill').style.width = currentProgress + '%';
+                document.getElementById('progress-percent').textContent = Math.round(currentProgress);
+            }
+        });
+
+        window.addEventListener('beforeunload', () => {
+            if (breakInterval) clearInterval(breakInterval);
+            if (breakInterval2) clearInterval(breakInterval2);
         });
     </script>
 </body>
