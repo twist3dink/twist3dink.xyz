@@ -1,0 +1,730 @@
+<p><strong>Allow/Block Strategy:</strong></p>
+                <ul>
+                    <li>✅ Allow: Trusted mice and keyboards (specific devices)</li>
+                    <li>✅ Allow: Company-issued USB drives (registered)</li>
+                    <li>❌ Block: Unknown HID devices</li>
+                    <li>❌ Block: USB storage from untrusted sources</li>
+                    <li>❌ Block: All USB during sensitive operations</li>
+                </ul>
+                <p><strong>Implementation:</strong> Device manager policies, USB whitelist solutions</p>
+            </div>
+
+            <h4>User Education</h4>
+            <div class="info-box">
+                <h4>Human Firewall</h4>
+                <p>Technology alone can't stop BadUSB. Users must be trained:</p>
+                <ul>
+                    <li><strong>Never plug in found USB devices</strong> - "USB drop" is common attack vector</li>
+                    <li><strong>Inspect gifts/swag:</strong> Free USB drives at conferences may be compromised</li>
+                    <li><strong>Lock screens:</strong> Even for bathroom breaks</li>
+                    <li><strong>Report suspicious behavior:</strong> Rapid typing, windows flashing</li>
+                    <li><strong>Verify identities:</strong> Don't let "IT support" plug things in without verification</li>
+                </ul>
+            </div>
+
+            <h4>Enterprise Security Policies</h4>
+            <div class="command-block">
+<pre>Corporate Defenses:
+
+1. USB Device Policy:
+   - Whitelist approved devices only
+   - Require approval for new devices
+   - Log all USB connections
+   - Alert on HID device additions
+
+2. Least Privilege:
+   - Users don't need admin rights
+   - BadUSB payloads less effective without privileges
+   - UAC prompts (Windows) block many attacks
+
+3. Network Segmentation:
+   - Limit lateral movement
+   - Exfiltration becomes harder
+   - Contain compromised systems
+
+4. Monitoring & Logging:
+   - USB insertion logs
+   - Command execution monitoring  
+   - Unusual typing patterns
+   - Network anomalies
+
+5. Incident Response:
+   - Procedures for suspected BadUSB
+   - Immediate disconnection protocols
+   - Forensic analysis capabilities</pre>
+            </div>
+
+            <h4>Detection Tools</h4>
+            <div class="tip-box">
+                <strong>USB Security Software:</strong>
+                <ul>
+                    <li><strong>USBGuard (Linux):</strong> Flexible USB authorization</li>
+                    <li><strong>Windows Defender:</strong> Can block suspicious HID behavior</li>
+                    <li><strong>Endpoint DLP:</strong> Data Loss Prevention monitors data transfers</li>
+                    <li><strong>SIEM Integration:</strong> Centralized logging and alerting</li>
+                    <li><strong>Custom Scripts:</strong> PowerShell/Python monitors for USB events</li>
+                </ul>
+            </div>
+
+            <h4>The Reality Check</h4>
+            <div class="warning-box">
+                <strong>Brutal Truth:</strong>
+                <p>If an attacker has physical access to your unlocked computer, the game is over. BadUSB is just one of many attacks possible:</p>
+                <ul>
+                    <li>Direct hard drive access</li>
+                    <li>Boot from USB drive</li>
+                    <li>Cold boot attacks (RAM extraction)</li>
+                    <li>Hardware keyloggers</li>
+                    <li>Evil maid attacks</li>
+                </ul>
+                <p><strong>Defense strategy:</strong> Focus on preventing physical access and always locking screens!</p>
+            </div>
+
+            <h4>Personal Protection</h4>
+            <div class="example-box">
+                <h4>Protecting Your Own Devices</h4>
+                <ol>
+                    <li><strong>Lock screen religiously:</strong> Make it a habit</li>
+                    <li><strong>Full disk encryption:</strong> In case device is stolen</li>
+                    <li><strong>Strong passwords:</strong> Not easily bypassed</li>
+                    <li><strong>Firmware passwords:</strong> Prevent boot modifications (BIOS/UEFI)</li>
+                    <li><strong>USB port blockers:</strong> Physical locks for unused ports</li>
+                    <li><strong>Monitor for changes:</strong> Notice if settings/files are altered</li>
+                    <li><strong>Regular audits:</strong> Check startup programs, scheduled tasks</li>
+                </ol>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(5)">Continue to Final Challenge →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="6">
+            <h3>🎯 Challenge: Penetration Test Scenario</h3>
+            
+            <div class="challenge-box">
+                <h4>Authorized Penetration Test</h4>
+                <p><strong>Scenario:</strong> You've been hired by TechCorp Inc. to conduct a physical security assessment of their office. You have written authorization and a signed contract. Your objective is to test if employees follow security policies regarding USB devices.</p>
+                
+                <p><strong>Test Parameters:</strong></p>
+                <ul>
+                    <li><strong>Target:</strong> Employee workstations (Windows 10)</li>
+                    <li><strong>Objective:</strong> Demonstrate BadUSB risk without causing harm</li>
+                    <li><strong>Rules:</strong> No data exfiltration, no system damage, no malware</li>
+                    <li><strong>Success:</strong> Prove concept with benign payload</li>
+                    <li><strong>Documentation:</strong> Record findings for report</li>
+                </ul>
+
+                <p><strong>Your Mission:</strong></p>
+                <ol>
+                    <li>Create a benign demonstration payload</li>
+                    <li>Test on your own device first</li>
+                    <li>Identify unlocked workstations</li>
+                    <li>Execute demonstration safely</li>
+                    <li><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 4: BadUSB Attacks - tw¡st3d_¡nk Academy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">tw¡st3d_¡nk</div>
+            <h1>Flipper Zero Academy</h1>
+            <div class="xp-display">
+                <span class="xp-label">XP:</span>
+                <span id="xp-amount">0</span>
+            </div>
+        </header>
+
+        <!-- Lesson Header -->
+        <div class="lesson-header">
+            <h2>Lesson 4: BadUSB Attacks</h2>
+            <div class="lesson-meta">
+                <span class="difficulty advanced">Advanced Level</span>
+                <span class="duration">⏱ 40 min</span>
+                <span class="xp-reward">🎯 +200 XP</span>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="lesson-progress">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+            <span class="progress-text">0% Complete</span>
+        </div>
+
+        <!-- Lesson Content -->
+        <div class="content-section" data-section="1">
+            <h3>⌨️ Introduction to BadUSB</h3>
+            
+            <div class="info-box">
+                <h4>What is BadUSB?</h4>
+                <p><strong>BadUSB</strong> is an attack technique where a USB device impersonates a keyboard or mouse to send malicious commands to a computer. Since computers trust keyboards by default, this attack bypasses many security measures.</p>
+            </div>
+
+            <h4>The Power of Keyboard Emulation</h4>
+            <div class="command-block">
+<pre>Why BadUSB is Dangerous:
+
+✓ No malware needed - Just keystrokes
+✓ Bypasses antivirus - Looks like legitimate typing
+✓ Fast execution - Can run in seconds
+✓ Cross-platform - Works on Windows, Mac, Linux
+✓ Pre-boot attacks - Can even modify BIOS
+✓ Physical access = game over</pre>
+            </div>
+
+            <h4>Historical Context</h4>
+            <div class="tip-box">
+                <strong>The BadUSB Vulnerability:</strong>
+                <p>Discovered in 2014 by security researchers Karsten Nohl and Jakob Lell. They demonstrated that USB device firmware can be reprogrammed to:</p>
+                <ul>
+                    <li>Emulate keyboards and inject keystrokes</li>
+                    <li>Redirect network traffic</li>
+                    <li>Install backdoors</li>
+                    <li>Modify files during transfer</li>
+                </ul>
+                <p><strong>The scary part:</strong> This vulnerability is built into the USB specification itself and cannot be patched!</p>
+            </div>
+
+            <h4>How BadUSB Attacks Work</h4>
+            <div class="command-block">
+<pre>Attack Flow:
+┌─────────────────────────────────────┐
+│ 1. Device plugged into USB port     │
+│ 2. Computer recognizes it as keyboard│
+│ 3. Device sends pre-programmed keys │
+│ 4. Commands execute automatically   │
+│ 5. Payload delivered in seconds     │
+│ 6. Device can eject itself (stealth)│
+└─────────────────────────────────────┘
+
+Example Attack Timeline:
+0s  - Flipper plugged in
+1s  - Recognized as USB keyboard
+2s  - Opens command prompt/terminal
+3s  - Types commands
+5s  - Executes payload
+7s  - Cleans up traces
+8s  - Attack complete</pre>
+            </div>
+
+            <h4>Common BadUSB Payloads</h4>
+            <div class="example-box">
+                <strong>What Can BadUSB Do?</strong>
+                <ul>
+                    <li><strong>Reverse Shells:</strong> Remote access to the target system</li>
+                    <li><strong>Data Exfiltration:</strong> Copy files to attacker's server</li>
+                    <li><strong>Password Theft:</strong> Dump saved credentials</li>
+                    <li><strong>Ransomware:</strong> Encrypt files and demand payment</li>
+                    <li><strong>Privilege Escalation:</strong> Gain admin/root access</li>
+                    <li><strong>Network Pivoting:</strong> Use compromised machine as entry point</li>
+                    <li><strong>Persistent Backdoors:</strong> Maintain long-term access</li>
+                </ul>
+            </div>
+
+            <h4>Flipper Zero as BadUSB</h4>
+            <div class="info-box">
+                <p>The Flipper Zero can act as a BadUSB device when connected via USB cable. It can emulate keyboards for Windows, macOS, and Linux, making it a powerful penetration testing tool.</p>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ CRITICAL WARNING:</strong>
+                <p>BadUSB attacks are <strong>highly illegal</strong> when performed without authorization. Penalties include:</p>
+                <ul>
+                    <li><strong>Computer Fraud and Abuse Act (USA):</strong> Up to 20 years prison</li>
+                    <li><strong>Unauthorized access laws:</strong> Vary by country, severe penalties</li>
+                    <li><strong>Corporate espionage charges:</strong> If targeting businesses</li>
+                </ul>
+                <p><strong>ONLY use BadUSB on systems you own or have written authorization to test!</strong></p>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(1)">Continue to Script Basics →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="2">
+            <h3>📝 DuckyScript Language</h3>
+            
+            <h4>Understanding DuckyScript</h4>
+            <div class="info-box">
+                <p><strong>DuckyScript</strong> is a simple scripting language created for the USB Rubber Ducky (another BadUSB device). The Flipper Zero uses DuckyScript for its BadUSB payloads, making scripts portable and easy to write.</p>
+            </div>
+
+            <h4>Basic DuckyScript Commands</h4>
+            <div class="command-block">
+<pre>Core Commands:
+
+REM - Comment (ignored by interpreter)
+DELAY - Wait specified milliseconds
+STRING - Type text exactly as written
+ENTER - Press Enter key
+GUI - Windows key (Mac: Command)
+CTRL - Control key
+ALT - Alt key
+SHIFT - Shift key
+TAB - Tab key
+ESC - Escape key
+SPACE - Space bar
+
+Function Keys:
+F1, F2, F3...F12
+
+Special Keys:
+UP, DOWN, LEFT, RIGHT (arrow keys)
+DELETE, BACKSPACE
+HOME, END
+PAGEUP, PAGEDOWN</pre>
+            </div>
+
+            <h4>Key Combinations</h4>
+            <div class="tip-box">
+                <p>You can combine keys to create shortcuts:</p>
+                <div class="command-block">
+<pre>Windows Examples:
+GUI r           → Open Run dialog
+CTRL ALT DELETE → Security screen
+CTRL SHIFT ESC  → Task Manager
+GUI d           → Show desktop
+
+Mac Examples:
+GUI SPACE       → Spotlight search
+GUI q           → Quit application
+CTRL SPACE      → Switch input source
+
+Linux Examples:
+CTRL ALT t      → Open terminal
+ALT F2          → Run command
+CTRL ALT F1     → TTY1</pre>
+                </div>
+            </div>
+
+            <h4>Timing with DELAY</h4>
+            <div class="info-box">
+                <p><strong>DELAY</strong> is crucial for reliable scripts. Computers need time to open windows, load programs, and process commands.</p>
+            </div>
+
+            <div class="command-block">
+<pre>Timing Best Practices:
+
+DELAY 1000      → 1 second (1000 milliseconds)
+DELAY 500       → Half second
+DELAY 2000      → 2 seconds
+
+When to use DELAY:
+• After opening programs (500-2000ms)
+• After GUI commands (300-500ms)
+• Before typing URLs (500-1000ms)
+• After pressing ENTER (100-300ms)
+• Slow computers need longer delays!
+
+Too fast = Script fails
+Too slow = Takes forever but reliable</pre>
+            </div>
+
+            <h4>Simple Script Example</h4>
+            <div class="example-box">
+                <h4>Hello World - Notepad Script</h4>
+                <p>This script opens Notepad and types a message (Windows):</p>
+                <div class="command-block">
+<pre>REM Open Notepad and type message
+DELAY 1000
+GUI r
+DELAY 500
+STRING notepad
+DELAY 100
+ENTER
+DELAY 1000
+STRING Hello from Flipper Zero!
+ENTER
+STRING This is a BadUSB demo.
+DELAY 500</pre>
+                </div>
+                <p><strong>What it does:</strong></p>
+                <ol>
+                    <li>Waits 1 second for Flipper to initialize</li>
+                    <li>Opens Run dialog (Windows + R)</li>
+                    <li>Waits for Run dialog to appear</li>
+                    <li>Types "notepad"</li>
+                    <li>Presses Enter to launch Notepad</li>
+                    <li>Waits for Notepad to open</li>
+                    <li>Types the message</li>
+                </ol>
+            </div>
+
+            <h4>STRING vs Individual Keys</h4>
+            <div class="command-block">
+<pre>STRING Command:
+STRING Hello World!
+→ Types exactly: Hello World!
+→ Fast, efficient, preserves case
+
+Individual Keys:
+SHIFT h
+STRING ello 
+SPACE
+SHIFT w
+STRING orld
+SHIFT 1
+→ Same result, but tedious
+
+Always use STRING for text!</pre>
+            </div>
+
+            <h4>DuckyScript Variables & Logic</h4>
+            <div class="warning-box">
+                <strong>Note:</strong> Flipper's DuckyScript implementation is basic:
+                <ul>
+                    <li>✅ Linear execution (line by line)</li>
+                    <li>❌ No variables</li>
+                    <li>❌ No loops (REPEAT command)</li>
+                    <li>❌ No conditionals (IF statements)</li>
+                </ul>
+                <p>Keep scripts simple and sequential!</p>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(2)">Continue to Creating Payloads →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="3">
+            <h3>🛠️ Creating BadUSB Payloads</h3>
+            
+            <h4>Payload Structure</h4>
+            <div class="info-box">
+                <p>A well-structured BadUSB payload has three phases:</p>
+                <ol>
+                    <li><strong>Initialization:</strong> Wait for computer to recognize device</li>
+                    <li><strong>Execution:</strong> Perform the attack actions</li>
+                    <li><strong>Cleanup:</strong> Remove traces (optional but smart)</li>
+                </ol>
+            </div>
+
+            <h4>Creating Payload Files</h4>
+            <div class="command-block">
+<pre>File Format:
+• Extension: .txt
+• Location: /badusb/ on SD card
+• Encoding: UTF-8 (no BOM)
+• Line endings: LF or CRLF (both work)
+
+Example file: /badusb/demo.txt
+
+Creating on Computer:
+1. Use any text editor (Notepad, VS Code, etc.)
+2. Write DuckyScript commands
+3. Save as .txt file
+4. Copy to Flipper's SD card /badusb/ folder
+5. Safely eject SD card
+6. Insert back into Flipper</pre>
+            </div>
+
+            <h4>Windows Payload Example</h4>
+            <div class="example-box">
+                <h4>Rickroll Prank (Harmless)</h4>
+                <div class="command-block">
+<pre>REM Rickroll - Opens YouTube video
+REM Target: Windows 10/11
+DELAY 1000
+GUI r
+DELAY 500
+STRING https://www.youtube.com/watch?v=dQw4w9WgXcQ
+DELAY 100
+ENTER
+DELAY 3000
+F11
+REM Press F11 for fullscreen</pre>
+                </div>
+                <p><strong>Breakdown:</strong></p>
+                <ul>
+                    <li>Opens Run dialog</li>
+                    <li>Types YouTube URL (Rick Astley - Never Gonna Give You Up)</li>
+                    <li>Presses Enter to open in browser</li>
+                    <li>Waits for page to load</li>
+                    <li>Presses F11 for fullscreen mode</li>
+                </ul>
+            </div>
+
+            <h4>macOS Payload Example</h4>
+            <div class="example-box">
+                <h4>Screenshot Capture</h4>
+                <div class="command-block">
+<pre>REM Takes screenshot on Mac
+REM Target: macOS
+DELAY 1000
+GUI SPACE
+DELAY 300
+STRING terminal
+DELAY 200
+ENTER
+DELAY 1000
+STRING screencapture -x ~/Desktop/screenshot.png
+ENTER
+DELAY 500
+STRING exit
+ENTER
+REM Screenshot saved to Desktop</pre>
+                </div>
+            </div>
+
+            <h4>Linux Payload Example</h4>
+            <div class="example-box">
+                <h4>System Information Dump</h4>
+                <div class="command-block">
+<pre>REM Collects basic system info
+REM Target: Linux (Ubuntu/Debian)
+DELAY 1000
+CTRL ALT t
+DELAY 1000
+STRING uname -a > /tmp/sysinfo.txt
+ENTER
+DELAY 200
+STRING cat /etc/os-release >> /tmp/sysinfo.txt
+ENTER
+DELAY 200
+STRING ifconfig >> /tmp/sysinfo.txt
+ENTER
+DELAY 200
+STRING cat /tmp/sysinfo.txt
+ENTER
+DELAY 1000
+STRING exit
+ENTER
+REM Info displayed in terminal</pre>
+                </div>
+            </div>
+
+            <h4>Payload Development Tips</h4>
+            <div class="tip-box">
+                <strong>Writing Reliable Payloads:</strong>
+                <ul>
+                    <li><strong>Test on target OS:</strong> Windows, Mac, Linux behave differently</li>
+                    <li><strong>Add generous delays:</strong> Better slow and reliable than fast and broken</li>
+                    <li><strong>Comment your code:</strong> Future you will thank present you</li>
+                    <li><strong>Handle different speeds:</strong> Old computers need more time</li>
+                    <li><strong>Avoid long strings:</strong> Break into multiple STRING commands if needed</li>
+                    <li><strong>Test typing speed:</strong> Some systems can't keep up with fast input</li>
+                    <li><strong>Account for layouts:</strong> QWERTY vs AZERTY vs other keyboards</li>
+                </ul>
+            </div>
+
+            <h4>Cross-Platform Considerations</h4>
+            <div class="command-block">
+<pre>OS Detection Challenge:
+BadUSB can't automatically detect OS!
+
+Solutions:
+1. Create separate payloads per OS
+2. Use universal commands (rare)
+3. Multiple attempts (try Windows, then Mac, then Linux)
+4. Recon first (know target OS beforehand)
+
+Keyboard Layout Issues:
+• QWERTY (English) is standard
+• AZERTY (French) has different positions
+• QWERTZ (German) swaps Y and Z
+• Special characters vary (\ vs /)
+
+Best Practice: Test on actual target system!</pre>
+            </div>
+
+            <h4>Payload Libraries</h4>
+            <div class="info-box">
+                <p><strong>Community Resources:</strong></p>
+                <ul>
+                    <li><strong>GitHub:</strong> Hak5 DuckyScript payloads (thousands!)</li>
+                    <li><strong>Flipper Forums:</strong> User-shared BadUSB scripts</li>
+                    <li><strong>PayloadStudio:</strong> Online DuckyScript editor</li>
+                </ul>
+                <p><strong>Warning:</strong> Many payloads are malicious. Only use on authorized systems!</p>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(3)">Continue to Execution →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="4">
+            <h3>▶️ Executing BadUSB Attacks</h3>
+            
+            <h4>Running Payloads on Flipper</h4>
+            <div class="command-block">
+<pre>Execution Steps:
+1. Ensure payload .txt file is in /badusb/ folder
+2. Connect Flipper to target via USB cable
+3. Flipper → Bad USB
+4. Select your payload file
+5. Press OK to execute
+6. Watch it run automatically!
+
+Status Indicators:
+• Script Name displayed
+• Line count shown
+• Execution progress
+• Completion confirmation</pre>
+            </div>
+
+            <h4>Connection Modes</h4>
+            <div class="tip-box">
+                <strong>Flipper USB Modes:</strong>
+                <p>When connecting Flipper to a computer:</p>
+                <ul>
+                    <li><strong>Default:</strong> Mass storage (SD card appears as drive)</li>
+                    <li><strong>BadUSB Mode:</strong> Keyboard emulation (for attacks)</li>
+                    <li><strong>Serial Mode:</strong> Command line interface</li>
+                </ul>
+                <p>Flipper automatically switches to BadUSB mode when you launch a payload!</p>
+            </div>
+
+            <h4>Real-Time Monitoring</h4>
+            <div class="command-block">
+<pre>During Execution:
+• Flipper screen shows current line
+• Progress indicator advances
+• Can see delays counting down
+• Errors displayed if occur
+
+Stopping Execution:
+• Press BACK button to abort
+• Useful if something goes wrong
+• Script stops immediately
+• Already-typed commands can't be undone!</pre>
+            </div>
+
+            <h4>Common Execution Issues</h4>
+            <div class="warning-box">
+                <strong>Troubleshooting Failed Payloads:</strong>
+                <ul>
+                    <li><strong>Too fast:</strong> Increase DELAY values</li>
+                    <li><strong>Wrong OS:</strong> Payload written for different system</li>
+                    <li><strong>Security software:</strong> Antivirus blocking actions</li>
+                    <li><strong>Locked screen:</strong> Computer requires login first</li>
+                    <li><strong>Language/layout:</strong> Wrong keyboard layout</li>
+                    <li><strong>Permissions:</strong> Need admin rights for some commands</li>
+                    <li><strong>Network required:</strong> Payload needs internet, none available</li>
+                </ul>
+            </div>
+
+            <h4>Payload Testing Strategy</h4>
+            <div class="example-box">
+                <h4>Safe Testing Methodology</h4>
+                <ol>
+                    <li><strong>Virtual Machine:</strong> Test in VM first (disposable environment)</li>
+                    <li><strong>Test PC:</strong> Use dedicated test machine, not your main computer</li>
+                    <li><strong>Incremental Testing:</strong> Test each section of payload separately</li>
+                    <li><strong>Observation:</strong> Watch execution to see where it fails</li>
+                    <li><strong>Adjustment:</strong> Tweak delays and commands</li>
+                    <li><strong>Repeat:</strong> Test until 100% reliable</li>
+                    <li><strong>Documentation:</strong> Note what works and what doesn't</li>
+                </ol>
+            </div>
+
+            <h4>Advanced: Chaining Payloads</h4>
+            <div class="command-block">
+<pre>Multi-Stage Attacks:
+
+Stage 1: Reconnaissance
+• Gather system info
+• Check for antivirus
+• Determine OS version
+
+Stage 2: Preparation  
+• Disable security (if possible)
+• Download additional tools
+• Setup persistence
+
+Stage 3: Main Payload
+• Execute primary objective
+• Exfiltrate data
+• Plant backdoor
+
+Stage 4: Cleanup
+• Remove logs
+• Delete temporary files
+• Cover tracks
+
+Note: Multiple separate payload files,
+      run one after another manually</pre>
+            </div>
+
+            <h4>Payload Persistence Techniques</h4>
+            <div class="info-box">
+                <h4>Maintaining Access (Theory)</h4>
+                <p>Advanced attackers use persistence mechanisms:</p>
+                <ul>
+                    <li><strong>Startup folders:</strong> Run on boot</li>
+                    <li><strong>Registry keys:</strong> Windows autostart</li>
+                    <li><strong>Cron jobs:</strong> Linux scheduled tasks</li>
+                    <li><strong>Launch Agents:</strong> macOS persistence</li>
+                    <li><strong>Service creation:</strong> Background processes</li>
+                </ul>
+                <p><strong>We won't provide these payloads - they're clearly malicious and illegal when unauthorized!</strong></p>
+            </div>
+
+            <h4>Detection and Defense</h4>
+            <div class="tip-box">
+                <strong>How to Detect BadUSB Attacks:</strong>
+                <ul>
+                    <li><strong>Unexpected keyboard activity:</strong> Watch for rapid typing</li>
+                    <li><strong>New USB devices:</strong> Monitor USB connections</li>
+                    <li><strong>Command windows flashing:</strong> Brief terminal openings</li>
+                    <li><strong>Unusual network traffic:</strong> Unexpected outbound connections</li>
+                    <li><strong>EDR alerts:</strong> Endpoint detection systems flagging suspicious behavior</li>
+                </ul>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(4)">Continue to Defense Strategies →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="5">
+            <h3>🛡️ Defending Against BadUSB</h3>
+            
+            <h4>Why BadUSB is Hard to Stop</h4>
+            <div class="warning-box">
+                <strong>The Fundamental Problem:</strong>
+                <p>BadUSB exploits trust in Human Interface Devices (HID). Computers <em>must</em> trust keyboards - otherwise, how would you use your computer? This makes BadUSB attacks extremely difficult to prevent completely.</p>
+            </div>
+
+            <h4>Physical Security</h4>
+            <div class="tip-box">
+                <strong>First Line of Defense:</strong>
+                <ul>
+                    <li><strong>Lock your screen:</strong> Always when stepping away (Windows+L, Ctrl+Alt+L)</li>
+                    <li><strong>Disable USB ports:</strong> Glue, port blockers, BIOS settings</li>
+                    <li><strong>Monitor USB usage:</strong> Be aware of what's plugged in</li>
+                    <li><strong>Physical access control:</strong> Secure work areas, badge access</li>
+                    <li><strong>Cable locks:</strong> Prevent device removal and USB access</li>
+                    <li><strong>Clear desk policy:</strong> No unattended computers</li>
+                </ul>
+            </div>
+
+            <h4>Technical Defenses</h4>
+            <div class="command-block">
+<pre>Software Protections:
+
+USB Device Control:
+• Windows: Device Installation restrictions
+• macOS: System Preferences → Security
+• Linux: USBGuard, udev rules
+• Enterprise: Manage via Group Policy
+
+Endpoint Protection:
+• EDR (Endpoint Detection & Response)
+• Behavioral analysis (detect rapid typing)
+• Process monitoring (catch malicious commands)
+• Network monitoring (detect exfiltration)
+
+Application Whitelisting:
+• Only allow approved programs to run
+• Blocks payload-launched executables
+• Examples: AppLocker, SELinux
+
+Disable Auto-Run:
+• Prevent automatic execution from USB
+• Group Policy: Turn off Autoplay
+• Registry modifications</pre>
+            </div>
+
+            <h4>USB Port Management</h4>
+            <div class="example-box">
+                <h4>Granular USB Control</h4>

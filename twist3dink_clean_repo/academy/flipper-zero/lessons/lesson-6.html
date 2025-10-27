@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 6: GPIO & Hardware Hacking - tw¡st3d_¡nk Academy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">tw¡st3d_¡nk</div>
+            <h1>Flipper Zero Academy</h1>
+            <div class="xp-display">
+                <span class="xp-label">XP:</span>
+                <span id="xp-amount">0</span>
+            </div>
+        </header>
+
+        <!-- Lesson Header -->
+        <div class="lesson-header">
+            <h2>Lesson 6: GPIO & Hardware Hacking</h2>
+            <div class="lesson-meta">
+                <span class="difficulty expert">Expert Level</span>
+                <span class="duration">⏱ 45 min</span>
+                <span class="xp-reward">🎯 +150 XP</span>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="lesson-progress">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+            <span class="progress-text">0% Complete</span>
+        </div>
+
+        <!-- Lesson Content -->
+        <div class="content-section" data-section="1">
+            <h3>🔌 Understanding GPIO & Hardware Interfaces</h3>
+            
+            <div class="info-box">
+                <h4>What is GPIO?</h4>
+                <p><strong>GPIO (General Purpose Input/Output)</strong> pins are the physical interface that allows the Flipper Zero to communicate with external hardware. Think of them as the "nervous system" that lets your Flipper interact with the physical world beyond wireless protocols.</p>
+            </div>
+
+            <h4>Flipper Zero GPIO Pinout</h4>
+            <p>The Flipper Zero features an 18-pin GPIO header with the following capabilities:</p>
+            
+            <div class="command-block">
+<pre>Flipper Zero GPIO Pinout (Left to Right):
+┌─────────────────────────────┐
+│ 1  3.3V      │  2  5V        │  Power Rails
+│ 3  USB D-    │  4  USB D+    │  USB Data
+│ 5  GPIO PC3  │  6  GPIO PB3  │  General I/O
+│ 7  GPIO PA7  │  8  GPIO PA6  │  General I/O
+│ 9  GPIO PA4  │ 10  GPIO PB2  │  General I/O
+│11  GPIO PC1  │ 12  GPIO PC0  │  General I/O
+│13  TX (PA2)  │ 14  RX (PA3)  │  UART
+│15  SCK (PB13)│ 16  MISO (PB14)│ SPI
+│17  MOSI(PB15)│ 18  GND       │  Ground
+└─────────────────────────────┘</pre>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Critical Safety Notes:</strong>
+                <ul>
+                    <li><strong>Voltage Limits:</strong> GPIO pins are 3.3V tolerant. Applying 5V directly to GPIO pins will damage your Flipper!</li>
+                    <li><strong>Current Limits:</strong> Each pin can source/sink max 25mA. Total current for all pins: 150mA.</li>
+                    <li><strong>Always use level shifters</strong> when interfacing with 5V devices.</li>
+                    <li><strong>Never short power pins</strong> - always verify connections before powering on.</li>
+                </ul>
+            </div>
+
+            <h4>Common Hardware Protocols</h4>
+            <div class="tip-box">
+                <strong>Protocol Overview:</strong>
+                <ul>
+                    <li><strong>UART</strong> (Universal Asynchronous Receiver-Transmitter): 2-wire serial communication. Most common for debug consoles.</li>
+                    <li><strong>SPI</strong> (Serial Peripheral Interface): 4-wire synchronous communication. Fast, used for sensors and displays.</li>
+                    <li><strong>I2C</strong> (Inter-Integrated Circuit): 2-wire multi-device bus. Common in embedded systems.</li>
+                    <li><strong>1-Wire</strong>: Single wire + ground. Used for temperature sensors, authentication chips.</li>
+                </ul>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(1)">Continue to UART Basics →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="2">
+            <h3>📡 UART Communication Fundamentals</h3>
+            
+            <div class="info-box">
+                <h4>Why UART Matters for Hardware Hacking</h4>
+                <p>UART is the <strong>most common debug interface</strong> found in embedded devices. Routers, IoT devices, smart appliances, industrial control systems - most expose UART for debugging. Finding and reading UART can reveal:</p>
+                <ul>
+                    <li>Boot logs with firmware versions and system info</li>
+                    <li>Debug shells (root access!)</li>
+                    <li>Passwords and encryption keys in plain text</li>
+                    <li>System commands and internal operations</li>
+                </ul>
+            </div>
+
+            <h4>UART Connection Basics</h4>
+            <p>UART requires only 3 connections:</p>
+            
+            <div class="command-block">
+<pre>UART Wiring:
+Flipper TX  (Pin 13) ──→ Target RX  (Flipper transmits)
+Flipper RX  (Pin 14) ──→ Target TX  (Flipper receives)
+Flipper GND (Pin 18) ──→ Target GND (Common ground)
+
+Note: TX connects to RX and vice versa (crossover)!</pre>
+            </div>
+
+            <h4>UART Configuration Parameters</h4>
+            <p>UART requires matching settings on both devices:</p>
+            
+            <div class="tip-box">
+                <strong>Key Parameters:</strong>
+                <ul>
+                    <li><strong>Baud Rate:</strong> Speed of communication (bits per second)
+                        <br>Common: 9600, 19200, 38400, 57600, <strong>115200</strong> (most common)</li>
+                    <li><strong>Data Bits:</strong> Usually 8 bits per byte</li>
+                    <li><strong>Parity:</strong> Error checking (usually None)</li>
+                    <li><strong>Stop Bits:</strong> Synchronization (usually 1)</li>
+                </ul>
+                <p><strong>Standard notation:</strong> 115200 8N1 = 115200 baud, 8 data bits, No parity, 1 stop bit</p>
+            </div>
+
+            <h4>Finding UART on Target Devices</h4>
+            <div class="command-block">
+<pre>Visual Identification:
+✓ Look for 3-4 pins in a row (TX, RX, GND, VCC)
+✓ Often labeled: UART, SERIAL, DEBUG, CONSOLE, J1, P1
+✓ Check near processor or edge of PCB
+✓ Unpopulated headers (solder points without pins)
+
+Using Multimeter:
+1. Power OFF device
+2. Continuity test to find GND (connects to ground plane)
+3. Power ON device
+4. Voltage test: VCC = 3.3V or 5V (constant)
+5. TX = voltage fluctuates during boot
+6. RX = usually high (3.3V) when idle</pre>
+            </div>
+
+            <h4>Flipper UART Terminal App</h4>
+            <p>The Flipper Zero has a built-in UART terminal for reading serial data:</p>
+            
+            <div class="command-block">
+<pre>Accessing UART Terminal:
+1. GPIO → UART Terminal
+2. Configure settings:
+   - Baud Rate: Try 115200 first
+   - Data: 8 bits
+   - Parity: None
+   - Stop: 1 bit
+3. Connect wires (device must be powered)
+4. Press OK to start reading
+5. Press BACK to stop
+
+Keyboard Mode:
+- Press OK → "Keyboard" to send commands
+- Useful for interactive debug shells</pre>
+            </div>
+
+            <div class="example-box">
+                <h4>Real-World Example: Router UART Access</h4>
+                <p><strong>Scenario:</strong> Accessing debug console on a TP-Link router</p>
+                <ol>
+                    <li>Identify 4-pin header labeled J1 on PCB</li>
+                    <li>Find GND with continuity tester (connected to shielding)</li>
+                    <li>Power on, measure voltage on remaining pins</li>
+                    <li>TX fluctuates during boot = Pin 2, RX stable at 3.3V = Pin 3</li>
+                    <li>Connect: Flipper GND→J1-GND, Flipper RX→J1-TX</li>
+                    <li>UART Terminal at 115200 baud</li>
+                    <li>Power cycle router → see boot logs!</li>
+                </ol>
+                <div class="command-block">
+<pre>Captured Output:
+U-Boot 1.1.3 (Mar 18 2021 - 14:22:31)
+Board: TP-Link TL-WR841N v13
+Flash: 4 MB
+DRAM: 32 MB
+...
+Please press Enter to activate console...</pre>
+                </div>
+                <p>Result: Gained access to bootloader console, can interrupt boot process!</p>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(2)">Continue to SPI & I2C →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="3">
+            <h3>⚡ SPI & I2C Protocol Basics</h3>
+            
+            <h4>SPI (Serial Peripheral Interface)</h4>
+            <div class="info-box">
+                <p><strong>SPI</strong> is a synchronous, full-duplex protocol commonly used for high-speed communication with flash memory, displays, and sensors. It's faster than UART but requires more wires.</p>
+            </div>
+
+            <div class="command-block">
+<pre>SPI Connection (4-wire):
+┌──────────────────────────────────────┐
+│ MOSI (Master Out Slave In) - Pin 17 │  Flipper → Target
+│ MISO (Master In Slave Out) - Pin 16 │  Target → Flipper
+│ SCK  (Serial Clock)        - Pin 15 │  Clock signal
+│ CS   (Chip Select)         - GPIO   │  Select target device
+│ GND  (Ground)              - Pin 18 │  Common ground
+└──────────────────────────────────────┘
+
+How SPI Works:
+- Master generates clock (SCK)
+- Master selects slave (CS LOW)
+- Data exchanged simultaneously on MOSI/MISO
+- Each clock pulse transfers 1 bit in each direction</pre>
+            </div>
+
+            <div class="tip-box">
+                <strong>SPI Characteristics:</strong>
+                <ul>
+                    <li><strong>Fast:</strong> Can reach 10+ MHz clock speeds</li>
+                    <li><strong>Full-duplex:</strong> Send and receive simultaneously</li>
+                    <li><strong>Simple:</strong> No complex protocol, just clock and data</li>
+                    <li><strong>Multiple slaves:</strong> Use different CS pins for each device</li>
+                    <li><strong>No acknowledgment:</strong> Master doesn't know if slave received data</li>
+                </ul>
+            </div>
+
+            <h4>Common SPI Applications</h4>
+            <div class="example-box">
+                <h4>SPI Flash Memory Dumping</h4>
+                <p><strong>Use Case:</strong> Reading firmware directly from flash chips</p>
+                <div class="command-block">
+<pre>Typical Flash Chips (SPI):
+- Winbond W25Q32 (4MB)
+- Macronix MX25L1606E (2MB)
+- Microchip SST25VF016B (2MB)
+
+Pin Identification on 8-pin SOIC:
+Pin 1: CS (Chip Select)    Pin 5: MOSI
+Pin 2: MISO                Pin 6: SCK
+Pin 3: WP (Write Protect)  Pin 7: HOLD
+Pin 4: GND                 Pin 8: VCC (3.3V)
+
+Reading Process:
+1. Identify chip markings
+2. Connect Flipper SPI pins
+3. Power chip from Flipper 3.3V (check current!)
+4. Use SPI sniffer or flashrom tool
+5. Dump full firmware image</pre>
+                </div>
+            </div>
+
+            <h4>I2C (Inter-Integrated Circuit)</h4>
+            <div class="info-box">
+                <p><strong>I2C</strong> is a multi-device bus protocol using only 2 data lines. Multiple devices can share the same bus, each with a unique address. Common in sensors, EEPROMs, and real-time clocks.</p>
+            </div>
+
+            <div class="command-block">
+<pre>I2C Connection (2-wire + ground):
+┌────────────────────────────────────┐
+│ SDA (Serial Data)        - GPIO   │  Bidirectional data
+│ SCL (Serial Clock)       - GPIO   │  Clock signal
+│ GND (Ground)             - Pin 18 │  Common ground
+└────────────────────────────────────┘
+
+I2C Addressing:
+- Each device has 7-bit or 10-bit address
+- Master initiates communication
+- Multiple masters possible (complex)
+- Pull-up resistors required (2.2k-10k Ohm)</pre>
+            </div>
+
+            <div class="tip-box">
+                <strong>I2C Characteristics:</strong>
+                <ul>
+                    <li><strong>Simple wiring:</strong> Only 2 wires for multiple devices</li>
+                    <li><strong>Addressed:</strong> Each device responds to unique address</li>
+                    <li><strong>Slower:</strong> Typically 100 kHz or 400 kHz</li>
+                    <li><strong>Acknowledgment:</strong> Slave acknowledges received data</li>
+                    <li><strong>Needs pull-ups:</strong> Both lines require resistors to VCC</li>
+                </ul>
+            </div>
+
+            <h4>Flipper GPIO App for Protocol Sniffing</h4>
+            <p>The Flipper Zero can sniff various protocols in real-time:</p>
+            
+            <div class="command-block">
+<pre>Using GPIO → USB-UART Bridge:
+1. Connect TX/RX to target UART
+2. Flipper acts as USB-to-Serial adapter
+3. Computer receives raw UART data
+4. Useful for capture and analysis
+
+Using Logic Analyzer:
+(Requires community app installation)
+1. Connect GPIO pins to target signals
+2. Capture timing and state changes
+3. Decode SPI, I2C, UART protocols
+4. Save captures for analysis</pre>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Protocol Sniffing Ethics:</strong>
+                <p>Intercepting communications on devices you don't own may be illegal. Only sniff protocols on:</p>
+                <ul>
+                    <li>Devices you own and have permission to modify</li>
+                    <li>Authorized penetration testing engagements</li>
+                    <li>Educational setups and lab environments</li>
+                </ul>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(3)">Continue to Hardware Debugging →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="4">
+            <h3>🔍 Hardware Debugging Techniques</h3>
+            
+            <div class="info-box">
+                <h4>What is Hardware Debugging?</h4>
+                <p>Hardware debugging involves analyzing and interacting with the physical components and interfaces of a device to understand its operation, extract data, or modify its behavior. This is essential for security research, reverse engineering, and forensics.</p>
+            </div>
+
+            <h4>Debug Interface Types</h4>
+            <div class="command-block">
+<pre>Common Debug Interfaces:
+
+1. JTAG (Joint Test Action Group)
+   - 4-5 pins: TDI, TDO, TCK, TMS, (TRST)
+   - Direct processor access
+   - Read/write memory, halt execution
+   - Gold standard for debugging
+
+2. SWD (Serial Wire Debug)
+   - 2 pins: SWDIO, SWCLK
+   - ARM-specific alternative to JTAG
+   - Faster and simpler than JTAG
+   - Common in modern ARM devices
+
+3. Debug UART
+   - 2 pins: TX, RX
+   - Console access, shell interaction
+   - Easiest to find and exploit
+   - Limited compared to JTAG/SWD</pre>
+            </div>
+
+            <h4>Finding Debug Interfaces</h4>
+            <div class="tip-box">
+                <strong>Visual Inspection:</strong>
+                <ul>
+                    <li><strong>Look for pin headers:</strong> Even unpopulated ones (just solder pads)</li>
+                    <li><strong>Check labels:</strong> JTAG, DEBUG, SWD, TCK, TMS, etc.</li>
+                    <li><strong>Count pins:</strong> 4-5 in a row? Likely JTAG. 2 pins? Possibly SWD.</li>
+                    <li><strong>Trace from processor:</strong> Follow PCB traces from main chip</li>
+                    <li><strong>Reference designs:</strong> Search for device teardowns online</li>
+                </ul>
+            </div>
+
+            <div class="example-box">
+                <h4>JTAG Pin Identification</h4>
+                <p>When you find a suspected JTAG header but pins aren't labeled:</p>
+                <ol>
+                    <li><strong>Find GND:</strong> Continuity test to ground plane/shielding</li>
+                    <li><strong>Find VCC:</strong> Should measure 3.3V or 5V when powered</li>
+                    <li><strong>Test combinations:</strong> Use JTAGulator or trial-and-error
+                        <ul>
+                            <li>Connect suspected TMS, TCK, TDI, TDO</li>
+                            <li>Try JTAG scan with tool</li>
+                            <li>If detected, note the device ID</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h4>JTAG with External Tools</h4>
+            <p>While Flipper doesn't have native JTAG support, you can use it alongside other tools:</p>
+            
+            <div class="command-block">
+<pre>JTAG Workflow:
+1. Flipper identifies UART → extract boot info
+2. Determine processor type from boot logs
+3. Use JTAG adapter (Bus Pirate, FT2232H, etc.)
+4. Connect JTAG pins based on processor datasheet
+5. Dump firmware with OpenOCD or similar
+
+OpenOCD Example Commands:
+$ openocd -f interface/ftdi/ft2232h.cfg \
+          -f target/stm32f1x.cfg
+> halt
+> dump_image firmware.bin 0x08000000 0x10000
+> reset
+> exit</pre>
+            </div>
+
+            <h4>Firmware Extraction Methods</h4>
+            <div class="tip-box">
+                <strong>Common Extraction Techniques:</strong>
+                <ul>
+                    <li><strong>UART Boot Mode:</strong> Many devices have special boot modes accessible via UART commands during startup</li>
+                    <li><strong>SPI Flash Reading:</strong> Directly read flash chip if removable or accessible</li>
+                    <li><strong>JTAG/SWD Dump:</strong> Read memory directly from processor</li>
+                    <li><strong>Update File Analysis:</strong> Reverse engineer OTA update packages</li>
+                    <li><strong>Chip-Off:</strong> Remove flash chip, read with programmer (destructive!)</li>
+                </ul>
+            </div>
+
+            <h4>Analyzing Extracted Firmware</h4>
+            <div class="command-block">
+<pre>Basic Firmware Analysis:
+$ file firmware.bin
+firmware.bin: data
+
+$ binwalk firmware.bin
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             uImage header
+64            0x40            LZMA compressed data
+524288        0x80000         Squashfs filesystem
+
+$ binwalk -e firmware.bin
+# Extracts filesystem and components
+
+$ strings firmware.bin | grep -i password
+admin_password=default123
+wifi_key=factorydefault
+
+$ hexdump -C firmware.bin | less
+# Manual inspection</pre>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Legal Considerations:</strong>
+                <p>Firmware extraction and analysis can violate:</p>
+                <ul>
+                    <li>Terms of Service agreements</li>
+                    <li>Copyright laws (firmware is copyrighted)</li>
+                    <li>DMCA anti-circumvention provisions (in USA)</li>
+                    <li>Computer Fraud and Abuse Act (unauthorized access)</li>
+                </ul>
+                <p><strong>Only perform on devices you own for personal research/security purposes.</strong></p>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(4)">Continue to Practical Tips →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="5">
+            <h3>🛠️ Practical Hardware Hacking Tips</h3>
+            
+            <h4>Essential Tools & Equipment</h4>
+            <div class="tip-box">
+                <strong>Beginner Hardware Hacking Kit:</strong>
+                <ul>
+                    <li><strong>Flipper Zero:</strong> UART terminal, GPIO testing, protocol sniffing</li>
+                    <li><strong>Multimeter:</strong> Voltage, continuity, identifying pins</li>
+                    <li><strong>Logic Analyzer:</strong> Cheap 8-channel USB analyzers work great</li>
+                    <li><strong>Jumper Wires:</strong> Female-female, male-female, male-male</li>
+                    <li><strong>Soldering Iron:</strong> For connecting to unpopulated headers</li>
+                    <li><strong>Magnifying Glass:</strong> Reading chip markings</li>
+                    <li><strong>USB-to-Serial Adapter:</strong> Backup for UART (CH340, FTDI)</li>
+                </ul>
+            </div>
+
+            <h4>Safety Best Practices</h4>
+            <div class="warning-box">
+                <strong>⚠️ Protect Your Equipment:</strong>
+                <ul>
+                    <li><strong>Always check voltages</strong> before connecting</li>
+                    <li><strong>Use current-limiting resistors</strong> when testing unknown pins</li>
+                    <li><strong>Never connect USB and external power</strong> simultaneously</li>
+                    <li><strong>Start with ground</strong> - connect GND first, disconnect last</li>
+                    <li><strong>Use ESD protection</strong> - anti-static wrist strap when handling circuits</li>
+                    <li><strong>Double-check polarity</strong> - reversed voltage kills chips instantly</li>
+                </ul>
+            </div>
+
+            <h4>Common Mistakes to Avoid</h4>
+            <div class="command-block">
+<pre>Mistake #1: Wrong Baud Rate
+Problem: Garbage output in UART terminal
+Solution: Try common rates: 9600, 19200, 38400, 57600, 115200
+Tip: Correct baud shows readable text, wrong shows: "�g���Xa�0�"
+
+Mistake #2: TX/RX Reversed
+Problem: No output at all
+Solution: Swap TX and RX connections
+
+Mistake #3: Missing Common Ground
+Problem: Intermittent or no communication
+Solution: Always connect GND between devices
+
+Mistake #4: Voltage Mismatch
+Problem: Damaged Flipper or target device
+Solution: Use level shifters for 5V devices
+
+Mistake #5: Floating Pins
+Problem: Unreliable SPI/I2C communication
+Solution: Add pull-up resistors (2.2k-10k) to SDA/SCL</pre>
+            </div>
+
+            <h4>Real-World Target Practice</h4>
+            <div class="example-box">
+                <h4>Good Devices for Practice</h4>
+                <p>Safe, legal, and educational targets you can own:</p>
+                <ul>
+                    <li><strong>Old Routers:</strong> TP-Link, Netgear, D-Link (check eBay for cheap models)</li>
+                    <li><strong>IP Cameras:</strong> Many have exposed UART for debugging</li>
+                    <li><strong>Smart Home Devices:</strong> Cheap Wi-Fi plugs, bulbs often have UART</li>
+                    <li><strong>Arduino/ESP32 Boards:</strong> Perfect for learning protocols safely</li>
+                    <li><strong>Old Game Consoles:</strong> Original Xbox, PS2 have accessible interfaces</li>
+                    <li><strong>Broken Electronics:</strong> Practice on devices that don't work anyway</li>
+                </ul>
+            </div>
+
+            <h4>Documentation & Notes</h4>
+            <div class="tip-box">
+                <strong>Always Document Your Work:</strong>
+                <ul>
+                    <li><strong>Take Photos:</strong> PCB before/after, pin configurations, wire connections</li>
+                    <li><strong>Label Everything:</strong> Which wire goes where, pin numbers, voltages</li>
+                    <li><strong>Save Captures:</strong> UART logs, logic analyzer traces, screenshots</li>
+                    <li><strong>Record Settings:</strong> Baud rates, protocols, successful configurations</li>
+                    <li><strong>Note Dead Ends:</strong> What didn't work saves time later</li>
+                </ul>
+                <p>Good documentation = replicable research = shareable knowledge</p>
+            </div>
+
+            <h4>Recommended Learning Resources</h4>
+            <div class="command-block">
+<pre>Hardware Hacking Resources:
+
+Books:
+- "Practical IoT Hacking" by Fotios Chantzis
+- "The Hardware Hacker" by Andrew "bunnie" Huang
+- "Practical Reverse Engineering" by Bruce Dang
+
+Websites:
+- devttys0.com (Craig Heffner's blog)
+- /r/hardwarehacking (Reddit community)
+- hackaday.com (Projects and teardowns)
+
+Tools:
+- PulseView (Logic analyzer software)
+- OpenOCD (JTAG debugger)
+- Binwalk (Firmware analysis)
+- Ghidra (Reverse engineering)</pre>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(5)">Ready for Final Challenge →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="6">
+            <h3>🎯 Final Challenge: The Smart Lock Bypass</h3>
+            
+            <div class="challenge-box">
+                <h4>Scenario: Electronic Safe Exploitation</h4>
+                <p><strong>Client Request:</strong> A client has purchased a "smart safe" from an unknown manufacturer for storing sensitive documents. They're concerned about the security and want you to perform a hardware security assessment before trusting it with important materials.</p>
+                
+                <p><strong>Device Information:</strong></p>
+                <ul>
+                    <li>Model: SecureVault Pro 3000</li>
+                    <li>Features: PIN code entry, backup key slot, "military-grade security"</li>
+                    <li>Marketing claims: "Unhackable, tamper-proof design"</li>
+                </ul>
+
+                <p><strong>Your Mission:</strong></p>
+                <ol>
+                    <li>Gain physical access to the control board</li>
+                    <li>Identify available debug interfaces</li>
+                    <li>Extract information via hardware interfaces</li>
+                    <li>Determine if the PIN can be bypassed</li>
+                    <li>Document the security vulnerabilities</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>Rules of Engagement:</strong>
+                    <ul>
+                        <li>Client owns the device - full authorization</li>
+                        <li>Non-destructive methods preferred (no cutting chips off PCB)</li>
+                        <li>Document all findings for security report</li>
+                        <li>Must be able to restore device to original state</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>📋 Step-by-Step Solution</h4>
+
+            <div class="solution-step">
+                <h4>Step 1: Initial Reconnaissance</h4>
+                <p><strong>Disassembly and Visual Inspection:</strong></p>
+                <div class="command-block">
+<pre>Actions Taken:
+1. Removed screws from back panel (4 Phillips head)
+2. Carefully pried open plastic housing
+3. Located main control PCB behind keypad
+4. Photographed board from all angles
+
+Observations:
+- Main IC: STM32F103C8T6 (ARM Cortex-M3 microcontroller)
+- EEPROM: 24C64 (I2C memory - likely stores PIN)
+- Unlabeled 4-pin header near processor (suspicious!)
+- Power regulator: AMS1117-3.3 (3.3V supply)
+- No obvious tamper detection circuits</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 2: Identifying the 4-Pin Header</h4>
+                <p><strong>Pin Function Identification:</strong></p>
+                <div class="command-block">
+<pre>Testing Process:
+Device OFF:
+- Pin 1: Continuity to ground plane → GND identified
+- Pin 4: Isolated, no continuity
+
+Device ON (multimeter voltage test):
+- Pin 1: 0V (confirmed GND)
+- Pin 2: 3.32V constant → VCC (power)
+- Pin 3: 3.28V, fluctuates during boot → TX (transmit)
+- Pin 4: 3.30V steady → RX (receive)
+
+Conclusion: This is a UART debug interface!
+Pin 1 = GND, Pin 2 = VCC, Pin 3 = TX, Pin 4 = RX</pre>
+                </div>
+                <p><strong>Why this matters:</strong> Manufacturers often leave debug interfaces on production devices for firmware updates and troubleshooting. These can leak sensitive information.</p>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 3: Connecting Flipper Zero</h4>
+                <p><strong>UART Connection Setup:</strong></p>
+                <div class="command-block">
+<pre>Wiring Configuration:
+Safe Pin 1 (GND) → Flipper Pin 18 (GND)
+Safe Pin 3 (TX)  → Flipper Pin 14 (RX)
+Safe Pin 4 (RX)  → Flipper Pin 13 (TX)  [for sending commands]
+
+Note: Left VCC disconnected - safe already has power
+
+Flipper Settings:
+GPIO → UART Terminal
+Baud Rate: Unknown - need to test
+Starting with 115200 (most common)</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 4: Capturing Boot Sequence</h4>
+                <p><strong>UART Output Analysis:</strong></p>
+                <div class="command-block">
+<pre>First Attempt (115200 baud):
+Result: Garbage characters "��g���Xa�0�"
+Action: Wrong baud rate, try others
+
+Second Attempt (9600 baud):
+Result: Success! Readable output during power-on:
+
+=================================
+SecureVault Pro 3000 v2.1.4
+Initializing...
+Reading EEPROM...
+PIN Code: 4 8 1 5 1 6 2 3
+Master Key: EN4BL3D
+Tamper Detect: OFF
+Boot Complete.
+System Ready.
+=================================
+
+CRITICAL FINDING: PIN code transmitted in plaintext!
+Current PIN: 4815162</pre>
+                </div>
+                <div class="warning-box">
+                    <strong>🚨 Major Security Flaw:</strong> The device transmits the stored PIN code over UART during every boot sequence. Anyone with physical access and a serial adapter can read the PIN in seconds!
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 5: Interactive Shell Discovery</h4>
+                <p><strong>Testing for Command Interface:</strong></p>
+                <div class="command-block">
+<pre>Attempt: Pressing keys during boot
+Result: Nothing happens
+
+Attempt: After boot, send "help" command
+Flipper: GPIO → UART Terminal → Keyboard Mode
+Type: help [Enter]
+
+Response:
+Available Commands:
+  help     - Show this menu
+  status   - System status
+  setpin   - Change PIN code
+  unlock   - Unlock safe
+  reset    - Factory reset
+  debug    - Debug mode
+
+JACKPOT: Full command interface available!</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 6: Testing Commands</h4>
+                <p><strong>Command Exploitation:</strong></p>
+                <div class="command-block">
+<pre>Command: status
+Response:
+Current PIN: 48151623
+Lock State: LOCKED
+Attempts: 0
+Master Override: ENABLED
+
+Command: unlock
+Response:
+ERROR: Safe is locked. Enter PIN or use master key.
+
+Command: debug
+Response:
+Entering debug mode...
+All security checks disabled.
+GPIO control enabled.
+
+Command: unlock
+Response:
+Lock solenoid activated.
+Safe UNLOCKED.
+
+Result: Safe opened without knowing PIN!</pre>
+                </div>
+                <div class="tip-box">
+                    <strong>The Debug Mode Bypass:</strong> The debug command disables all security checks, including PIN verification. This is catastrophic - the safe can be opened by anyone with:
+                    <ul>
+                        <li>3 wires and a serial adapter (~$2)</li>
+                        <li>5 minutes to disassemble and connect</li>
+                        <li>Basic knowledge of UART (now you have it!)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 7: EEPROM Analysis</h4>
+                <p><strong>Understanding PIN Storage:</strong></p>
+                <div class="command-block">
+<pre>Additional Finding:
+The 24C64 EEPROM (8-pin chip near MCU) stores:
+- PIN code in plaintext
+- Master key status
+- Configuration settings
+
+Potential Attack #2: I2C EEPROM Reading
+1. Identify I2C pins (SDA/SCL) on EEPROM
+2. Connect I2C reader (Flipper + custom app or Bus Pirate)
+3. Dump EEPROM contents
+4. Parse data to extract PIN
+5. Use PIN on keypad normally
+
+This works even if UART is patched/removed!</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 8: Security Report</h4>
+                <p><strong>Documented Vulnerabilities:</strong></p>
+                <div class="warning-box">
+                    <h4>Critical Findings - SecureVault Pro 3000</h4>
+                    <p><strong>CVSS Score: 9.3 (Critical)</strong></p>
+                    
+                    <p><strong>Vulnerability #1: UART Debug Interface (Critical)</strong></p>
+                    <ul>
+                        <li>Exposed 4-pin UART header on PCB</li>
+                        <li>No authentication required</li>
+                        <li>PIN transmitted in plaintext during boot</li>
+                        <li>Debug mode allows complete security bypass</li>
+                        <li><strong>Exploit time: 5 minutes</strong></li>
+                    </ul>
+
+                    <p><strong>Vulnerability #2: Plaintext PIN Storage (High)</strong></p>
+                    <ul>
+                        <li>PIN stored unencrypted in external EEPROM</li>
+                        <li>I2C interface accessible on PCB</li>
+                        <li>EEPROM can be read with $10 device</li>
+                        <li>No cryptographic protection</li>
+                    </ul>
+
+                    <p><strong>Vulnerability #3: No Tamper Detection (Medium)</strong></p>
+                    <ul>
+                        <li>Device can be opened without triggering alerts</li>
+                        <li>No physical security mechanisms</li>
+                        <li>Reassembly leaves no visible traces</li>
+                    </ul>
+
+                    <p><strong>Recommendation:</strong> ❌ DO NOT USE for sensitive materials</p>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Step 9: Responsible Disclosure</h4>
+                <p><strong>Next Steps:</strong></p>
+                <div class="tip-box">
+                    <ol>
+                        <li><strong>Client Notification:</strong> Informed client of critical flaws, recommended not using device</li>
+                        <li><strong>Vendor Contact:</strong> Attempted to contact SecureVault manufacturer (no response)</li>
+                        <li><strong>Public Disclosure:</strong> After 90-day waiting period, published findings</li>
+                        <li><strong>Community Alert:</strong> Warned security community about product</li>
+                    </ol>
+                    <p><strong>Outcome:</strong> Product discontinued after widespread coverage. Client purchased secure alternative with proper hardware security.</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>🎓 Key Lessons Learned</h4>
+                <ul>
+                    <li><strong>Debug interfaces are everywhere</strong> - manufacturers rarely remove them in production</li>
+                    <li><strong>Physical access = game over</strong> for most consumer devices</li>
+                    <li><strong>UART is the easiest entry point</strong> - always check for it first</li>
+                    <li><strong>Marketing ≠ Security</strong> - "military-grade" means nothing without proper implementation</li>
+                    <li><strong>Hardware hacking is accessible</strong> - basic tools can find critical flaws</li>
+                    <li><strong>Document everything</strong> - good records make findings credible and reproducible</li>
+                </ul>
+            </div>
+
+            <div class="completion-box">
+                <h4>🎉 Congratulations! Course Complete!</h4>
+                <p>You've mastered GPIO & Hardware Hacking fundamentals:</p>
+                <ul>
+                    <li>✅ GPIO pinout and safety protocols</li>
+                    <li>✅ UART identification and exploitation</li>
+                    <li>✅ SPI and I2C protocol understanding</li>
+                    <li>✅ Hardware debugging techniques</li>
+                    <li>✅ Firmware extraction concepts</li>
+                    <li>✅ Real-world hardware penetration testing</li>
+                </ul>
+                <p><strong>You've now completed all 6 lessons of the tw¡st3d_¡nk Flipper Zero Academy!</strong></p>
+                <p>Continue practicing on your own hardware projects, stay legal and ethical, and keep learning!</p>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(6)">Complete Lesson 6 →</button>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="lesson5.html" class="nav-btn prev">← Lesson 5: Wi-Fi Networks</a>
+            <a href="index.html" class="nav-btn">🏠 Academy Home</a>
+            <a href="index.html" class="nav-btn next">Course Complete! 🎉</a>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>tw¡st3d_¡nk Academy - Lesson 6: GPIO & Hardware Hacking</p>
+            <p class="disclaimer">⚠️ Educational purposes only. Always obtain proper authorization before testing hardware security.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Lesson Progress System (Inline for Lesson 6)
+        window.lessonProgress = {
+            currentLesson: 6,
+            totalSections: 6,
+            completedSections: [],
+            
+            init: function(lessonNum, sections) {
+                this.currentLesson = lessonNum;
+                this.totalSections = sections;
+                this.loadProgress();
+                this.updateDisplay();
+            },
+            
+            loadProgress: function() {
+                const saved = localStorage.getItem(`lesson${this.currentLesson}_progress`);
+                if (saved) {
+                    this.completedSections = JSON.parse(saved);
+                }
+            },
+            
+            saveProgress: function() {
+                localStorage.setItem(`lesson${this.currentLesson}_progress`, JSON.stringify(this.completedSections));
+            },
+            
+            completeSection: function(sectionNum) {
+                if (!this.completedSections.includes(sectionNum)) {
+                    this.completedSections.push(sectionNum);
+                    this.saveProgress();
+                    this.awardXP(25); // 25 XP per section
+                }
+                
+                // Show next section
+                const currentSection = document.querySelector(`[data-section="${sectionNum}"]`);
+                const nextSection = document.querySelector(`[data-section="${sectionNum + 1}"]`);
+                
+                if (currentSection) currentSection.classList.add('hidden');
+                if (nextSection) {
+                    nextSection.classList.remove('hidden');
+                    nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                
+                this.updateDisplay();
+                
+                // Check if lesson complete
+                if (this.completedSections.length === this.totalSections) {
+                    this.completeLesson();
+                }
+            },
+            
+            completeLesson: function() {
+                localStorage.setItem(`lesson${this.currentLesson}_complete`, 'true');
+                this.awardXP(50); // Bonus XP for completing lesson
+                
+                // Show completion message
+                setTimeout(() => {
+                    alert(`🎉 Lesson ${this.currentLesson} Complete! +50 Bonus XP!\n\nTotal XP Earned: ${this.getTotalXP()}`);
+                }, 500);
+            },
+            
+            awardXP: function(amount) {
+                let totalXP = parseInt(localStorage.getItem('totalXP') || '0');
+                totalXP += amount;
+                localStorage.setItem('totalXP', totalXP);
+                this.updateXPDisplay();
+            },
+            
+            getTotalXP: function() {
+                return parseInt(localStorage.getItem('totalXP') || '0');
+            },
+            
+            updateXPDisplay: function() {
+                const xpElement = document.getElementById('xp-amount');
+                if (xpElement) {
+                    xpElement.textContent = this.getTotalXP();
+                }
+            },
+            
+            updateDisplay: function() {
+                const progress = (this.completedSections.length / this.totalSections) * 100;
+                const progressFill = document.querySelector('.progress-fill');
+                const progressText = document.querySelector('.progress-text');
+                
+                if (progressFill) progressFill.style.width = progress + '%';
+                if (progressText) progressText.textContent = Math.round(progress) + '% Complete';
+                
+                this.updateXPDisplay();
+            }
+        };
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            window.lessonProgress.init(6, 6);
+        });
+    </script>
+</body>
+</html>
