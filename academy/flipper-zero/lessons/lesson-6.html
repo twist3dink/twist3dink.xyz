@@ -1,949 +1,1474 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 6: GPIO & Hardware Hacking - tw¡st3d_¡nk Academy</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <header>
-            <div class="logo">tw¡st3d_¡nk</div>
-            <h1>Flipper Zero Academy</h1>
-            <div class="xp-display">
-                <span class="xp-label">XP:</span>
-                <span id="xp-amount">0</span>
-            </div>
-        </header>
-
-        <!-- Lesson Header -->
-        <div class="lesson-header">
-            <h2>Lesson 6: GPIO & Hardware Hacking</h2>
-            <div class="lesson-meta">
-                <span class="difficulty expert">Expert Level</span>
-                <span class="duration">⏱ 45 min</span>
-                <span class="xp-reward">🎯 +150 XP</span>
-            </div>
-        </div>
-
-        <!-- Progress Bar -->
-        <div class="progress-container">
-            <div class="progress-bar" id="lesson-progress">
-                <div class="progress-fill" style="width: 0%"></div>
-            </div>
-            <span class="progress-text">0% Complete</span>
-        </div>
-
-        <!-- Lesson Content -->
-        <div class="content-section" data-section="1">
-            <h3>🔌 Understanding GPIO & Hardware Interfaces</h3>
-            
-            <div class="info-box">
-                <h4>What is GPIO?</h4>
-                <p><strong>GPIO (General Purpose Input/Output)</strong> pins are the physical interface that allows the Flipper Zero to communicate with external hardware. Think of them as the "nervous system" that lets your Flipper interact with the physical world beyond wireless protocols.</p>
-            </div>
-
-            <h4>Flipper Zero GPIO Pinout</h4>
-            <p>The Flipper Zero features an 18-pin GPIO header with the following capabilities:</p>
-            
-            <div class="command-block">
-<pre>Flipper Zero GPIO Pinout (Left to Right):
-┌─────────────────────────────┐
-│ 1  3.3V      │  2  5V        │  Power Rails
-│ 3  USB D-    │  4  USB D+    │  USB Data
-│ 5  GPIO PC3  │  6  GPIO PB3  │  General I/O
-│ 7  GPIO PA7  │  8  GPIO PA6  │  General I/O
-│ 9  GPIO PA4  │ 10  GPIO PB2  │  General I/O
-│11  GPIO PC1  │ 12  GPIO PC0  │  General I/O
-│13  TX (PA2)  │ 14  RX (PA3)  │  UART
-│15  SCK (PB13)│ 16  MISO (PB14)│ SPI
-│17  MOSI(PB15)│ 18  GND       │  Ground
-└─────────────────────────────┘</pre>
-            </div>
-
-            <div class="warning-box">
-                <strong>⚠️ Critical Safety Notes:</strong>
-                <ul>
-                    <li><strong>Voltage Limits:</strong> GPIO pins are 3.3V tolerant. Applying 5V directly to GPIO pins will damage your Flipper!</li>
-                    <li><strong>Current Limits:</strong> Each pin can source/sink max 25mA. Total current for all pins: 150mA.</li>
-                    <li><strong>Always use level shifters</strong> when interfacing with 5V devices.</li>
-                    <li><strong>Never short power pins</strong> - always verify connections before powering on.</li>
-                </ul>
-            </div>
-
-            <h4>Common Hardware Protocols</h4>
-            <div class="tip-box">
-                <strong>Protocol Overview:</strong>
-                <ul>
-                    <li><strong>UART</strong> (Universal Asynchronous Receiver-Transmitter): 2-wire serial communication. Most common for debug consoles.</li>
-                    <li><strong>SPI</strong> (Serial Peripheral Interface): 4-wire synchronous communication. Fast, used for sensors and displays.</li>
-                    <li><strong>I2C</strong> (Inter-Integrated Circuit): 2-wire multi-device bus. Common in embedded systems.</li>
-                    <li><strong>1-Wire</strong>: Single wire + ground. Used for temperature sensors, authentication chips.</li>
-                </ul>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(1)">Continue to UART Basics →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="2">
-            <h3>📡 UART Communication Fundamentals</h3>
-            
-            <div class="info-box">
-                <h4>Why UART Matters for Hardware Hacking</h4>
-                <p>UART is the <strong>most common debug interface</strong> found in embedded devices. Routers, IoT devices, smart appliances, industrial control systems - most expose UART for debugging. Finding and reading UART can reveal:</p>
-                <ul>
-                    <li>Boot logs with firmware versions and system info</li>
-                    <li>Debug shells (root access!)</li>
-                    <li>Passwords and encryption keys in plain text</li>
-                    <li>System commands and internal operations</li>
-                </ul>
-            </div>
-
-            <h4>UART Connection Basics</h4>
-            <p>UART requires only 3 connections:</p>
-            
-            <div class="command-block">
-<pre>UART Wiring:
-Flipper TX  (Pin 13) ──→ Target RX  (Flipper transmits)
-Flipper RX  (Pin 14) ──→ Target TX  (Flipper receives)
-Flipper GND (Pin 18) ──→ Target GND (Common ground)
-
-Note: TX connects to RX and vice versa (crossover)!</pre>
-            </div>
-
-            <h4>UART Configuration Parameters</h4>
-            <p>UART requires matching settings on both devices:</p>
-            
-            <div class="tip-box">
-                <strong>Key Parameters:</strong>
-                <ul>
-                    <li><strong>Baud Rate:</strong> Speed of communication (bits per second)
-                        <br>Common: 9600, 19200, 38400, 57600, <strong>115200</strong> (most common)</li>
-                    <li><strong>Data Bits:</strong> Usually 8 bits per byte</li>
-                    <li><strong>Parity:</strong> Error checking (usually None)</li>
-                    <li><strong>Stop Bits:</strong> Synchronization (usually 1)</li>
-                </ul>
-                <p><strong>Standard notation:</strong> 115200 8N1 = 115200 baud, 8 data bits, No parity, 1 stop bit</p>
-            </div>
-
-            <h4>Finding UART on Target Devices</h4>
-            <div class="command-block">
-<pre>Visual Identification:
-✓ Look for 3-4 pins in a row (TX, RX, GND, VCC)
-✓ Often labeled: UART, SERIAL, DEBUG, CONSOLE, J1, P1
-✓ Check near processor or edge of PCB
-✓ Unpopulated headers (solder points without pins)
-
-Using Multimeter:
-1. Power OFF device
-2. Continuity test to find GND (connects to ground plane)
-3. Power ON device
-4. Voltage test: VCC = 3.3V or 5V (constant)
-5. TX = voltage fluctuates during boot
-6. RX = usually high (3.3V) when idle</pre>
-            </div>
-
-            <h4>Flipper UART Terminal App</h4>
-            <p>The Flipper Zero has a built-in UART terminal for reading serial data:</p>
-            
-            <div class="command-block">
-<pre>Accessing UART Terminal:
-1. GPIO → UART Terminal
-2. Configure settings:
-   - Baud Rate: Try 115200 first
-   - Data: 8 bits
-   - Parity: None
-   - Stop: 1 bit
-3. Connect wires (device must be powered)
-4. Press OK to start reading
-5. Press BACK to stop
-
-Keyboard Mode:
-- Press OK → "Keyboard" to send commands
-- Useful for interactive debug shells</pre>
-            </div>
-
-            <div class="example-box">
-                <h4>Real-World Example: Router UART Access</h4>
-                <p><strong>Scenario:</strong> Accessing debug console on a TP-Link router</p>
-                <ol>
-                    <li>Identify 4-pin header labeled J1 on PCB</li>
-                    <li>Find GND with continuity tester (connected to shielding)</li>
-                    <li>Power on, measure voltage on remaining pins</li>
-                    <li>TX fluctuates during boot = Pin 2, RX stable at 3.3V = Pin 3</li>
-                    <li>Connect: Flipper GND→J1-GND, Flipper RX→J1-TX</li>
-                    <li>UART Terminal at 115200 baud</li>
-                    <li>Power cycle router → see boot logs!</li>
-                </ol>
-                <div class="command-block">
-<pre>Captured Output:
-U-Boot 1.1.3 (Mar 18 2021 - 14:22:31)
-Board: TP-Link TL-WR841N v13
-Flash: 4 MB
-DRAM: 32 MB
-...
-Please press Enter to activate console...</pre>
+<li><strong>Always check voltage:</strong> Use a multimeter before connecting</li>
+                        <li><strong>Common ground:</strong> Always connect ground pins together</li>
+                        <li><strong>Logic level converters:</strong> Use for 5V devices</li>
+                        <li><strong>Documentation:</strong> Refer to target device pinouts</li>
+                        <li><strong>Start simple:</strong> Test with LEDs before complex devices</li>
+                    </ul>
                 </div>
-                <p>Result: Gained access to bootloader console, can interrupt boot process!</p>
-            </div>
+            </section>
 
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(2)">Continue to SPI & I2C →</button>
-        </div>
+            <!-- Communication Protocols -->
+            <section class="content-section">
+                <h2>Digital Communication Protocols</h2>
+                <p>
+                    The Flipper Zero supports three major digital communication protocols for hardware interfacing.
+                </p>
 
-        <div class="content-section hidden" data-section="3">
-            <h3>⚡ SPI & I2C Protocol Basics</h3>
-            
-            <h4>SPI (Serial Peripheral Interface)</h4>
-            <div class="info-box">
-                <p><strong>SPI</strong> is a synchronous, full-duplex protocol commonly used for high-speed communication with flash memory, displays, and sensors. It's faster than UART but requires more wires.</p>
-            </div>
-
-            <div class="command-block">
-<pre>SPI Connection (4-wire):
-┌──────────────────────────────────────┐
-│ MOSI (Master Out Slave In) - Pin 17 │  Flipper → Target
-│ MISO (Master In Slave Out) - Pin 16 │  Target → Flipper
-│ SCK  (Serial Clock)        - Pin 15 │  Clock signal
-│ CS   (Chip Select)         - GPIO   │  Select target device
-│ GND  (Ground)              - Pin 18 │  Common ground
-└──────────────────────────────────────┘
-
-How SPI Works:
-- Master generates clock (SCK)
-- Master selects slave (CS LOW)
-- Data exchanged simultaneously on MOSI/MISO
-- Each clock pulse transfers 1 bit in each direction</pre>
-            </div>
-
-            <div class="tip-box">
-                <strong>SPI Characteristics:</strong>
-                <ul>
-                    <li><strong>Fast:</strong> Can reach 10+ MHz clock speeds</li>
-                    <li><strong>Full-duplex:</strong> Send and receive simultaneously</li>
-                    <li><strong>Simple:</strong> No complex protocol, just clock and data</li>
-                    <li><strong>Multiple slaves:</strong> Use different CS pins for each device</li>
-                    <li><strong>No acknowledgment:</strong> Master doesn't know if slave received data</li>
-                </ul>
-            </div>
-
-            <h4>Common SPI Applications</h4>
-            <div class="example-box">
-                <h4>SPI Flash Memory Dumping</h4>
-                <p><strong>Use Case:</strong> Reading firmware directly from flash chips</p>
-                <div class="command-block">
-<pre>Typical Flash Chips (SPI):
-- Winbond W25Q32 (4MB)
-- Macronix MX25L1606E (2MB)
-- Microchip SST25VF016B (2MB)
-
-Pin Identification on 8-pin SOIC:
-Pin 1: CS (Chip Select)    Pin 5: MOSI
-Pin 2: MISO                Pin 6: SCK
-Pin 3: WP (Write Protect)  Pin 7: HOLD
-Pin 4: GND                 Pin 8: VCC (3.3V)
-
-Reading Process:
-1. Identify chip markings
-2. Connect Flipper SPI pins
-3. Power chip from Flipper 3.3V (check current!)
-4. Use SPI sniffer or flashrom tool
-5. Dump full firmware image</pre>
-                </div>
-            </div>
-
-            <h4>I2C (Inter-Integrated Circuit)</h4>
-            <div class="info-box">
-                <p><strong>I2C</strong> is a multi-device bus protocol using only 2 data lines. Multiple devices can share the same bus, each with a unique address. Common in sensors, EEPROMs, and real-time clocks.</p>
-            </div>
-
-            <div class="command-block">
-<pre>I2C Connection (2-wire + ground):
-┌────────────────────────────────────┐
-│ SDA (Serial Data)        - GPIO   │  Bidirectional data
-│ SCL (Serial Clock)       - GPIO   │  Clock signal
-│ GND (Ground)             - Pin 18 │  Common ground
-└────────────────────────────────────┘
-
-I2C Addressing:
-- Each device has 7-bit or 10-bit address
-- Master initiates communication
-- Multiple masters possible (complex)
-- Pull-up resistors required (2.2k-10k Ohm)</pre>
-            </div>
-
-            <div class="tip-box">
-                <strong>I2C Characteristics:</strong>
-                <ul>
-                    <li><strong>Simple wiring:</strong> Only 2 wires for multiple devices</li>
-                    <li><strong>Addressed:</strong> Each device responds to unique address</li>
-                    <li><strong>Slower:</strong> Typically 100 kHz or 400 kHz</li>
-                    <li><strong>Acknowledgment:</strong> Slave acknowledges received data</li>
-                    <li><strong>Needs pull-ups:</strong> Both lines require resistors to VCC</li>
-                </ul>
-            </div>
-
-            <h4>Flipper GPIO App for Protocol Sniffing</h4>
-            <p>The Flipper Zero can sniff various protocols in real-time:</p>
-            
-            <div class="command-block">
-<pre>Using GPIO → USB-UART Bridge:
-1. Connect TX/RX to target UART
-2. Flipper acts as USB-to-Serial adapter
-3. Computer receives raw UART data
-4. Useful for capture and analysis
-
-Using Logic Analyzer:
-(Requires community app installation)
-1. Connect GPIO pins to target signals
-2. Capture timing and state changes
-3. Decode SPI, I2C, UART protocols
-4. Save captures for analysis</pre>
-            </div>
-
-            <div class="warning-box">
-                <strong>⚠️ Protocol Sniffing Ethics:</strong>
-                <p>Intercepting communications on devices you don't own may be illegal. Only sniff protocols on:</p>
-                <ul>
-                    <li>Devices you own and have permission to modify</li>
-                    <li>Authorized penetration testing engagements</li>
-                    <li>Educational setups and lab environments</li>
-                </ul>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(3)">Continue to Hardware Debugging →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="4">
-            <h3>🔍 Hardware Debugging Techniques</h3>
-            
-            <div class="info-box">
-                <h4>What is Hardware Debugging?</h4>
-                <p>Hardware debugging involves analyzing and interacting with the physical components and interfaces of a device to understand its operation, extract data, or modify its behavior. This is essential for security research, reverse engineering, and forensics.</p>
-            </div>
-
-            <h4>Debug Interface Types</h4>
-            <div class="command-block">
-<pre>Common Debug Interfaces:
-
-1. JTAG (Joint Test Action Group)
-   - 4-5 pins: TDI, TDO, TCK, TMS, (TRST)
-   - Direct processor access
-   - Read/write memory, halt execution
-   - Gold standard for debugging
-
-2. SWD (Serial Wire Debug)
-   - 2 pins: SWDIO, SWCLK
-   - ARM-specific alternative to JTAG
-   - Faster and simpler than JTAG
-   - Common in modern ARM devices
-
-3. Debug UART
-   - 2 pins: TX, RX
-   - Console access, shell interaction
-   - Easiest to find and exploit
-   - Limited compared to JTAG/SWD</pre>
-            </div>
-
-            <h4>Finding Debug Interfaces</h4>
-            <div class="tip-box">
-                <strong>Visual Inspection:</strong>
-                <ul>
-                    <li><strong>Look for pin headers:</strong> Even unpopulated ones (just solder pads)</li>
-                    <li><strong>Check labels:</strong> JTAG, DEBUG, SWD, TCK, TMS, etc.</li>
-                    <li><strong>Count pins:</strong> 4-5 in a row? Likely JTAG. 2 pins? Possibly SWD.</li>
-                    <li><strong>Trace from processor:</strong> Follow PCB traces from main chip</li>
-                    <li><strong>Reference designs:</strong> Search for device teardowns online</li>
-                </ul>
-            </div>
-
-            <div class="example-box">
-                <h4>JTAG Pin Identification</h4>
-                <p>When you find a suspected JTAG header but pins aren't labeled:</p>
-                <ol>
-                    <li><strong>Find GND:</strong> Continuity test to ground plane/shielding</li>
-                    <li><strong>Find VCC:</strong> Should measure 3.3V or 5V when powered</li>
-                    <li><strong>Test combinations:</strong> Use JTAGulator or trial-and-error
+                <div class="protocol-grid">
+                    <div class="protocol-card">
+                        <h4>UART (Serial)</h4>
+                        <p><strong>Wires:</strong> 2 (TX, RX) + Ground</p>
+                        <p><strong>Speed:</strong> 300 to 2,000,000 baud</p>
+                        <p><strong>Common Uses:</strong></p>
                         <ul>
-                            <li>Connect suspected TMS, TCK, TDI, TDO</li>
-                            <li>Try JTAG scan with tool</li>
-                            <li>If detected, note the device ID</li>
+                            <li>Debug consoles</li>
+                            <li>GPS modules</li>
+                            <li>Bluetooth modules</li>
+                            <li>Router/IoT serial ports</li>
+                        </ul>
+                        <p style="margin-top: 0.75rem;"><strong>Pros:</strong> Simple, widely supported</p>
+                        <p><strong>Cons:</strong> Point-to-point only</p>
+                    </div>
+
+                    <div class="protocol-card">
+                        <h4>SPI (Serial Peripheral)</h4>
+                        <p><strong>Wires:</strong> 4 (MOSI, MISO, SCK, CS) + Ground</p>
+                        <p><strong>Speed:</strong> Very fast (MHz range)</p>
+                        <p><strong>Common Uses:</strong></p>
+                        <ul>
+                            <li>Flash memory chips</li>
+                            <li>SD cards</li>
+                            <li>Displays</li>
+                            <li>Sensor modules</li>
+                        </ul>
+                        <p style="margin-top: 0.75rem;"><strong>Pros:</strong> Fast, full-duplex</p>
+                        <p><strong>Cons:</strong> More wires needed</p>
+                    </div>
+
+                    <div class="protocol-card">
+                        <h4>I2C (Inter-Integrated Circuit)</h4>
+                        <p><strong>Wires:</strong> 2 (SDA, SCL) + Ground</p>
+                        <p><strong>Speed:</strong> 100 kHz to 3.4 MHz</p>
+                        <p><strong>Common Uses:</strong></p>
+                        <ul>
+                            <li>Sensors (temp, accel, gyro)</li>
+                            <li>OLED displays</li>
+                            <li>EEPROM memory</li>
+                            <li>Real-time clocks</li>
+                        </ul>
+                        <p style="margin-top: 0.75rem;"><strong>Pros:</strong> Multi-device bus, few wires</p>
+                        <p><strong>Cons:</strong> Slower than SPI</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 1 -->
+            <div class="exercise-box">
+                <h3>🔧 Hands-On Exercise 1: UART Console Access</h3>
+                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Intermediate</p>
+                <p>
+                    <strong>Requirements:</strong> A device with UART debug port (old router, Arduino, Raspberry Pi, etc.)
+                </p>
+                <ol class="exercise-steps">
+                    <li>Identify the UART pins on your target device (consult documentation)</li>
+                    <li>Connect Flipper's TX to device's RX</li>
+                    <li>Connect Flipper's RX to device's TX</li>
+                    <li>Connect both grounds together</li>
+                    <li>Navigate to GPIO → UART Terminal on Flipper</li>
+                    <li>Set baud rate (common: 115200, 9600, 57600)</li>
+                    <li>Power on the target device</li>
+                    <li>Observe boot messages and debug output</li>
+                    <li>Document what information is revealed via UART</li>
+                </ol>
+                <div style="margin-top: 1.5rem;">
+                    <button class="btn-complete" onclick="completeExercise(1)">Mark Exercise Complete</button>
+                </div>
+            </div>
+
+            <!-- Break Reminder 1 -->
+            <div class="break-reminder">
+                <h3>⏸️ Break Point #1</h3>
+                <p>You've learned GPIO basics and communication protocols. Time for a break!</p>
+                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5 minutes to:</p>
+                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                    <li>💧 Hydrate</li>
+                    <li>🚶 Stretch your muscles</li>
+                    <li>👀 Rest your eyes</li>
+                </ul>
+                <div class="break-timer" id="break-timer">5:00</div>
+                <div class="break-controls">
+                    <button class="btn-break" onclick="startBreakTimer()">Start 5-Min Break</button>
+                    <button class="btn-break secondary" onclick="skipBreak()">Skip Break</button>
+                </div>
+            </div>
+
+            <!-- Hardware Security Testing -->
+            <section class="content-section">
+                <h2>Hardware Security Testing</h2>
+                <p>
+                    GPIO capabilities make the Flipper Zero excellent for testing hardware security. Here are common assessment techniques.
+                </p>
+
+                <h3>UART Debug Console Exploitation</h3>
+                <p>
+                    Many devices expose UART debug consoles that reveal sensitive information or allow unauthorized access:
+                </p>
+                <ul>
+                    <li><strong>Boot Messages:</strong> Firmware versions, hardware details, memory maps</li>
+                    <li><strong>Login Prompts:</strong> Often default or weak credentials</li>
+                    <li><strong>Shell Access:</strong> Direct system access if authentication is weak</li>
+                    <li><strong>Kernel Messages:</strong> System information and error details</li>
+                </ul>
+
+                <div class="info-box">
+                    <h3>💡 Finding UART Pins</h3>
+                    <p>Tips for locating UART on unknown devices:</p>
+                    <ul>
+                        <li><strong>Look for pin headers:</strong> 3-4 pins in a row, often labeled</li>
+                        <li><strong>Common labels:</strong> TX, RX, GND, VCC or UART, SERIAL, DEBUG</li>
+                        <li><strong>Use multimeter:</strong> GND should be 0V, VCC around 3.3V or 5V</li>
+                        <li><strong>Logic analyzer:</strong> Watch for data patterns on pins during boot</li>
+                        <li><strong>Try common baud rates:</strong> 9600, 19200, 38400, 57600, 115200</li>
+                    </ul>
+                </div>
+
+                <h3>SPI Flash Memory Extraction</h3>
+                <p>
+                    Many devices store firmware in SPI flash chips. Extracting this firmware allows for:
+                </p>
+                <ul>
+                    <li>Vulnerability analysis and reverse engineering</li>
+                    <li>Password and key extraction</li>
+                    <li>Understanding proprietary protocols</li>
+                    <li>Identifying backdoors or hardcoded credentials</li>
+                </ul>
+
+                <h4>Common SPI Flash Chips</h4>
+                <ul>
+                    <li><strong>Winbond 25Q series:</strong> Very common in routers and IoT</li>
+                    <li><strong>Macronix MX25L:</strong> Used in many embedded systems</li>
+                    <li><strong>Spansion S25FL:</strong> Found in industrial devices</li>
+                    <li>Usually 8-pin SOIC or WSON packages</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <h3>⚠️ Firmware Extraction Ethics</h3>
+                    <ul>
+                        <li>Only extract firmware from devices you own</li>
+                        <li>Respect intellectual property and licensing</li>
+                        <li>Don't redistribute proprietary firmware</li>
+                        <li>Use extracted data only for security research</li>
+                        <li>Report vulnerabilities responsibly to vendors</li>
+                    </ul>
+                </div>
+
+                <h3>I2C Device Enumeration</h3>
+                <p>
+                    I2C buses can reveal connected devices and their addresses:
+                </p>
+                <ul>
+                    <li>Scan for active I2C addresses (0x00 to 0x7F)</li>
+                    <li>Identify device types by address patterns</li>
+                    <li>Read configuration registers</li>
+                    <li>Detect EEPROM chips that may contain sensitive data</li>
+                </ul>
+            </section>
+
+            <!-- Exercise 2 -->
+            <div class="exercise-box">
+                <h3>🔧 Hands-On Exercise 2: Protocol Analysis</h3>
+                <p><strong>Time:</strong> 20 minutes | <strong>Difficulty:</strong> Intermediate</p>
+                <p>
+                    Analyze communication between devices using GPIO monitoring.
+                </p>
+                <ol class="exercise-steps">
+                    <li>Choose a simple I2C or SPI device (sensor module, EEPROM, etc.)</li>
+                    <li>Connect the device to Flipper's GPIO pins correctly</li>
+                    <li>Navigate to GPIO → appropriate protocol tool</li>
+                    <li>Use the sniffer/analyzer mode if available</li>
+                    <li>Observe communication patterns and data transfers</li>
+                    <li>Identify command structure and responses</li>
+                    <li>Document the protocol behavior you observe</li>
+                    <li>Try sending custom commands to test device behavior</li>
+                </ol>
+                <div style="margin-top: 1.5rem;">
+                    <button class="btn-complete" onclick="completeExercise(2)">Mark Exercise Complete</button>
+                </div>
+            </div>
+
+            <!-- Break Reminder 2 -->
+            <div class="break-reminder">
+                <h3>⏸️ Break Point #2</h3>
+                <p>Great work on hardware analysis! Take a break before the final section.</p>
+                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5-10 minutes to:</p>
+                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                    <li>💧 Drink water</li>
+                    <li>🚶 Move around</li>
+                    <li>🧠 Reflect on what you've learned</li>
+                </ul>
+                <div class="break-timer" id="break-timer-2">5:00</div>
+                <div class="break-controls">
+                    <button class="btn-break" onclick="startBreakTimer2()">Start 5-Min Break</button>
+                    <button class="btn-break secondary" onclick="skipBreak2()">Skip Break</button>
+                </div>
+            </div>
+
+            <!-- Custom Projects -->
+            <section class="content-section">
+                <h2>Building Custom Projects</h2>
+                <p>
+                    Beyond security testing, GPIO enables creative hardware projects. Here are some ideas to expand your Flipper's capabilities.
+                </p>
+
+                <h3>Project Ideas</h3>
+                <ul>
+                    <li>
+                        <strong>Environmental Monitoring Station:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Connect I2C temperature, humidity, and pressure sensors</li>
+                            <li>Log data to SD card</li>
+                            <li>Display readings on Flipper's screen</li>
                         </ul>
                     </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Custom LED Notifications:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Control RGB LED strips via GPIO</li>
+                            <li>Create visual alerts for events</li>
+                            <li>Build notification systems for alerts</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Hardware Security Token:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Interface with security chip (ATECC608, etc.)</li>
+                            <li>Store cryptographic keys securely</li>
+                            <li>Implement 2FA authentication</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Smart Home Integration:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Control GPIO-based relays</li>
+                            <li>Interface with custom automation hardware</li>
+                            <li>Bridge different protocols</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Data Logger:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Capture and timestamp sensor data</li>
+                            <li>Create portable measurement tool</li>
+                            <li>Export data for analysis</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="info-box success">
+                    <h3>✅ Development Resources</h3>
+                    <ul>
+                        <li><strong>Flipper Apps:</strong> Community-developed GPIO applications</li>
+                        <li><strong>Documentation:</strong> Official Flipper developer docs</li>
+                        <li><strong>GitHub:</strong> Open-source projects and examples</li>
+                        <li><strong>Forums:</strong> Community support and project ideas</li>
+                        <li><strong>Libraries:</strong> Pre-built protocol implementations</li>
+                    </ul>
+                </div>
+
+                <h3>Safety and Best Practices</h3>
+                <ul>
+                    <li><strong>Test on breadboard first:</strong> Verify circuits before permanent connections</li>
+                    <li><strong>Use proper connectors:</strong> Avoid loose wires that can short</li>
+                    <li><strong>Add protection:</strong> Resistors, diodes, and fuses prevent damage</li>
+                    <li><strong>Document your work:</strong> Schematics and notes for future reference</li>
+                    <li><strong>Start simple:</strong> Begin with basic projects and progress gradually</li>
+                </ul>
+            </section>
+
+            <!-- Real-World Applications -->
+            <section class="content-section">
+                <h2>Real-World Security Applications</h2>
+                <p>
+                    Here are practical security scenarios where GPIO interfacing is valuable:
+                </p>
+
+                <h3>IoT Security Assessments</h3>
+                <ul>
+                    <li>Extract firmware from smart home devices</li>
+                    <li>Access debug interfaces on IP cameras</li>
+                    <li>Test smart lock hardware security</li>
+                    <li>Analyze communication in smart appliances</li>
+                </ul>
+
+                <h3>Automotive Security Research</h3>
+                <ul>
+                    <li>Interface with CAN bus systems (with adapter)</li>
+                    <li>Read diagnostic ports and sensors</li>
+                    <li>Test key fob security at hardware level</li>
+                    <li>Analyze infotainment system interfaces</li>
+                </ul>
+
+                <h3>Industrial Control Systems</h3>
+                <ul>
+                    <li>Test PLC (Programmable Logic Controller) security</li>
+                    <li>Analyze SCADA communication protocols</li>
+                    <li>Assess sensor and actuator vulnerabilities</li>
+                    <li>Test industrial Ethernet interfaces</li>
+                </ul>
+
+                <h3>Medical Device Security</h3>
+                <ul>
+                    <li>Analyze device communication security</li>
+                    <li>Test debug port accessibility</li>
+                    <li>Assess firmware update mechanisms</li>
+                    <li>Evaluate encryption implementation</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <h3>⚠️ Critical Infrastructure Warning</h3>
+                    <p>
+                        Testing critical systems (medical, automotive, industrial) requires:
+                    </p>
+                    <ul>
+                        <li>Extensive authorization and legal clearance</li>
+                        <li>Professional liability insurance</li>
+                        <li>Expertise in the specific domain</li>
+                        <li>Coordination with manufacturers and regulators</li>
+                        <li>Safety protocols to prevent harm</li>
+                    </ul>
+                    <p style="margin-top: 0.75rem;">
+                        <strong>Never test life-safety or critical infrastructure systems without proper authorization and expertise.</strong>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Exercise 3 -->
+            <div class="exercise-box">
+                <h3>🔧 Hands-On Exercise 3: Design a Security Assessment</h3>
+                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Advanced</p>
+                <p>
+                    Plan a comprehensive hardware security assessment using GPIO techniques.
+                </p>
+                <ol class="exercise-steps">
+                    <li>Choose a target device type (IoT sensor, router, smart device, etc.)</li>
+                    <li>Research typical hardware security weaknesses for that device type</li>
+                    <li>Identify which GPIO protocols would be most useful</li>
+                    <li>Plan your methodology for accessing debug interfaces</li>
+                    <li>List tools and equipment you would need</li>
+                    <li>Define what you're looking for (credentials, vulnerabilities, firmware)</li>
+                    <li>Create a testing checklist with success criteria</li>
+                    <li>Document how you would report findings</li>
+                    <li>Consider ethical implications and boundaries</li>
                 </ol>
+                <div style="margin-top: 1.5rem;">
+                    <button class="btn-complete" onclick="completeExercise(3)">Mark Exercise Complete</button>
+                </div>
             </div>
 
-            <h4>JTAG with External Tools</h4>
-            <p>While Flipper doesn't have native JTAG support, you can use it alongside other tools:</p>
-            
-            <div class="command-block">
-<pre>JTAG Workflow:
-1. Flipper identifies UART → extract boot info
-2. Determine processor type from boot logs
-3. Use JTAG adapter (Bus Pirate, FT2232H, etc.)
-4. Connect JTAG pins based on processor datasheet
-5. Dump firmware with OpenOCD or similar
+            <!-- Advanced Topics -->
+            <section class="content-section">
+                <h2>Advanced Hardware Hacking</h2>
+                <p>
+                    For those wanting to go deeper, here are advanced hardware security topics to explore:
+                </p>
 
-OpenOCD Example Commands:
-$ openocd -f interface/ftdi/ft2232h.cfg \
-          -f target/stm32f1x.cfg
-> halt
-> dump_image firmware.bin 0x08000000 0x10000
-> reset
-> exit</pre>
-            </div>
-
-            <h4>Firmware Extraction Methods</h4>
-            <div class="tip-box">
-                <strong>Common Extraction Techniques:</strong>
+                <h3>JTAG Debugging</h3>
+                <p>
+                    JTAG (Joint Test Action Group) is a powerful debug interface:
+                </p>
                 <ul>
-                    <li><strong>UART Boot Mode:</strong> Many devices have special boot modes accessible via UART commands during startup</li>
-                    <li><strong>SPI Flash Reading:</strong> Directly read flash chip if removable or accessible</li>
-                    <li><strong>JTAG/SWD Dump:</strong> Read memory directly from processor</li>
-                    <li><strong>Update File Analysis:</strong> Reverse engineer OTA update packages</li>
-                    <li><strong>Chip-Off:</strong> Remove flash chip, read with programmer (destructive!)</li>
-                </ul>
-            </div>
-
-            <h4>Analyzing Extracted Firmware</h4>
-            <div class="command-block">
-<pre>Basic Firmware Analysis:
-$ file firmware.bin
-firmware.bin: data
-
-$ binwalk firmware.bin
-DECIMAL       HEXADECIMAL     DESCRIPTION
---------------------------------------------------------------------------------
-0             0x0             uImage header
-64            0x40            LZMA compressed data
-524288        0x80000         Squashfs filesystem
-
-$ binwalk -e firmware.bin
-# Extracts filesystem and components
-
-$ strings firmware.bin | grep -i password
-admin_password=default123
-wifi_key=factorydefault
-
-$ hexdump -C firmware.bin | less
-# Manual inspection</pre>
-            </div>
-
-            <div class="warning-box">
-                <strong>⚠️ Legal Considerations:</strong>
-                <p>Firmware extraction and analysis can violate:</p>
-                <ul>
-                    <li>Terms of Service agreements</li>
-                    <li>Copyright laws (firmware is copyrighted)</li>
-                    <li>DMCA anti-circumvention provisions (in USA)</li>
-                    <li>Computer Fraud and Abuse Act (unauthorized access)</li>
-                </ul>
-                <p><strong>Only perform on devices you own for personal research/security purposes.</strong></p>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(4)">Continue to Practical Tips →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="5">
-            <h3>🛠️ Practical Hardware Hacking Tips</h3>
-            
-            <h4>Essential Tools & Equipment</h4>
-            <div class="tip-box">
-                <strong>Beginner Hardware Hacking Kit:</strong>
-                <ul>
-                    <li><strong>Flipper Zero:</strong> UART terminal, GPIO testing, protocol sniffing</li>
-                    <li><strong>Multimeter:</strong> Voltage, continuity, identifying pins</li>
-                    <li><strong>Logic Analyzer:</strong> Cheap 8-channel USB analyzers work great</li>
-                    <li><strong>Jumper Wires:</strong> Female-female, male-female, male-male</li>
-                    <li><strong>Soldering Iron:</strong> For connecting to unpopulated headers</li>
-                    <li><strong>Magnifying Glass:</strong> Reading chip markings</li>
-                    <li><strong>USB-to-Serial Adapter:</strong> Backup for UART (CH340, FTDI)</li>
-                </ul>
-            </div>
-
-            <h4>Safety Best Practices</h4>
-            <div class="warning-box">
-                <strong>⚠️ Protect Your Equipment:</strong>
-                <ul>
-                    <li><strong>Always check voltages</strong> before connecting</li>
-                    <li><strong>Use current-limiting resistors</strong> when testing unknown pins</li>
-                    <li><strong>Never connect USB and external power</strong> simultaneously</li>
-                    <li><strong>Start with ground</strong> - connect GND first, disconnect last</li>
-                    <li><strong>Use ESD protection</strong> - anti-static wrist strap when handling circuits</li>
-                    <li><strong>Double-check polarity</strong> - reversed voltage kills chips instantly</li>
-                </ul>
-            </div>
-
-            <h4>Common Mistakes to Avoid</h4>
-            <div class="command-block">
-<pre>Mistake #1: Wrong Baud Rate
-Problem: Garbage output in UART terminal
-Solution: Try common rates: 9600, 19200, 38400, 57600, 115200
-Tip: Correct baud shows readable text, wrong shows: "�g���Xa�0�"
-
-Mistake #2: TX/RX Reversed
-Problem: No output at all
-Solution: Swap TX and RX connections
-
-Mistake #3: Missing Common Ground
-Problem: Intermittent or no communication
-Solution: Always connect GND between devices
-
-Mistake #4: Voltage Mismatch
-Problem: Damaged Flipper or target device
-Solution: Use level shifters for 5V devices
-
-Mistake #5: Floating Pins
-Problem: Unreliable SPI/I2C communication
-Solution: Add pull-up resistors (2.2k-10k) to SDA/SCL</pre>
-            </div>
-
-            <h4>Real-World Target Practice</h4>
-            <div class="example-box">
-                <h4>Good Devices for Practice</h4>
-                <p>Safe, legal, and educational targets you can own:</p>
-                <ul>
-                    <li><strong>Old Routers:</strong> TP-Link, Netgear, D-Link (check eBay for cheap models)</li>
-                    <li><strong>IP Cameras:</strong> Many have exposed UART for debugging</li>
-                    <li><strong>Smart Home Devices:</strong> Cheap Wi-Fi plugs, bulbs often have UART</li>
-                    <li><strong>Arduino/ESP32 Boards:</strong> Perfect for learning protocols safely</li>
-                    <li><strong>Old Game Consoles:</strong> Original Xbox, PS2 have accessible interfaces</li>
-                    <li><strong>Broken Electronics:</strong> Practice on devices that don't work anyway</li>
-                </ul>
-            </div>
-
-            <h4>Documentation & Notes</h4>
-            <div class="tip-box">
-                <strong>Always Document Your Work:</strong>
-                <ul>
-                    <li><strong>Take Photos:</strong> PCB before/after, pin configurations, wire connections</li>
-                    <li><strong>Label Everything:</strong> Which wire goes where, pin numbers, voltages</li>
-                    <li><strong>Save Captures:</strong> UART logs, logic analyzer traces, screenshots</li>
-                    <li><strong>Record Settings:</strong> Baud rates, protocols, successful configurations</li>
-                    <li><strong>Note Dead Ends:</strong> What didn't work saves time later</li>
-                </ul>
-                <p>Good documentation = replicable research = shareable knowledge</p>
-            </div>
-
-            <h4>Recommended Learning Resources</h4>
-            <div class="command-block">
-<pre>Hardware Hacking Resources:
-
-Books:
-- "Practical IoT Hacking" by Fotios Chantzis
-- "The Hardware Hacker" by Andrew "bunnie" Huang
-- "Practical Reverse Engineering" by Bruce Dang
-
-Websites:
-- devttys0.com (Craig Heffner's blog)
-- /r/hardwarehacking (Reddit community)
-- hackaday.com (Projects and teardowns)
-
-Tools:
-- PulseView (Logic analyzer software)
-- OpenOCD (JTAG debugger)
-- Binwalk (Firmware analysis)
-- Ghidra (Reverse engineering)</pre>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(5)">Ready for Final Challenge →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="6">
-            <h3>🎯 Final Challenge: The Smart Lock Bypass</h3>
-            
-            <div class="challenge-box">
-                <h4>Scenario: Electronic Safe Exploitation</h4>
-                <p><strong>Client Request:</strong> A client has purchased a "smart safe" from an unknown manufacturer for storing sensitive documents. They're concerned about the security and want you to perform a hardware security assessment before trusting it with important materials.</p>
-                
-                <p><strong>Device Information:</strong></p>
-                <ul>
-                    <li>Model: SecureVault Pro 3000</li>
-                    <li>Features: PIN code entry, backup key slot, "military-grade security"</li>
-                    <li>Marketing claims: "Unhackable, tamper-proof design"</li>
+                    <li>Direct CPU access for debugging</li>
+                    <li>Memory reading and modification</li>
+                    <li>Firmware extraction and flashing</li>
+                    <li>Requires additional tools beyond basic Flipper GPIO</li>
                 </ul>
 
-                <p><strong>Your Mission:</strong></p>
-                <ol>
-                    <li>Gain physical access to the control board</li>
-                    <li>Identify available debug interfaces</li>
-                    <li>Extract information via hardware interfaces</li>
-                    <li>Determine if the PIN can be bypassed</li>
-                    <li>Document the security vulnerabilities</li>
-                </ol>
+                <h3>Chip-Off Forensics</h3>
+                <p>
+                    Physical chip removal and reading:
+                </p>
+                <ul>
+                    <li>Desoldering flash chips from boards</li>
+                    <li>Direct reading with specialized programmers</li>
+                    <li>Bypassing hardware protections</li>
+                    <li>Requires advanced soldering skills and equipment</li>
+                </ul>
 
-                <div class="warning-box">
-                    <strong>Rules of Engagement:</strong>
+                <h3>Side-Channel Analysis</h3>
+                <p>
+                    Extracting information from physical characteristics:
+                </p>
+                <ul>
+                    <li>Power analysis to extract encryption keys</li>
+                    <li>Electromagnetic emanation monitoring</li>
+                    <li>Timing attacks on cryptographic operations</li>
+                    <li>Requires specialized equipment and expertise</li>
+                </ul>
+
+                <h3>Fault Injection</h3>
+                <p>
+                    Inducing errors to bypass security:
+                </p>
+                <ul>
+                    <li>Voltage glitching to skip security checks</li>
+                    <li>Clock glitching to cause CPU errors</li>
+                    <li>Laser fault injection for precise attacks</li>
+                    <li>Advanced technique requiring research-grade equipment</li>
+                </ul>
+
+                <div class="info-box">
+                    <h3>💡 Further Learning</h3>
+                    <p>To advance your hardware hacking skills:</p>
                     <ul>
-                        <li>Client owns the device - full authorization</li>
-                        <li>Non-destructive methods preferred (no cutting chips off PCB)</li>
-                        <li>Document all findings for security report</li>
-                        <li>Must be able to restore device to original state</li>
+                        <li><strong>Books:</strong> "Hardware Hacker" by Andrew Huang, "Practical IoT Hacking"</li>
+                        <li><strong>Courses:</strong> Hardware security training and certifications</li>
+                        <li><strong>Conferences:</strong> DEF CON, Black Hat hardware villages</li>
+                        <li><strong>Labs:</strong> Build a home hardware hacking lab</li>
+                        <li><strong>Community:</strong> Join hardware security forums and groups</li>
                     </ul>
                 </div>
-            </div>
+            </section>
 
-            <h4>📋 Step-by-Step Solution</h4>
+            <!-- Lesson Summary -->
+            <section class="content-section">
+                <h2>Lesson Summary</h2>
+                <p>
+                    Congratulations! You've completed the final lesson and mastered GPIO and hardware interfacing with the Flipper Zero.
+                </p>
 
-            <div class="solution-step">
-                <h4>Step 1: Initial Reconnaissance</h4>
-                <p><strong>Disassembly and Visual Inspection:</strong></p>
-                <div class="command-block">
-<pre>Actions Taken:
-1. Removed screws from back panel (4 Phillips head)
-2. Carefully pried open plastic housing
-3. Located main control PCB behind keypad
-4. Photographed board from all angles
-
-Observations:
-- Main IC: STM32F103C8T6 (ARM Cortex-M3 microcontroller)
-- EEPROM: 24C64 (I2C memory - likely stores PIN)
-- Unlabeled 4-pin header near processor (suspicious!)
-- Power regulator: AMS1117-3.3 (3.3V supply)
-- No obvious tamper detection circuits</pre>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Step 2: Identifying the 4-Pin Header</h4>
-                <p><strong>Pin Function Identification:</strong></p>
-                <div class="command-block">
-<pre>Testing Process:
-Device OFF:
-- Pin 1: Continuity to ground plane → GND identified
-- Pin 4: Isolated, no continuity
-
-Device ON (multimeter voltage test):
-- Pin 1: 0V (confirmed GND)
-- Pin 2: 3.32V constant → VCC (power)
-- Pin 3: 3.28V, fluctuates during boot → TX (transmit)
-- Pin 4: 3.30V steady → RX (receive)
-
-Conclusion: This is a UART debug interface!
-Pin 1 = GND, Pin 2 = VCC, Pin 3 = TX, Pin 4 = RX</pre>
-                </div>
-                <p><strong>Why this matters:</strong> Manufacturers often leave debug interfaces on production devices for firmware updates and troubleshooting. These can leak sensitive information.</p>
-            </div>
-
-            <div class="solution-step">
-                <h4>Step 3: Connecting Flipper Zero</h4>
-                <p><strong>UART Connection Setup:</strong></p>
-                <div class="command-block">
-<pre>Wiring Configuration:
-Safe Pin 1 (GND) → Flipper Pin 18 (GND)
-Safe Pin 3 (TX)  → Flipper Pin 14 (RX)
-Safe Pin 4 (RX)  → Flipper Pin 13 (TX)  [for sending commands]
-
-Note: Left VCC disconnected - safe already has power
-
-Flipper Settings:
-GPIO → UART Terminal
-Baud Rate: Unknown - need to test
-Starting with 115200 (most common)</pre>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Step 4: Capturing Boot Sequence</h4>
-                <p><strong>UART Output Analysis:</strong></p>
-                <div class="command-block">
-<pre>First Attempt (115200 baud):
-Result: Garbage characters "��g���Xa�0�"
-Action: Wrong baud rate, try others
-
-Second Attempt (9600 baud):
-Result: Success! Readable output during power-on:
-
-=================================
-SecureVault Pro 3000 v2.1.4
-Initializing...
-Reading EEPROM...
-PIN Code: 4 8 1 5 1 6 2 3
-Master Key: EN4BL3D
-Tamper Detect: OFF
-Boot Complete.
-System Ready.
-=================================
-
-CRITICAL FINDING: PIN code transmitted in plaintext!
-Current PIN: 4815162</pre>
-                </div>
-                <div class="warning-box">
-                    <strong>🚨 Major Security Flaw:</strong> The device transmits the stored PIN code over UART during every boot sequence. Anyone with physical access and a serial adapter can read the PIN in seconds!
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Step 5: Interactive Shell Discovery</h4>
-                <p><strong>Testing for Command Interface:</strong></p>
-                <div class="command-block">
-<pre>Attempt: Pressing keys during boot
-Result: Nothing happens
-
-Attempt: After boot, send "help" command
-Flipper: GPIO → UART Terminal → Keyboard Mode
-Type: help [Enter]
-
-Response:
-Available Commands:
-  help     - Show this menu
-  status   - System status
-  setpin   - Change PIN code
-  unlock   - Unlock safe
-  reset    - Factory reset
-  debug    - Debug mode
-
-JACKPOT: Full command interface available!</pre>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Step 6: Testing Commands</h4>
-                <p><strong>Command Exploitation:</strong></p>
-                <div class="command-block">
-<pre>Command: status
-Response:
-Current PIN: 48151623
-Lock State: LOCKED
-Attempts: 0
-Master Override: ENABLED
-
-Command: unlock
-Response:
-ERROR: Safe is locked. Enter PIN or use master key.
-
-Command: debug
-Response:
-Entering debug mode...
-All security checks disabled.
-GPIO control enabled.
-
-Command: unlock
-Response:
-Lock solenoid activated.
-Safe UNLOCKED.
-
-Result: Safe opened without knowing PIN!</pre>
-                </div>
-                <div class="tip-box">
-                    <strong>The Debug Mode Bypass:</strong> The debug command disables all security checks, including PIN verification. This is catastrophic - the safe can be opened by anyone with:
+                <div class="info-box success">
+                    <h3>✅ Key Takeaways</h3>
                     <ul>
-                        <li>3 wires and a serial adapter (~$2)</li>
-                        <li>5 minutes to disassemble and connect</li>
-                        <li>Basic knowledge of UART (now you have it!)</li>
+                        <li>GPIO enables direct hardware communication and security testing</li>
+                        <li>UART, SPI, and I2C are the primary protocols for digital communication</li>
+                        <li>Many devices expose debug interfaces that reveal sensitive information</li>
+                        <li>Firmware extraction allows for vulnerability analysis and reverse engineering</li>
+                        <li>Hardware security requires understanding both software and physical layers</li>
+                        <li>GPIO opens up custom project possibilities beyond security</li>
+                        <li>Always respect voltage levels and use proper safety precautions</li>
+                        <li>Professional hardware assessments require specialized skills and authorization</li>
                     </ul>
                 </div>
+
+                <h3>Skills You've Developed</h3>
+                <ul>
+                    <li>✓ Understanding GPIO pins and digital communication basics</li>
+                    <li>✓ Interfacing with UART, SPI, and I2C devices</li>
+                    <li>✓ Locating and accessing debug interfaces</li>
+                    <li>✓ Reading and analyzing hardware communication</li>
+                    <li>✓ Conducting hardware security assessments</li>
+                    <li>✓ Planning custom hardware projects</li>
+                    <li>✓ Understanding advanced hardware hacking techniques</li>
+                    <li>✓ Applying safety and ethical practices to hardware work</li>
+                </ul>
+            </section>
+
+            <!-- Course Completion -->
+            <div class="course-complete">
+                <div class="trophy">🏆</div>
+                <h2>Course Complete!</h2>
+                <p>Congratulations! You've successfully completed the Flipper Zero Mastery course.</p>
+                <div class="total-xp">Total: 300 XP Earned</div>
+                <p style="font-size: 1rem; margin-top: 2rem;">You've mastered:</p>
+                <ul style="text-align: left; max-width: 600px; margin: 1rem auto; list-style-position: inside;">
+                    <li>Hardware fundamentals and interface navigation</li>
+                    <li>Sub-GHz radio hacking and signal analysis</li>
+                    <li>NFC & RFID exploitation and card cloning</li>
+                    <li>Infrared control systems and universal remotes</li>
+                    <li>BadUSB attacks and keystroke injection</li>
+                    <li>GPIO hardware interfacing and security testing</li>
+                </ul>
             </div>
 
-            <div class="solution-step">
-                <h4>Step 7: EEPROM Analysis</h4>
-                <p><strong>Understanding PIN Storage:</strong></p>
-                <div class="command-block">
-<pre>Additional Finding:
-The 24C64 EEPROM (8-pin chip near MCU) stores:
-- PIN code in plaintext
-- Master key status
-- Configuration settings
-
-Potential Attack #2: I2C EEPROM Reading
-1. Identify I2C pins (SDA/SCL) on EEPROM
-2. Connect I2C reader (Flipper + custom app or Bus Pirate)
-3. Dump EEPROM contents
-4. Parse data to extract PIN
-5. Use PIN on keypad normally
-
-This works even if UART is patched/removed!</pre>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Step 8: Security Report</h4>
-                <p><strong>Documented Vulnerabilities:</strong></p>
-                <div class="warning-box">
-                    <h4>Critical Findings - SecureVault Pro 3000</h4>
-                    <p><strong>CVSS Score: 9.3 (Critical)</strong></p>
-                    
-                    <p><strong>Vulnerability #1: UART Debug Interface (Critical)</strong></p>
-                    <ul>
-                        <li>Exposed 4-pin UART header on PCB</li>
-                        <li>No authentication required</li>
-                        <li>PIN transmitted in plaintext during boot</li>
-                        <li>Debug mode allows complete security bypass</li>
-                        <li><strong>Exploit time: 5 minutes</strong></li>
-                    </ul>
-
-                    <p><strong>Vulnerability #2: Plaintext PIN Storage (High)</strong></p>
-                    <ul>
-                        <li>PIN stored unencrypted in external EEPROM</li>
-                        <li>I2C interface accessible on PCB</li>
-                        <li>EEPROM can be read with $10 device</li>
-                        <li>No cryptographic protection</li>
-                    </ul>
-
-                    <p><strong>Vulnerability #3: No Tamper Detection (Medium)</strong></p>
-                    <ul>
-                        <li>Device can be opened without triggering alerts</li>
-                        <li>No physical security mechanisms</li>
-                        <li>Reassembly leaves no visible traces</li>
-                    </ul>
-
-                    <p><strong>Recommendation:</strong> ❌ DO NOT USE for sensitive materials</p>
-                </div>
-            </div>
-
-            <div class="solution-step">
-                <h4>Step 9: Responsible Disclosure</h4>
-                <p><strong>Next Steps:</strong></p>
-                <div class="tip-box">
-                    <ol>
-                        <li><strong>Client Notification:</strong> Informed client of critical flaws, recommended not using device</li>
-                        <li><strong>Vendor Contact:</strong> Attempted to contact SecureVault manufacturer (no response)</li>
-                        <li><strong>Public Disclosure:</strong> After 90-day waiting period, published findings</li>
-                        <li><strong>Community Alert:</strong> Warned security community about product</li>
-                    </ol>
-                    <p><strong>Outcome:</strong> Product discontinued after widespread coverage. Client purchased secure alternative with proper hardware security.</p>
-                </div>
+            <div class="info-box success">
+                <h3>🎓 What's Next?</h3>
+                <p><strong>Continue your security journey:</strong></p>
+                <ul>
+                    <li><strong>Practice regularly:</strong> Use your skills on your own devices</li>
+                    <li><strong>Join the community:</strong> Flipper forums, Discord, Reddit</li>
+                    <li><strong>Build projects:</strong> Apply your knowledge creatively</li>
+                    <li><strong>Stay ethical:</strong> Always use your skills responsibly</li>
+                    <li><strong>Keep learning:</strong> Security is an ever-evolving field</li>
+                    <li><strong>Give back:</strong> Share knowledge and help others learn</li>
+                </ul>
             </div>
 
             <div class="info-box">
-                <h4>🎓 Key Lessons Learned</h4>
+                <h3>💡 Resources for Continued Learning</h3>
                 <ul>
-                    <li><strong>Debug interfaces are everywhere</strong> - manufacturers rarely remove them in production</li>
-                    <li><strong>Physical access = game over</strong> for most consumer devices</li>
-                    <li><strong>UART is the easiest entry point</strong> - always check for it first</li>
-                    <li><strong>Marketing ≠ Security</strong> - "military-grade" means nothing without proper implementation</li>
-                    <li><strong>Hardware hacking is accessible</strong> - basic tools can find critical flaws</li>
-                    <li><strong>Document everything</strong> - good records make findings credible and reproducible</li>
+                    <li><strong>Official Flipper Docs:</strong> docs.flipper.net</li>
+                    <li><strong>Community Forum:</strong> forum.flipperzero.one</li>
+                    <li><strong>GitHub:</strong> github.com/flipperdevices</li>
+                    <li><strong>Discord:</strong> Active community for support</li>
+                    <li><strong>YouTube:</strong> Tutorials and project walkthroughs</li>
                 </ul>
             </div>
-
-            <div class="completion-box">
-                <h4>🎉 Congratulations! Course Complete!</h4>
-                <p>You've mastered GPIO & Hardware Hacking fundamentals:</p>
-                <ul>
-                    <li>✅ GPIO pinout and safety protocols</li>
-                    <li>✅ UART identification and exploitation</li>
-                    <li>✅ SPI and I2C protocol understanding</li>
-                    <li>✅ Hardware debugging techniques</li>
-                    <li>✅ Firmware extraction concepts</li>
-                    <li>✅ Real-world hardware penetration testing</li>
-                </ul>
-                <p><strong>You've now completed all 6 lessons of the tw¡st3d_¡nk Flipper Zero Academy!</strong></p>
-                <p>Continue practicing on your own hardware projects, stay legal and ethical, and keep learning!</p>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(6)">Complete Lesson 6 →</button>
-        </div>
+        </article>
 
         <!-- Navigation -->
-        <div class="navigation">
-            <a href="lesson5.html" class="nav-btn prev">← Lesson 5: Wi-Fi Networks</a>
-            <a href="index.html" class="nav-btn">🏠 Academy Home</a>
-            <a href="index.html" class="nav-btn next">Course Complete! 🎉</a>
-        </div>
-
-        <!-- Footer -->
-        <footer>
-            <p>tw¡st3d_¡nk Academy - Lesson 6: GPIO & Hardware Hacking</p>
-            <p class="disclaimer">⚠️ Educational purposes only. Always obtain proper authorization before testing hardware security.</p>
-        </footer>
+        <nav class="lesson-navigation">
+            <a href="lesson-5.html" class="nav-btn secondary">
+                ← Previous: BadUSB Attacks
+            </a>
+            <a href="../index.html" class="nav-btn primary">
+                Back to Course Overview →
+            </a>
+        </nav>
     </div>
 
     <script>
-        // Lesson Progress System (Inline for Lesson 6)
-        window.lessonProgress = {
-            currentLesson: 6,
-            totalSections: 6,
-            completedSections: [],
+        let currentProgress = 0;
+        let exercisesCompleted = [false, false, false];
+
+        function updateProgress() {
+            currentProgress = Math.min(100, (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+            document.getElementById('progress-fill').style.width = currentProgress + '%';
+            document.getElementById('progress-percent').textContent = Math.round(currentProgress);
+            localStorage.setItem('flipper-lesson-6-progress', currentProgress);
+        }
+
+        window.addEventListener('scroll', updateProgress);
+
+        function completeExercise(exerciseNum) {
+            exercisesCompleted[exerciseNum - 1] = true;
+            const btn = event.target;
+            btn.classList.add('completed');
+            btn.textContent = '✓ Exercise Completed!';
+            btn.disabled = true;
+            localStorage.setItem(`flipper-lesson-6-exercise-${exerciseNum}`, 'true');
             
-            init: function(lessonNum, sections) {
-                this.currentLesson = lessonNum;
-                this.totalSections = sections;
-                this.loadProgress();
-                this.updateDisplay();
-            },
-            
-            loadProgress: function() {
-                const saved = localStorage.getItem(`lesson${this.currentLesson}_progress`);
-                if (saved) {
-                    this.completedSections = JSON.parse(saved);
-                }
-            },
-            
-            saveProgress: function() {
-                localStorage.setItem(`lesson${this.currentLesson}_progress`, JSON.stringify(this.completedSections));
-            },
-            
-            completeSection: function(sectionNum) {
-                if (!this.completedSections.includes(sectionNum)) {
-                    this.completedSections.push(sectionNum);
-                    this.saveProgress();
-                    this.awardXP(25); // 25 XP per section
-                }
-                
-                // Show next section
-                const currentSection = document.querySelector(`[data-section="${sectionNum}"]`);
-                const nextSection = document.querySelector(`[data-section="${sectionNum + 1}"]`);
-                
-                if (currentSection) currentSection.classList.add('hidden');
-                if (nextSection) {
-                    nextSection.classList.remove('hidden');
-                    nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-                
-                this.updateDisplay();
-                
-                // Check if lesson complete
-                if (this.completedSections.length === this.totalSections) {
-                    this.completeLesson();
-                }
-            },
-            
-            completeLesson: function() {
-                localStorage.setItem(`lesson${this.currentLesson}_complete`, 'true');
-                this.awardXP(50); // Bonus XP for completing lesson
-                
-                // Show completion message
-                setTimeout(() => {
-                    alert(`🎉 Lesson ${this.currentLesson} Complete! +50 Bonus XP!\n\nTotal XP Earned: ${this.getTotalXP()}`);
-                }, 500);
-            },
-            
-            awardXP: function(amount) {
-                let totalXP = parseInt(localStorage.getItem('totalXP') || '0');
-                totalXP += amount;
-                localStorage.setItem('totalXP', totalXP);
-                this.updateXPDisplay();
-            },
-            
-            getTotalXP: function() {
-                return parseInt(localStorage.getItem('totalXP') || '0');
-            },
-            
-            updateXPDisplay: function() {
-                const xpElement = document.getElementById('xp-amount');
-                if (xpElement) {
-                    xpElement.textContent = this.getTotalXP();
-                }
-            },
-            
-            updateDisplay: function() {
-                const progress = (this.completedSections.length / this.totalSections) * 100;
-                const progressFill = document.querySelector('.progress-fill');
-                const progressText = document.querySelector('.progress-text');
-                
-                if (progressFill) progressFill.style.width = progress + '%';
-                if (progressText) progressText.textContent = Math.round(progress) + '% Complete';
-                
-                this.updateXPDisplay();
+            if (exercisesCompleted.every(e => e)) {
+                localStorage.setItem('flipper-lesson-6-complete', 'true');
+                localStorage.setItem('flipper-course-complete', 'true');
             }
-        };
-        
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            window.lessonProgress.init(6, 6);
+        }
+
+        let breakInterval, breakInterval2;
+        let breakTimeRemaining = 300;
+        let breakTimeRemaining2 = 300;
+
+        function startBreakTimer() {
+            breakTimeRemaining = 300;
+            const timerDisplay = document.getElementById('break-timer');
+            const startBtn = event.target;
+            startBtn.disabled = true;
+            startBtn.textContent = 'Break in Progress...';
+            
+            breakInterval = setInterval(() => {
+                breakTimeRemaining--;
+                const minutes = Math.floor(breakTimeRemaining / 60);
+                const seconds = breakTimeRemaining % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (breakTimeRemaining <= 0) {
+                    clearInterval(breakInterval);
+                    timerDisplay.textContent = 'Break Complete! ✓';
+                    startBtn.disabled = false;
+                    startBtn.textContent = 'Start Another Break';
+                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
+                }
+            }, 1000);
+        }
+
+        function skipBreak() {
+            if (breakInterval) clearInterval(breakInterval);
+            document.getElementById('break-timer').textContent = '5:00';
+        }
+
+        function startBreakTimer2() {
+            breakTimeRemaining2 = 300;
+            const timerDisplay = document.getElementById('break-timer-2');
+            const startBtn = event.target;
+            startBtn.disabled = true;
+            startBtn.textContent = 'Break in Progress...';
+            
+            breakInterval2 = setInterval(() => {
+                breakTimeRemaining2--;
+                const minutes = Math.floor(breakTimeRemaining2 / 60);
+                const seconds = breakTimeRemaining2 % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (breakTimeRemaining2 <= 0) {
+                    clearInterval(breakInterval2);
+                    timerDisplay.textContent = 'Break Complete! ✓';
+                    startBtn.disabled = false;
+                    startBtn.textContent = 'Start Another Break';
+                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
+                }
+            }, 1000);
+        }
+
+        function skipBreak2() {
+            if (breakInterval2) clearInterval(breakInterval2);
+            document.getElementById('break-timer-2').textContent = '5:00';
+        }
+
+        let fontSize = 16;
+        const minFontSize = 12;
+        const maxFontSize = 24;
+
+        function adjustFontSize(change) {
+            fontSize += change * 2;
+            fontSize = Math.max(minFontSize, Math.min(maxFontSize, fontSize));
+            document.documentElement.style.fontSize = fontSize + 'px';
+            localStorage.setItem('fontSize', fontSize);
+        }
+
+        function toggleDyslexiaMode() {
+            document.body.classList.toggle('dyslexia-friendly');
+            localStorage.setItem('dyslexiaMode', document.body.classList.contains('dyslexia-friendly'));
+        }
+
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+            localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
+        }
+
+        function toggleReducedMotion() {
+            document.body.classList.toggle('reduce-motion');
+            localStorage.setItem('reducedMotion', document.body.classList.contains('reduce-motion'));
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedFontSize = localStorage.getItem('fontSize');
+            if (savedFontSize) {
+                fontSize = parseInt(savedFontSize);
+                document.documentElement.style.fontSize = fontSize + 'px';
+            }
+
+            if (localStorage.getItem('dyslexiaMode') === 'true') {
+                document.body.classList.add('dyslexia-friendly');
+            }
+            if (localStorage.getItem('highContrast') === 'true') {
+                document.body.classList.add('high-contrast');
+            }
+            if (localStorage.getItem('reducedMotion') === 'true') {
+                document.body.classList.add('reduce-motion');
+            }
+
+            for (let i = 1; i <= 3; i++) {
+                if (localStorage.getItem(`flipper-lesson-6-exercise-${i}`) === 'true') {
+                    exercisesCompleted[i - 1] = true;
+                    const exercises = document.querySelectorAll('.exercise-box');
+                    if (exercises[i - 1]) {
+                        const btn = exercises[i - 1].querySelector('.btn-complete');
+                        if (btn) {
+                            btn.classList.add('completed');
+                            btn.textContent = '✓ Exercise Completed!';
+                            btn.disabled = true;
+                        }
+                    }
+                }
+            }
+
+            const savedProgress = localStorage.getItem('flipper-lesson-6-progress');
+            if (savedProgress) {
+                currentProgress = parseFloat(savedProgress);
+                document.getElementById('progress-fill').style.width = currentProgress + '%';
+                document.getElementById('progress-percent').textContent = Math.round(currentProgress);
+            }
+        });
+
+        window.addEventListener('beforeunload', () => {
+            if (breakInterval) clearInterval(breakInterval);
+            if (breakInterval2) clearInterval(breakInterval2);
         });
     </script>
 </body>
 </html>
+                            :root {
+            --bg-dark: #0a0a0a;
+            --bg-medium: #1a1a1a;
+            --bg-light: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #00ff88;
+            --accent-dim: #00cc6a;
+            --border: #333333;
+            --warning: #ff6b6b;
+            --info: #4dabf7;
+            --success: #51cf66;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-top: 120px;
+        }
+
+        .accessibility-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-medium);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+            z-index: 1000;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .accessibility-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-control {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn-control:hover {
+            background: var(--bg-dark);
+            border-color: var(--accent);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 52px;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--bg-medium);
+            border-bottom: 2px solid var(--border);
+            z-index: 999;
+            padding: 0.75rem 1rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .xp-badge {
+            background: var(--accent);
+            color: var(--bg-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dim));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .nav-breadcrumb {
+            background: var(--bg-medium);
+            padding: 1rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            color: var(--text-secondary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .lesson-number {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .lesson-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .objectives-box {
+            background: var(--bg-medium);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .objectives-box h2 {
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .objectives-list {
+            list-style: none;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .objectives-list li {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: var(--bg-light);
+            border-radius: 4px;
+        }
+
+        .objectives-list li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .content-section {
+            margin: 2rem 0;
+        }
+
+        .content-section h2 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .content-section h3 {
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .content-section ul,
+        .content-section ol {
+            margin: 1rem 0 1rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .content-section li {
+            margin: 0.5rem 0;
+        }
+
+        .info-box {
+            background: var(--bg-medium);
+            border-left: 4px solid var(--info);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .info-box.warning {
+            border-left-color: var(--warning);
+        }
+
+        .info-box.success {
+            border-left-color: var(--success);
+        }
+
+        .info-box h3 {
+            color: var(--info);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-box.warning h3 {
+            color: var(--warning);
+        }
+
+        .info-box.success h3 {
+            color: var(--success);
+        }
+
+        .info-box ul {
+            margin-left: 1.5rem;
+        }
+
+        .pinout-diagram {
+            background: var(--bg-medium);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .pin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .pin-card {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .pin-card h4 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .pin-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0.25rem 0;
+        }
+
+        .protocol-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .protocol-card {
+            background: var(--bg-medium);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+        }
+
+        .protocol-card h4 {
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .protocol-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 0.5rem 0;
+        }
+
+        .protocol-card ul {
+            margin: 0.5rem 0 0 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .exercise-box {
+            background: var(--bg-medium);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .exercise-box h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .exercise-steps {
+            counter-reset: step-counter;
+            list-style: none;
+        }
+
+        .exercise-steps li {
+            counter-increment: step-counter;
+            margin: 1rem 0;
+            padding-left: 3rem;
+            position: relative;
+        }
+
+        .exercise-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--accent);
+            color: var(--bg-dark);
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .btn-complete {
+            background: var(--accent);
+            color: var(--bg-dark);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-complete:hover {
+            background: var(--accent-dim);
+            transform: scale(1.02);
+        }
+
+        .btn-complete.completed {
+            background: var(--success);
+        }
+
+        .break-reminder {
+            background: linear-gradient(135deg, var(--bg-medium), var(--bg-light));
+            border: 2px solid var(--warning);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .break-reminder h3 {
+            color: var(--warning);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .break-reminder p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .break-timer {
+            font-size: 3rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin: 1rem 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .break-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-break {
+            background: var(--warning);
+            color: var(--bg-dark);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-break:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .btn-break.secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn.primary {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border: none;
+        }
+
+        .nav-btn.secondary {
+            background: var(--bg-medium);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .course-complete {
+            background: linear-gradient(135deg, var(--bg-medium), var(--bg-light));
+            border: 3px solid var(--accent);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .course-complete h2 {
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-complete .trophy {
+            font-size: 5rem;
+            margin: 1rem 0;
+        }
+
+        .course-complete p {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .total-xp {
+            background: var(--accent);
+            color: var(--bg-dark);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: inline-block;
+            margin: 1.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 140px;
+            }
+
+            .lesson-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .lesson-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .pin-grid, .protocol-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-navigation {
+                flex-direction: column;
+            }
+
+            .course-complete h2 {
+                font-size: 1.8rem;
+            }
+
+            .course-complete .trophy {
+                font-size: 3rem;
+            }
+        }
+
+        body.dyslexia-friendly {
+            letter-spacing: 0.05em;
+            word-spacing: 0.1em;
+        }
+
+        body.high-contrast {
+            --bg-dark: #000000;
+            --bg-medium: #1a1a1a;
+            --border: #ffffff;
+        }
+
+        .reduce-motion * {
+            animation: none !important;
+            transition: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+        <div class="accessibility-controls">
+            <div class="control-group">
+                <label for="font-size">Text Size:</label>
+                <button class="btn-control" onclick="adjustFontSize(-1)">A-</button>
+                <button class="btn-control" onclick="adjustFontSize(1)">A+</button>
+            </div>
+            <button class="btn-control" onclick="toggleDyslexiaMode()">Dyslexia Mode</button>
+            <button class="btn-control" onclick="toggleHighContrast()">High Contrast</button>
+            <button class="btn-control" onclick="toggleReducedMotion()">Reduce Motion</button>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-info">
+            <span class="progress-text">Lesson Progress: <span id="progress-percent">0</span>%</span>
+            <span class="xp-badge">+50 XP</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb Navigation -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../../index.html">Academy</a>
+            <span>→</span>
+            <a href="../index.html">Flipper Zero</a>
+            <span>→</span>
+            <span>Lesson 6</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Lesson Header -->
+        <header class="lesson-header">
+            <div class="lesson-number">LESSON 6 OF 6 - FINAL LESSON</div>
+            <h1>GPIO & Hardware Interfacing</h1>
+            <div class="lesson-meta">
+                <div class="meta-item">
+                    <span>⏱️</span>
+                    <span>~45 minutes</span>
+                </div>
+                <div class="meta-item">
+                    <span>📊</span>
+                    <span>Intermediate to Advanced</span>
+                </div>
+                <div class="meta-item">
+                    <span>🎯</span>
+                    <span>Hands-on: 3 exercises</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Learning Objectives -->
+        <section class="objectives-box">
+            <h2>🎯 What You'll Learn</h2>
+            <ul class="objectives-list">
+                <li>Understand GPIO pins and digital communication basics</li>
+                <li>Interface with UART, SPI, and I2C protocols</li>
+                <li>Read and debug hardware communication signals</li>
+                <li>Extract firmware from embedded devices</li>
+                <li>Conduct hardware security assessments</li>
+                <li>Build custom hardware projects with Flipper Zero</li>
+            </ul>
+        </section>
+
+        <!-- Main Content -->
+        <article>
+            <!-- Introduction -->
+            <section class="content-section">
+                <h2>Understanding GPIO</h2>
+                <p>
+                    GPIO (General Purpose Input/Output) pins allow the Flipper Zero to communicate with external hardware. This opens up possibilities for hardware hacking, security research, custom projects, and device debugging.
+                </p>
+                <p>
+                    The Flipper Zero has 18 GPIO pins that support multiple digital communication protocols. This makes it a versatile tool for hardware interfacing and security testing of embedded systems.
+                </p>
+
+                <div class="info-box">
+                    <h3>💡 Why GPIO Matters for Security</h3>
+                    <ul>
+                        <li><strong>Firmware Extraction:</strong> Read firmware from chips for vulnerability analysis</li>
+                        <li><strong>Debug Interfaces:</strong> Access UART/JTAG debug ports on devices</li>
+                        <li><strong>Hardware Analysis:</strong> Understand how devices communicate</li>
+                        <li><strong>IoT Security:</strong> Test smart home and IoT device security</li>
+                        <li><strong>Reverse Engineering:</strong> Analyze proprietary protocols</li>
+                    </ul>
+                </div>
+
+                <div class="info-box warning">
+                    <h3>⚠️ Safety Warning</h3>
+                    <p>
+                        <strong>Incorrect GPIO usage can damage devices!</strong>
+                    </p>
+                    <ul>
+                        <li>Never apply more than 3.3V to GPIO pins</li>
+                        <li>Check voltage levels before connecting devices</li>
+                        <li>Use current-limiting resistors when unsure</li>
+                        <li>Avoid short circuits between power and ground</li>
+                        <li>Only work on devices you own or have permission to test</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- GPIO Pinout -->
+            <section class="content-section">
+                <h2>Flipper Zero GPIO Pinout</h2>
+                <p>
+                    The Flipper Zero has 18 pins accessible via the GPIO header on top of the device. Understanding the pinout is essential for hardware interfacing.
+                </p>
+
+                <div class="pinout-diagram">
+                    <h3 style="color: var(--accent); margin-bottom: 1rem;">GPIO Pin Functions</h3>
+                    <div class="pin-grid">
+                        <div class="pin-card">
+                            <h4>Pin 1 - 3.3V</h4>
+                            <p><strong>Function:</strong> Power output</p>
+                            <p><strong>Max Current:</strong> Limited</p>
+                            <p><strong>Use:</strong> Power low-current devices</p>
+                        </div>
+
+                        <div class="pin-card">
+                            <h4>Pin 2 - GND</h4>
+                            <p><strong>Function:</strong> Ground reference</p>
+                            <p><strong>Use:</strong> Common ground for circuits</p>
+                        </div>
+
+                        <div class="pin-card">
+                            <h4>Pins 13-16 (TX/RX)</h4>
+                            <p><strong>Function:</strong> UART communication</p>
+                            <p><strong>Voltage:</strong> 3.3V logic</p>
+                            <p><strong>Use:</strong> Serial debugging, consoles</p>
+                        </div>
+
+                        <div class="pin-card">
+                            <h4>Pins 9-12 (SPI)</h4>
+                            <p><strong>Function:</strong> SPI bus</p>
+                            <p><strong>Pins:</strong> MOSI, MISO, SCK, CS</p>
+                            <p><strong>Use:</strong> Flash memory, sensors</p>
+                        </div>
+
+                        <div class="pin-card">
+                            <h4>Pins 15-16 (I2C)</h4>
+                            <p><strong>Function:</strong> I2C bus</p>
+                            <p><strong>Pins:</strong> SDA, SCL</p>
+                            <p><strong>Use:</strong> Sensors, EEPROMs, displays</p>
+                        </div>
+
+                        <div class="pin-card">
+                            <h4>GPIO Pins (Multiple)</h4>
+                            <p><strong>Function:</strong> General I/O</p>
+                            <p><strong>Modes:</strong> Input, Output, PWM</p>
+                            <p><strong>Use:</strong> Custom projects, LEDs, buttons</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>💡 Pin Safety Guidelines</h3>
+                    <ul>
+                        <li><strong>Always check voltage:</strong> Use a multimeter before connecting</li>
+                        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 6: GPIO & Hardware Interfacing | Flipper Zero Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
