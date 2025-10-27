@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="tw¡st3d_¡nk | A voice from the void." />
+  <title>tw¡st3d_¡nk | Home</title>
+  <link rel="stylesheet" href="assets/styles/style.css" />
+</head>
+<body>
+  <main>
+    <h1>Welcome to tw¡st3d_¡nk</h1>
+    <p>A voice in the void that bleeds the face of true character.</p>
+    <nav>
+      <ul>
+        <li><a href="devil.html">If I Told You I Was the Devil</a></li>
+        <li><a href="echo.html">Echo, You’ve Gone and Done It</a></li>
+        <li><a href="sayless.html">Say Less Teaser Pack</a></li>
+      </ul>
+    </nav>
+  </main>
+
+  <!-- Global audio player -->
+  <audio id="site-audio" preload="auto" loop></audio>
+
+  <script>
+  (() => {
+    const AUDIO_SRC = "assets/audio/theme.mp3"; // your licensed MP3
+    const el = document.getElementById("site-audio");
+    el.src = AUDIO_SRC;
+
+    // try to autoplay
+    const tryPlay = () => el.play().catch(() => {});
+    document.addEventListener("DOMContentLoaded", tryPlay);
+
+    // resume on first interaction if blocked
+    ["pointerdown","keydown","touchstart"].forEach(evt => {
+      window.addEventListener(evt, () => tryPlay(), { once: true, passive: true });
+    });
+
+    // add mute button
+    const btn = document.createElement("button");
+    btn.textContent = "Mute";
+    Object.assign(btn.style, {
+      position: "fixed", right: "1rem", bottom: "1rem",
+      zIndex: 9999, padding: "0.5rem 1rem", cursor: "pointer"
+    });
+    btn.addEventListener("click", () => {
+      el.muted = !el.muted;
+      btn.textContent = el.muted ? "Unmute" : "Mute";
+      if (el.paused) tryPlay();
+    });
+    document.body.appendChild(btn);
+  })();
+  </script>
+</body>
+</html>
+
