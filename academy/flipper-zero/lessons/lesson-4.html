@@ -1,730 +1,1637 @@
-<p><strong>Allow/Block Strategy:</strong></p>
-                <ul>
-                    <li>✅ Allow: Trusted mice and keyboards (specific devices)</li>
-                    <li>✅ Allow: Company-issued USB drives (registered)</li>
-                    <li>❌ Block: Unknown HID devices</li>
-                    <li>❌ Block: USB storage from untrusted sources</li>
-                    <li>❌ Block: All USB during sensitive operations</li>
-                </ul>
-                <p><strong>Implementation:</strong> Device manager policies, USB whitelist solutions</p>
-            </div>
+<h3>💡 125 kHz Reading Tips</h3>
+                    <ul>
+                        <li>The antenna is on the back of the Flipper—place cards there, not on the screen</li>
+                        <li>Keep the card flat and still during reading</li>
+                        <li>Thick cards may need to be pressed firmly against the Flipper</li>
+                        <li>Some cards have the chip offset—try different positions</li>
+                        <li>If it doesn't read, the card might be 13.56 MHz instead</li>
+                    </ul>
+                </div>
 
-            <h4>User Education</h4>
-            <div class="info-box">
-                <h4>Human Firewall</h4>
-                <p>Technology alone can't stop BadUSB. Users must be trained:</p>
-                <ul>
-                    <li><strong>Never plug in found USB devices</strong> - "USB drop" is common attack vector</li>
-                    <li><strong>Inspect gifts/swag:</strong> Free USB drives at conferences may be compromised</li>
-                    <li><strong>Lock screens:</strong> Even for bathroom breaks</li>
-                    <li><strong>Report suspicious behavior:</strong> Rapid typing, windows flashing</li>
-                    <li><strong>Verify identities:</strong> Don't let "IT support" plug things in without verification</li>
-                </ul>
-            </div>
-
-            <h4>Enterprise Security Policies</h4>
-            <div class="command-block">
-<pre>Corporate Defenses:
-
-1. USB Device Policy:
-   - Whitelist approved devices only
-   - Require approval for new devices
-   - Log all USB connections
-   - Alert on HID device additions
-
-2. Least Privilege:
-   - Users don't need admin rights
-   - BadUSB payloads less effective without privileges
-   - UAC prompts (Windows) block many attacks
-
-3. Network Segmentation:
-   - Limit lateral movement
-   - Exfiltration becomes harder
-   - Contain compromised systems
-
-4. Monitoring & Logging:
-   - USB insertion logs
-   - Command execution monitoring  
-   - Unusual typing patterns
-   - Network anomalies
-
-5. Incident Response:
-   - Procedures for suspected BadUSB
-   - Immediate disconnection protocols
-   - Forensic analysis capabilities</pre>
-            </div>
-
-            <h4>Detection Tools</h4>
-            <div class="tip-box">
-                <strong>USB Security Software:</strong>
-                <ul>
-                    <li><strong>USBGuard (Linux):</strong> Flexible USB authorization</li>
-                    <li><strong>Windows Defender:</strong> Can block suspicious HID behavior</li>
-                    <li><strong>Endpoint DLP:</strong> Data Loss Prevention monitors data transfers</li>
-                    <li><strong>SIEM Integration:</strong> Centralized logging and alerting</li>
-                    <li><strong>Custom Scripts:</strong> PowerShell/Python monitors for USB events</li>
-                </ul>
-            </div>
-
-            <h4>The Reality Check</h4>
-            <div class="warning-box">
-                <strong>Brutal Truth:</strong>
-                <p>If an attacker has physical access to your unlocked computer, the game is over. BadUSB is just one of many attacks possible:</p>
-                <ul>
-                    <li>Direct hard drive access</li>
-                    <li>Boot from USB drive</li>
-                    <li>Cold boot attacks (RAM extraction)</li>
-                    <li>Hardware keyloggers</li>
-                    <li>Evil maid attacks</li>
-                </ul>
-                <p><strong>Defense strategy:</strong> Focus on preventing physical access and always locking screens!</p>
-            </div>
-
-            <h4>Personal Protection</h4>
-            <div class="example-box">
-                <h4>Protecting Your Own Devices</h4>
+                <h3>Reading 13.56 MHz NFC Cards</h3>
                 <ol>
-                    <li><strong>Lock screen religiously:</strong> Make it a habit</li>
-                    <li><strong>Full disk encryption:</strong> In case device is stolen</li>
-                    <li><strong>Strong passwords:</strong> Not easily bypassed</li>
-                    <li><strong>Firmware passwords:</strong> Prevent boot modifications (BIOS/UEFI)</li>
-                    <li><strong>USB port blockers:</strong> Physical locks for unused ports</li>
-                    <li><strong>Monitor for changes:</strong> Notice if settings/files are altered</li>
-                    <li><strong>Regular audits:</strong> Check startup programs, scheduled tasks</li>
+                    <li>Navigate to <strong>NFC</strong> from the main menu</li>
+                    <li>Select <strong>Read Card</strong></li>
+                    <li>Place the card on the back of the Flipper</li>
+                    <li>Flipper will detect the card type automatically</li>
+                    <li>Review the information displayed (UID, type, capacity)</li>
+                    <li>For writable cards, you may see additional data</li>
+                    <li>Save the card for later use or emulation</li>
                 </ol>
-            </div>
 
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(5)">Continue to Final Challenge →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="6">
-            <h3>🎯 Challenge: Penetration Test Scenario</h3>
-            
-            <div class="challenge-box">
-                <h4>Authorized Penetration Test</h4>
-                <p><strong>Scenario:</strong> You've been hired by TechCorp Inc. to conduct a physical security assessment of their office. You have written authorization and a signed contract. Your objective is to test if employees follow security policies regarding USB devices.</p>
-                
-                <p><strong>Test Parameters:</strong></p>
+                <h3>Understanding Card Information</h3>
+                <p>
+                    When you read a card, the Flipper displays several important pieces of information:
+                </p>
                 <ul>
-                    <li><strong>Target:</strong> Employee workstations (Windows 10)</li>
-                    <li><strong>Objective:</strong> Demonstrate BadUSB risk without causing harm</li>
-                    <li><strong>Rules:</strong> No data exfiltration, no system damage, no malware</li>
-                    <li><strong>Success:</strong> Prove concept with benign payload</li>
-                    <li><strong>Documentation:</strong> Record findings for report</li>
+                    <li><strong>UID (Unique Identifier):</strong> The card's serial number, usually 4 or 7 bytes</li>
+                    <li><strong>Card Type:</strong> MIFARE Classic, NTAG, EM4100, etc.</li>
+                    <li><strong>Capacity:</strong> For memory cards, how much data they can store</li>
+                    <li><strong>SAK/ATQA:</strong> Technical identifiers that reveal card capabilities</li>
+                    <li><strong>Sectors:</strong> For MIFARE Classic, the number of data sectors</li>
                 </ul>
 
-                <p><strong>Your Mission:</strong></p>
+                <div class="info-box warning">
+                    <h3>⚠️ What You Can and Can't Read</h3>
+                    <p><strong>Can Read:</strong></p>
+                    <ul>
+                        <li>Card UID and basic information</li>
+                        <li>Card type and manufacturer data</li>
+                        <li>Unencrypted memory areas</li>
+                        <li>Public data on transit cards</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Cannot Read:</strong></p>
+                    <ul>
+                        <li>Encrypted sectors without keys</li>
+                        <li>Payment card account numbers (CVV, etc.)</li>
+                        <li>DESFire secure applications</li>
+                        <li>Protected authentication tokens</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Exercise 1 -->
+            <div class="exercise-box">
+                <h3>🔧 Hands-On Exercise 1: Read and Identify Cards</h3>
+                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Beginner</p>
+                <p>
+                    <strong>Requirements:</strong> 2-3 different access cards or NFC tags you own (hotel key, office badge, transit card, etc.)
+                </p>
+                <ol class="exercise-steps">
+                    <li>Gather several different cards you own or have permission to test</li>
+                    <li>Try reading each card with both 125 kHz RFID and NFC menus</li>
+                    <li>Document which frequency each card uses</li>
+                    <li>Record the card type identified by Flipper</li>
+                    <li>Note the UID length (4 bytes, 7 bytes, etc.)</li>
+                    <li>Save each card with a descriptive name</li>
+                    <li>Create a simple inventory of your cards with their properties</li>
+                    <li>Try reading through a wallet or card holder to test range</li>
+                </ol>
+                <div style="margin-top: 1.5rem;">
+                    <button class="btn-complete" onclick="completeExercise(1)">Mark Exercise Complete</button>
+                </div>
+            </div>
+
+            <!-- Cloning Cards -->
+            <section class="content-section">
+                <h2>Cloning and Emulation</h2>
+                <p>
+                    Once you've read a card, you can clone it to a writable card or emulate it directly from your Flipper. This is useful for legitimate purposes like backing up your access cards or testing system vulnerabilities.
+                </p>
+
+                <h3>Cloning to Physical Cards</h3>
+                <p>
+                    To create a physical copy, you'll need blank writable cards:
+                </p>
+                <ul>
+                    <li><strong>For 125 kHz:</strong> T5577 writable cards (cheap, ~$1 each)</li>
+                    <li><strong>For 13.56 MHz:</strong> MIFARE Classic writable cards or NTAG tags</li>
+                    <li>Purchase from electronics suppliers or online retailers</li>
+                    <li>Verify compatibility with your reader system</li>
+                </ul>
+
+                <h3>Cloning Process (125 kHz)</h3>
                 <ol>
-                    <li>Create a benign demonstration payload</li>
-                    <li>Test on your own device first</li>
-                    <li>Identify unlocked workstations</li>
-                    <li>Execute demonstration safely</li>
-                    <li><!DOCTYPE html>
+                    <li>Read the source card and save it</li>
+                    <li>Navigate to <strong>125 kHz RFID → Saved</strong></li>
+                    <li>Select your saved card</li>
+                    <li>Choose <strong>Write</strong></li>
+                    <li>Place a blank T5577 card on the Flipper</li>
+                    <li>Confirm the write operation</li>
+                    <li>Test the cloned card with the original reader</li>
+                </ol>
+
+                <h3>Cloning Process (13.56 MHz MIFARE Classic)</h3>
+                <ol>
+                    <li>Read the card (may require key attack for encrypted sectors)</li>
+                    <li>Navigate to <strong>NFC → Saved</strong></li>
+                    <li>Select your saved card</li>
+                    <li>Choose <strong>Write</strong></li>
+                    <li>Place a blank MIFARE Classic card on the Flipper</li>
+                    <li>Wait for the write to complete (takes longer than 125 kHz)</li>
+                    <li>Verify the clone works</li>
+                </ol>
+
+                <div class="info-box">
+                    <h3>💡 UID vs Full Clone</h3>
+                    <p>There are two types of clones:</p>
+                    <ul>
+                        <li><strong>UID Clone:</strong> Copies only the card ID. Works on systems that only check the UID.</li>
+                        <li><strong>Full Clone:</strong> Copies UID and all accessible data. Required for systems that read card contents.</li>
+                    </ul>
+                    <p style="margin-top: 0.75rem;">
+                        Simple access systems often only check the UID, making UID clones sufficient. More sophisticated systems require full clones.
+                    </p>
+                </div>
+
+                <h3>Direct Emulation (No Physical Card Needed)</h3>
+                <p>
+                    One of the Flipper's most powerful features is the ability to emulate cards directly without creating a physical clone:
+                </p>
+                <ol>
+                    <li>Read and save a card</li>
+                    <li>Navigate to <strong>Saved</strong> in the appropriate menu</li>
+                    <li>Select your card</li>
+                    <li>Choose <strong>Emulate</strong></li>
+                    <li>Hold the Flipper up to the reader like a card</li>
+                    <li>The Flipper transmits the card data wirelessly</li>
+                </ol>
+
+                <div class="info-box success">
+                    <h3>✅ Emulation Advantages</h3>
+                    <ul>
+                        <li>No need to buy blank cards</li>
+                        <li>Store unlimited cards on one device</li>
+                        <li>Quick switching between different cards</li>
+                        <li>Can't lose or damage the card</li>
+                        <li>Perfect for testing and demonstrations</li>
+                    </ul>
+                </div>
+
+                <div class="info-box warning">
+                    <h3>⚠️ Emulation Limitations</h3>
+                    <ul>
+                        <li>Some readers detect emulation and reject it</li>
+                        <li>Requires the Flipper to be powered on</li>
+                        <li>More obvious than using a physical card</li>
+                        <li>May not work with very high-security readers</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Exercise 2 -->
+            <div class="exercise-box">
+                <h3>🔧 Hands-On Exercise 2: Emulate a Card</h3>
+                <p><strong>Time:</strong> 10 minutes | <strong>Difficulty:</strong> Beginner</p>
+                <p>
+                    Practice emulating a saved card to understand how it works.
+                </p>
+                <ol class="exercise-steps">
+                    <li>Select one of the cards you saved in Exercise 1</li>
+                    <li>Navigate to the Saved menu and find your card</li>
+                    <li>Choose "Emulate" to start emulation mode</li>
+                    <li>Hold the Flipper up to the original reader (if available)</li>
+                    <li>Test if the emulation works as expected</li>
+                    <li>Try different positions and angles to find optimal placement</li>
+                    <li>Note any differences between using the physical card and emulation</li>
+                    <li>Document your success rate and observations</li>
+                </ol>
+                <div style="margin-top: 1.5rem;">
+                    <button class="btn-complete" onclick="completeExercise(2)">Mark Exercise Complete</button>
+                </div>
+            </div>
+
+            <!-- Break Reminder 2 -->
+            <div class="break-reminder">
+                <h3>⏸️ Break Point #2</h3>
+                <p>Great progress! You've learned how to read, clone, and emulate cards. Time for another break.</p>
+                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5-10 minutes to:</p>
+                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                    <li>💧 Drink water</li>
+                    <li>🚶 Walk around</li>
+                    <li>🧠 Think about card security in your daily life</li>
+                </ul>
+                <div class="break-timer" id="break-timer-2">5:00</div>
+                <div class="break-controls">
+                    <button class="btn-break" onclick="startBreakTimer2()">Start 5-Min Break</button>
+                    <button class="btn-break secondary" onclick="skipBreak2()">Skip Break</button>
+                </div>
+            </div>
+
+            <!-- MIFARE Classic Attacks -->
+            <section class="content-section">
+                <h2>MIFARE Classic Security Testing</h2>
+                <p>
+                    MIFARE Classic is one of the most widely deployed contactless card technologies, but it has known cryptographic weaknesses. Understanding these vulnerabilities is essential for security professionals.
+                </p>
+
+                <h3>MIFARE Classic Structure</h3>
+                <p>
+                    MIFARE Classic cards are organized into sectors and blocks:
+                </p>
+                <ul>
+                    <li><strong>1K cards:</strong> 16 sectors, each with 4 blocks (64 blocks total)</li>
+                    <li><strong>4K cards:</strong> 40 sectors with varying block counts (256 blocks total)</li>
+                    <li>Each block stores 16 bytes of data</li>
+                    <li>Each sector is protected by two keys: Key A and Key B</li>
+                    <li>Keys control read/write access to the sector</li>
+                </ul>
+
+                <h3>Default Keys</h3>
+                <p>
+                    Many MIFARE Classic deployments use default or common keys. The Flipper has a dictionary of known keys:
+                </p>
+                <ul>
+                    <li><strong>FFFFFFFFFFFF</strong> (most common default)</li>
+                    <li><strong>A0A1A2A3A4A5</strong> (transport configuration)</li>
+                    <li><strong>000000000000</strong> (sometimes used)</li>
+                    <li>Manufacturer-specific defaults</li>
+                    <li>Industry-specific common keys</li>
+                </ul>
+
+                <h3>Dictionary Attack</h3>
+                <p>
+                    The first attack to try against MIFARE Classic cards:
+                </p>
+                <ol>
+                    <li>Navigate to <strong>NFC → Read Card</strong></li>
+                    <li>Place the MIFARE Classic card on the Flipper</li>
+                    <li>Flipper automatically attempts dictionary attack</li>
+                    <li>Wait for the attack to complete (usually seconds)</li>
+                    <li>If successful, you'll see which sectors were unlocked</li>
+                    <li>Save the card with recovered keys</li>
+                </ol>
+
+                <div class="info-box">
+                    <h3>💡 Dictionary Attack Success Rate</h3>
+                    <p>
+                        Dictionary attacks are surprisingly effective:
+                    </p>
+                    <ul>
+                        <li>~30-40% of deployed systems use default keys</li>
+                        <li>Hotel key cards often use predictable keys</li>
+                        <li>Legacy transit systems frequently vulnerable</li>
+                        <li>Corporate access systems sometimes have default keys on low-security sectors</li>
+                    </ul>
+                </div>
+
+                <h3>Nested Attack (Advanced)</h3>
+                <p>
+                    If the dictionary attack doesn't unlock all sectors, the nested attack uses known keys to crack unknown ones:
+                </p>
+                <ul>
+                    <li>Requires at least one known key from dictionary attack</li>
+                    <li>Exploits cryptographic weakness in MIFARE authentication</li>
+                    <li>Can recover all keys if at least one is known</li>
+                    <li>Takes longer than dictionary attack (several minutes)</li>
+                </ul>
+
+                <h3>Hardnested Attack (Most Advanced)</h3>
+                <p>
+                    When no keys are known, the hardnested attack can still succeed:
+                </p>
+                <ul>
+                    <li>Works even when all keys are non-default</li>
+                    <li>Requires significant computation time</li>
+                    <li>Usually performed on a computer, not Flipper</li>
+                    <li>Demonstrates that MIFARE Classic fundamentally insecure</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <h3>⚠️ The Bottom Line on MIFARE Classic</h3>
+                    <p>
+                        <strong>MIFARE Classic should not be used for high-security applications.</strong>
+                    </p>
+                    <ul>
+                        <li>The encryption algorithm (Crypto-1) is broken</li>
+                        <li>Keys can be recovered with sufficient time and tools</li>
+                        <li>Widely considered obsolete for security-critical systems</li>
+                        <li>Many organizations continue using it due to cost and inertia</li>
+                    </ul>
+                    <p style="margin-top: 0.75rem;">
+                        When assessing systems, recommend upgrading to MIFARE DESFire or other secure alternatives.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Exercise 3 -->
+            <div class="exercise-box">
+                <h3>🔧 Hands-On Exercise 3: MIFARE Classic Analysis</h3>
+                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Intermediate</p>
+                <p>
+                    <strong>Requirements:</strong> A MIFARE Classic card you own (hotel key, transit card, or purchased test card)
+                </p>
+                <ol class="exercise-steps">
+                    <li>Obtain a MIFARE Classic card you're authorized to test</li>
+                    <li>Navigate to NFC → Read Card</li>
+                    <li>Let Flipper perform automatic dictionary attack</li>
+                    <li>Review which sectors were successfully unlocked</li>
+                    <li>Document the percentage of sectors using default keys</li>
+                    <li>If any sectors remain locked, note their sector numbers</li>
+                    <li>Save the card with all recovered data</li>
+                    <li>Try emulating the card to verify it works</li>
+                    <li>Document your findings about the card's security posture</li>
+                </ol>
+                <div style="margin-top: 1.5rem;">
+                    <button class="btn-complete" onclick="completeExercise(3)">Mark Exercise Complete</button>
+                </div>
+            </div>
+
+            <!-- Security Assessment -->
+            <section class="content-section">
+                <h2>Conducting Card Security Assessments</h2>
+                <p>
+                    When authorized to assess an organization's physical access control, follow this methodology:
+                </p>
+
+                <h3>Assessment Process</h3>
+                <ol>
+                    <li>
+                        <strong>Reconnaissance</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Identify card types in use (visual inspection, vendor info)</li>
+                            <li>Determine reader types and models</li>
+                            <li>Understand the access control architecture</li>
+                            <li>Document card distribution and management processes</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Technical Testing</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Read issued cards to identify technology</li>
+                            <li>Test for default or weak keys (MIFARE Classic)</li>
+                            <li>Attempt cloning and emulation</li>
+                            <li>Test reader response to cloned cards</li>
+                            <li>Assess UID-only vs full-authentication systems</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Range Testing</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Test maximum read distance for attacks</li>
+                            <li>Assess feasibility of wallet skimming</li>
+                            <li>Document environmental factors affecting range</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Process Review</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Evaluate card issuance procedures</li>
+                            <li>Review card revocation processes</li>
+                            <li>Assess physical security of card stock</li>
+                            <li>Check for regular security updates</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Reporting</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Document all vulnerabilities found</li>
+                            <li>Provide risk ratings and impact assessments</li>
+                            <li>Recommend specific remediation steps</li>
+                            <li>Suggest timeline for improvements</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h3>Common Vulnerabilities to Test For</h3>
+                <div class="card-grid">
+                    <div class="card-type">
+                        <h4>UID-Only Authentication</h4>
+                        <p>System only checks the card UID, not encrypted data.</p>
+                        <p><strong>Risk:</strong> High - trivial to clone</p>
+                        <p><strong>Test:</strong> Clone UID to blank card and test access</p>
+                    </div>
+
+                    <div class="card-type">
+                        <h4>Default Encryption Keys</h4>
+                        <p>MIFARE Classic using factory-default keys.</p>
+                        <p><strong>Risk:</strong> High - keys easily recovered</p>
+                        <p><strong>Test:</strong> Dictionary attack reveals default keys</p>
+                    </div>
+
+                    <div class="card-type">
+                        <h4>No Encryption</h4>
+                        <p>125 kHz cards with no security features.</p>
+                        <p><strong>Risk:</strong> Critical - anyone can clone</p>
+                        <p><strong>Test:</strong> Simple read and write to T5577</p>
+                    </div>
+
+                    <div class="card-type">
+                        <h4>Weak Key Diversity</h4>
+                        <p>All cards in deployment use same keys.</p>
+                        <p><strong>Risk:</strong> High - one compromise affects all</p>
+                        <p><strong>Test:</strong> Compare keys across multiple cards</p>
+                    </div>
+
+                    <div class="card-type">
+                        <h4>No Card Revocation</h4>
+                        <p>Lost/stolen cards not properly deactivated.</p>
+                        <p><strong>Risk:</strong> Medium - extended exposure window</p>
+                        <p><strong>Test:</strong> Check if old cards still work</p>
+                    </div>
+
+                    <div class="card-type">
+                        <h4>Physical Security Gaps</h4>
+                        <p>Readers accessible for tampering or relay attacks.</p>
+                        <p><strong>Risk:</strong> Varies by location</p>
+                        <p><strong>Test:</strong> Physical inspection of readers</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Best Practices -->
+            <section class="content-section">
+                <h2>Security Best Practices</h2>
+                <p>
+                    When you identify vulnerabilities, provide concrete recommendations for improvement:
+                </p>
+
+                <h3>Immediate Improvements</h3>
+                <ul>
+                    <li><strong>Change default keys:</strong> If using MIFARE Classic, program unique keys</li>
+                    <li><strong>Enable full authentication:</strong> Check card data, not just UID</li>
+                    <li><strong>Implement card revocation:</strong> Deactivate lost/stolen cards promptly</li>
+                    <li><strong>Physical reader security:</strong> Install readers in tamper-resistant enclosures</li>
+                    <li><strong>Regular audits:</strong> Periodically test card security</li>
+                </ul>
+
+                <h3>Long-Term Upgrades</h3>
+                <ul>
+                    <li><strong>Migrate to secure card technology:</strong> MIFARE DESFire, iClass SE, or similar</li>
+                    <li><strong>Implement multi-factor:</strong> Combine cards with PIN codes or biometrics</li>
+                    <li><strong>Use mobile credentials:</strong> Leverage smartphone-based access</li>
+                    <li><strong>Network-based management:</strong> Real-time card activation/deactivation</li>
+                    <li><strong>Logging and monitoring:</strong> Track all access attempts</li>
+                </ul>
+
+                <div class="info-box success">
+                    <h3>✅ Recommended Card Technologies</h3>
+                    <p>For new deployments or upgrades, recommend:</p>
+                    <ul>
+                        <li><strong>MIFARE DESFire EV2/EV3:</strong> Industry standard, strong encryption</li>
+                        <li><strong>HID iClass SE:</strong> Secure, widely supported</li>
+                        <li><strong>Mobile credentials:</strong> Smartphone-based, highly secure</li>
+                        <li><strong>Smart cards with PKI:</strong> For highest security requirements</li>
+                    </ul>
+                    <p style="margin-top: 0.75rem;">
+                        Avoid: EM4100, HID Prox (125 kHz), MIFARE Classic for new deployments.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Advanced Topics -->
+            <section class="content-section">
+                <h2>Advanced Topics</h2>
+                <p>
+                    For security researchers wanting to go deeper, here are advanced concepts to explore:
+                </p>
+
+                <h3>Relay Attacks</h3>
+                <p>
+                    Relay attacks extend the range of contactless cards by relaying communication between a legitimate card and a reader:
+                </p>
+                <ul>
+                    <li>Attacker places reader near victim's card (in wallet)</li>
+                    <li>Signal is relayed to accomplice at target location</li>
+                    <li>Accomplice gains access using relayed signal</li>
+                    <li>Difficult to detect and prevent</li>
+                    <li><strong>Mitigation:</strong> Distance-bounding protocols, shielded wallets</li>
+                </ul>
+
+                <h3>UID Modification</h3>
+                <p>
+                    Some writable cards allow UID modification (called "magic" cards):
+                </p>
+                <ul>
+                    <li>Can set any desired UID</li>
+                    <li>Useful for testing UID-based systems</li>
+                    <li>Some systems detect magic cards</li>
+                    <li>Available as "Chinese magic cards" or "Gen1/Gen2" cards</li>
+                </ul>
+
+                <h3>Analyzing Custom Protocols</h3>
+                <p>
+                    Organizations sometimes implement proprietary card formats:
+                </p>
+                <ul>
+                    <li>Requires reverse engineering card data structure</li>
+                    <li>Look for patterns in data across multiple cards</li>
+                    <li>Identify facility codes, user IDs, checksums</li>
+                    <li>Test variations to understand validation logic</li>
+                </ul>
+
+                <div class="info-box">
+                    <h3>💡 Learning Resources</h3>
+                    <p>To deepen your knowledge:</p>
+                    <ul>
+                        <li>Study MIFARE documentation (NXP website)</li>
+                        <li>Read academic papers on RFID security</li>
+                        <li>Explore Proxmark3 advanced capabilities</li>
+                        <li>Join RFID/NFC security communities</li>
+                        <li>Practice with dedicated test cards and readers</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Lesson Summary -->
+            <section class="content-section">
+                <h2>Lesson Summary</h2>
+                <p>
+                    Excellent work! You've completed a comprehensive introduction to NFC and RFID security. Let's review your accomplishments:
+                </p>
+
+                <div class="info-box success">
+                    <h3>✅ Key Takeaways</h3>
+                    <ul>
+                        <li>125 kHz RFID and 13.56 MHz NFC are fundamentally different technologies</li>
+                        <li>Common card types range from simple EM4100 to secure MIFARE DESFire</li>
+                        <li>Many deployed systems use weak or default security configurations</li>
+                        <li>MIFARE Classic encryption is broken and should not be used for high security</li>
+                        <li>Cards can be read, cloned, or emulated depending on their technology</li>
+                        <li>UID-only authentication is trivially bypassed</li>
+                        <li>Security assessments should follow a methodical process</li>
+                        <li>Always recommend migration to modern, secure card technologies</li>
+                    </ul>
+                </div>
+
+                <h3>Skills You've Developed</h3>
+                <ul>
+                    <li>✓ Reading and identifying different card types</li>
+                    <li>✓ Understanding card data structures and security mechanisms</li>
+                    <li>✓ Cloning cards to writable blanks</li>
+                    <li>✓ Emulating cards directly from Flipper</li>
+                    <li>✓ Performing dictionary attacks on MIFARE Classic</li>
+                    <li>✓ Conducting systematic card security assessments</li>
+                    <li>✓ Identifying common vulnerabilities</li>
+                    <li>✓ Recommending appropriate security improvements</li>
+                </ul>
+
+                <h3>What's Next?</h3>
+                <p>
+                    In <strong>Lesson 4: Infrared Control Systems</strong>, you'll learn how to:
+                </p>
+                <ul>
+                    <li>Capture and replay infrared remote controls</li>
+                    <li>Build a universal remote with your Flipper</li>
+                    <li>Understand IR protocols and encoding</li>
+                    <li>Create custom IR commands</li>
+                    <li>Test smart home device security</li>
+                    <li>Explore practical applications for IR control</li>
+                </ul>
+            </section>
+
+            <!-- Completion -->
+            <div class="info-box success">
+                <h3>🎉 Lesson Complete!</h3>
+                <p>
+                    You've earned <strong>50 XP</strong> for completing this lesson. Your progress has been saved automatically.
+                </p>
+                <p style="margin-top: 1rem;">
+                    Ready to learn about infrared hacking? Continue to Lesson 4!
+                </p>
+            </div>
+        </article>
+
+        <!-- Navigation -->
+        <nav class="lesson-navigation">
+            <a href="lesson-2.html" class="nav-btn secondary">
+                ← Previous: Sub-GHz Radio
+            </a>
+            <a href="lesson-4.html" class="nav-btn primary">
+                Next: Infrared Control →
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        let currentProgress = 0;
+        let exercisesCompleted = [false, false, false];
+
+        function updateProgress() {
+            currentProgress = Math.min(100, (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+            document.getElementById('progress-fill').style.width = currentProgress + '%';
+            document.getElementById('progress-percent').textContent = Math.round(currentProgress);
+            localStorage.setItem('flipper-lesson-3-progress', currentProgress);
+        }
+
+        window.addEventListener('scroll', updateProgress);
+
+        function completeExercise(exerciseNum) {
+            exercisesCompleted[exerciseNum - 1] = true;
+            const btn = event.target;
+            btn.classList.add('completed');
+            btn.textContent = '✓ Exercise Completed!';
+            btn.disabled = true;
+            localStorage.setItem(`flipper-lesson-3-exercise-${exerciseNum}`, 'true');
+            
+            if (exercisesCompleted.every(e => e)) {
+                localStorage.setItem('flipper-lesson-3-complete', 'true');
+            }
+        }
+
+        let breakInterval, breakInterval2;
+        let breakTimeRemaining = 300;
+        let breakTimeRemaining2 = 300;
+
+        function startBreakTimer() {
+            breakTimeRemaining = 300;
+            const timerDisplay = document.getElementById('break-timer');
+            const startBtn = event.target;
+            startBtn.disabled = true;
+            startBtn.textContent = 'Break in Progress...';
+            
+            breakInterval = setInterval(() => {
+                breakTimeRemaining--;
+                const minutes = Math.floor(breakTimeRemaining / 60);
+                const seconds = breakTimeRemaining % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (breakTimeRemaining <= 0) {
+                    clearInterval(breakInterval);
+                    timerDisplay.textContent = 'Break Complete! ✓';
+                    startBtn.disabled = false;
+                    startBtn.textContent = 'Start Another Break';
+                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
+                }
+            }, 1000);
+        }
+
+        function skipBreak() {
+            if (breakInterval) clearInterval(breakInterval);
+            document.getElementById('break-timer').textContent = '5:00';
+        }
+
+        function startBreakTimer2() {
+            breakTimeRemaining2 = 300;
+            const timerDisplay = document.getElementById('break-timer-2');
+            const startBtn = event.target;
+            startBtn.disabled = true;
+            startBtn.textContent = 'Break in Progress...';
+            
+            breakInterval2 = setInterval(() => {
+                breakTimeRemaining2--;
+                const minutes = Math.floor(breakTimeRemaining2 / 60);
+                const seconds = breakTimeRemaining2 % 60;
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (breakTimeRemaining2 <= 0) {
+                    clearInterval(breakInterval2);
+                    timerDisplay.textContent = 'Break Complete! ✓';
+                    startBtn.disabled = false;
+                    startBtn.textContent = 'Start Another Break';
+                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
+                }
+            }, 1000);
+        }
+
+        function skipBreak2() {
+            if (breakInterval2) clearInterval(breakInterval2);
+            document.getElementById('break-timer-2').textContent = '5:00';
+        }
+
+        let fontSize = 16;
+        const minFontSize = 12;
+        const maxFontSize = 24;
+
+        function adjustFontSize(change) {
+            fontSize += change * 2;
+            fontSize = Math.max(minFontSize, Math.min(maxFontSize, fontSize));
+            document.documentElement.style.fontSize = fontSize + 'px';
+            localStorage.setItem('fontSize', fontSize);
+        }
+
+        function toggleDyslexiaMode() {
+            document.body.classList.toggle('dyslexia-friendly');
+            localStorage.setItem('dyslexiaMode', document.body.classList.contains('dyslexia-friendly'));
+        }
+
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+            localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
+        }
+
+        function toggleReducedMotion() {
+            document.body.classList.toggle('reduce-motion');
+            localStorage.setItem('reducedMotion', document.body.classList.contains('reduce-motion'));
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedFontSize = localStorage.getItem('fontSize');
+            if (savedFontSize) {
+                fontSize = parseInt(savedFontSize);
+                document.documentElement.style.fontSize = fontSize + 'px';
+            }
+
+            if (localStorage.getItem('dyslexiaMode') === 'true') {
+                document.body.classList.add('dyslexia-friendly');
+            }
+            if (localStorage.getItem('highContrast') === 'true') {
+                document.body.classList.add('high-contrast');
+            }
+            if (localStorage.getItem('reducedMotion') === 'true') {
+                document.body.classList.add('reduce-motion');
+            }
+
+            for (let i = 1; i <= 3; i++) {
+                if (localStorage.getItem(`flipper-lesson-3-exercise-${i}`) === 'true') {
+                    exercisesCompleted[i - 1] = true;
+                    const exercises = document.querySelectorAll('.exercise-box');
+                    if (exercises[i - 1]) {
+                        const btn = exercises[i - 1].querySelector('.btn-complete');
+                        if (btn) {
+                            btn.classList.add('completed');
+                            btn.textContent = '✓ Exercise Completed!';
+                            btn.disabled = true;
+                        }
+                    }
+                }
+            }
+
+            const savedProgress = localStorage.getItem('flipper-lesson-3-progress');
+            if (savedProgress) {
+                currentProgress = parseFloat(savedProgress);
+                document.getElementById('progress-fill').style.width = currentProgress + '%';
+                document.getElementById('progress-percent').textContent = Math.round(currentProgress);
+            }
+        });
+
+        window.addEventListener('beforeunload', () => {
+            if (breakInterval) clearInterval(breakInterval);
+            if (breakInterval2) clearInterval(breakInterval2);
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 4: BadUSB Attacks - tw¡st3d_¡nk Academy</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Lesson 3: NFC & RFID Exploitation | Flipper Zero Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-medium: #1a1a1a;
+            --bg-light: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #00ff88;
+            --accent-dim: #00cc6a;
+            --border: #333333;
+            --warning: #ff6b6b;
+            --info: #4dabf7;
+            --success: #51cf66;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-top: 120px;
+        }
+
+        .accessibility-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-medium);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+            z-index: 1000;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .accessibility-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-control {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn-control:hover {
+            background: var(--bg-dark);
+            border-color: var(--accent);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 52px;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--bg-medium);
+            border-bottom: 2px solid var(--border);
+            z-index: 999;
+            padding: 0.75rem 1rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .xp-badge {
+            background: var(--accent);
+            color: var(--bg-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dim));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .nav-breadcrumb {
+            background: var(--bg-medium);
+            padding: 1rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            color: var(--text-secondary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .lesson-number {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .lesson-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .objectives-box {
+            background: var(--bg-medium);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .objectives-box h2 {
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .objectives-list {
+            list-style: none;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .objectives-list li {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: var(--bg-light);
+            border-radius: 4px;
+        }
+
+        .objectives-list li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .content-section {
+            margin: 2rem 0;
+        }
+
+        .content-section h2 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .content-section h3 {
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .content-section ul,
+        .content-section ol {
+            margin: 1rem 0 1rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .content-section li {
+            margin: 0.5rem 0;
+        }
+
+        .info-box {
+            background: var(--bg-medium);
+            border-left: 4px solid var(--info);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .info-box.warning {
+            border-left-color: var(--warning);
+        }
+
+        .info-box.success {
+            border-left-color: var(--success);
+        }
+
+        .info-box h3 {
+            color: var(--info);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-box.warning h3 {
+            color: var(--warning);
+        }
+
+        .info-box.success h3 {
+            color: var(--success);
+        }
+
+        .info-box ul {
+            margin-left: 1.5rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            background: var(--bg-medium);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: var(--bg-light);
+            color: var(--accent);
+            padding: 1rem;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .comparison-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        .tech-diagram {
+            background: var(--bg-medium);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .card-type {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+        }
+
+        .card-type h4 {
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .card-type p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 0.5rem 0;
+        }
+
+        .card-type ul {
+            margin: 0.5rem 0 0 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .exercise-box {
+            background: var(--bg-medium);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .exercise-box h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .exercise-steps {
+            counter-reset: step-counter;
+            list-style: none;
+        }
+
+        .exercise-steps li {
+            counter-increment: step-counter;
+            margin: 1rem 0;
+            padding-left: 3rem;
+            position: relative;
+        }
+
+        .exercise-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--accent);
+            color: var(--bg-dark);
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .btn-complete {
+            background: var(--accent);
+            color: var(--bg-dark);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-complete:hover {
+            background: var(--accent-dim);
+            transform: scale(1.02);
+        }
+
+        .btn-complete.completed {
+            background: var(--success);
+        }
+
+        .break-reminder {
+            background: linear-gradient(135deg, var(--bg-medium), var(--bg-light));
+            border: 2px solid var(--warning);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .break-reminder h3 {
+            color: var(--warning);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .break-reminder p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .break-timer {
+            font-size: 3rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin: 1rem 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .break-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-break {
+            background: var(--warning);
+            color: var(--bg-dark);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-break:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .btn-break.secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .code-block {
+            background: var(--bg-medium);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn.primary {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border: none;
+        }
+
+        .nav-btn.secondary {
+            background: var(--bg-medium);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 140px;
+            }
+
+            .lesson-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .lesson-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-navigation {
+                flex-direction: column;
+            }
+        }
+
+        body.dyslexia-friendly {
+            letter-spacing: 0.05em;
+            word-spacing: 0.1em;
+        }
+
+        body.high-contrast {
+            --bg-dark: #000000;
+            --bg-medium: #1a1a1a;
+            --border: #ffffff;
+        }
+
+        .reduce-motion * {
+            animation: none !important;
+            transition: none !important;
+        }
+    </style>
 </head>
 <body>
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+        <div class="accessibility-controls">
+            <div class="control-group">
+                <label for="font-size">Text Size:</label>
+                <button class="btn-control" onclick="adjustFontSize(-1)">A-</button>
+                <button class="btn-control" onclick="adjustFontSize(1)">A+</button>
+            </div>
+            <button class="btn-control" onclick="toggleDyslexiaMode()">Dyslexia Mode</button>
+            <button class="btn-control" onclick="toggleHighContrast()">High Contrast</button>
+            <button class="btn-control" onclick="toggleReducedMotion()">Reduce Motion</button>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-info">
+            <span class="progress-text">Lesson Progress: <span id="progress-percent">0</span>%</span>
+            <span class="xp-badge">+50 XP</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb Navigation -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../../index.html">Academy</a>
+            <span>→</span>
+            <a href="../index.html">Flipper Zero</a>
+            <span>→</span>
+            <span>Lesson 3</span>
+        </div>
+    </nav>
+
     <div class="container">
-        <!-- Header -->
-        <header>
-            <div class="logo">tw¡st3d_¡nk</div>
-            <h1>Flipper Zero Academy</h1>
-            <div class="xp-display">
-                <span class="xp-label">XP:</span>
-                <span id="xp-amount">0</span>
+        <!-- Lesson Header -->
+        <header class="lesson-header">
+            <div class="lesson-number">LESSON 3 OF 6</div>
+            <h1>NFC & RFID Exploitation</h1>
+            <div class="lesson-meta">
+                <div class="meta-item">
+                    <span>⏱️</span>
+                    <span>~45 minutes</span>
+                </div>
+                <div class="meta-item">
+                    <span>📊</span>
+                    <span>Intermediate</span>
+                </div>
+                <div class="meta-item">
+                    <span>🎯</span>
+                    <span>Hands-on: 3 exercises</span>
+                </div>
             </div>
         </header>
 
-        <!-- Lesson Header -->
-        <div class="lesson-header">
-            <h2>Lesson 4: BadUSB Attacks</h2>
-            <div class="lesson-meta">
-                <span class="difficulty advanced">Advanced Level</span>
-                <span class="duration">⏱ 40 min</span>
-                <span class="xp-reward">🎯 +200 XP</span>
-            </div>
-        </div>
+        <!-- Learning Objectives -->
+        <section class="objectives-box">
+            <h2>🎯 What You'll Learn</h2>
+            <ul class="objectives-list">
+                <li>Understand the differences between NFC, RFID, and contactless technologies</li>
+                <li>Read and analyze access cards, badges, and key fobs</li>
+                <li>Clone simple cards and emulate them on your Flipper</li>
+                <li>Identify security vulnerabilities in card-based access systems</li>
+                <li>Test MIFARE Classic encryption and authentication</li>
+                <li>Conduct responsible security assessments of physical access control</li>
+            </ul>
+        </section>
 
-        <!-- Progress Bar -->
-        <div class="progress-container">
-            <div class="progress-bar" id="lesson-progress">
-                <div class="progress-fill" style="width: 0%"></div>
-            </div>
-            <span class="progress-text">0% Complete</span>
-        </div>
+        <!-- Main Content -->
+        <article>
+            <!-- Introduction -->
+            <section class="content-section">
+                <h2>Understanding Contactless Technology</h2>
+                <p>
+                    Contactless cards and badges are everywhere—office access cards, hotel keys, transit passes, payment cards, and more. The Flipper Zero can interact with these technologies for security testing and research purposes.
+                </p>
+                <p>
+                    This lesson focuses on two main technologies: RFID (Radio Frequency Identification) and NFC (Near Field Communication). While related, they serve different purposes and have distinct security characteristics.
+                </p>
 
-        <!-- Lesson Content -->
-        <div class="content-section" data-section="1">
-            <h3>⌨️ Introduction to BadUSB</h3>
-            
-            <div class="info-box">
-                <h4>What is BadUSB?</h4>
-                <p><strong>BadUSB</strong> is an attack technique where a USB device impersonates a keyboard or mouse to send malicious commands to a computer. Since computers trust keyboards by default, this attack bypasses many security measures.</p>
-            </div>
+                <div class="info-box warning">
+                    <h3>⚠️ Critical Legal Warning</h3>
+                    <p>
+                        <strong>Card cloning and unauthorized access are serious crimes.</strong>
+                    </p>
+                    <ul>
+                        <li>Never clone or use payment cards (credit/debit)—this is fraud</li>
+                        <li>Only test access cards you own or have explicit authorization to test</li>
+                        <li>Don't gain unauthorized entry to buildings or restricted areas</li>
+                        <li>Respect privacy—don't scan cards in other people's wallets</li>
+                        <li>Some countries criminalize possession of cloning devices</li>
+                    </ul>
+                    <p style="margin-top: 0.75rem;">
+                        This lesson is for security professionals learning to test and improve access control systems they're authorized to assess.
+                    </p>
+                </div>
+            </section>
 
-            <h4>The Power of Keyboard Emulation</h4>
-            <div class="command-block">
-<pre>Why BadUSB is Dangerous:
+            <!-- NFC vs RFID -->
+            <section class="content-section">
+                <h2>NFC vs RFID: Key Differences</h2>
+                <p>
+                    While both use radio frequencies for communication, they're designed for different applications.
+                </p>
 
-✓ No malware needed - Just keystrokes
-✓ Bypasses antivirus - Looks like legitimate typing
-✓ Fast execution - Can run in seconds
-✓ Cross-platform - Works on Windows, Mac, Linux
-✓ Pre-boot attacks - Can even modify BIOS
-✓ Physical access = game over</pre>
-            </div>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Low Frequency RFID (125 kHz)</th>
+                                <th>High Frequency NFC (13.56 MHz)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Frequency</strong></td>
+                                <td>125 kHz</td>
+                                <td>13.56 MHz</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Read Range</strong></td>
+                                <td>Up to 10cm typical</td>
+                                <td>Up to 10cm (intentionally limited)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Rate</strong></td>
+                                <td>Very slow</td>
+                                <td>106-424 kbps</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Typical Uses</strong></td>
+                                <td>Access cards, key fobs, animal tags</td>
+                                <td>Payment cards, transit cards, smartphones</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Security</strong></td>
+                                <td>Usually none (just a static ID)</td>
+                                <td>Can include encryption and authentication</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Complexity</strong></td>
+                                <td>Simple, easy to clone</td>
+                                <td>More complex, better security</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <h4>Historical Context</h4>
-            <div class="tip-box">
-                <strong>The BadUSB Vulnerability:</strong>
-                <p>Discovered in 2014 by security researchers Karsten Nohl and Jakob Lell. They demonstrated that USB device firmware can be reprogrammed to:</p>
-                <ul>
-                    <li>Emulate keyboards and inject keystrokes</li>
-                    <li>Redirect network traffic</li>
-                    <li>Install backdoors</li>
-                    <li>Modify files during transfer</li>
+                <div class="info-box">
+                    <h3>💡 Quick Rule of Thumb</h3>
+                    <ul>
+                        <li><strong>125 kHz RFID:</strong> Older technology, simpler, less secure. Common in legacy access systems.</li>
+                        <li><strong>13.56 MHz NFC:</strong> Modern technology, more features, better security. Used in payment cards and smartphones.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Card Types -->
+            <section class="content-section">
+                <h2>Common Card Types</h2>
+                <p>
+                    Understanding what type of card you're dealing with is the first step in security assessment. Here are the most common types you'll encounter:
+                </p>
+
+                <div class="tech-diagram">
+                    <h3 style="color: var(--accent); margin-bottom: 1rem;">Card Technology Breakdown</h3>
+                    <div class="card-grid">
+                        <div class="card-type">
+                            <h4>EM4100 (125 kHz)</h4>
+                            <p><strong>Security:</strong> None (read-only ID)</p>
+                            <p><strong>Common in:</strong></p>
+                            <ul>
+                                <li>Older access control systems</li>
+                                <li>Key fobs for buildings</li>
+                                <li>Some gym memberships</li>
+                            </ul>
+                            <p style="margin-top: 0.75rem; color: var(--warning);"><strong>Easily cloned!</strong> Just contains a static ID number.</p>
+                        </div>
+
+                        <div class="card-type">
+                            <h4>HID Prox (125 kHz)</h4>
+                            <p><strong>Security:</strong> Minimal (proprietary format)</p>
+                            <p><strong>Common in:</strong></p>
+                            <ul>
+                                <li>Corporate access systems</li>
+                                <li>Government facilities</li>
+                                <li>Parking garages</li>
+                            </ul>
+                            <p style="margin-top: 0.75rem; color: var(--warning);"><strong>Can be cloned</strong> with proper tools and knowledge.</p>
+                        </div>
+
+                        <div class="card-type">
+                            <h4>MIFARE Classic (13.56 MHz)</h4>
+                            <p><strong>Security:</strong> Weak encryption (broken)</p>
+                            <p><strong>Common in:</strong></p>
+                            <ul>
+                                <li>Transit systems worldwide</li>
+                                <li>Hotel room keys</li>
+                                <li>Access control systems</li>
+                            </ul>
+                            <p style="margin-top: 0.75rem; color: var(--info);"><strong>Encryption is crackable</strong> with known attacks.</p>
+                        </div>
+
+                        <div class="card-type">
+                            <h4>MIFARE DESFire (13.56 MHz)</h4>
+                            <p><strong>Security:</strong> Strong (AES, 3DES)</p>
+                            <p><strong>Common in:</strong></p>
+                            <ul>
+                                <li>High-security access systems</li>
+                                <li>Government ID cards</li>
+                                <li>Secure transit systems</li>
+                            </ul>
+                            <p style="margin-top: 0.75rem; color: var(--success);"><strong>Secure</strong> when properly implemented.</p>
+                        </div>
+
+                        <div class="card-type">
+                            <h4>EMV Payment Cards (13.56 MHz)</h4>
+                            <p><strong>Security:</strong> Very strong (tokenization)</p>
+                            <p><strong>Common in:</strong></p>
+                            <ul>
+                                <li>Credit and debit cards</li>
+                                <li>Contactless payment systems</li>
+                            </ul>
+                            <p style="margin-top: 0.75rem; color: var(--success);"><strong>Cannot be cloned</strong> for fraudulent use. Don't try!</p>
+                        </div>
+
+                        <div class="card-type">
+                            <h4>NTAG (13.56 MHz)</h4>
+                            <p><strong>Security:</strong> Varies (can be locked)</p>
+                            <p><strong>Common in:</strong></p>
+                            <ul>
+                                <li>NFC tags and stickers</li>
+                                <li>Smart posters</li>
+                                <li>Product authentication</li>
+                            </ul>
+                            <p style="margin-top: 0.75rem; color: var(--info);"><strong>Often writable</strong> for legitimate applications.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Break Reminder 1 -->
+            <div class="break-reminder">
+                <h3>⏸️ Break Point #1</h3>
+                <p>You've learned the fundamentals of NFC and RFID technology. Time for a quick break!</p>
+                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5 minutes to:</p>
+                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                    <li>💧 Hydrate</li>
+                    <li>🚶 Stand and stretch</li>
+                    <li>👀 Rest your eyes</li>
                 </ul>
-                <p><strong>The scary part:</strong> This vulnerability is built into the USB specification itself and cannot be patched!</p>
-            </div>
-
-            <h4>How BadUSB Attacks Work</h4>
-            <div class="command-block">
-<pre>Attack Flow:
-┌─────────────────────────────────────┐
-│ 1. Device plugged into USB port     │
-│ 2. Computer recognizes it as keyboard│
-│ 3. Device sends pre-programmed keys │
-│ 4. Commands execute automatically   │
-│ 5. Payload delivered in seconds     │
-│ 6. Device can eject itself (stealth)│
-└─────────────────────────────────────┘
-
-Example Attack Timeline:
-0s  - Flipper plugged in
-1s  - Recognized as USB keyboard
-2s  - Opens command prompt/terminal
-3s  - Types commands
-5s  - Executes payload
-7s  - Cleans up traces
-8s  - Attack complete</pre>
-            </div>
-
-            <h4>Common BadUSB Payloads</h4>
-            <div class="example-box">
-                <strong>What Can BadUSB Do?</strong>
-                <ul>
-                    <li><strong>Reverse Shells:</strong> Remote access to the target system</li>
-                    <li><strong>Data Exfiltration:</strong> Copy files to attacker's server</li>
-                    <li><strong>Password Theft:</strong> Dump saved credentials</li>
-                    <li><strong>Ransomware:</strong> Encrypt files and demand payment</li>
-                    <li><strong>Privilege Escalation:</strong> Gain admin/root access</li>
-                    <li><strong>Network Pivoting:</strong> Use compromised machine as entry point</li>
-                    <li><strong>Persistent Backdoors:</strong> Maintain long-term access</li>
-                </ul>
-            </div>
-
-            <h4>Flipper Zero as BadUSB</h4>
-            <div class="info-box">
-                <p>The Flipper Zero can act as a BadUSB device when connected via USB cable. It can emulate keyboards for Windows, macOS, and Linux, making it a powerful penetration testing tool.</p>
-            </div>
-
-            <div class="warning-box">
-                <strong>⚠️ CRITICAL WARNING:</strong>
-                <p>BadUSB attacks are <strong>highly illegal</strong> when performed without authorization. Penalties include:</p>
-                <ul>
-                    <li><strong>Computer Fraud and Abuse Act (USA):</strong> Up to 20 years prison</li>
-                    <li><strong>Unauthorized access laws:</strong> Vary by country, severe penalties</li>
-                    <li><strong>Corporate espionage charges:</strong> If targeting businesses</li>
-                </ul>
-                <p><strong>ONLY use BadUSB on systems you own or have written authorization to test!</strong></p>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(1)">Continue to Script Basics →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="2">
-            <h3>📝 DuckyScript Language</h3>
-            
-            <h4>Understanding DuckyScript</h4>
-            <div class="info-box">
-                <p><strong>DuckyScript</strong> is a simple scripting language created for the USB Rubber Ducky (another BadUSB device). The Flipper Zero uses DuckyScript for its BadUSB payloads, making scripts portable and easy to write.</p>
-            </div>
-
-            <h4>Basic DuckyScript Commands</h4>
-            <div class="command-block">
-<pre>Core Commands:
-
-REM - Comment (ignored by interpreter)
-DELAY - Wait specified milliseconds
-STRING - Type text exactly as written
-ENTER - Press Enter key
-GUI - Windows key (Mac: Command)
-CTRL - Control key
-ALT - Alt key
-SHIFT - Shift key
-TAB - Tab key
-ESC - Escape key
-SPACE - Space bar
-
-Function Keys:
-F1, F2, F3...F12
-
-Special Keys:
-UP, DOWN, LEFT, RIGHT (arrow keys)
-DELETE, BACKSPACE
-HOME, END
-PAGEUP, PAGEDOWN</pre>
-            </div>
-
-            <h4>Key Combinations</h4>
-            <div class="tip-box">
-                <p>You can combine keys to create shortcuts:</p>
-                <div class="command-block">
-<pre>Windows Examples:
-GUI r           → Open Run dialog
-CTRL ALT DELETE → Security screen
-CTRL SHIFT ESC  → Task Manager
-GUI d           → Show desktop
-
-Mac Examples:
-GUI SPACE       → Spotlight search
-GUI q           → Quit application
-CTRL SPACE      → Switch input source
-
-Linux Examples:
-CTRL ALT t      → Open terminal
-ALT F2          → Run command
-CTRL ALT F1     → TTY1</pre>
+                <div class="break-timer" id="break-timer">5:00</div>
+                <div class="break-controls">
+                    <button class="btn-break" onclick="startBreakTimer()">Start 5-Min Break</button>
+                    <button class="btn-break secondary" onclick="skipBreak()">Skip Break</button>
                 </div>
             </div>
 
-            <h4>Timing with DELAY</h4>
-            <div class="info-box">
-                <p><strong>DELAY</strong> is crucial for reliable scripts. Computers need time to open windows, load programs, and process commands.</p>
-            </div>
+            <!-- Reading Cards -->
+            <section class="content-section">
+                <h2>Reading and Analyzing Cards</h2>
+                <p>
+                    The first step in any card security assessment is reading and identifying what you're dealing with. The Flipper Zero makes this straightforward.
+                </p>
 
-            <div class="command-block">
-<pre>Timing Best Practices:
-
-DELAY 1000      → 1 second (1000 milliseconds)
-DELAY 500       → Half second
-DELAY 2000      → 2 seconds
-
-When to use DELAY:
-• After opening programs (500-2000ms)
-• After GUI commands (300-500ms)
-• Before typing URLs (500-1000ms)
-• After pressing ENTER (100-300ms)
-• Slow computers need longer delays!
-
-Too fast = Script fails
-Too slow = Takes forever but reliable</pre>
-            </div>
-
-            <h4>Simple Script Example</h4>
-            <div class="example-box">
-                <h4>Hello World - Notepad Script</h4>
-                <p>This script opens Notepad and types a message (Windows):</p>
-                <div class="command-block">
-<pre>REM Open Notepad and type message
-DELAY 1000
-GUI r
-DELAY 500
-STRING notepad
-DELAY 100
-ENTER
-DELAY 1000
-STRING Hello from Flipper Zero!
-ENTER
-STRING This is a BadUSB demo.
-DELAY 500</pre>
-                </div>
-                <p><strong>What it does:</strong></p>
+                <h3>Reading 125 kHz RFID Cards</h3>
                 <ol>
-                    <li>Waits 1 second for Flipper to initialize</li>
-                    <li>Opens Run dialog (Windows + R)</li>
-                    <li>Waits for Run dialog to appear</li>
-                    <li>Types "notepad"</li>
-                    <li>Presses Enter to launch Notepad</li>
-                    <li>Waits for Notepad to open</li>
-                    <li>Types the message</li>
+                    <li>Navigate to <strong>125 kHz RFID</strong> from the main menu</li>
+                    <li>Select <strong>Read</strong></li>
+                    <li>Hold the card flat against the back of the Flipper</li>
+                    <li>Wait for the vibration confirming successful read</li>
+                    <li>View the card information displayed</li>
+                    <li>Press OK to save the card</li>
                 </ol>
-            </div>
 
-            <h4>STRING vs Individual Keys</h4>
-            <div class="command-block">
-<pre>STRING Command:
-STRING Hello World!
-→ Types exactly: Hello World!
-→ Fast, efficient, preserves case
-
-Individual Keys:
-SHIFT h
-STRING ello 
-SPACE
-SHIFT w
-STRING orld
-SHIFT 1
-→ Same result, but tedious
-
-Always use STRING for text!</pre>
-            </div>
-
-            <h4>DuckyScript Variables & Logic</h4>
-            <div class="warning-box">
-                <strong>Note:</strong> Flipper's DuckyScript implementation is basic:
-                <ul>
-                    <li>✅ Linear execution (line by line)</li>
-                    <li>❌ No variables</li>
-                    <li>❌ No loops (REPEAT command)</li>
-                    <li>❌ No conditionals (IF statements)</li>
-                </ul>
-                <p>Keep scripts simple and sequential!</p>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(2)">Continue to Creating Payloads →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="3">
-            <h3>🛠️ Creating BadUSB Payloads</h3>
-            
-            <h4>Payload Structure</h4>
-            <div class="info-box">
-                <p>A well-structured BadUSB payload has three phases:</p>
-                <ol>
-                    <li><strong>Initialization:</strong> Wait for computer to recognize device</li>
-                    <li><strong>Execution:</strong> Perform the attack actions</li>
-                    <li><strong>Cleanup:</strong> Remove traces (optional but smart)</li>
-                </ol>
-            </div>
-
-            <h4>Creating Payload Files</h4>
-            <div class="command-block">
-<pre>File Format:
-• Extension: .txt
-• Location: /badusb/ on SD card
-• Encoding: UTF-8 (no BOM)
-• Line endings: LF or CRLF (both work)
-
-Example file: /badusb/demo.txt
-
-Creating on Computer:
-1. Use any text editor (Notepad, VS Code, etc.)
-2. Write DuckyScript commands
-3. Save as .txt file
-4. Copy to Flipper's SD card /badusb/ folder
-5. Safely eject SD card
-6. Insert back into Flipper</pre>
-            </div>
-
-            <h4>Windows Payload Example</h4>
-            <div class="example-box">
-                <h4>Rickroll Prank (Harmless)</h4>
-                <div class="command-block">
-<pre>REM Rickroll - Opens YouTube video
-REM Target: Windows 10/11
-DELAY 1000
-GUI r
-DELAY 500
-STRING https://www.youtube.com/watch?v=dQw4w9WgXcQ
-DELAY 100
-ENTER
-DELAY 3000
-F11
-REM Press F11 for fullscreen</pre>
-                </div>
-                <p><strong>Breakdown:</strong></p>
-                <ul>
-                    <li>Opens Run dialog</li>
-                    <li>Types YouTube URL (Rick Astley - Never Gonna Give You Up)</li>
-                    <li>Presses Enter to open in browser</li>
-                    <li>Waits for page to load</li>
-                    <li>Presses F11 for fullscreen mode</li>
-                </ul>
-            </div>
-
-            <h4>macOS Payload Example</h4>
-            <div class="example-box">
-                <h4>Screenshot Capture</h4>
-                <div class="command-block">
-<pre>REM Takes screenshot on Mac
-REM Target: macOS
-DELAY 1000
-GUI SPACE
-DELAY 300
-STRING terminal
-DELAY 200
-ENTER
-DELAY 1000
-STRING screencapture -x ~/Desktop/screenshot.png
-ENTER
-DELAY 500
-STRING exit
-ENTER
-REM Screenshot saved to Desktop</pre>
-                </div>
-            </div>
-
-            <h4>Linux Payload Example</h4>
-            <div class="example-box">
-                <h4>System Information Dump</h4>
-                <div class="command-block">
-<pre>REM Collects basic system info
-REM Target: Linux (Ubuntu/Debian)
-DELAY 1000
-CTRL ALT t
-DELAY 1000
-STRING uname -a > /tmp/sysinfo.txt
-ENTER
-DELAY 200
-STRING cat /etc/os-release >> /tmp/sysinfo.txt
-ENTER
-DELAY 200
-STRING ifconfig >> /tmp/sysinfo.txt
-ENTER
-DELAY 200
-STRING cat /tmp/sysinfo.txt
-ENTER
-DELAY 1000
-STRING exit
-ENTER
-REM Info displayed in terminal</pre>
-                </div>
-            </div>
-
-            <h4>Payload Development Tips</h4>
-            <div class="tip-box">
-                <strong>Writing Reliable Payloads:</strong>
-                <ul>
-                    <li><strong>Test on target OS:</strong> Windows, Mac, Linux behave differently</li>
-                    <li><strong>Add generous delays:</strong> Better slow and reliable than fast and broken</li>
-                    <li><strong>Comment your code:</strong> Future you will thank present you</li>
-                    <li><strong>Handle different speeds:</strong> Old computers need more time</li>
-                    <li><strong>Avoid long strings:</strong> Break into multiple STRING commands if needed</li>
-                    <li><strong>Test typing speed:</strong> Some systems can't keep up with fast input</li>
-                    <li><strong>Account for layouts:</strong> QWERTY vs AZERTY vs other keyboards</li>
-                </ul>
-            </div>
-
-            <h4>Cross-Platform Considerations</h4>
-            <div class="command-block">
-<pre>OS Detection Challenge:
-BadUSB can't automatically detect OS!
-
-Solutions:
-1. Create separate payloads per OS
-2. Use universal commands (rare)
-3. Multiple attempts (try Windows, then Mac, then Linux)
-4. Recon first (know target OS beforehand)
-
-Keyboard Layout Issues:
-• QWERTY (English) is standard
-• AZERTY (French) has different positions
-• QWERTZ (German) swaps Y and Z
-• Special characters vary (\ vs /)
-
-Best Practice: Test on actual target system!</pre>
-            </div>
-
-            <h4>Payload Libraries</h4>
-            <div class="info-box">
-                <p><strong>Community Resources:</strong></p>
-                <ul>
-                    <li><strong>GitHub:</strong> Hak5 DuckyScript payloads (thousands!)</li>
-                    <li><strong>Flipper Forums:</strong> User-shared BadUSB scripts</li>
-                    <li><strong>PayloadStudio:</strong> Online DuckyScript editor</li>
-                </ul>
-                <p><strong>Warning:</strong> Many payloads are malicious. Only use on authorized systems!</p>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(3)">Continue to Execution →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="4">
-            <h3>▶️ Executing BadUSB Attacks</h3>
-            
-            <h4>Running Payloads on Flipper</h4>
-            <div class="command-block">
-<pre>Execution Steps:
-1. Ensure payload .txt file is in /badusb/ folder
-2. Connect Flipper to target via USB cable
-3. Flipper → Bad USB
-4. Select your payload file
-5. Press OK to execute
-6. Watch it run automatically!
-
-Status Indicators:
-• Script Name displayed
-• Line count shown
-• Execution progress
-• Completion confirmation</pre>
-            </div>
-
-            <h4>Connection Modes</h4>
-            <div class="tip-box">
-                <strong>Flipper USB Modes:</strong>
-                <p>When connecting Flipper to a computer:</p>
-                <ul>
-                    <li><strong>Default:</strong> Mass storage (SD card appears as drive)</li>
-                    <li><strong>BadUSB Mode:</strong> Keyboard emulation (for attacks)</li>
-                    <li><strong>Serial Mode:</strong> Command line interface</li>
-                </ul>
-                <p>Flipper automatically switches to BadUSB mode when you launch a payload!</p>
-            </div>
-
-            <h4>Real-Time Monitoring</h4>
-            <div class="command-block">
-<pre>During Execution:
-• Flipper screen shows current line
-• Progress indicator advances
-• Can see delays counting down
-• Errors displayed if occur
-
-Stopping Execution:
-• Press BACK button to abort
-• Useful if something goes wrong
-• Script stops immediately
-• Already-typed commands can't be undone!</pre>
-            </div>
-
-            <h4>Common Execution Issues</h4>
-            <div class="warning-box">
-                <strong>Troubleshooting Failed Payloads:</strong>
-                <ul>
-                    <li><strong>Too fast:</strong> Increase DELAY values</li>
-                    <li><strong>Wrong OS:</strong> Payload written for different system</li>
-                    <li><strong>Security software:</strong> Antivirus blocking actions</li>
-                    <li><strong>Locked screen:</strong> Computer requires login first</li>
-                    <li><strong>Language/layout:</strong> Wrong keyboard layout</li>
-                    <li><strong>Permissions:</strong> Need admin rights for some commands</li>
-                    <li><strong>Network required:</strong> Payload needs internet, none available</li>
-                </ul>
-            </div>
-
-            <h4>Payload Testing Strategy</h4>
-            <div class="example-box">
-                <h4>Safe Testing Methodology</h4>
-                <ol>
-                    <li><strong>Virtual Machine:</strong> Test in VM first (disposable environment)</li>
-                    <li><strong>Test PC:</strong> Use dedicated test machine, not your main computer</li>
-                    <li><strong>Incremental Testing:</strong> Test each section of payload separately</li>
-                    <li><strong>Observation:</strong> Watch execution to see where it fails</li>
-                    <li><strong>Adjustment:</strong> Tweak delays and commands</li>
-                    <li><strong>Repeat:</strong> Test until 100% reliable</li>
-                    <li><strong>Documentation:</strong> Note what works and what doesn't</li>
-                </ol>
-            </div>
-
-            <h4>Advanced: Chaining Payloads</h4>
-            <div class="command-block">
-<pre>Multi-Stage Attacks:
-
-Stage 1: Reconnaissance
-• Gather system info
-• Check for antivirus
-• Determine OS version
-
-Stage 2: Preparation  
-• Disable security (if possible)
-• Download additional tools
-• Setup persistence
-
-Stage 3: Main Payload
-• Execute primary objective
-• Exfiltrate data
-• Plant backdoor
-
-Stage 4: Cleanup
-• Remove logs
-• Delete temporary files
-• Cover tracks
-
-Note: Multiple separate payload files,
-      run one after another manually</pre>
-            </div>
-
-            <h4>Payload Persistence Techniques</h4>
-            <div class="info-box">
-                <h4>Maintaining Access (Theory)</h4>
-                <p>Advanced attackers use persistence mechanisms:</p>
-                <ul>
-                    <li><strong>Startup folders:</strong> Run on boot</li>
-                    <li><strong>Registry keys:</strong> Windows autostart</li>
-                    <li><strong>Cron jobs:</strong> Linux scheduled tasks</li>
-                    <li><strong>Launch Agents:</strong> macOS persistence</li>
-                    <li><strong>Service creation:</strong> Background processes</li>
-                </ul>
-                <p><strong>We won't provide these payloads - they're clearly malicious and illegal when unauthorized!</strong></p>
-            </div>
-
-            <h4>Detection and Defense</h4>
-            <div class="tip-box">
-                <strong>How to Detect BadUSB Attacks:</strong>
-                <ul>
-                    <li><strong>Unexpected keyboard activity:</strong> Watch for rapid typing</li>
-                    <li><strong>New USB devices:</strong> Monitor USB connections</li>
-                    <li><strong>Command windows flashing:</strong> Brief terminal openings</li>
-                    <li><strong>Unusual network traffic:</strong> Unexpected outbound connections</li>
-                    <li><strong>EDR alerts:</strong> Endpoint detection systems flagging suspicious behavior</li>
-                </ul>
-            </div>
-
-            <button class="next-btn" onclick="window.lessonProgress.completeSection(4)">Continue to Defense Strategies →</button>
-        </div>
-
-        <div class="content-section hidden" data-section="5">
-            <h3>🛡️ Defending Against BadUSB</h3>
-            
-            <h4>Why BadUSB is Hard to Stop</h4>
-            <div class="warning-box">
-                <strong>The Fundamental Problem:</strong>
-                <p>BadUSB exploits trust in Human Interface Devices (HID). Computers <em>must</em> trust keyboards - otherwise, how would you use your computer? This makes BadUSB attacks extremely difficult to prevent completely.</p>
-            </div>
-
-            <h4>Physical Security</h4>
-            <div class="tip-box">
-                <strong>First Line of Defense:</strong>
-                <ul>
-                    <li><strong>Lock your screen:</strong> Always when stepping away (Windows+L, Ctrl+Alt+L)</li>
-                    <li><strong>Disable USB ports:</strong> Glue, port blockers, BIOS settings</li>
-                    <li><strong>Monitor USB usage:</strong> Be aware of what's plugged in</li>
-                    <li><strong>Physical access control:</strong> Secure work areas, badge access</li>
-                    <li><strong>Cable locks:</strong> Prevent device removal and USB access</li>
-                    <li><strong>Clear desk policy:</strong> No unattended computers</li>
-                </ul>
-            </div>
-
-            <h4>Technical Defenses</h4>
-            <div class="command-block">
-<pre>Software Protections:
-
-USB Device Control:
-• Windows: Device Installation restrictions
-• macOS: System Preferences → Security
-• Linux: USBGuard, udev rules
-• Enterprise: Manage via Group Policy
-
-Endpoint Protection:
-• EDR (Endpoint Detection & Response)
-• Behavioral analysis (detect rapid typing)
-• Process monitoring (catch malicious commands)
-• Network monitoring (detect exfiltration)
-
-Application Whitelisting:
-• Only allow approved programs to run
-• Blocks payload-launched executables
-• Examples: AppLocker, SELinux
-
-Disable Auto-Run:
-• Prevent automatic execution from USB
-• Group Policy: Turn off Autoplay
-• Registry modifications</pre>
-            </div>
-
-            <h4>USB Port Management</h4>
-            <div class="example-box">
-                <h4>Granular USB Control</h4>
+                <div class="info-box">
+                    <h3>💡 125 kHz Reading Tips</h3>
+                    <ul>
