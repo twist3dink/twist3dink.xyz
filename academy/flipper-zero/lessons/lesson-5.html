@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 5: Wi-Fi Networks - tw¡st3d_¡nk Academy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">tw¡st3d_¡nk</div>
+            <h1>Flipper Zero Academy</h1>
+            <div class="xp-display">
+                <span class="xp-label">XP:</span>
+                <span id="xp-amount">0</span>
+            </div>
+        </header>
+
+        <!-- Lesson Header -->
+        <div class="lesson-header">
+            <h2>Lesson 5: Wi-Fi Networks</h2>
+            <div class="lesson-meta">
+                <span class="difficulty expert">Expert Level</span>
+                <span class="duration">⏱ 45 min</span>
+                <span class="xp-reward">🎯 +200 XP</span>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="lesson-progress">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+            <span class="progress-text">0% Complete</span>
+        </div>
+
+        <!-- Lesson Content -->
+        <div class="content-section" data-section="1">
+            <h3>📡 Understanding Wi-Fi Technology</h3>
+            
+            <div class="info-box">
+                <h4>What is Wi-Fi?</h4>
+                <p><strong>Wi-Fi</strong> is a wireless networking technology that uses radio waves to provide network connectivity. It's based on IEEE 802.11 standards and operates primarily on 2.4 GHz and 5 GHz frequency bands.</p>
+            </div>
+
+            <h4>Wi-Fi Standards Evolution</h4>
+            <div class="command-block">
+<pre>Wi-Fi Generations:
+
+802.11b (1999) - Wi-Fi 1
+• 2.4 GHz only
+• Max speed: 11 Mbps
+• Range: ~35 meters indoor
+
+802.11g (2003) - Wi-Fi 3
+• 2.4 GHz only
+• Max speed: 54 Mbps
+• Backward compatible with 802.11b
+
+802.11n (2009) - Wi-Fi 4
+• 2.4 GHz and 5 GHz
+• Max speed: 600 Mbps
+• MIMO technology
+
+802.11ac (2014) - Wi-Fi 5
+• 5 GHz only
+• Max speed: 3.5 Gbps
+• MU-MIMO
+
+802.11ax (2019) - Wi-Fi 6/6E
+• 2.4 GHz, 5 GHz, 6 GHz
+• Max speed: 9.6 Gbps
+• OFDMA technology</pre>
+            </div>
+
+            <h4>How Wi-Fi Networks Work</h4>
+            <div class="tip-box">
+                <strong>Basic Components:</strong>
+                <ul>
+                    <li><strong>Access Point (AP):</strong> Router or hotspot broadcasting Wi-Fi</li>
+                    <li><strong>SSID:</strong> Network name (Service Set Identifier)</li>
+                    <li><strong>Channel:</strong> Specific frequency within the band</li>
+                    <li><strong>Encryption:</strong> WEP, WPA, WPA2, WPA3</li>
+                    <li><strong>Authentication:</strong> Password verification method</li>
+                </ul>
+            </div>
+
+            <h4>Wi-Fi Channels</h4>
+            <div class="command-block">
+<pre>2.4 GHz Band:
+• Channels 1-14 (most countries: 1-11)
+• Only 3 non-overlapping: 1, 6, 11
+• Crowded band (many devices)
+• Better range, worse speed
+
+5 GHz Band:
+• Channels 36-165
+• Many non-overlapping channels
+• Less interference
+• Shorter range, better speed
+
+6 GHz Band (Wi-Fi 6E):
+• Channels 1-233
+• Brand new, very clean spectrum
+• Fastest speeds, shortest range</pre>
+            </div>
+
+            <h4>Flipper Zero Wi-Fi Capabilities</h4>
+            <div class="warning-box">
+                <strong>Important Limitation:</strong>
+                <p>The <strong>standard Flipper Zero does NOT have built-in Wi-Fi</strong>. However, with the <strong>Wi-Fi Developer Board</strong> add-on (ESP32-based), the Flipper can:</p>
+                <ul>
+                    <li>Scan for Wi-Fi networks</li>
+                    <li>Perform deauthentication attacks</li>
+                    <li>Capture handshakes</li>
+                    <li>Create Evil Twin access points</li>
+                    <li>Beacon spam attacks</li>
+                </ul>
+                <p><strong>This lesson assumes you have the Wi-Fi Dev Board installed.</strong></p>
+            </div>
+
+            <h4>Wi-Fi Security Protocols</h4>
+            <div class="command-block">
+<pre>Security Evolution:
+
+WEP (Wired Equivalent Privacy) - BROKEN
+• 1997 standard
+• Crackable in seconds
+• Never use!
+
+WPA (Wi-Fi Protected Access) - WEAK
+• 2003 improvement over WEP
+• Still vulnerable (TKIP attacks)
+• Avoid if possible
+
+WPA2 (2004) - STANDARD
+• AES encryption (strong!)
+• KRACK attack discovered (2017)
+• Still widely used and reasonably secure
+
+WPA3 (2018) - MODERN
+• Improved encryption (192-bit)
+• Forward secrecy
+• Protection against offline attacks
+• Recommended for new networks</pre>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(1)">Continue to Network Scanning →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="2">
+            <h3>🔍 Wi-Fi Network Scanning</h3>
+            
+            <h4>Understanding Network Discovery</h4>
+            <div class="info-box">
+                <p>Wi-Fi scanning involves listening for <strong>beacon frames</strong> that access points broadcast periodically to announce their presence. These beacons contain valuable information about the network.</p>
+            </div>
+
+            <h4>Information in Beacon Frames</h4>
+            <div class="command-block">
+<pre>Beacon Frame Contents:
+┌─────────────────────────────────────┐
+│ SSID (Network Name)                 │
+│ MAC Address (BSSID)                 │
+│ Channel Number                      │
+│ Encryption Type (Open/WPA/WPA2/WPA3)│
+│ Signal Strength (RSSI)              │
+│ Supported Data Rates                │
+│ Vendor Information                  │
+└─────────────────────────────────────┘</pre>
+            </div>
+
+            <h4>Using Flipper for Wi-Fi Scanning</h4>
+            <div class="example-box">
+                <h4>Basic Network Scan</h4>
+                <p><strong>With Wi-Fi Dev Board installed:</strong></p>
+                <ol>
+                    <li>Apps → GPIO → ESP32 WiFi Marauder</li>
+                    <li>Select "Scan"</li>
+                    <li>Choose "AP Scan" (Access Points)</li>
+                    <li>Wait for scan to complete</li>
+                    <li>View discovered networks</li>
+                </ol>
+                
+                <div class="command-block">
+<pre>Example Scan Results:
+╔════════════════════════════════════╗
+║ SSID: HomeNetwork_5G               ║
+║ BSSID: A4:12:42:8C:3F:21          ║
+║ Channel: 149 (5 GHz)               ║
+║ Security: WPA2-PSK                 ║
+║ Signal: -45 dBm (Strong)           ║
+║ Vendor: TP-Link                    ║
+╚════════════════════════════════════╝
+
+╔════════════════════════════════════╗
+║ SSID: CoffeeShop_Guest             ║
+║ BSSID: 00:1A:2B:3C:4D:5E          ║
+║ Channel: 6 (2.4 GHz)               ║
+║ Security: Open                     ║
+║ Signal: -62 dBm (Fair)             ║
+║ Vendor: Ubiquiti                   ║
+╚════════════════════════════════════╝</pre>
+                </div>
+            </div>
+
+            <h4>Signal Strength Analysis</h4>
+            <div class="tip-box">
+                <strong>Understanding RSSI (Received Signal Strength Indicator):</strong>
+                <ul>
+                    <li><strong>-30 to -50 dBm:</strong> Excellent signal (right next to AP)</li>
+                    <li><strong>-50 to -60 dBm:</strong> Very good signal</li>
+                    <li><strong>-60 to -70 dBm:</strong> Good signal (typical use)</li>
+                    <li><strong>-70 to -80 dBm:</strong> Fair signal (may have issues)</li>
+                    <li><strong>-80 to -90 dBm:</strong> Poor signal (unstable)</li>
+                    <li><strong>Below -90 dBm:</strong> Unusable signal</li>
+                </ul>
+            </div>
+
+            <h4>Client Detection (Station Scan)</h4>
+            <div class="command-block">
+<pre>Finding Connected Devices:
+
+ESP32 WiFi Marauder → Scan → Station Scan
+
+Discovers:
+• MAC addresses of connected clients
+• Which AP they're connected to
+• Signal strength from each client
+• Vendor identification (OUI lookup)
+
+Use Case:
+• Count devices on network
+• Identify unauthorized connections
+• Target specific clients for attacks
+• Network reconnaissance</pre>
+            </div>
+
+            <h4>Hidden SSID Detection</h4>
+            <div class="info-box">
+                <h4>Finding "Hidden" Networks</h4>
+                <p>Some routers hide their SSID from broadcast. However, they're not truly hidden:</p>
+                <ul>
+                    <li>Network still broadcasts beacons (just without SSID)</li>
+                    <li>When clients connect, they reveal the SSID</li>
+                    <li>Probe requests from clients expose the network name</li>
+                    <li>Flipper can capture these probe requests</li>
+                </ul>
+                <p><strong>Hidden SSIDs provide minimal security!</strong></p>
+            </div>
+
+            <h4>Channel Utilization</h4>
+            <div class="command-block">
+<pre>Finding Least Congested Channels:
+
+2.4 GHz Analysis:
+Channel 1:  ████████░░ (8 APs)
+Channel 6:  ███████████ (11 APs) ← Crowded!
+Channel 11: █████░░░░░ (5 APs)  ← Best choice
+
+5 GHz Analysis:
+Channel 36:  ███░░░░░░ (3 APs)
+Channel 149: █░░░░░░░░ (1 AP)  ← Best choice
+
+Recommendation: Choose channel with least overlap</pre>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(2)">Continue to Deauthentication Attacks →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="3">
+            <h3>💥 Deauthentication Attacks</h3>
+            
+            <h4>Understanding Deauth Attacks</h4>
+            <div class="info-box">
+                <p>A <strong>deauthentication attack</strong> exploits a management frame in Wi-Fi protocols that allows an access point to disconnect clients. The attack spoofs these frames to force disconnections.</p>
+            </div>
+
+            <h4>How Deauth Attacks Work</h4>
+            <div class="command-block">
+<pre>Attack Process:
+┌─────────────────────────────────────┐
+│ 1. Attacker scans for target AP     │
+│ 2. Identifies connected clients     │
+│ 3. Crafts fake deauth frames        │
+│ 4. Spoofs AP's MAC address          │
+│ 5. Sends deauth to client(s)        │
+│ 6. Client disconnects from AP       │
+│ 7. (Optional) Client reconnects     │
+│    revealing handshake               │
+└─────────────────────────────────────┘
+
+Key Point: Deauth frames are NOT encrypted
+in WPA2, making spoofing trivial!</pre>
+            </div>
+
+            <h4>Performing Deauth with Flipper</h4>
+            <div class="warning-box">
+                <strong>⚠️ LEGAL WARNING:</strong>
+                <p>Deauthentication attacks are <strong>ILLEGAL</strong> in most jurisdictions when performed on networks you don't own. Penalties include:</p>
+                <ul>
+                    <li><strong>Computer Fraud and Abuse Act (USA)</strong></li>
+                    <li><strong>Wireless Telegraphy Act (UK)</strong></li>
+                    <li><strong>Similar laws worldwide</strong></li>
+                </ul>
+                <p><strong>ONLY test on your own networks with your own permission!</strong></p>
+            </div>
+
+            <div class="example-box">
+                <h4>Deauth Attack Steps</h4>
+                <ol>
+                    <li>ESP32 WiFi Marauder → Scan → AP Scan</li>
+                    <li>Select target network from list</li>
+                    <li>Choose "Deauth" attack</li>
+                    <li>Select target:
+                        <ul>
+                            <li><strong>Broadcast:</strong> Disconnect ALL clients</li>
+                            <li><strong>Specific client:</strong> Disconnect one device</li>
+                        </ul>
+                    </li>
+                    <li>Press OK to start attack</li>
+                    <li>Deauth frames sent continuously</li>
+                    <li>Press BACK to stop</li>
+                </ol>
+            </div>
+
+            <h4>Attack Variations</h4>
+            <div class="command-block">
+<pre>Targeted Deauth:
+• Disconnect specific client by MAC
+• Useful for capturing handshakes
+• Less disruptive than broadcast
+
+Broadcast Deauth:
+• Disconnects ALL clients at once
+• More disruptive (DoS attack)
+• Entire network goes down
+
+Continuous vs Burst:
+• Continuous: Keeps sending deauth frames
+• Burst: Sends X frames then stops
+• Continuous prevents reconnection</pre>
+            </div>
+
+            <h4>Capturing WPA2 Handshakes</h4>
+            <div class="info-box">
+                <h4>Why Capture Handshakes?</h4>
+                <p>When a client reconnects after deauth, it performs a <strong>4-way handshake</strong> with the AP. This handshake contains encrypted password verification data that can be captured and cracked offline.</p>
+            </div>
+
+            <div class="command-block">
+<pre>Handshake Capture Process:
+1. Start packet capture (sniffer mode)
+2. Wait for or trigger deauth
+3. Client disconnects
+4. Client automatically reconnects
+5. 4-way handshake occurs
+6. Capture EAPOL frames
+7. Stop capture, save .pcap file
+8. Transfer to computer
+9. Crack with hashcat/aircrack-ng
+
+EAPOL Frames (Handshake):
+Frame 1: AP → Client (ANonce)
+Frame 2: Client → AP (SNonce, MIC)
+Frame 3: AP → Client (GTK)
+Frame 4: Client → AP (Acknowledgment)
+
+Need Frame 2 and 3 to crack!</pre>
+            </div>
+
+            <h4>Deauth Defense Mechanisms</h4>
+            <div class="tip-box">
+                <strong>How to Protect Against Deauth:</strong>
+                <ul>
+                    <li><strong>WPA3:</strong> Uses Protected Management Frames (PMF)
+                        <br>Deauth frames are encrypted and authenticated</li>
+                    <li><strong>802.11w:</strong> Management Frame Protection (MFP)
+                        <br>Available in WPA2 with PMF enabled</li>
+                    <li><strong>Enterprise Networks:</strong> 802.1X authentication
+                        <br>More robust against deauth attacks</li>
+                    <li><strong>Wireless IDS:</strong> Detect and alert on deauth floods
+                        <br>Can identify attacker location</li>
+                </ul>
+            </div>
+
+            <h4>Ethical Considerations</h4>
+            <div class="warning-box">
+                <strong>When Deauth Might Be "Acceptable":</strong>
+                <ul>
+                    <li>✅ Testing your own home network</li>
+                    <li>✅ Authorized penetration test with signed contract</li>
+                    <li>✅ Controlled lab environment for education</li>
+                    <li>❌ Coffee shop networks (not yours!)</li>
+                    <li>❌ Neighbor's Wi-Fi (illegal!)</li>
+                    <li>❌ Public hotspots (disrupts legitimate users)</li>
+                    <li>❌ "Just testing" without permission (still illegal!)</li>
+                </ul>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(3)">Continue to Evil Twin Attacks →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="4">
+            <h3>👿 Evil Twin & Captive Portal Attacks</h3>
+            
+            <h4>What is an Evil Twin?</h4>
+            <div class="info-box">
+                <p>An <strong>Evil Twin</strong> is a rogue access point that impersonates a legitimate network. Unsuspecting users connect to it, allowing the attacker to intercept their traffic or present fake login pages.</p>
+            </div>
+
+            <h4>Evil Twin Attack Flow</h4>
+            <div class="command-block">
+<pre>Attack Stages:
+┌─────────────────────────────────────┐
+│ 1. Reconnaissance: Identify target  │
+│ 2. Clone: Create identical SSID     │
+│ 3. Deauth: Disconnect real clients  │
+│ 4. Association: Clients connect to  │
+│    fake AP (stronger signal)        │
+│ 5. Captive Portal: Show fake login  │
+│ 6. Credential Harvest: Collect data │
+│ 7. (Optional) MitM: Intercept traffic│
+└─────────────────────────────────────┘</pre>
+            </div>
+
+            <h4>Captive Portal Phishing</h4>
+            <div class="tip-box">
+                <strong>How Captive Portals Work:</strong>
+                <p>When clients connect to the Evil Twin, they're presented with a fake login page that mimics:</p>
+                <ul>
+                    <li>Hotel/Airport Wi-Fi login</li>
+                    <li>Router configuration page</li>
+                    <li>ISP credential verification</li>
+                    <li>Social media login</li>
+                    <li>"Network upgrade" confirmation</li>
+                </ul>
+                <p>Users enter credentials thinking it's legitimate → Attacker captures them</p>
+            </div>
+
+            <h4>Creating Evil Twin with Flipper</h4>
+            <div class="example-box">
+                <h4>Basic Evil Twin Setup</h4>
+                <div class="command-block">
+<pre>ESP32 WiFi Marauder Steps:
+1. Scan for target network
+2. Note SSID, channel, encryption
+3. Select "Evil Twin" mode
+4. Configure:
+   - SSID: (exact match to target)
+   - Channel: (same as target)
+   - Auth: Open or WPA2 (usually Open for portal)
+5. Start Evil Twin AP
+6. Optional: Run deauth on real AP
+7. Wait for clients to connect
+8. Serve captive portal
+9. Harvest credentials
+
+Flipper serves simple portal HTML
+More advanced: Use ESP32 custom firmware</pre>
+                </div>
+            </div>
+
+            <h4>Captive Portal Templates</h4>
+            <div class="command-block">
+<pre>Common Portal Types:
+
+Generic Router Login:
+"Please enter router password to continue"
+[Password: ____________]
+[Submit]
+
+Hotel/Airport Style:
+"Welcome to [Network Name]
+ Accept Terms & Conditions
+ [I Agree] [Continue]"
+
+Firmware Update Scam:
+"Router firmware update required
+ Enter admin password to proceed"
+[Admin Password: ____________]
+
+Social Media Phish:
+"Login with Facebook to access WiFi"
+[Email: ____________]
+[Password: ____________]</pre>
+            </div>
+
+            <h4>Man-in-the-Middle (MitM) Attacks</h4>
+            <div class="info-box">
+                <p>Once clients are connected to the Evil Twin, the attacker can:</p>
+                <ul>
+                    <li><strong>Intercept traffic:</strong> See all unencrypted data</li>
+                    <li><strong>SSL stripping:</strong> Downgrade HTTPS to HTTP</li>
+                    <li><strong>DNS spoofing:</strong> Redirect to malicious sites</li>
+                    <li><strong>Inject code:</strong> Modify web pages in transit</li>
+                    <li><strong>Session hijacking:</strong> Steal cookies and sessions</li>
+                </ul>
+            </div>
+
+            <h4>Detection and Prevention</h4>
+            <div class="warning-box">
+                <strong>How to Avoid Evil Twins:</strong>
+                <ul>
+                    <li><strong>Verify network names:</strong> Check spelling carefully</li>
+                    <li><strong>Check signal strength:</strong> Suspiciously strong signal?</li>
+                    <li><strong>Verify encryption:</strong> Legit network suddenly open?</li>
+                    <li><strong>Look for certificates:</strong> HTTPS warnings are red flags</li>
+                    <li><strong>Use VPN:</strong> Encrypts all traffic regardless of network</li>
+                    <li><strong>Avoid sensitive activities:</strong> Don't bank on public Wi-Fi</li>
+                    <li><strong>Forget networks:</strong> Don't auto-connect to public hotspots</li>
+                </ul>
+            </div>
+
+            <h4>Advanced Evil Twin Techniques</h4>
+            <div class="command-block">
+<pre>Sophisticated Attacks:
+
+Karma Attack:
+• Exploits probe requests from clients
+• Client asks "Is network X here?"
+• Evil AP responds "Yes, that's me!"
+• Client connects without verification
+
+MANA Attack:
+• Enhanced version of Karma
+• Responds to all probe requests
+• Captures EAP credentials
+• Very effective against corporate devices
+
+Known Beacons Attack:
+• Broadcasts many common SSIDs
+• "Starbucks WiFi", "attwifi", "xfinitywifi"
+• Clients with saved networks auto-connect
+• Fully passive (no deauth needed)</pre>
+            </div>
+
+            <h4>Legal Implications</h4>
+            <div class="warning-box">
+                <strong>⚠️ Evil Twin attacks are HIGHLY ILLEGAL:</strong>
+                <ul>
+                    <li><strong>Identity theft</strong> (stealing credentials)</li>
+                    <li><strong>Wiretapping laws</strong> (intercepting communications)</li>
+                    <li><strong>Computer fraud</strong> (unauthorized access)</li>
+                    <li><strong>Phishing</strong> (fraudulent credential collection)</li>
+                </ul>
+                <p><strong>Real-world consequences:</strong> Federal prison time, massive fines, permanent criminal record</p>
+                <p><strong>ONLY test on isolated lab networks you own!</strong></p>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(4)">Continue to Wi-Fi Security →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="5">
+            <h3>🔐 Wi-Fi Security Best Practices</h3>
+            
+            <h4>Securing Your Wi-Fi Network</h4>
+            <div class="info-box">
+                <p>Understanding attacks helps you defend. Here's how to properly secure your wireless network:</p>
+            </div>
+
+            <h4>Router Configuration</h4>
+            <div class="tip-box">
+                <strong>Essential Security Settings:</strong>
+                <ol>
+                    <li><strong>Change Default Credentials</strong>
+                        <ul>
+                            <li>Never use admin/admin or default passwords</li>
+                            <li>Create strong, unique admin password</li>
+                            <li>Change both Wi-Fi password AND router admin password</li>
+                        </ul>
+                    </li>
+                    <li><strong>Use WPA3 (or WPA2 with AES)</strong>
+                        <ul>
+                            <li>Enable WPA3 if supported</li>
+                            <li>Fallback: WPA2-AES only (disable TKIP)</li>
+                            <li>Never use WEP or WPA (original)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Strong Wi-Fi Password</strong>
+                        <ul>
+                            <li>Minimum 16 characters</li>
+                            <li>Mix of uppercase, lowercase, numbers, symbols</li>
+                            <li>Avoid dictionary words, personal info</li>
+                            <li>Use passphrase: "MyD0g!Ate7Purple$Socks"</li>
+                        </ul>
+                    </li>
+                    <li><strong>Disable WPS (Wi-Fi Protected Setup)</strong>
+                        <ul>
+                            <li>WPS PIN is vulnerable to brute force</li>
+                            <li>Can be cracked in hours</li>
+                            <li>Disable completely in router settings</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h4>Advanced Security Features</h4>
+            <div class="command-block">
+<pre>Additional Protections:
+
+1. Enable Management Frame Protection (PMF/802.11w)
+   → Prevents deauth attacks
+   → Available in modern WPA2/WPA3 routers
+
+2. MAC Address Filtering (Limited effectiveness)
+   → Whitelist approved devices
+   → Can be bypassed by spoofing
+   → Use as additional layer, not primary security
+
+3. Disable SSID Broadcast (Security through obscurity)
+   → Hides network from casual view
+   → Still detectable by scanning
+   → Minimal security benefit
+
+4. Guest Network Isolation
+   → Separate network for visitors
+   → Isolate from main network
+   → Different VLAN/subnet
+   → Prevents lateral movement
+
+5. Disable Remote Management
+   → No access from internet
+   → Only local admin access
+   → Prevents remote exploits
+
+6. Regular Firmware Updates
+   → Patch security vulnerabilities
+   → Check manufacturer site monthly
+   → Enable auto-update if available</pre>
+            </div>
+
+            <h4>Network Segmentation</h4>
+            <div class="example-box">
+                <h4>Recommended Network Layout</h4>
+                <div class="command-block">
+<pre>Home Network Architecture:
+
+Main Network (WPA3, strong password)
+├── Trusted devices: Laptops, phones, tablets
+├── VLAN 10, 192.168.1.0/24
+└── Full LAN access
+
+Guest Network (WPA3, different password)
+├── Visitors, untrusted devices
+├── VLAN 20, 192.168.2.0/24
+├── Internet only (no LAN access)
+└── Rate limiting enabled
+
+IoT Network (WPA2, isolated)
+├── Smart home devices, cameras
+├── VLAN 30, 192.168.3.0/24
+├── Firewall rules: no outbound except needed
+└── No access to main network</pre>
+                </div>
+            </div>
+
+            <h4>Client-Side Security</h4>
+            <div class="tip-box">
+                <strong>Protecting Your Devices:</strong>
+                <ul>
+                    <li><strong>Forget public networks:</strong> Don't save untrusted Wi-Fi</li>
+                    <li><strong>Disable auto-connect:</strong> Manually choose networks</li>
+                    <li><strong>Use VPN:</strong> Encrypt all traffic on public Wi-Fi</li>
+                    <li><strong>Verify certificates:</strong> Don't ignore HTTPS warnings</li>
+                    <li><strong>Update devices:</strong> Keep OS and apps patched</li>
+                    <li><strong>Firewall enabled:</strong> Block unwanted connections</li>
+                    <li><strong>Antivirus software:</strong> Detect malicious activity</li>
+                </ul>
+            </div>
+
+            <h4>Monitoring for Intrusions</h4>
+            <div class="command-block">
+<pre>Detecting Wi-Fi Attacks:
+
+Router Logs:
+• Check connected device list regularly
+• Look for unknown MAC addresses
+• Monitor authentication failures
+• Check for deauth anomalies
+
+Wireless IDS (Intrusion Detection):
+• Kismet (Linux)
+• Wireshark (packet analysis)
+• Commercial solutions (Aruba, Cisco)
+
+Red Flags:
+⚠ Unknown devices connected
+⚠ Sudden disconnections (deauth attack)
+⚠ Multiple failed auth attempts
+⚠ Duplicate SSID nearby (evil twin)
+⚠ Unexpected traffic patterns
+⚠ Clients connecting to wrong BSSID</pre>
+            </div>
+
+            <h4>Enterprise Wi-Fi Security</h4>
+            <div class="info-box">
+                <h4>802.1X/EAP (Enterprise Authentication)</h4>
+                <p>For businesses, use enterprise-grade security:</p>
+                <ul>
+                    <li><strong>RADIUS server:</strong> Centralized authentication</li>
+                    <li><strong>Individual credentials:</strong> Each user has unique login</li>
+                    <li><strong>Certificate-based:</strong> No shared password</li>
+                    <li><strong>Automatic revocation:</strong> Disable access instantly</li>
+                    <li><strong>Audit trails:</strong> Track who accessed when</li>
+                    <li><strong>VLANs per user:</strong> Dynamic network assignment</li>
+                </ul>
+            </div>
+
+            <h4>Password Cracking Defense</h4>
+            <div class="warning-box">
+                <strong>Making Your Wi-Fi Password Crack-Resistant:</strong>
+                <ul>
+                    <li><strong>Length matters most:</strong> 16+ characters exponentially harder</li>
+                    <li><strong>Avoid common patterns:</strong> No "Password123!" or "WelcomeHome"</li>
+                    <li><strong>Random is best:</strong> Use password manager to generate</li>
+                    <li><strong>Test yourself:</strong> Use hashcat to attempt cracking your own password</li>
+                    <li><strong>Change regularly:</strong> Every 6-12 months</li>
+                </ul>
+                <p><strong>Cracking Timeline Examples:</strong></p>
+                <div class="command-block">
+<pre>8 characters, lowercase only: Minutes
+8 characters, mixed case + numbers: Hours
+12 characters, complex: Days
+16 characters, complex: Years
+20 characters, complex: Centuries</pre>
+                </div>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(5)">Continue to Final Challenge →</button>
+        </div>
+
+        <div class="content-section hidden" data-section="6">
+            <h3>🎯 Challenge: Corporate Wi-Fi Security Audit</h3>
+            
+            <div class="challenge-box">
+                <h4>Scenario: Small Business Security Assessment</h4>
+                <p><strong>Client:</strong> TechStart Inc., a 50-person startup company</p>
+                <p><strong>Engagement:</strong> Wireless security audit (authorized, documented)</p>
+                
+                <p><strong>Current Setup:</strong></p>
+                <ul>
+                    <li>Single Wi-Fi network "TechStart_WiFi"</li>
+                    <li>WPA2-PSK, password shared company-wide</li>
+                    <li>Same network for employees, guests, and IoT devices</li>
+                    <li>Default router admin credentials</li>
+                    <li>No monitoring or logging</li>
+                </ul>
+
+                <p><strong>Your Mission:</strong></p>
+                <ol>
+                    <li>Assess current security posture</li>
+                    <li>Identify vulnerabilities</li>
+                    <li>Demonstrate attack vectors (safely)</li>
+                    <li>Provide detailed recommendations</li>
+                    <li>Create implementation roadmap</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>Rules of Engagement:</strong>
+                    <ul>
+                        <li>✅ Written authorization from CEO</li>
+                        <li>✅ Testing during off-hours (minimal disruption)</li>
+                        <li>✅ No data exfiltration</li>
+                        <li>✅ Document everything</li>
+                        <li>✅ Coordinate with IT contact</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>🔍 Solution Walkthrough</h4>
+
+            <div class="solution-step">
+                <h4>Phase 1: Reconnaissance</h4>
+                <div class="command-block">
+<pre>Initial Assessment (Day 1, 7:00 PM):
+
+Equipment:
+• Flipper Zero + Wi-Fi Dev Board
+• Laptop with Kali Linux
+• Alfa AWUS036ACH adapter (high gain)
+• Notepad for documentation
+
+Network Discovery:
+ESP32 WiFi Marauder → AP Scan
+
+Results:
+╔═══════════════════════════════════════╗
+║ SSID: TechStart_WiFi                  ║
+║ BSSID: 00:11:22:33:44:55             ║
+║ Channel: 6 (2.4 GHz)                  ║
+║ Security: WPA2-PSK (AES)              ║
+║ Signal: -35 dBm (Very Strong)         ║
+║ Vendor: Netgear                       ║
+║ Connected Clients: 23 devices         ║
+╚═══════════════════════════════════════╝
+
+Initial Observations:
+⚠ Single network (no segmentation)
+⚠ 2.4 GHz only (outdated, congested)
+⚠ 23 clients connected after hours (suspicious)
+⚠ WPA2 (acceptable but could be better)</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Phase 2: Client Analysis</h4>
+                <div class="command-block">
+<pre>Station Scan Results:
+
+Connected Devices (23 total):
+├── 15 × Smartphones (iOS/Android)
+├── 5 × Laptops (Windows/Mac)
+├── 2 × Smart TVs (conference rooms)
+└── 1 × IP Camera (entrance)
+
+Concerning Findings:
+⚠ IoT devices on same network as workstations
+⚠ Personal devices (BYOD) mixed with corporate
+⚠ IP Camera accessible from main network
+⚠ Smart TVs potentially unsecured
+
+OUI Analysis (Vendor Lookup):
+• Apple devices: 8
+• Samsung: 4
+• Dell: 3
+• Various IoT: 3
+• Unknown: 5 (concerning!)</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Phase 3: Vulnerability Assessment</h4>
+                <div class="example-box">
+                    <h4>Router Access Test</h4>
+                    <ol>
+                        <li>Connected to TechStart_WiFi (authorized)</li>
+                        <li>Scanned for router IP: 192.168.1.1</li>
+                        <li>Accessed web interface: http://192.168.1.1</li>
+                        <li>Attempted default credentials:</li>
+                    </ol>
+                    <div class="command-block">
+<pre>Login Attempts:
+Username: admin / Password: admin → ✗ Failed
+Username: admin / Password: password → ✗ Failed
+Username: admin / Password: [blank] → ✗ Failed
+Username: admin / Password: TechStart → ✓ SUCCESS!
+
+CRITICAL FINDING: Default-like password!</pre>
+                    </div>
+                    <p><strong>Impact:</strong> Anyone on the network can access router settings, change Wi-Fi password, monitor traffic, etc.</p>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Phase 4: WPA2 Handshake Capture</h4>
+                <div class="command-block">
+<pre>Testing Password Strength:
+
+Step 1: Capture handshake
+• Started packet capture on laptop
+• Used Flipper deauth on single test device (my phone)
+• Captured 4-way handshake successfully
+• Saved as: techstart_handshake.cap
+
+Step 2: Password cracking attempt
+Laptop: hashcat -m 22000 techstart_handshake.hc22000 rockyou.txt
+
+Cracking Progress:
+Time: 00:00:15 (15 seconds!)
+Status: Cracked!
+Password: "TechStart2023!"
+
+CRITICAL FINDING: Weak password cracked in 15 seconds!
+Password was in common wordlist (rockyou.txt)
+Predictable pattern: CompanyName + Year + Symbol</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Phase 5: Evil Twin Demonstration</h4>
+                <div class="example-box">
+                    <h4>Controlled Evil Twin Test</h4>
+                    <p><strong>Goal:</strong> Demonstrate risk to executive team</p>
+                    
+                    <ol>
+                        <li>Created Evil Twin: "TechStart_WiFi" (exact match)</li>
+                        <li>Positioned Flipper close to conference room</li>
+                        <li>Deauthed my own test device</li>
+                        <li>Test device connected to Evil Twin (stronger signal)</li>
+                        <li>Served captive portal: "Firmware Update Required"</li>
+                        <li>Test account entered credentials → Captured!</li>
+                    </ol>
+
+                    <p><strong>Demonstration Results:</strong></p>
+                    <ul>
+                        <li>✓ Evil Twin successful in under 60 seconds</li>
+                        <li>✓ Credentials captured (test account only)</li>
+                        <li>✓ Traffic intercepted (demonstrated with HTTP site)</li>
+                        <li>✓ Executive team shocked by ease of attack</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Phase 6: Comprehensive Report</h4>
+                <div class="command-block">
+<pre>WIRELESS SECURITY AUDIT REPORT
+TechStart Inc. - Confidential
+
+Executive Summary:
+┌──────────────────────────────────────┐
+│ Overall Security Rating: HIGH RISK   │
+│ Critical Findings: 3                 │
+│ High Findings: 4                     │
+│ Medium Findings: 5                   │
+│ Recommendation: Immediate Action     │
+└──────────────────────────────────────┘
+
+CRITICAL VULNERABILITIES:
+
+1. Weak WPA2 Password (CRITICAL)
+   Risk: Password cracked in 15 seconds
+   Impact: Complete network compromise
+   CVSS: 9.8 (Critical)
+   
+2. Default Router Credentials (CRITICAL)
+   Risk: Full router administrative access
+   Impact: Network takeover, traffic interception
+   CVSS: 9.1 (Critical)
+   
+3. No Network Segmentation (CRITICAL)
+   Risk: IoT/Guest devices on corporate LAN
+   Impact: Lateral movement, data breach
+   CVSS: 8.5 (High)
+
+HIGH VULNERABILITIES:
+
+4. Single Point of Failure
+   Risk: Only one Wi-Fi network for everything
+   Impact: Total outage if compromised
+   
+5. No Intrusion Detection
+   Risk: Attacks go unnoticed
+   Impact: Persistent access, data exfiltration
+   
+6. BYOD Without Control
+   Risk: Personal devices on corporate network
+   Impact: Malware introduction, data leakage
+   
+7. No Guest Network Isolation
+   Risk: Visitors have LAN access
+   Impact: Unauthorized access to resources</pre>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Phase 7: Remediation Plan</h4>
+                <div class="tip-box">
+                    <h4>Immediate Actions (Week 1)</h4>
+                    <ol>
+                        <li><strong>Change Router Password</strong>
+                            <ul>
+                                <li>Generate 20+ character random password</li>
+                                <li>Store in password manager</li>
+                                <li>Cost: $0 | Time: 5 minutes</li>
+                            </ul>
+                        </li>
+                        <li><strong>Change Wi-Fi Password</strong>
+                            <ul>
+                                <li>Use passphrase: "7Blue$Elephants!Dance@Midnight#Forever"</li>
+                                <li>Distribute securely to employees</li>
+                                <li>Cost: $0 | Time: 30 minutes</li>
+                            </ul>
+                        </li>
+                        <li><strong>Enable WPA3 (if supported)</strong>
+                            <ul>
+                                <li>Check router firmware for WPA3 support</li>
+                                <li>Enable if available, fallback to WPA2</li>
+                                <li>Cost: $0 | Time: 10 minutes</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h4>Short-Term (Month 1)</h4>
+                    <ol>
+                        <li><strong>Implement Network Segmentation</strong>
+                            <ul>
+                                <li>Purchase business-grade router/APs</li>
+                                <li>Create separate VLANs:
+                                    <ul>
+                                        <li>Corporate (employees only)</li>
+                                        <li>Guest (internet only)</li>
+                                        <li>IoT (isolated)</li>
+                                    </ul>
+                                </li>
+                                <li>Cost: $800 | Time: 1 day</li>
+                            </ul>
+                        </li>
+                        <li><strong>Deploy 5 GHz Network</strong>
+                            <ul>
+                                <li>Upgrade to dual-band APs</li>
+                                <li>Primary corporate on 5 GHz</li>
+                                <li>Better speed and less congestion</li>
+                                <li>Cost: Included in new hardware</li>
+                            </ul>
+                        </li>
+                        <li><strong>Enable Management Frame Protection</strong>
+                            <ul>
+                                <li>Protect against deauth attacks</li>
+                                <li>Configure on all APs</li>
+                                <li>Cost: $0 | Time: 15 minutes</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h4>Long-Term (Months 2-3)</h4>
+                    <ol>
+                        <li><strong>Implement 802.1X Authentication</strong>
+                            <ul>
+                                <li>Deploy RADIUS server (FreeRADIUS)</li>
+                                <li>Individual user credentials</li>
+                                <li>Certificate-based auth</li>
+                                <li>Cost: $0 (open source) | Time: 3 days</li>
+                            </ul>
+                        </li>
+                        <li><strong>Wireless IDS Deployment</strong>
+                            <ul>
+                                <li>Install Kismet for monitoring</li>
+                                <li>Alert on evil twins, deauths</li>
+                                <li>Daily log review</li>
+                                <li>Cost: $0 | Time: 2 days</li>
+                            </ul>
+                        </li>
+                        <li><strong>Security Awareness Training</strong>
+                            <ul>
+                                <li>Monthly Wi-Fi security sessions</li>
+                                <li>Evil twin demonstrations</li>
+                                <li>VPN usage mandates for public Wi-Fi</li>
+                                <li>Cost: Internal | Time: Ongoing</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <p><strong>Total Investment:</strong> ~$800 hardware + ~40 hours labor</p>
+                    <p><strong>Risk Reduction:</strong> 95% improvement in security posture</p>
+                </div>
+            </div>
+
+            <div class="solution-step">
+                <h4>Phase 8: Executive Presentation</h4>
+                <div class="info-box">
+                    <h4>Board Meeting Outcomes</h4>
+                    <p><strong>Presentation Delivered:</strong> CEO, CTO, IT Manager, Legal</p>
+                    
+                    <p><strong>Live Demonstrations:</strong></p>
+                    <ul>
+                        <li>Password cracking (15 seconds to crack)</li>
+                        <li>Router access with weak credentials</li>
+                        <li>Evil Twin attack with credential capture</li>
+                        <li>Traffic interception demonstration</li>
+                    </ul>
+
+                    <p><strong>Executive Response:</strong></p>
+                    <ul>
+                        <li>✓ Approved full remediation budget</li>
+                        <li>✓ Authorized immediate password changes</li>
+                        <li>✓ Assigned IT resource for implementation</li>
+                        <li>✓ Scheduled 90-day follow-up audit</li>
+                        <li>✓ Implemented company-wide VPN policy</li>
+                    </ul>
+
+                    <p><strong>Follow-Up (90 days later):</strong></p>
+                    <ul>
+                        <li>✓ All recommendations implemented</li>
+                        <li>✓ Zero unauthorized access attempts detected</li>
+                        <li>✓ Employee training completed (100% participation)</li>
+                        <li>✓ Continuous monitoring operational</li>
+                        <li>✓ Security posture: EXCELLENT</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>🎓 Key Lessons Learned</h4>
+                <ul>
+                    <li><strong>Professional documentation matters:</strong> Detailed reports drive action</li>
+                    <li><strong>Visual demonstrations convince executives:</strong> Show, don't just tell</li>
+                    <li><strong>Practical recommendations:</strong> Balance security with usability</li>
+                    <li><strong>Budget-conscious solutions:</strong> Open source tools reduce costs</li>
+                    <li><strong>Phased approach:</strong> Quick wins first, complex changes later</li>
+                    <li><strong>Follow-up crucial:</strong> Verify implementations, measure improvement</li>
+                    <li><strong>Education alongside tech:</strong> People are part of security</li>
+                    <li><strong>Authorization essential:</strong> Everything documented and approved</li>
+                </ul>
+            </div>
+
+            <div class="completion-box">
+                <h4>🎉 Lesson 5 Complete!</h4>
+                <p>Congratulations! You've mastered Wi-Fi security:</p>
+                <ul>
+                    <li>✅ Understanding Wi-Fi protocols and standards</li>
+                    <li>✅ Network scanning and reconnaissance</li>
+                    <li>✅ Deauthentication attack techniques</li>
+                    <li>✅ Evil Twin and captive portal attacks</li>
+                    <li>✅ Wi-Fi security best practices</li>
+                    <li>✅ Professional wireless security auditing</li>
+                    <li>✅ Network segmentation and defense strategies</li>
+                </ul>
+                <p><strong>Next:</strong> Lesson 6 covers GPIO & Hardware Hacking!</p>
+            </div>
+
+            <button class="next-btn" onclick="window.lessonProgress.completeSection(6)">Complete Lesson 5 →</button>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="lesson4.html" class="nav-btn prev">← Lesson 4: BadUSB</a>
+            <a href="index.html" class="nav-btn">🏠 Academy Home</a>
+            <a href="lesson6.html" class="nav-btn next">Lesson 6: GPIO →</a>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>tw¡st3d_¡nk Academy - Lesson 5: Wi-Fi Networks</p>
+            <p class="disclaimer">⚠️ Educational purposes only. Wi-Fi attacks are illegal without authorization. Only test on networks you own or have written permission to assess.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Lesson Progress System (Inline for reliability)
+        window.lessonProgress = {
+            currentLesson: 5,
+            totalSections: 6,
+            completedSections: [],
+            
+            init: function(lessonNum, sections) {
+                this.currentLesson = lessonNum;
+                this.totalSections = sections;
+                this.loadProgress();
+                this.updateDisplay();
+            },
+            
+            loadProgress: function() {
+                const saved = localStorage.getItem(`lesson${this.currentLesson}_progress`);
+                if (saved) {
+                    this.completedSections = JSON.parse(saved);
+                }
+            },
+            
+            saveProgress: function() {
+                localStorage.setItem(`lesson${this.currentLesson}_progress`, JSON.stringify(this.completedSections));
+            },
+            
+            completeSection: function(sectionNum) {
+                if (!this.completedSections.includes(sectionNum)) {
+                    this.completedSections.push(sectionNum);
+                    this.saveProgress();
+                    this.awardXP(25); // 25 XP per section
+                }
+                
+                // Show next section
+                const currentSection = document.querySelector(`[data-section="${sectionNum}"]`);
+                const nextSection = document.querySelector(`[data-section="${sectionNum + 1}"]`);
+                
+                if (currentSection) currentSection.classList.add('hidden');
+                if (nextSection) {
+                    nextSection.classList.remove('hidden');
+                    nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                
+                this.updateDisplay();
+                
+                // Check if lesson complete
+                if (this.completedSections.length === this.totalSections) {
+                    this.completeLesson();
+                }
+            },
+            
+            completeLesson: function() {
+                localStorage.setItem(`lesson${this.currentLesson}_complete`, 'true');
+                this.awardXP(50); // Bonus XP for completing lesson
+                
+                // Show completion message
+                setTimeout(() => {
+                    alert(`🎉 Lesson ${this.currentLesson} Complete! +50 Bonus XP!\n\nTotal XP Earned: ${this.getTotalXP()}`);
+                }, 500);
+            },
+            
+            awardXP: function(amount) {
+                let totalXP = parseInt(localStorage.getItem('totalXP') || '0');
+                totalXP += amount;
+                localStorage.setItem('totalXP', totalXP);
+                this.updateXPDisplay();
+            },
+            
+            getTotalXP: function() {
+                return parseInt(localStorage.getItem('totalXP') || '0');
+            },
+            
+            updateXPDisplay: function() {
+                const xpElement = document.getElementById('xp-amount');
+                if (xpElement) {
+                    xpElement.textContent = this.getTotalXP();
+                }
+            },
+            
+            updateDisplay: function() {
+                const progress = (this.completedSections.length / this.totalSections) * 100;
+                const progressFill = document.querySelector('.progress-fill');
+                const progressText = document.querySelector('.progress-text');
+                
+                if (progressFill) progressFill.style.width = progress + '%';
+                if (progressText) progressText.textContent = Math.round(progress) + '% Complete';
+                
+                this.updateXPDisplay();
+            }
+        };
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            window.lessonProgress.init(5, 6);
+        });
+    </script>
+</body>
+</html>
