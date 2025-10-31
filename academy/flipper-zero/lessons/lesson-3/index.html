@@ -573,11 +573,25 @@
         </article>
 
         <!-- Navigation -->
-        <nav class="lesson-navigation">
-            <a href="lesson-2.html" class="nav-btn secondary">
-                ← Previous: Sub-GHz Radio
-            </a>
-            <a href="lesson-4.html" class="nav-btn primary">
+        <!-- Top Navigation -->
+<nav class="lesson-nav">
+  <a href="../../" class="nav-link">← Back to Course</a>
+  <span class="lesson-badge">LESSON 3</span>
+  <a href="../lesson-4/" class="nav-link">Next Lesson →</a>
+</nav>
+
+<!-- Bottom Navigation in Footer -->
+<div class="nav-buttons">
+  <a href="../lesson-2/" class="nav-btn">← Previous Lesson</a>
+  <a href="../../" class="nav-btn">Course Overview</a>
+  <a href="../lesson-4/" class="nav-btn">Next Lesson →</a>
+</div>
+
+<!-- JavaScript redirect (in markComplete function) -->
+window.location.href = '../lesson-4/';
+
+<!-- JavaScript constant -->
+const LESSON_ID = 3;
                 Next: Infrared Control →
             </a>
         </nav>
