@@ -506,11 +506,24 @@
         </article>
 
         <!-- Navigation -->
-        <nav class="lesson-navigation">
-            <a href="lesson-5.html" class="nav-btn secondary">
-                ← Previous: BadUSB Attacks
-            </a>
-            <a href="../index.html" class="nav-btn primary">
+        <!-- Top Navigation -->
+<nav class="lesson-nav">
+  <a href="../../" class="nav-link">← Back to Course</a>
+  <span class="lesson-badge">LESSON 6</span>
+  <span class="nav-link" style="opacity: 0.5; cursor: default;">Final Lesson</span>
+</nav>
+
+<!-- Bottom Navigation in Footer -->
+<div class="nav-buttons">
+  <a href="../lesson-5/" class="nav-btn">← Previous Lesson</a>
+  <a href="../../" class="nav-btn">Course Overview</a>
+</div>
+
+<!-- JavaScript redirect (in markComplete function - goes back to course) -->
+window.location.href = '../../';
+
+<!-- JavaScript constant -->
+const LESSON_ID = 6;
                 Back to Course Overview →
             </a>
         </nav>
