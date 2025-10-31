@@ -73,14 +73,24 @@
     }
 
     /* Navigation */
-    .lesson-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
+    <!-- Top Navigation -->
+<nav class="lesson-nav">
+  <a href="../../" class="nav-link">← Back to Course</a>
+  <span class="lesson-badge">LESSON 2</span>
+  <a href="../lesson-3/" class="nav-link">Next Lesson →</a>
+</nav>
+
+<!-- Bottom Navigation -->
+<div class="nav-buttons">
+  <a href="../lesson-1/" class="nav-btn">← Previous Lesson</a>
+  <a href="../../" class="nav-btn">Course Overview</a>
+  <a href="../lesson-3/" class="nav-btn">Next Lesson →</a>
+</div>
+
+<!-- JavaScript redirect -->
+setTimeout(() => {
+  window.location.href = '../lesson-3/';
+}, 1500);
 
     .nav-link {
       color: var(--text-secondary);
