@@ -1,1704 +1,743 @@
-<li>👀 Look away from screens</li>
-                </ul>
-                <div class="break-timer" id="break-timer">5:00</div>
-                <div class="break-controls">
-                    <button class="btn-break" onclick="startBreakTimer()">Start 5-Min Break</button>
-                    <button class="btn-break secondary" onclick="skipBreak()">Skip Break</button>
-                </div>
-            </div>
-
-            <!-- Capturing Signals -->
-            <section class="content-section">
-                <h2>Capturing Radio Signals</h2>
-                <p>
-                    Now let's learn how to capture signals with your Flipper Zero. This is the foundation of Sub-GHz security testing.
-                </p>
-
-                <h3>Read Mode vs Read RAW Mode</h3>
-                <p>
-                    The Flipper Zero offers two main methods for capturing signals:
-                </p>
-
-                <div class="modulation-grid">
-                    <div class="modulation-card">
-                        <h4>Read Mode (Smart Capture)</h4>
-                        <p><strong>Best for:</strong> Known protocols and common devices</p>
-                        <ul>
-                            <li>Automatically detects and decodes protocols</li>
-                            <li>Smaller file sizes</li>
-                            <li>Works with garage doors, simple remotes</li>
-                            <li>Limited to pre-programmed protocols</li>
-                        </ul>
-                    </div>
-
-                    <div class="modulation-card">
-                        <h4>Read RAW Mode</h4>
-                        <p><strong>Best for:</strong> Unknown or custom protocols</p>
-                        <ul>
-                            <li>Captures the raw radio signal</li>
-                            <li>Works with any modulation type</li>
-                            <li>Larger file sizes</li>
-                            <li>Can capture complex or proprietary signals</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <h3>💡 Which Mode to Use?</h3>
-                    <p>
-                        <strong>Start with Read mode</strong> for common devices. If it doesn't detect the signal or the replay doesn't work, switch to Read RAW mode. RAW captures work almost universally but create larger files.
-                    </p>
-                </div>
-
-                <h3>Capture Process (Read Mode)</h3>
-                <ol>
-                    <li>
-                        <strong>Navigate to Sub-GHz:</strong> From the main menu, select "Sub-GHz"
-                    </li>
-                    <li>
-                        <strong>Select Read:</strong> Choose "Read" from the Sub-GHz menu
-                    </li>
-                    <li>
-                        <strong>Choose Frequency:</strong> Select the frequency your target device uses
-                        <ul style="margin-top: 0.5rem;">
-                            <li>315 MHz for most US garage doors</li>
-                            <li>433.92 MHz for most European devices</li>
-                            <li>If unsure, try the "Frequency Analyzer" first</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <strong>Trigger the Device:</strong> Press the button on your remote/fob while Flipper is listening
-                    </li>
-                    <li>
-                        <strong>Capture Success:</strong> Flipper will vibrate and display the captured signal
-                    </li>
-                    <li>
-                        <strong>Save the Signal:</strong> Press OK to save with a descriptive name
-                    </li>
-                </ol>
-
-                <h3>Capture Process (Read RAW Mode)</h3>
-                <ol>
-                    <li>Navigate to Sub-GHz → Read RAW</li>
-                    <li>Select your target frequency</li>
-                    <li>Set the recording duration (longer for complex signals)</li>
-                    <li>Press OK to start recording</li>
-                    <li>Trigger your device during the recording window</li>
-                    <li>Press OK to stop and save</li>
-                </ol>
-
-                <div class="info-box warning">
-                    <h3>⚠️ Important Capture Tips</h3>
-                    <ul>
-                        <li><strong>Get close:</strong> Hold the remote within 1-2 inches of the Flipper for best signal capture</li>
-                        <li><strong>Reduce interference:</strong> Turn off nearby electronics that might cause noise</li>
-                        <li><strong>Multiple captures:</strong> Capture the same signal 2-3 times to ensure accuracy</li>
-                        <li><strong>Test immediately:</strong> Try replaying right after capture to verify it works</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Exercise 1 -->
-            <div class="exercise-box">
-                <h3>🔧 Hands-On Exercise 1: Capture Your First Signal</h3>
-                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Beginner</p>
-                <p>
-                    <strong>Requirements:</strong> A simple remote control you own (garage door opener, wireless doorbell, or car fob)
-                </p>
-                <ol class="exercise-steps">
-                    <li>Power on your Flipper Zero and navigate to Sub-GHz menu</li>
-                    <li>Select "Frequency Analyzer" to detect what frequency your device uses</li>
-                    <li>Press your remote button and note the frequency that spikes</li>
-                    <li>Exit analyzer and select "Read" from Sub-GHz menu</li>
-                    <li>Choose the frequency you detected (or closest match)</li>
-                    <li>Position remote close to Flipper and press the button</li>
-                    <li>When captured, give it a descriptive name (e.g., "garage_door_main")</li>
-                    <li>Navigate to "Saved" in Sub-GHz menu and verify your capture is there</li>
-                </ol>
-                <div style="margin-top: 1.5rem;">
-                    <button class="btn-complete" onclick="completeExercise(1)">Mark Exercise Complete</button>
-                </div>
-            </div>
-
-            <!-- Frequency Analyzer -->
-            <section class="content-section">
-                <h2>Using the Frequency Analyzer</h2>
-                <p>
-                    The Frequency Analyzer is one of the most useful tools in the Sub-GHz menu. It scans the radio spectrum and shows you where active transmissions are occurring in real-time.
-                </p>
-
-                <h3>How to Use the Analyzer</h3>
-                <ol>
-                    <li>Navigate to Sub-GHz → Frequency Analyzer</li>
-                    <li>The screen shows a spectrum display with frequency on X-axis</li>
-                    <li>Press the button on your target device</li>
-                    <li>Watch for a spike in the graph—that's your signal</li>
-                    <li>The frequency is displayed at the bottom of the screen</li>
-                </ol>
-
-                <div class="info-box">
-                    <h3>💡 Analyzer Pro Tips</h3>
-                    <ul>
-                        <li><strong>Peak indicator:</strong> The highest spike shows the strongest signal</li>
-                        <li><strong>RSSI value:</strong> Signal strength in dBm (closer to 0 = stronger)</li>
-                        <li><strong>Multiple bands:</strong> Scan different frequency ranges if you don't find the signal</li>
-                        <li><strong>Continuous vs momentary:</strong> Some devices transmit continuously (sensors), others send bursts (remotes)</li>
-                    </ul>
-                </div>
-
-                <h3>Understanding RSSI</h3>
-                <p>
-                    RSSI (Received Signal Strength Indicator) tells you how strong the received signal is:
-                </p>
-                <ul>
-                    <li><strong>-30 dBm to -50 dBm:</strong> Excellent signal (very close)</li>
-                    <li><strong>-50 dBm to -70 dBm:</strong> Good signal (normal range)</li>
-                    <li><strong>-70 dBm to -90 dBm:</strong> Weak signal (far away or obstructed)</li>
-                    <li><strong>Below -90 dBm:</strong> Very weak, may not capture reliably</li>
-                </ul>
-            </section>
-
-            <!-- Replaying Signals -->
-            <section class="content-section">
-                <h2>Replaying Captured Signals</h2>
-                <p>
-                    Once you've captured a signal, you can replay it to test if your capture was successful. This is where the security testing aspect comes in.
-                </p>
-
-                <h3>Basic Replay Process</h3>
-                <ol>
-                    <li>Navigate to Sub-GHz → Saved</li>
-                    <li>Select your saved capture from the list</li>
-                    <li>Press OK to view capture details</li>
-                    <li>Press "Emulate" to transmit the signal</li>
-                    <li>Observe if the target device responds</li>
-                </ol>
-
-                <div class="info-box warning">
-                    <h3>⚠️ Replay Safety Guidelines</h3>
-                    <ul>
-                        <li><strong>Only on your devices:</strong> Never replay signals from devices you don't own</li>
-                        <li><strong>Controlled environment:</strong> Test in an area where you won't accidentally trigger other devices</li>
-                        <li><strong>Be aware of range:</strong> Some replays can reach 30+ meters</li>
-                        <li><strong>Legal implications:</strong> Replaying certain signals (emergency, public infrastructure) is illegal</li>
-                    </ul>
-                </div>
-
-                <h3>Why Replays Might Fail</h3>
-                <p>
-                    Not every captured signal will successfully replay. Here's why:
-                </p>
-                <ul>
-                    <li><strong>Rolling Codes:</strong> The device uses dynamic codes that change with each use</li>
-                    <li><strong>Encryption:</strong> The signal is encrypted and requires decryption</li>
-                    <li><strong>Weak Capture:</strong> The original capture was incomplete or noisy</li>
-                    <li><strong>Wrong Frequency:</strong> Captured on wrong frequency or slightly off-center</li>
-                    <li><strong>Protocol Mismatch:</strong> Flipper didn't decode the protocol correctly</li>
-                    <li><strong>Timing Issues:</strong> Some protocols require precise timing</li>
-                </ul>
-            </section>
-
-            <!-- Break Reminder 2 -->
-            <div class="break-reminder">
-                <h3>⏸️ Break Point #2</h3>
-                <p>Excellent work! You've learned how to capture and replay signals. Take a break before we dive into advanced topics.</p>
-                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5-10 minutes to:</p>
-                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
-                    <li>💧 Hydrate</li>
-                    <li>🚶 Move around</li>
-                    <li>🧠 Think about a device you'd like to analyze</li>
-                </ul>
-                <div class="break-timer" id="break-timer-2">5:00</div>
-                <div class="break-controls">
-                    <button class="btn-break" onclick="startBreakTimer2()">Start 5-Min Break</button>
-                    <button class="btn-break secondary" onclick="skipBreak2()">Skip Break</button>
-                </div>
-            </div>
-
-            <!-- Exercise 2 -->
-            <div class="exercise-box">
-                <h3>🔧 Hands-On Exercise 2: Replay and Test</h3>
-                <p><strong>Time:</strong> 10 minutes | <strong>Difficulty:</strong> Beginner</p>
-                <p>
-                    Test your captured signal by replaying it and observing the results.
-                </p>
-                <ol class="exercise-steps">
-                    <li>Navigate to Sub-GHz → Saved</li>
-                    <li>Select the signal you captured in Exercise 1</li>
-                    <li>Review the signal information (frequency, modulation, protocol)</li>
-                    <li>Position yourself near the target device</li>
-                    <li>Select "Emulate" to transmit the signal</li>
-                    <li>Observe if the device responds (garage opens, doorbell rings, etc.)</li>
-                    <li>If it doesn't work, try capturing again with Read RAW mode</li>
-                    <li>Test the RAW capture to compare results</li>
-                </ol>
-                <div style="margin-top: 1.5rem;">
-                    <button class="btn-complete" onclick="completeExercise(2)">Mark Exercise Complete</button>
-                </div>
-            </div>
-
-            <!-- Rolling Codes -->
-            <section class="content-section">
-                <h2>Understanding Rolling Codes</h2>
-                <p>
-                    Rolling codes (also called hopping codes) are a security mechanism used in modern remote entry systems to prevent replay attacks. Understanding how they work is crucial for security research.
-                </p>
-
-                <h3>How Rolling Codes Work</h3>
-                <p>
-                    Instead of sending the same static code every time, rolling code systems generate a new code for each transmission:
-                </p>
-                <ol>
-                    <li><strong>Synchronized Counter:</strong> Both the remote and receiver maintain a counter</li>
-                    <li><strong>Algorithm:</strong> Each uses the same algorithm to generate the next valid code</li>
-                    <li><strong>Transmission:</strong> Remote sends current code and increments counter</li>
-                    <li><strong>Validation:</strong> Receiver checks if code matches expected value</li>
-                    <li><strong>Rejection:</strong> Old codes are rejected, preventing replay attacks</li>
-                </ol>
-
-                <div class="info-box">
-                    <h3>💡 Common Rolling Code Systems</h3>
-                    <ul>
-                        <li><strong>KeeLoq:</strong> Used in many car key fobs and garage doors</li>
-                        <li><strong>HCS (Hopping Code System):</strong> Microchip's implementation</li>
-                        <li><strong>Proprietary Systems:</strong> Many manufacturers use custom algorithms</li>
-                    </ul>
-                </div>
-
-                <h3>Can You Defeat Rolling Codes?</h3>
-                <p>
-                    Simple replay attacks don't work against rolling codes, but there are some known weaknesses:
-                </p>
-                <ul>
-                    <li><strong>RollJam Attack:</strong> Capture two codes by jamming the first, replay later (requires special hardware)</li>
-                    <li><strong>Code Prediction:</strong> Some older implementations have weak algorithms</li>
-                    <li><strong>Brute Force:</strong> Theoretically possible but impractical (billions of combinations)</li>
-                    <li><strong>Signal Cloning:</strong> Not possible with genuine rolling code systems</li>
-                </ul>
-
-                <div class="info-box warning">
-                    <h3>⚠️ Rolling Code Ethics</h3>
-                    <p>
-                        Attempting to defeat rolling code systems on vehicles or buildings you don't own is illegal. These security mechanisms exist for good reason. Focus your research on understanding the technology, not bypassing it maliciously.
-                    </p>
-                </div>
-
-                <h3>Identifying Rolling Code Devices</h3>
-                <p>
-                    When you capture a signal, here's how to tell if it uses rolling codes:
-                </p>
-                <ul>
-                    <li>Capture the same button press multiple times</li>
-                    <li>Compare the captured data</li>
-                    <li><strong>Static Code:</strong> Data is identical each time</li>
-                    <li><strong>Rolling Code:</strong> Data changes with each press</li>
-                    <li>Replay won't work if the receiver has already processed newer codes</li>
-                </ul>
-            </section>
-
-            <!-- Advanced Techniques -->
-            <section class="content-section">
-                <h2>Advanced Sub-GHz Techniques</h2>
-                <p>
-                    Now that you understand the basics, let's explore some advanced techniques for security research.
-                </p>
-
-                <h3>Signal Analysis</h3>
-                <p>
-                    You can analyze captured signals to understand their structure:
-                </p>
-                <ul>
-                    <li><strong>Bit Pattern:</strong> View the binary data transmitted</li>
-                    <li><strong>Protocol Detection:</strong> See what protocol Flipper identified</li>
-                    <li><strong>Timing Information:</strong> Understand pulse widths and intervals</li>
-                    <li><strong>Modulation Details:</strong> Check what modulation was used</li>
-                </ul>
-
-                <h3>Custom Transmission</h3>
-                <p>
-                    For advanced testing, you can manually craft and send signals:
-                </p>
-                <ol>
-                    <li>Navigate to Sub-GHz → Add Manually</li>
-                    <li>Select protocol and frequency</li>
-                    <li>Input the data you want to transmit</li>
-                    <li>Save and emulate</li>
-                </ol>
-
-                <div class="info-box">
-                    <h3>💡 Use Cases for Custom Signals</h3>
-                    <ul>
-                        <li>Testing how devices respond to malformed data</li>
-                        <li>Fuzzing protocols to find vulnerabilities</li>
-                        <li>Triggering specific device states</li>
-                        <li>Educational experimentation with known protocols</li>
-                    </ul>
-                </div>
-
-                <h3>Brute Force Testing</h3>
-                <p>
-                    Some simple devices use short codes that can be brute forced:
-                </p>
-                <ul>
-                    <li><strong>DIP Switch Devices:</strong> Often use 8-12 bit codes</li>
-                    <li><strong>Simple Remotes:</strong> May have only a few thousand combinations</li>
-                    <li><strong>Testing Approach:</strong> Send all possible codes systematically</li>
-                    <li><strong>Time Required:</strong> Can range from minutes to hours</li>
-                </ul>
-
-                <div class="info-box warning">
-                    <h3>⚠️ Brute Force Legal Note</h3>
-                    <p>
-                        Brute forcing access control systems you don't own is unauthorized access and is illegal. This technique should only be used on your own devices for research purposes or in authorized penetration tests with proper documentation.
-                    </p>
-                </div>
-            </section>
-
-            <!-- Exercise 3 -->
-            <div class="exercise-box">
-                <h3>🔧 Hands-On Exercise 3: Advanced Signal Analysis</h3>
-                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Intermediate</p>
-                <p>
-                    Analyze your captured signals to understand their structure and determine if they use rolling codes.
-                </p>
-                <ol class="exercise-steps">
-                    <li>Capture the same button on your remote 3 times consecutively</li>
-                    <li>Save each capture with different names (test_1, test_2, test_3)</li>
-                    <li>Navigate to each saved signal and view its details</li>
-                    <li>Compare the data between all three captures</li>
-                    <li>Document whether the data is identical (static) or different (rolling code)</li>
-                    <li>Try replaying the first capture after pressing the button several more times</li>
-                    <li>Note whether the replay still works (static) or fails (rolling code)</li>
-                    <li>Use the Frequency Analyzer to measure signal strength at different distances</li>
-                    <li>Record your findings about the device's security mechanism</li>
-                </ol>
-                <div style="margin-top: 1.5rem;">
-                    <button class="btn-complete" onclick="completeExercise(3)">Mark Exercise Complete</button>
-                </div>
-            </div>
-
-            <!-- Security Assessment -->
-            <section class="content-section">
-                <h2>Conducting Security Assessments</h2>
-                <p>
-                    When you're authorized to test a wireless access control system, follow this methodical approach to provide value to your client or improve your own security.
-                </p>
-
-                <h3>Assessment Methodology</h3>
-                <ol>
-                    <li>
-                        <strong>Reconnaissance</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Use Frequency Analyzer to detect active transmissions</li>
-                            <li>Document all frequencies in use</li>
-                            <li>Identify device types and manufacturers</li>
-                            <li>Note signal strength at various distances</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Signal Capture</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Capture signals from all remotes/fobs</li>
-                            <li>Test both Read and Read RAW modes</li>
-                            <li>Capture multiple times for each device</li>
-                            <li>Document capture success rate</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Analysis</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Determine modulation type</li>
-                            <li>Identify protocol (if known)</li>
-                            <li>Check for static vs rolling codes</li>
-                            <li>Analyze signal complexity</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Replay Testing</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Test immediate replay success</li>
-                            <li>Test replay after device has been used again</li>
-                            <li>Measure effective range of replay</li>
-                            <li>Document any failures or limitations</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Reporting</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Document vulnerabilities found</li>
-                            <li>Rate severity (low/medium/high/critical)</li>
-                            <li>Provide remediation recommendations</li>
-                            <li>Include evidence (captures, screenshots)</li>
-                        </ul>
-                    </li>
-                </ol>
-
-                <div class="info-box success">
-                    <h3>✅ Security Best Practices to Recommend</h3>
-                    <p>When you find vulnerabilities, suggest these improvements:</p>
-                    <ul>
-                        <li><strong>Use rolling codes:</strong> Upgrade to devices with encrypted, rolling code systems</li>
-                        <li><strong>Limit range:</strong> Configure receivers to require strong signals (reduces remote attack surface)</li>
-                        <li><strong>Multi-factor authentication:</strong> Combine RF with PIN codes or biometrics</li>
-                        <li><strong>Regular updates:</strong> Keep firmware updated on smart access systems</li>
-                        <li><strong>Monitor for anomalies:</strong> Log and review unusual access patterns</li>
-                        <li><strong>Physical security:</strong> Protect receivers from physical tampering</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Common Vulnerabilities -->
-            <section class="content-section">
-                <h2>Common Sub-GHz Vulnerabilities</h2>
-                <p>
-                    Understanding common weaknesses helps you know what to test for and how to protect against them.
-                </p>
-
-                <h3>1. Static Code Transmission</h3>
-                <p><strong>Vulnerability:</strong> Device sends the same code every time</p>
-                <p><strong>Impact:</strong> Simple replay attacks work indefinitely</p>
-                <p><strong>Mitigation:</strong> Upgrade to rolling code systems</p>
-
-                <h3>2. Weak Rolling Code Implementation</h3>
-                <p><strong>Vulnerability:</strong> Predictable algorithms or short code length</p>
-                <p><strong>Impact:</strong> Codes can be predicted or brute forced</p>
-                <p><strong>Mitigation:</strong> Use industry-standard implementations (KeeLoq, AES)</p>
-
-                <h3>3. Excessive Range</h3>
-                <p><strong>Vulnerability:</strong> Signals can be captured from long distances</p>
-                <p><strong>Impact:</strong> Attackers can capture codes from parking lots, streets</p>
-                <p><strong>Mitigation:</strong> Reduce transmission power, require strong signal at receiver</p>
-
-                <h3>4. No Encryption</h3>
-                <p><strong>Vulnerability:</strong> Data transmitted in clear text</p>
-                <p><strong>Impact:</strong> Anyone can capture and understand the signal</p>
-                <p><strong>Mitigation:</strong> Implement encryption (AES-128 or better)</p>
-
-                <h3>5. Lack of Authentication</h3>
-                <p><strong>Vulnerability:</strong> Receiver accepts any valid-looking signal</p>
-                <p><strong>Impact:</strong> Forged signals can trigger the device</p>
-                <p><strong>Mitigation:</strong> Implement proper authentication and pairing</p>
-
-                <h3>6. Jamming Susceptibility</h3>
-                <p><strong>Vulnerability:</strong> Continuous interference prevents legitimate use</p>
-                <p><strong>Impact:</strong> Denial of service attacks possible</p>
-                <p><strong>Mitigation:</strong> Frequency hopping, backup access methods</p>
-
-                <div class="info-box">
-                    <h3>💡 Real-World Example: Garage Door Security</h3>
-                    <p>
-                        Many older garage door openers use simple static codes with DIP switches. An attacker can:
-                    </p>
-                    <ul>
-                        <li>Capture the code from 100+ feet away</li>
-                        <li>Replay it indefinitely</li>
-                        <li>Brute force all 256 or 4096 combinations</li>
-                    </ul>
-                    <p style="margin-top: 0.75rem;">
-                        <strong>Modern systems</strong> use rolling codes and can't be defeated by simple replay. Always recommend upgrades when you find vulnerable systems.
-                    </p>
-                </div>
-            </section>
-
-            <!-- File Management -->
-            <section class="content-section">
-                <h2>Managing Captured Signals</h2>
-                <p>
-                    As you capture more signals, organization becomes important. Here's how to manage your captures effectively.
-                </p>
-
-                <h3>Naming Conventions</h3>
-                <p>Use descriptive names for easy identification:</p>
-                <ul>
-                    <li><strong>Good:</strong> "garage_main_315MHz", "car_keyfob_unlock", "doorbell_front"</li>
-                    <li><strong>Bad:</strong> "signal1", "test", "capture_001"</li>
-                </ul>
-
-                <h3>File Organization</h3>
-                <p>Organize your SD card with folders:</p>
-                <div class="code-block">
-                    <code>/subghz/
-  /home/
-    garage_main.sub
-    doorbell_front.sub
-  /vehicles/
-    car_unlock.sub
-    car_lock.sub
-  /tests/
-    test_device_1.sub
-    test_device_2.sub
-  /client_projects/
-    /client_name/
-      ...</code>
-                </div>
-
-                <h3>Backing Up Captures</h3>
-                <p>Important signals should be backed up to your computer:</p>
-                <ol>
-                    <li>Connect Flipper via USB-C</li>
-                    <li>Open qFlipper or browse as mass storage device</li>
-                    <li>Copy .sub files from /subghz/ folder</li>
-                    <li>Store securely with descriptive documentation</li>
-                </ol>
-
-                <div class="info-box warning">
-                    <h3>⚠️ Captured Signal Security</h3>
-                    <p>
-                        Treat captured signals as sensitive data:
-                    </p>
-                    <ul>
-                        <li>Don't share captures from systems you don't own</li>
-                        <li>Encrypt backups containing access control signals</li>
-                        <li>Delete test captures you no longer need</li>
-                        <li>Never post real garage/car signals online</li>
-                    </ul>
-                </div>
-
-                <h3>Signal File Format</h3>
-                <p>
-                    Flipper saves signals in .sub format. Understanding the structure helps with advanced usage:
-                </p>
-                <div class="code-block">
-                    <code>Filetype: Flipper SubGhz Key File
-Version: 1
-Frequency: 433920000
-Preset: FuriHalSubGhzPresetOok650Async
-Protocol: Princeton
-Bit: 24
-Key: 00 00 00 00 00 45 94 59</code>
-                </div>
-                <p style="margin-top: 1rem;">
-                    Each file contains frequency, modulation preset, protocol, and the actual data. Advanced users can edit these files manually for custom testing.
-                </p>
-            </section>
-
-            <!-- Troubleshooting -->
-            <section class="content-section">
-                <h2>Troubleshooting Common Issues</h2>
-                <p>
-                    When things don't work as expected, try these solutions:
-                </p>
-
-                <h3>Can't Detect Signal</h3>
-                <ul>
-                    <li><strong>Check frequency:</strong> Use Frequency Analyzer to find exact frequency</li>
-                    <li><strong>Get closer:</strong> Hold remote within inches of Flipper</li>
-                    <li><strong>Check battery:</strong> Weak remote battery = weak signal</li>
-                    <li><strong>Try RAW mode:</strong> Some protocols aren't recognized automatically</li>
-                </ul>
-
-                <h3>Capture Succeeds but Replay Fails</h3>
-                <ul>
-                    <li><strong>Rolling codes:</strong> Device uses dynamic codes (expected behavior)</li>
-                    <li><strong>Range too short:</strong> Get closer to target device</li>
-                    <li><strong>Capture quality:</strong> Recapture with better signal strength</li>
-                    <li><strong>Regional restrictions:</strong> Your Flipper may have transmission limits</li>
-                </ul>
-
-                <h3>Frequency Analyzer Shows Nothing</h3>
-                <ul>
-                    <li><strong>Check frequency range:</strong> Switch to correct band (300-390, 400-460, 800-920)</li>
-                    <li><strong>Device not transmitting:</strong> Some devices only transmit momentarily</li>
-                    <li><strong>Out of range:</strong> Device frequency not supported by your Flipper</li>
-                    <li><strong>Interference:</strong> Too much RF noise in the environment</li>
-                </ul>
-
-                <h3>File Not Saving</h3>
-                <ul>
-                    <li><strong>SD card full:</strong> Free up space or use larger card</li>
-                    <li><strong>Card not formatted:</strong> Format as FAT32</li>
-                    <li><strong>File corruption:</strong> Restart Flipper and try again</li>
-                    <li><strong>Invalid characters:</strong> Use only alphanumeric characters in filenames</li>
-                </ul>
-
-                <div class="info-box">
-                    <h3>💡 Pro Troubleshooting Tips</h3>
-                    <ul>
-                        <li>Keep firmware updated - fixes many issues</li>
-                        <li>Test with a known-working device first</li>
-                        <li>Check Flipper forums for device-specific issues</li>
-                        <li>Try different modulation settings manually</li>
-                        <li>Verify your Flipper's region settings are correct</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Lesson Summary -->
-            <section class="content-section">
-                <h2>Lesson Summary</h2>
-                <p>
-                    Excellent work! You've completed a comprehensive introduction to Sub-GHz radio hacking. Let's review what you've accomplished:
-                </p>
-
-                <div class="info-box success">
-                    <h3>✅ Key Takeaways</h3>
-                    <ul>
-                        <li>Sub-GHz frequencies are used in garage doors, car fobs, remotes, and IoT devices</li>
-                        <li>Common modulation types include OOK, ASK, and FSK</li>
-                        <li>Flipper can capture signals in Read mode (decoded) or Read RAW mode (universal)</li>
-                        <li>Frequency Analyzer helps identify what frequency a device uses</li>
-                        <li>Simple replay attacks work on static code systems but fail on rolling codes</li>
-                        <li>Rolling codes are a security mechanism that prevents replay attacks</li>
-                        <li>Security assessments should follow a methodical approach: recon, capture, analyze, test, report</li>
-                        <li>Always respect legal boundaries and only test systems you own or have authorization for</li>
-                    </ul>
-                </div>
-
-                <h3>Skills You've Developed</h3>
-                <ul>
-                    <li>✓ Identifying Sub-GHz frequencies with the analyzer</li>
-                    <li>✓ Capturing wireless signals from remotes and devices</li>
-                    <li>✓ Understanding different modulation types</li>
-                    <li>✓ Replaying captured signals safely</li>
-                    <li>✓ Recognizing rolling code vs static code systems</li>
-                    <li>✓ Conducting methodical security assessments</li>
-                    <li>✓ Troubleshooting common capture and replay issues</li>
-                </ul>
-
-                <h3>What's Next?</h3>
-                <p>
-                    In <strong>Lesson 3: NFC & RFID Exploitation</strong>, you'll learn how to:
-                </p>
-                <ul>
-                    <li>Understand NFC and RFID technology differences</li>
-                    <li>Read and clone access cards and badges</li>
-                    <li>Analyze card security mechanisms</li>
-                    <li>Test physical access control systems</li>
-                    <li>Identify vulnerable card implementations</li>
-                    <li>Emulate multiple cards on one device</li>
-                </ul>
-            </section>
-
-            <!-- Completion -->
-            <div class="info-box success">
-                <h3>🎉 Lesson Complete!</h3>
-                <p>
-                    You've earned <strong>50 XP</strong> for completing this lesson. Your progress has been saved automatically.
-                </p>
-                <p style="margin-top: 1rem;">
-                    Ready to learn about contactless card hacking? Continue to Lesson 3!
-                </p>
-            </div>
-        </article>
-
-        <!-- Navigation -->
-        <nav class="lesson-navigation">
-            <a href="lesson-1.html" class="nav-btn secondary">
-                ← Previous: Introduction
-            </a>
-            <a href="lesson-3.html" class="nav-btn primary">
-                Next: NFC & RFID →
-            </a>
-        </nav>
-    </div>
-
-    <script>
-        // Progress tracking
-        let currentProgress = 0;
-        let exercisesCompleted = [false, false, false];
-
-        function updateProgress() {
-            currentProgress = Math.min(100, (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
-            document.getElementById('progress-fill').style.width = currentProgress + '%';
-            document.getElementById('progress-percent').textContent = Math.round(currentProgress);
-            localStorage.setItem('flipper-lesson-2-progress', currentProgress);
-        }
-
-        window.addEventListener('scroll', updateProgress);
-
-        // Exercise completion
-        function completeExercise(exerciseNum) {
-            exercisesCompleted[exerciseNum - 1] = true;
-            const btn = event.target;
-            btn.classList.add('completed');
-            btn.textContent = '✓ Exercise Completed!';
-            btn.disabled = true;
-            localStorage.setItem(`flipper-lesson-2-exercise-${exerciseNum}`, 'true');
-            
-            if (exercisesCompleted.every(e => e)) {
-                localStorage.setItem('flipper-lesson-2-complete', 'true');
-            }
-        }
-
-        // Break timers
-        let breakInterval, breakInterval2;
-        let breakTimeRemaining = 300;
-        let breakTimeRemaining2 = 300;
-
-        function startBreakTimer() {
-            breakTimeRemaining = 300;
-            const timerDisplay = document.getElementById('break-timer');
-            const startBtn = event.target;
-            startBtn.disabled = true;
-            startBtn.textContent = 'Break in Progress...';
-            
-            breakInterval = setInterval(() => {
-                breakTimeRemaining--;
-                const minutes = Math.floor(breakTimeRemaining / 60);
-                const seconds = breakTimeRemaining % 60;
-                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (breakTimeRemaining <= 0) {
-                    clearInterval(breakInterval);
-                    timerDisplay.textContent = 'Break Complete! ✓';
-                    startBtn.disabled = false;
-                    startBtn.textContent = 'Start Another Break';
-                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
-                }
-            }, 1000);
-        }
-
-        function skipBreak() {
-            if (breakInterval) clearInterval(breakInterval);
-            document.getElementById('break-timer').textContent = '5:00';
-        }
-
-        function startBreakTimer2() {
-            breakTimeRemaining2 = 300;
-            const timerDisplay = document.getElementById('break-timer-2');
-            const startBtn = event.target;
-            startBtn.disabled = true;
-            startBtn.textContent = 'Break in Progress...';
-            
-            breakInterval2 = setInterval(() => {
-                breakTimeRemaining2--;
-                const minutes = Math.floor(breakTimeRemaining2 / 60);
-                const seconds = breakTimeRemaining2 % 60;
-                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (breakTimeRemaining2 <= 0) {
-                    clearInterval(breakInterval2);
-                    timerDisplay.textContent = 'Break Complete! ✓';
-                    startBtn.disabled = false;
-                    startBtn.textContent = 'Start Another Break';
-                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
-                }
-            }, 1000);
-        }
-
-        function skipBreak2() {
-            if (breakInterval2) clearInterval(breakInterval2);
-            document.getElementById('break-timer-2').textContent = '5:00';
-        }
-
-        // Accessibility functions
-        let fontSize = 16;
-        const minFontSize = 12;
-        const maxFontSize = 24;
-
-        function adjustFontSize(change) {
-            fontSize += change * 2;
-            fontSize = Math.max(minFontSize, Math.min(maxFontSize, fontSize));
-            document.documentElement.style.fontSize = fontSize + 'px';
-            localStorage.setItem('fontSize', fontSize);
-        }
-
-        function toggleDyslexiaMode() {
-            document.body.classList.toggle('dyslexia-friendly');
-            localStorage.setItem('dyslexiaMode', document.body.classList.contains('dyslexia-friendly'));
-        }
-
-        function toggleHighContrast() {
-            document.body.classList.toggle('high-contrast');
-            localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
-        }
-
-        function toggleReducedMotion() {
-            document.body.classList.toggle('reduce-motion');
-            localStorage.setItem('reducedMotion', document.body.classList.contains('reduce-motion'));
-        }
-
-        // Load saved preferences and progress
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedFontSize = localStorage.getItem('fontSize');
-            if (savedFontSize) {
-                fontSize = parseInt(savedFontSize);
-                document.documentElement.style.fontSize = fontSize + 'px';
-            }
-
-            if (localStorage.getItem('dyslexiaMode') === 'true') {
-                document.body.classList.add('dyslexia-friendly');
-            }
-            if (localStorage.getItem('highContrast') === 'true') {
-                document.body.classList.add('high-contrast');
-            }
-            if (localStorage.getItem('reducedMotion') === 'true') {
-                document.body.classList.add('reduce-motion');
-            }
-
-            // Load exercise completion
-            for (let i = 1; i <= 3; i++) {
-                if (localStorage.getItem(`flipper-lesson-2-exercise-${i}`) === 'true') {
-                    exercisesCompleted[i - 1] = true;
-                    const exercises = document.querySelectorAll('.exercise-box');
-                    if (exercises[i - 1]) {
-                        const btn = exercises[i - 1].querySelector('.btn-complete');
-                        if (btn) {
-                            btn.classList.add('completed');
-                            btn.textContent = '✓ Exercise Completed!';
-                            btn.disabled = true;
-                        }
-                    }
-                }
-            }
-
-            const savedProgress = localStorage.getItem('flipper-lesson-2-progress');
-            if (savedProgress) {
-                currentProgress = parseFloat(savedProgress);
-                document.getElementById('progress-fill').style.width = currentProgress + '%';
-                document.getElementById('progress-percent').textContent = Math.round(currentProgress);
-            }
-        });
-
-        window.addEventListener('beforeunload', () => {
-            if (breakInterval) clearInterval(breakInterval);
-            if (breakInterval2) clearInterval(breakInterval2);
-        });
-    </script>
-</body>
-</html>        body.dyslexia-friendly {
-            letter-spacing: 0.05em;
-            word-spacing: 0.1em;
-        }
-
-        body.high-contrast {
-            --bg-dark: #000000;
-            --bg-medium: #1a1a1a;
-            --border: #ffffff;
-        }
-
-        .reduce-motion * {
-            animation: none !important;
-            transition: none !important;
-        }
-    </style>
-</head>
-<body>
-    <!-- Accessibility Bar -->
-    <div class="accessibility-bar">
-        <div class="accessibility-controls">
-            <div class="control-group">
-                <label for="font-size">Text Size:</label>
-                <button class="btn-control" onclick="adjustFontSize(-1)">A-</button>
-                <button class="btn-control" onclick="adjustFontSize(1)">A+</button>
-            </div>
-            <button class="btn-control" onclick="toggleDyslexiaMode()">Dyslexia Mode</button>
-            <button class="btn-control" onclick="toggleHighContrast()">High Contrast</button>
-            <button class="btn-control" onclick="toggleReducedMotion()">Reduce Motion</button>
-        </div>
-    </div>
-
-    <!-- Progress Bar -->
-    <div class="progress-bar">
-        <div class="progress-info">
-            <span class="progress-text">Lesson Progress: <span id="progress-percent">0</span>%</span>
-            <span class="xp-badge">+50 XP</span>
-        </div>
-        <div class="progress-track">
-            <div class="progress-fill" id="progress-fill"></div>
-        </div>
-    </div>
-
-    <!-- Breadcrumb Navigation -->
-    <nav class="nav-breadcrumb">
-        <div class="breadcrumb">
-            <a href="../../index.html">Academy</a>
-            <span>→</span>
-            <a href="../index.html">Flipper Zero</a>
-            <span>→</span>
-            <span>Lesson 2</span>
-        </div>
-    </nav>
-
-    <div class="container">
-        <!-- Lesson Header -->
-        <header class="lesson-header">
-            <div class="lesson-number">LESSON 2 OF 6</div>
-            <h1>Sub-GHz Radio Hacking</h1>
-            <div class="lesson-meta">
-                <div class="meta-item">
-                    <span>⏱️</span>
-                    <span>~45 minutes</span>
-                </div>
-                <div class="meta-item">
-                    <span>📊</span>
-                    <span>Beginner to Intermediate</span>
-                </div>
-                <div class="meta-item">
-                    <span>🎯</span>
-                    <span>Hands-on: 3 exercises</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- Learning Objectives -->
-        <section class="objectives-box">
-            <h2>🎯 What You'll Learn</h2>
-            <ul class="objectives-list">
-                <li>Understand Sub-GHz radio frequencies and their common applications</li>
-                <li>Capture and analyze wireless signals from remote controls and sensors</li>
-                <li>Identify different modulation types (OOK, FSK, ASK)</li>
-                <li>Safely replay captured signals in authorized environments</li>
-                <li>Recognize rolling codes and encrypted transmissions</li>
-                <li>Conduct security assessments of wireless access control systems</li>
-            </ul>
-        </section>
-
-        <!-- Main Content -->
-        <article>
-            <!-- Introduction -->
-            <section class="content-section">
-                <h2>Understanding Sub-GHz Radio</h2>
-                <p>
-                    Sub-GHz radio refers to wireless communications that operate below 1 GHz (1000 MHz). These frequencies are used extensively in everyday devices because they offer excellent range and can penetrate walls and obstacles better than higher frequencies like WiFi or Bluetooth.
-                </p>
-                <p>
-                    The Flipper Zero can receive, analyze, and transmit on several Sub-GHz frequency bands, making it an excellent tool for security testing wireless access control systems, remote controls, and IoT devices.
-                </p>
-
-                <div class="info-box warning">
-                    <h3>⚠️ Critical Legal Warning</h3>
-                    <p>
-                        <strong>Radio frequency regulations vary by country and are strictly enforced.</strong>
-                    </p>
-                    <ul>
-                        <li>In the US, FCC regulations prohibit unauthorized transmission on many frequencies</li>
-                        <li>In Europe, ETSI standards regulate radio usage</li>
-                        <li>Jamming or interfering with licensed frequencies is illegal everywhere</li>
-                        <li>Only capture and replay signals from devices you own or have explicit permission to test</li>
-                        <li>Never transmit on frequencies you're not authorized to use</li>
-                    </ul>
-                </div>
-
-                <h3>Common Sub-GHz Applications</h3>
-                <ul>
-                    <li><strong>Garage Door Openers:</strong> 300-390 MHz (most common: 315 MHz and 390 MHz)</li>
-                    <li><strong>Car Key Fobs:</strong> 315 MHz (North America), 433.92 MHz (Europe/Asia)</li>
-                    <li><strong>Wireless Doorbells:</strong> 315 MHz, 433.92 MHz</li>
-                    <li><strong>Weather Stations:</strong> 433.92 MHz, 868 MHz, 915 MHz</li>
-                    <li><strong>Tire Pressure Monitors:</strong> 315 MHz, 433.92 MHz</li>
-                    <li><strong>Home Security Sensors:</strong> 315 MHz, 433.92 MHz, 868 MHz</li>
-                    <li><strong>Remote Controls:</strong> Various frequencies depending on device and region</li>
-                </ul>
-            </section>
-
-            <!-- Frequency Bands -->
-            <section class="content-section">
-                <h2>Supported Frequency Bands</h2>
-                <p>
-                    The Flipper Zero supports different frequency ranges depending on your region. Here's what's available:
-                </p>
-
-                <div class="frequency-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Frequency</th>
-                                <th>Common Uses</th>
-                                <th>Region</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>300-348 MHz</strong></td>
-                                <td>Garage doors, car alarms</td>
-                                <td>North America</td>
-                            </tr>
-                            <tr>
-                                <td><strong>387-464 MHz</strong></td>
-                                <td>Car keys, remotes, sensors</td>
-                                <td>Worldwide</td>
-                            </tr>
-                            <tr>
-                                <td><strong>779-928 MHz</strong></td>
-                                <td>ISM band devices, LoRa, weather stations</td>
-                                <td>Region-specific</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="info-box">
-                    <h3>💡 ISM Bands Explained</h3>
-                    <p>
-                        ISM (Industrial, Scientific, Medical) bands are portions of the radio spectrum reserved for unlicensed use. Common ISM bands include:
-                    </p>
-                    <ul>
-                        <li><strong>433 MHz ISM:</strong> Europe and most of the world</li>
-                        <li><strong>868 MHz ISM:</strong> Europe</li>
-                        <li><strong>915 MHz ISM:</strong> North America</li>
-                    </ul>
-                    <p>
-                        These bands are popular for IoT devices, smart home products, and wireless sensors because they don't require licensing.
-                    </p>
-                </div>
-            </section>
-
-            <!-- Modulation Types -->
-            <section class="content-section">
-                <h2>Understanding Modulation</h2>
-                <p>
-                    Modulation is how information is encoded onto a radio wave. Think of it as different ways to "write" data onto a carrier frequency. Understanding modulation is crucial for successfully capturing and replaying signals.
-                </p>
-
-                <div class="signal-diagram">
-                    <h3 style="color: var(--accent); margin-bottom: 1rem;">Common Modulation Types</h3>
-                    <div class="modulation-grid">
-                        <div class="modulation-card">
-                            <h4>OOK (On-Off Keying)</h4>
-                            <p><strong>How it works:</strong> The simplest form of modulation. The carrier is either ON (transmitting) or OFF (not transmitting).</p>
-                            <p><strong>Used in:</strong></p>
-                            <ul>
-                                <li>Simple garage door openers</li>
-                                <li>Basic wireless doorbells</li>
-                                <li>Older car key fobs</li>
-                                <li>Simple remote controls</li>
-                            </ul>
-                            <p style="margin-top: 0.75rem;"><strong>Easiest to capture and replay</strong> because of its simplicity.</p>
-                        </div>
-
-                        <div class="modulation-card">
-                            <h4>ASK (Amplitude Shift Keying)</h4>
-                            <p><strong>How it works:</strong> Similar to OOK but uses different amplitude levels instead of just on/off. Can encode more data.</p>
-                            <p><strong>Used in:</strong></p>
-                            <ul>
-                                <li>RFID systems</li>
-                                <li>Some wireless sensors</li>
-                                <li>Modern remote controls</li>
-                            </ul>
-                            <p style="margin-top: 0.75rem;"><strong>Moderate difficulty</strong> to capture and replay.</p>
-                        </div>
-
-                        <div class="modulation-card">
-                            <h4>FSK (Frequency Shift Keying)</h4>
-                            <p><strong>How it works:</strong> Data is encoded by shifting between two or more frequencies. More robust against noise.</p>
-                            <p><strong>Used in:</strong></p>
-                            <ul>
-                                <li>Modern car key fobs</li>
-                                <li>Wireless security systems</li>
-                                <li>IoT sensors</li>
-                                <li>Weather stations</li>
-                            </ul>
-                            <p style="margin-top: 0.75rem;"><strong>More complex</strong> but Flipper handles it automatically.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <h3>💡 Flipper's Auto-Detection</h3>
-                    <p>
-                        The Flipper Zero automatically detects and decodes most common modulation types. When you capture a signal, it will identify whether it's OOK, FSK, or another type and configure itself accordingly. You don't need to manually specify modulation in most cases.
-                    </p>
-                </div>
-            </section>
-
-            <!-- Break Reminder 1 -->
-            <div class="break-reminder">
-                <h3>⏸️ Break Point #1</h3>
-                <p>You've learned the fundamentals of Sub-GHz radio and modulation. Time for a quick break!</p>
-                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5 minutes to:</p>
-                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
-                    <li>💧 Drink water</li>
-                    <li>🚶 Stretch your legs</li>
-                    <li>👀 Look away from screens</li>
-                <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 2: Sub-GHz Radio Hacking | Flipper Zero Course</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #0a0a0a;
-            --bg-medium: #1a1a1a;
-            --bg-light: #2a2a2a;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent: #00ff88;
-            --accent-dim: #00cc6a;
-            --border: #333333;
-            --warning: #ff6b6b;
-            --info: #4dabf7;
-            --success: #51cf66;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Atkinson Hyperlegible', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
-            padding-top: 120px;
-        }
-
-        .accessibility-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: var(--bg-medium);
-            padding: 0.75rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--border);
-            z-index: 1000;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .accessibility-controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .control-group label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .btn-control {
-            background: var(--bg-light);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .btn-control:hover {
-            background: var(--bg-dark);
-            border-color: var(--accent);
-        }
-
-        .progress-bar {
-            position: fixed;
-            top: 52px;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: var(--bg-medium);
-            border-bottom: 2px solid var(--border);
-            z-index: 999;
-            padding: 0.75rem 1rem;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .progress-text {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .xp-badge {
-            background: var(--accent);
-            color: var(--bg-dark);
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .progress-track {
-            width: 100%;
-            height: 8px;
-            background: var(--bg-light);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--accent-dim));
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .nav-breadcrumb {
-            background: var(--bg-medium);
-            padding: 1rem;
-            border-bottom: 2px solid var(--border);
-            margin-bottom: 2rem;
-        }
-
-        .breadcrumb {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            font-size: 0.9rem;
-            flex-wrap: wrap;
-        }
-
-        .breadcrumb a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            color: var(--text-secondary);
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 2rem 3rem;
-        }
-
-        .lesson-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .lesson-number {
-            color: var(--accent);
-            font-size: 1rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .lesson-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .lesson-meta {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .objectives-box {
-            background: var(--bg-medium);
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .objectives-box h2 {
-            color: var(--accent);
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .objectives-list {
-            list-style: none;
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .objectives-list li {
-            display: flex;
-            align-items: start;
-            gap: 0.75rem;
-            padding: 0.5rem;
-            background: var(--bg-light);
-            border-radius: 4px;
-        }
-
-        .objectives-list li::before {
-            content: "✓";
-            color: var(--accent);
-            font-weight: bold;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .content-section {
-            margin: 2rem 0;
-        }
-
-        .content-section h2 {
-            color: var(--accent);
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .content-section h3 {
-            color: var(--text-primary);
-            font-size: 1.4rem;
-            margin: 1.5rem 0 0.75rem;
-        }
-
-        .content-section p {
-            margin-bottom: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        .content-section ul,
-        .content-section ol {
-            margin: 1rem 0 1rem 2rem;
-            color: var(--text-secondary);
-        }
-
-        .content-section li {
-            margin: 0.5rem 0;
-        }
-
-        .info-box {
-            background: var(--bg-medium);
-            border-left: 4px solid var(--info);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-
-        .info-box.warning {
-            border-left-color: var(--warning);
-        }
-
-        .info-box.success {
-            border-left-color: var(--success);
-        }
-
-        .info-box h3 {
-            color: var(--info);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .info-box.warning h3 {
-            color: var(--warning);
-        }
-
-        .info-box.success h3 {
-            color: var(--success);
-        }
-
-        .info-box ul {
-            margin-left: 1.5rem;
-        }
-
-        .frequency-table {
-            width: 100%;
-            background: var(--bg-medium);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-            margin: 1.5rem 0;
-        }
-
-        .frequency-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .frequency-table th {
-            background: var(--bg-light);
-            color: var(--accent);
-            padding: 1rem;
-            text-align: left;
-            font-weight: bold;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .frequency-table td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-secondary);
-        }
-
-        .frequency-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .frequency-table tr:hover {
-            background: var(--bg-light);
-        }
-
-        .signal-diagram {
-            background: var(--bg-medium);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .modulation-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .modulation-card {
-            background: var(--bg-light);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.5rem;
-        }
-
-        .modulation-card h4 {
-            color: var(--accent);
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
-        }
-
-        .modulation-card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin: 0.5rem 0;
-        }
-
-        .modulation-card ul {
-            margin: 0.5rem 0 0 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .exercise-box {
-            background: var(--bg-medium);
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .exercise-box h3 {
-            color: var(--accent);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .exercise-steps {
-            counter-reset: step-counter;
-            list-style: none;
-        }
-
-        .exercise-steps li {
-            counter-increment: step-counter;
-            margin: 1rem 0;
-            padding-left: 3rem;
-            position: relative;
-        }
-
-        .exercise-steps li::before {
-            content: counter(step-counter);
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: var(--accent);
-            color: var(--bg-dark);
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .btn-complete {
-            background: var(--accent);
-            color: var(--bg-dark);
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-
-        .btn-complete:hover {
-            background: var(--accent-dim);
-            transform: scale(1.02);
-        }
-
-        .btn-complete.completed {
-            background: var(--success);
-        }
-
-        .break-reminder {
-            background: linear-gradient(135deg, var(--bg-medium), var(--bg-light));
-            border: 2px solid var(--warning);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 3rem 0;
-            text-align: center;
-        }
-
-        .break-reminder h3 {
-            color: var(--warning);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .break-reminder p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .break-timer {
-            font-size: 3rem;
-            color: var(--accent);
-            font-weight: bold;
-            margin: 1rem 0;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .break-controls {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-break {
-            background: var(--warning);
-            color: var(--bg-dark);
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-
-        .btn-break:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-
-        .btn-break.secondary {
-            background: var(--bg-light);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .code-block {
-            background: var(--bg-medium);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            overflow-x: auto;
-        }
-
-        .code-block code {
-            font-family: 'Courier New', monospace;
-            color: var(--accent);
-            font-size: 0.9rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-
-        .lesson-navigation {
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 2px solid var(--border);
-        }
-
-        .nav-btn {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-            text-decoration: none;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .nav-btn.primary {
-            background: var(--accent);
-            color: var(--bg-dark);
-            border: none;
-        }
-
-        .nav-btn.secondary {
-            background: var(--bg-medium);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .nav-btn:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding-top: 140px;
-            }
-
-            .lesson-header h1 {
-                font-size: 1.8rem;
-            }
-
-            .lesson-meta {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .modulation-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .lesson-navigation {
-                flex-direction: column;
-            }
-
-            .frequency-table {
-                overflow-x: auto;
-            }
-        }
-
-        body.dyslexia-friendly {
-            letter-spacing: 0.05em
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 2: Sub-GHz Radio Fundamentals | tw¡st3d_¡nk Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --accent: #00ff88;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --border: #333;
+      --warning: #ff9500;
+    }
+
+    body {
+      font-family: 'Atkinson Hyperlegible', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.8;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Accessibility Controls */
+    .a11y-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+    }
+
+    .a11y-btn {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .a11y-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .a11y-btn:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Navigation */
+    .lesson-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .lesson-badge {
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* Header */
+    .lesson-header {
+      margin-bottom: 40px;
+    }
+
+    .lesson-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, var(--accent), #00ccff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .lesson-meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Content Sections */
+    .content-section {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+
+    .section-subtitle {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      color: var(--text-primary);
+    }
+
+    p {
+      margin-bottom: 15px;
+      color: var(--text-secondary);
+    }
+
+    /* Alert Boxes */
+    .alert {
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      border: 2px solid;
+    }
+
+    .alert-warning {
+      background: rgba(255, 149, 0, 0.1);
+      border-color: var(--warning);
+      color: var(--warning);
+    }
+
+    .alert-info {
+      background: rgba(0, 255, 136, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .alert-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 25px;
+      margin-bottom: 20px;
+      color: var(--text-secondary);
+    }
+
+    li {
+      margin-bottom: 10px;
+      line-height: 1.7;
+    }
+
+    /* Code Blocks */
+    .code-block {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+
+    .code-block code {
+      color: var(--accent);
+    }
+
+    /* Interactive Elements */
+    .interactive-demo {
+      background: var(--bg-dark);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    .demo-title {
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--accent);
+    }
+
+    .frequency-display {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--accent);
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+    }
+
+    .frequency-slider {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--border);
+      outline: none;
+      margin-bottom: 15px;
+      -webkit-appearance: none;
+    }
+
+    .frequency-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+    }
+
+    .frequency-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      border: none;
+    }
+
+    /* Progress Footer */
+    .lesson-footer {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin-top: 40px;
+    }
+
+    .completion-section {
+      text-align: center;
+    }
+
+    .xp-reward {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .complete-btn {
+      background: var(--accent);
+      color: var(--bg-dark);
+      border: none;
+      padding: 15px 40px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .complete-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0, 255, 136, 0.4);
+    }
+
+    .complete-btn:disabled {
+      background: var(--border);
+      color: var(--text-secondary);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: var(--bg-dark);
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-btn:hover {
+      background: var(--accent);
+      color: var(--bg-dark);
+    }
+
+    /* Font Size Classes */
+    body.font-small { font-size: 14px; }
+    body.font-large { font-size: 18px; }
+    body.font-xl { font-size: 22px; }
+
+    /* High Contrast Mode */
+    body.high-contrast {
+      --bg-dark: #000000;
+      --bg-card: #1a1a1a;
+      --text-primary: #ffffff;
+      --border: #00ff88;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .lesson-title {
+        font-size: 2rem;
+      }
+
+      .a11y-controls {
+        position: static;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Accessibility Controls -->
+    <div class="a11y-controls">
+      <button class="a11y-btn" onclick="changeFontSize('small')" aria-label="Decrease font size">A-</button>
+      <button class="a11y-btn" onclick="changeFontSize('normal')" aria-label="Normal font size">A</button>
+      <button class="a11y-btn" onclick="changeFontSize('large')" aria-label="Increase font size">A+</button>
+      <button class="a11y-btn" onclick="changeFontSize('xl')" aria-label="Extra large font size">A++</button>
+      <button class="a11y-btn" onclick="toggleContrast()" aria-label="Toggle high contrast">◐</button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="lesson-nav">
+      <a href="index.html" class="nav-link">← Back to Course</a>
+      <span class="lesson-badge">LESSON 2</span>
+      <a href="lesson-3.html" class="nav-link">Next Lesson →</a>
+    </nav>
+
+    <!-- Lesson Header -->
+    <header class="lesson-header">
+      <h1 class="lesson-title">Sub-GHz Radio Fundamentals</h1>
+      <div class="lesson-meta">
+        <span class="meta-item">⏱️ 45 minutes</span>
+        <span class="meta-item">⚡ 50 XP</span>
+        <span class="meta-item">📶 Difficulty: Medium</span>
+      </div>
+    </header>
+
+    <!-- Introduction -->
+    <section class="content-section">
+      <h2 class="section-title">📡 Introduction to Sub-GHz Communication</h2>
+      
+      <p>Sub-gigahertz radio frequencies are the invisible highways of wireless communication. From garage door openers to car key fobs, weather stations to wireless doorbells, these frequencies power countless devices we interact with daily.</p>
+
+      <p>The Flipper Zero's Sub-GHz module can receive, analyze, and transmit signals in several frequency bands commonly used for short-range wireless communication. This lesson will teach you how to safely explore this fascinating domain.</p>
+
+      <div class="alert alert-warning">
+        <div class="alert-title">⚠️ Legal Notice</div>
+        <p>Transmitting on certain frequencies may be regulated or illegal in your jurisdiction. This lesson is for educational purposes only. Always ensure you have permission to interact with any wireless system and comply with local regulations regarding radio frequency transmission.</p>
+      </div>
+    </section>
+
+    <!-- Understanding Sub-GHz -->
+    <section class="content-section">
+      <h2 class="section-title">🔍 Understanding Sub-GHz Frequencies</h2>
+
+      <h3 class="section-subtitle">What are Sub-GHz Frequencies?</h3>
+      <p>Sub-GHz refers to radio frequencies below 1 gigahertz (1000 MHz). The Flipper Zero primarily works with these common bands:</p>
+
+      <ul>
+        <li><strong>315 MHz</strong> - Popular in North America for garage doors, car remotes, and security systems</li>
+        <li><strong>433.92 MHz</strong> - Widely used in Europe and Asia for remote controls and sensors</li>
+        <li><strong>868 MHz</strong> - European standard for home automation and IoT devices</li>
+        <li><strong>915 MHz</strong> - North American ISM band for various wireless applications</li>
+      </ul>
+
+      <h3 class="section-subtitle">Why Sub-GHz?</h3>
+      <p>These lower frequencies offer several advantages over higher frequency bands like WiFi (2.4 GHz) or Bluetooth:</p>
+
+      <ul>
+        <li><strong>Better penetration</strong> - Lower frequencies pass through walls and obstacles more easily</li>
+        <li><strong>Longer range</strong> - Signals can travel further with the same transmission power</li>
+        <li><strong>Lower power consumption</strong> - Ideal for battery-powered devices</li>
+        <li><strong>Simpler protocols</strong> - Many devices use basic on-off keying (OOK) modulation</li>
+      </ul>
+
+      <div class="interactive-demo">
+        <div class="demo-title">🎯 Interactive: Frequency Explorer</div>
+        <p>Slide to explore different Sub-GHz frequencies used by the Flipper Zero:</p>
+        <div class="frequency-display" id="frequencyDisplay">315.00 MHz</div>
+        <input type="range" min="300" max="928" value="315" class="frequency-slider" id="frequencySlider">
+        <p id="frequencyInfo" style="text-align: center; color: var(--text-secondary);"></p>
+      </div>
+    </section>
+
+    <!-- Capturing Signals -->
+    <section class="content-section">
+      <h2 class="section-title">📥 Capturing RF Signals</h2>
+
+      <h3 class="section-subtitle">The Capture Process</h3>
+      <p>Capturing a signal is the first step in understanding how wireless devices communicate. Here's how to do it with the Flipper Zero:</p>
+
+      <ol>
+        <li><strong>Navigate to Sub-GHz menu</strong> - From the main menu, select "Sub-GHz"</li>
+        <li><strong>Choose "Read"</strong> - This puts the device into listening mode</li>
+        <li><strong>Select frequency</strong> - Pick the appropriate frequency for your target device</li>
+        <li><strong>Trigger the device</strong> - Press the button on your remote/key fob</li>
+        <li><strong>Analyze the capture</strong> - The Flipper will show signal characteristics</li>
+        <li><strong>Save the signal</strong> - Give it a descriptive name for later use</li>
+      </ol>
+
+      <div class="alert alert-info">
+        <div class="alert-title">💡 Pro Tip</div>
+        <p>Start with a device you own, like a spare garage door remote or a wireless doorbell. This ensures you're legally authorized to experiment with the signal and can safely test transmissions.</p>
+      </div>
+
+      <h3 class="section-subtitle">Understanding Signal Characteristics</h3>
+      <p>When you capture a signal, the Flipper Zero displays several important parameters:</p>
+
+      <ul>
+        <li><strong>Frequency</strong> - The exact frequency in MHz (e.g., 433.92 MHz)</li>
+        <li><strong>Modulation</strong> - Usually AM (Amplitude Modulation) for simple devices</li>
+        <li><strong>RAW data</strong> - The actual timing of signal pulses</li>
+        <li><strong>Protocol</strong> - If recognized, shows the encoding scheme (Princeton, etc.)</li>
+      </ul>
+
+      <div class="code-block">
+        <code>
+Example Signal Data:<br>
+Frequency: 433.92 MHz<br>
+Preset: FuriHalSubGhzPresetOok650Async<br>
+Protocol: Princeton<br>
+Key: 00 00 00 00 00 12 34 56<br>
+TE: 350 us
+        </code>
+      </div>
+    </section>
+
+    <!-- Analyzing & Replaying -->
+    <section class="content-section">
+      <h2 class="section-title">🔄 Analyzing and Replaying Signals</h2>
+
+      <h3 class="section-subtitle">Signal Analysis</h3>
+      <p>After capturing a signal, take time to understand what you've recorded:</p>
+
+      <ul>
+        <li><strong>Static vs Rolling Codes</strong> - Static codes are the same every time; rolling codes change with each press</li>
+        <li><strong>Bit length</strong> - Typically 24-64 bits for simple remotes</li>
+        <li><strong>Timing accuracy</strong> - Critical for successful replay</li>
+        <li><strong>Signal strength</strong> - Indicated by RSSI (Received Signal Strength Indicator)</li>
+      </ul>
+
+      <h3 class="section-subtitle">Replaying Captured Signals</h3>
+      <p>Once you've captured and analyzed a signal, you can replay it:</p>
+
+      <ol>
+        <li>Navigate to "Sub-GHz" → "Saved"</li>
+        <li>Select your saved signal file</li>
+        <li>Choose "Send" to transmit the signal</li>
+        <li>The Flipper will replay the exact timing captured</li>
+      </ol>
+
+      <div class="alert alert-warning">
+        <div class="alert-title">⚠️ Important: Rolling Codes</div>
+        <p>Many modern car key fobs and garage door openers use rolling code technology. These codes change with each transmission and cannot be simply replayed. Attempting to replay a rolling code will not work and may desynchronize the remote with its receiver.</p>
+      </div>
+
+      <h3 class="section-subtitle">When Replay Works</h3>
+      <p>Successful replay attacks work on devices using static codes, such as:</p>
+      <ul>
+        <li>Older garage door openers (pre-1990s)</li>
+        <li>Simple wireless doorbells</li>
+        <li>Some remote control outlets</li>
+        <li>Basic weather station sensors</li>
+        <li>Certain RF-based toys</li>
+      </ul>
+    </section>
+
+    <!-- Practical Exercise -->
+    <section class="content-section">
+      <h2 class="section-title">🎯 Practical Exercise</h2>
+
+      <h3 class="section-subtitle">Your First Capture & Replay</h3>
+      <p>Let's practice with a safe, legal target - a wireless doorbell or remote control you own:</p>
+
+      <ol>
+        <li><strong>Preparation</strong>
+          <ul>
+            <li>Charge your Flipper Zero fully</li>
+            <li>Have your target remote ready</li>
+            <li>Find an area away from other RF interference</li>
+          </ul>
+        </li>
+        <li><strong>Capture Phase</strong>
+          <ul>
+            <li>Open Sub-GHz → Read</li>
+            <li>Try 433.92 MHz first (most common)</li>
+            <li>Press your remote button</li>
+            <li>Observe the signal capture</li>
+            <li>Save with a descriptive name</li>
+          </ul>
+        </li>
+        <li><strong>Analysis Phase</strong>
+          <ul>
+            <li>Review the captured data</li>
+            <li>Note the frequency and modulation</li>
+            <li>Check if a protocol was identified</li>
+          </ul>
+        </li>
+        <li><strong>Replay Phase</strong>
+          <ul>
+            <li>Navigate to your saved signal</li>
+            <li>Stand at the same distance from the receiver</li>
+            <li>Send the signal</li>
+            <li>Verify the device responds</li>
+          </ul>
+        </li>
+      </ol>
+
+      <div class="alert alert-info">
+        <div class="alert-title">✅ Success Criteria</div>
+        <p>You've mastered this lesson when you can successfully capture a signal from your own remote and replay it to trigger the same action. Document your findings: What frequency? What protocol? Did replay work on the first try?</p>
+      </div>
+    </section>
+
+    <!-- Best Practices -->
+    <section class="content-section">
+      <h2 class="section-title">✨ Best Practices & Safety</h2>
+
+      <h3 class="section-subtitle">Ethical Guidelines</h3>
+      <ul>
+        <li><strong>Only test devices you own</strong> - Never attempt to capture or replay signals from systems you don't have permission to test</li>
+        <li><strong>Respect privacy</strong> - Some signals may contain personal information</li>
+        <li><strong>Know your local laws</strong> - RF transmission is regulated differently worldwide</li>
+        <li><strong>Practice responsible disclosure</strong> - If you find a vulnerability, report it properly</li>
+      </ul>
+
+      <h3 class="section-subtitle">Technical Tips</h3>
+      <ul>
+        <li>Start captures from a close distance (1-2 meters) for cleaner signals</li>
+        <li>Save multiple captures of the same signal to compare consistency</li>
+        <li>Use the frequency analyzer to find the exact frequency before capturing</li>
+        <li>Keep your Flipper Zero's firmware updated for best protocol support</li>
+        <li>Document your experiments with notes on frequency, distance, and results</li>
+      </ul>
+    </section>
+
+    <!-- Lesson Footer -->
+    <footer class="lesson-footer">
+      <div class="completion-section">
+        <div class="xp-reward">+50 XP</div>
+        <p>Complete this lesson to earn your XP and unlock the next module!</p>
+        <button class="complete-btn" id="completeBtn" onclick="markComplete()">
+          Mark Lesson Complete
+        </button>
+        <div class="nav-buttons">
+          <a href="lesson-1.html" class="nav-btn">← Previous Lesson</a>
+          <a href="index.html" class="nav-btn">Course Overview</a>
+          <a href="lesson-3.html" class="nav-btn">Next Lesson →</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Storage configuration - syncs with course overview
+    const COURSE_STORAGE_KEY = 'flipper-zero-course';
+    const LESSON_ID = 2;
+
+    // Frequency explorer interactive
+    const slider = document.getElementById('frequencySlider');
+    const display = document.getElementById('frequencyDisplay');
+    const info = document.getElementById('frequencyInfo');
+
+    const frequencyInfo = {
+      315: { band: '315 MHz', use: 'Popular in North America for garage doors and car remotes' },
+      433: { band: '433.92 MHz', use: 'Widely used in Europe/Asia for remote controls and sensors' },
+      868: { band: '868 MHz', use: 'European standard for home automation and IoT devices' },
+      915: { band: '915 MHz', use: 'North American ISM band for wireless applications' }
+    };
+
+    slider.addEventListener('input', (e) => {
+      const freq = parseFloat(e.target.value);
+      display.textContent = freq.toFixed(2) + ' MHz';
+      
+      // Find closest standard frequency
+      let closest = 315;
+      let minDiff = Math.abs(freq - 315);
+      
+      [433, 868, 915].forEach(f => {
+        const diff = Math.abs(freq - f);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closest = f;
+        }
+      });
+      
+      if (minDiff < 20) {
+        info.textContent = frequencyInfo[closest].use;
+      } else {
+        info.textContent = 'Custom frequency range';
+      }
+    });
+
+    // Progress tracking functions
+    async function loadProgress() {
+      try {
+        const result = await window.storage.get(COURSE_STORAGE_KEY);
+        return result ? JSON.parse(result.value) : { completed: [] };
+      } catch (error) {
+        return { completed: [] };
+      }
+    }
+
+    async function saveProgress(progress) {
+      try {
+        await window.storage.set(COURSE_STORAGE_KEY, JSON.stringify(progress));
+        return true;
+      } catch (error) {
+        console.error('Failed to save progress:', error);
+        return false;
+      }
+    }
+
+    async function markComplete() {
+      const btn = document.getElementById('completeBtn');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      const progress = await loadProgress();
+      
+      if (!progress.completed.includes(LESSON_ID)) {
+        progress.completed.push(LESSON_ID);
+        const saved = await saveProgress(progress);
+        
+        if (saved) {
+          btn.textContent = '✓ Lesson Complete!';
+          btn.style.background = 'var(--accent)';
+          setTimeout(() => {
+            window.location.href = 'lesson-3.html';
+          }, 1500);
+        } else {
+          btn.textContent = 'Error - Try Again';
+          btn.disabled = false;
+        }
+      } else {
+        btn.textContent = '✓ Already Complete';
+      }
+    }
+
+    // Check if already completed
+    async function checkCompletion() {
+      const progress = await loadProgress();
+      if (progress.completed.includes(LESSON_ID)) {
+        const btn = document.getElementById('completeBtn');
+        btn.textContent = '✓ Completed';
+        btn.style.background = 'var(--border)';
+      }
+    }
+
+    // Accessibility functions
+    function changeFontSize(size) {
+      document.body.className = document.body.className.replace(/font-\w+/g, '');
+      if (size !== 'normal') {
+        document.body.classList.add('font-' + size);
+      }
+      localStorage.setItem('fontSize', size);
+    }
+
+    function toggleContrast() {
+      document.body.classList.toggle('high-contrast');
+      localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
+    }
+
+    function loadA11yPreferences() {
+      const fontSize = localStorage.getItem('fontSize');
+      if (fontSize && fontSize !== 'normal') {
+        document.body.classList.add('font-' + fontSize);
+      }
+
+      const highContrast = localStorage.getItem('highContrast') === 'true';
+      if (highContrast) {
+        document.body.classList.add('high-contrast');
+      }
+    }
+
+    // Initialize
+    loadA11yPreferences();
+    checkCompletion();
+  </script>
+</body>
+</html>
