@@ -27,17 +27,23 @@
     </div>
 
     <!-- Breadcrumb Navigation -->
-    <nav class="nav-breadcrumb">
-        <div class="breadcrumb">
-            <a href="../../index.html">Academy</a>
-            <span>→</span>
-            <a href="../index.html">Flipper Zero</a>
-            <span>→</span>
-            <span>Lesson 1</span>
-        </div>
-    </nav>
+    <!-- Top Navigation -->
+<nav class="lesson-nav">
+  <a href="../../" class="nav-link">← Back to Course</a>
+  <span class="lesson-badge">LESSON 1</span>
+  <a href="../lesson-2/" class="nav-link">Next Lesson →</a>
+</nav>
 
-    <div class="container">
+<!-- Bottom Navigation -->
+<div class="nav-buttons">
+  <a href="../../" class="nav-btn">Course Overview</a>
+  <a href="../lesson-2/" class="nav-btn">Next Lesson →</a>
+</div>
+
+<!-- JavaScript redirect after completion -->
+setTimeout(() => {
+  window.location.href = '../lesson-2/';
+}, 1500);
         <!-- Lesson Header -->
         <header class="lesson-header">
             <div class="lesson-number">LESSON 1 OF 6</div>
