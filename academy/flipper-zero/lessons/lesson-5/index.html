@@ -1,1532 +1,772 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 5: BadUSB Attacks | Flipper Zero Course</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #0a0a0a;
-            --bg-medium: #1a1a1a;
-            --bg-light: #2a2a2a;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent: #00ff88;
-            --accent-dim: #00cc6a;
-            --border: #333333;
-            --warning: #ff6b6b;
-            --info: #4dabf7;
-            --success: #51cf66;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Atkinson Hyperlegible', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
-            padding-top: 120px;
-        }
-
-        .accessibility-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: var(--bg-medium);
-            padding: 0.75rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--border);
-            z-index: 1000;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .accessibility-controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .control-group label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .btn-control {
-            background: var(--bg-light);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .btn-control:hover {
-            background: var(--bg-dark);
-            border-color: var(--accent);
-        }
-
-        .progress-bar {
-            position: fixed;
-            top: 52px;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: var(--bg-medium);
-            border-bottom: 2px solid var(--border);
-            z-index: 999;
-            padding: 0.75rem 1rem;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .progress-text {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .xp-badge {
-            background: var(--accent);
-            color: var(--bg-dark);
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .progress-track {
-            width: 100%;
-            height: 8px;
-            background: var(--bg-light);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--accent-dim));
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .nav-breadcrumb {
-            background: var(--bg-medium);
-            padding: 1rem;
-            border-bottom: 2px solid var(--border);
-            margin-bottom: 2rem;
-        }
-
-        .breadcrumb {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            font-size: 0.9rem;
-            flex-wrap: wrap;
-        }
-
-        .breadcrumb a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            color: var(--text-secondary);
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 2rem 3rem;
-        }
-
-        .lesson-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .lesson-number {
-            color: var(--accent);
-            font-size: 1rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .lesson-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .lesson-meta {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .objectives-box {
-            background: var(--bg-medium);
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .objectives-box h2 {
-            color: var(--accent);
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .objectives-list {
-            list-style: none;
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .objectives-list li {
-            display: flex;
-            align-items: start;
-            gap: 0.75rem;
-            padding: 0.5rem;
-            background: var(--bg-light);
-            border-radius: 4px;
-        }
-
-        .objectives-list li::before {
-            content: "✓";
-            color: var(--accent);
-            font-weight: bold;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .content-section {
-            margin: 2rem 0;
-        }
-
-        .content-section h2 {
-            color: var(--accent);
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .content-section h3 {
-            color: var(--text-primary);
-            font-size: 1.4rem;
-            margin: 1.5rem 0 0.75rem;
-        }
-
-        .content-section p {
-            margin-bottom: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        .content-section ul,
-        .content-section ol {
-            margin: 1rem 0 1rem 2rem;
-            color: var(--text-secondary);
-        }
-
-        .content-section li {
-            margin: 0.5rem 0;
-        }
-
-        .info-box {
-            background: var(--bg-medium);
-            border-left: 4px solid var(--info);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-
-        .info-box.warning {
-            border-left-color: var(--warning);
-        }
-
-        .info-box.success {
-            border-left-color: var(--success);
-        }
-
-        .info-box h3 {
-            color: var(--info);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .info-box.warning h3 {
-            color: var(--warning);
-        }
-
-        .info-box.success h3 {
-            color: var(--success);
-        }
-
-        .info-box ul {
-            margin-left: 1.5rem;
-        }
-
-        .code-block {
-            background: var(--bg-medium);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            overflow-x: auto;
-        }
-
-        .code-block code {
-            font-family: 'Courier New', monospace;
-            color: var(--accent);
-            font-size: 0.9rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-
-        .script-example {
-            background: var(--bg-light);
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .script-example h4 {
-            color: var(--accent);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .script-example p {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .exercise-box {
-            background: var(--bg-medium);
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .exercise-box h3 {
-            color: var(--accent);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .exercise-steps {
-            counter-reset: step-counter;
-            list-style: none;
-        }
-
-        .exercise-steps li {
-            counter-increment: step-counter;
-            margin: 1rem 0;
-            padding-left: 3rem;
-            position: relative;
-        }
-
-        .exercise-steps li::before {
-            content: counter(step-counter);
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: var(--accent);
-            color: var(--bg-dark);
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .btn-complete {
-            background: var(--accent);
-            color: var(--bg-dark);
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-
-        .btn-complete:hover {
-            background: var(--accent-dim);
-            transform: scale(1.02);
-        }
-
-        .btn-complete.completed {
-            background: var(--success);
-        }
-
-        .break-reminder {
-            background: linear-gradient(135deg, var(--bg-medium), var(--bg-light));
-            border: 2px solid var(--warning);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 3rem 0;
-            text-align: center;
-        }
-
-        .break-reminder h3 {
-            color: var(--warning);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .break-reminder p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .break-timer {
-            font-size: 3rem;
-            color: var(--accent);
-            font-weight: bold;
-            margin: 1rem 0;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .break-controls {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-break {
-            background: var(--warning);
-            color: var(--bg-dark);
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-
-        .btn-break:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-
-        .btn-break.secondary {
-            background: var(--bg-light);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .attack-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .attack-card {
-            background: var(--bg-medium);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.5rem;
-        }
-
-        .attack-card h4 {
-            color: var(--accent);
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
-        }
-
-        .attack-card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin: 0.5rem 0;
-        }
-
-        .lesson-navigation {
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 2px solid var(--border);
-        }
-
-        .nav-btn {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-            text-decoration: none;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .nav-btn.primary {
-            background: var(--accent);
-            color: var(--bg-dark);
-            border: none;
-        }
-
-        .nav-btn.secondary {
-            background: var(--bg-medium);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .nav-btn:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding-top: 140px;
-            }
-
-            .lesson-header h1 {
-                font-size: 1.8rem;
-            }
-
-            .lesson-meta {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .attack-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .lesson-navigation {
-                flex-direction: column;
-            }
-        }
-
-        body.dyslexia-friendly {
-            letter-spacing: 0.05em;
-            word-spacing: 0.1em;
-        }
-
-        body.high-contrast {
-            --bg-dark: #000000;
-            --bg-medium: #1a1a1a;
-            --border: #ffffff;
-        }
-
-        .reduce-motion * {
-            animation: none !important;
-            transition: none !important;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 5: BadUSB & Automation | tw¡st3d_¡nk Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --accent: #00ff88;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --border: #333;
+      --warning: #ff9500;
+    }
+
+    body {
+      font-family: 'Atkinson Hyperlegible', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.8;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Accessibility Controls */
+    .a11y-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+    }
+
+    .a11y-btn {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .a11y-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .a11y-btn:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Navigation */
+    .lesson-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .lesson-badge {
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* Header */
+    .lesson-header {
+      margin-bottom: 40px;
+    }
+
+    .lesson-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, var(--accent), #00ccff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .lesson-meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Content Sections */
+    .content-section {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+
+    .section-subtitle {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      color: var(--text-primary);
+    }
+
+    p {
+      margin-bottom: 15px;
+      color: var(--text-secondary);
+    }
+
+    /* Alert Boxes */
+    .alert {
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      border: 2px solid;
+    }
+
+    .alert-warning {
+      background: rgba(255, 149, 0, 0.1);
+      border-color: var(--warning);
+      color: var(--warning);
+    }
+
+    .alert-info {
+      background: rgba(0, 255, 136, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .alert-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 25px;
+      margin-bottom: 20px;
+      color: var(--text-secondary);
+    }
+
+    li {
+      margin-bottom: 10px;
+      line-height: 1.7;
+    }
+
+    /* Code Blocks */
+    .code-block {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+
+    .code-block code {
+      color: var(--accent);
+    }
+
+    /* Progress Footer */
+    .lesson-footer {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin-top: 40px;
+    }
+
+    .completion-section {
+      text-align: center;
+    }
+
+    .xp-reward {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .complete-btn {
+      background: var(--accent);
+      color: var(--bg-dark);
+      border: none;
+      padding: 15px 40px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .complete-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0, 255, 136, 0.4);
+    }
+
+    .complete-btn:disabled {
+      background: var(--border);
+      color: var(--text-secondary);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: var(--bg-dark);
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-btn:hover {
+      background: var(--accent);
+      color: var(--bg-dark);
+    }
+
+    /* Font Size Classes */
+    body.font-small { font-size: 14px; }
+    body.font-large { font-size: 18px; }
+    body.font-xl { font-size: 22px; }
+
+    /* High Contrast Mode */
+    body.high-contrast {
+      --bg-dark: #000000;
+      --bg-card: #1a1a1a;
+      --text-primary: #ffffff;
+      --border: #00ff88;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .lesson-title {
+        font-size: 2rem;
+      }
+
+      .a11y-controls {
+        position: static;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Accessibility Bar -->
-    <div class="accessibility-bar">
-        <div class="accessibility-controls">
-            <div class="control-group">
-                <label for="font-size">Text Size:</label>
-                <button class="btn-control" onclick="adjustFontSize(-1)">A-</button>
-                <button class="btn-control" onclick="adjustFontSize(1)">A+</button>
-            </div>
-            <button class="btn-control" onclick="toggleDyslexiaMode()">Dyslexia Mode</button>
-            <button class="btn-control" onclick="toggleHighContrast()">High Contrast</button>
-            <button class="btn-control" onclick="toggleReducedMotion()">Reduce Motion</button>
-        </div>
+  <div class="container">
+    <!-- Accessibility Controls -->
+    <div class="a11y-controls">
+      <button class="a11y-btn" onclick="changeFontSize('small')" aria-label="Decrease font size">A-</button>
+      <button class="a11y-btn" onclick="changeFontSize('normal')" aria-label="Normal font size">A</button>
+      <button class="a11y-btn" onclick="changeFontSize('large')" aria-label="Increase font size">A+</button>
+      <button class="a11y-btn" onclick="changeFontSize('xl')" aria-label="Extra large font size">A++</button>
+      <button class="a11y-btn" onclick="toggleContrast()" aria-label="Toggle high contrast">◐</button>
     </div>
 
-    <!-- Progress Bar -->
-    <div class="progress-bar">
-        <div class="progress-info">
-            <span class="progress-text">Lesson Progress: <span id="progress-percent">0</span>%</span>
-            <span class="xp-badge">+50 XP</span>
+    <!-- Navigation -->
+    <nav class="lesson-nav">
+      <a href="../../" class="nav-link">← Back to Course</a>
+      <span class="lesson-badge">LESSON 5</span>
+      <a href="../lesson-6/" class="nav-link">Next Lesson →</a>
+    </nav>
+
+    <!-- Lesson Header -->
+    <header class="lesson-header">
+      <h1 class="lesson-title">BadUSB & Automation</h1>
+      <div class="lesson-meta">
+        <span class="meta-item">⏱️ 55 minutes</span>
+        <span class="meta-item">⚡ 50 XP</span>
+        <span class="meta-item">📶 Difficulty: Advanced</span>
+      </div>
+    </header>
+
+    <!-- Introduction -->
+    <section class="content-section">
+      <h2 class="section-title">⌨️ Introduction to BadUSB</h2>
+      
+      <p>BadUSB is one of the most powerful features of the Flipper Zero. It allows the device to emulate a USB keyboard and automatically type commands at superhuman speed. This capability has legitimate uses in automation, system administration, and security testing.</p>
+
+      <p>In this lesson, you'll learn how BadUSB works, how to create payloads using the DuckyScript language, and the ethical considerations of using this powerful tool.</p>
+
+      <div class="alert alert-warning">
+        <div class="alert-title">⚠️ Critical Warning</div>
+        <p><strong>BadUSB can be used for malicious purposes and is illegal to use without authorization.</strong> Only use BadUSB on systems you own or have explicit written permission to test. Unauthorized computer access is a serious crime with severe penalties.</p>
+      </div>
+    </section>
+
+    <!-- Understanding BadUSB -->
+    <section class="content-section">
+      <h2 class="section-title">🔍 Understanding BadUSB Attacks</h2>
+
+      <h3 class="section-subtitle">What is BadUSB?</h3>
+      <p>BadUSB exploits the inherent trust computers place in USB devices. When you plug in a keyboard, the computer automatically accepts it and processes any keystrokes it sends. A BadUSB device masquerades as a keyboard to automatically execute commands.</p>
+
+      <h3 class="section-subtitle">How It Works</h3>
+      <ol>
+        <li><strong>Connection</strong> - Flipper connects to computer via USB</li>
+        <li><strong>Enumeration</strong> - Computer recognizes it as a keyboard (HID device)</li>
+        <li><strong>Trust</strong> - Computer automatically accepts the "keyboard" without user approval</li>
+        <li><strong>Execution</strong> - Flipper types commands at ~1000 characters per second</li>
+        <li><strong>Payload</strong> - Pre-programmed script executes automatically</li>
+      </ol>
+
+      <h3 class="section-subtitle">Why It's Effective</h3>
+      <ul>
+        <li><strong>No Software Required</strong> - Works on any OS (Windows, Mac, Linux)</li>
+        <li><strong>Fast Execution</strong> - Completes in seconds before user can react</li>
+        <li><strong>Bypasses Security</strong> - No antivirus can detect keystrokes</li>
+        <li><strong>Physical Access</strong> - Only requires brief USB port access</li>
+        <li><strong>User Context</strong> - Runs with permissions of logged-in user</li>
+      </ul>
+
+      <div class="alert alert-info">
+        <div class="alert-title">💡 Legitimate Uses</div>
+        <p>BadUSB has many legitimate applications: system administration automation, computer setup scripts, security testing, accessibility tools, and rapid configuration deployment.</p>
+      </div>
+    </section>
+
+    <!-- DuckyScript Language -->
+    <section class="content-section">
+      <h2 class="section-title">📝 DuckyScript Language</h2>
+
+      <h3 class="section-subtitle">What is DuckyScript?</h3>
+      <p>DuckyScript is a simple scripting language designed for USB keystroke injection. Originally created for the USB Rubber Ducky, it's now the standard language for BadUSB payloads. The Flipper Zero fully supports DuckyScript syntax.</p>
+
+      <h3 class="section-subtitle">Basic Commands</h3>
+      <ul>
+        <li><strong>REM</strong> - Comment (not executed)</li>
+        <li><strong>DELAY</strong> - Wait specified milliseconds</li>
+        <li><strong>STRING</strong> - Type a string of text</li>
+        <li><strong>ENTER</strong> - Press Enter key</li>
+        <li><strong>CTRL, ALT, SHIFT, GUI</strong> - Modifier keys (GUI = Windows/Command key)</li>
+        <li><strong>DOWNARROW, UPARROW, etc.</strong> - Arrow keys</li>
+      </ul>
+
+      <h3 class="section-subtitle">Example: Hello World</h3>
+      <div class="code-block">
+        <code>
+REM Simple Hello World Script<br>
+DELAY 1000<br>
+GUI r<br>
+DELAY 500<br>
+STRING notepad<br>
+ENTER<br>
+DELAY 1000<br>
+STRING Hello from Flipper Zero!<br>
+ENTER
+        </code>
+      </div>
+      <p>This script opens Notepad on Windows and types a message.</p>
+
+      <h3 class="section-subtitle">Key Combinations</h3>
+      <div class="code-block">
+        <code>
+REM Examples of key combinations<br>
+CTRL ALT DELETE<br>
+GUI d<br>
+ALT F4<br>
+CTRL SHIFT ESC
+        </code>
+      </div>
+
+      <h3 class="section-subtitle">Timing is Critical</h3>
+      <p>DELAY commands are essential for reliable payloads:</p>
+      <ul>
+        <li>Allow time for programs to open</li>
+        <li>Wait for system dialogs</li>
+        <li>Account for slow computers</li>
+        <li>Prevent race conditions</li>
+      </ul>
+    </section>
+
+    <!-- Creating Payloads -->
+    <section class="content-section">
+      <h2 class="section-title">🛠️ Creating Your First Payload</h2>
+
+      <h3 class="section-subtitle">Writing Payload Scripts</h3>
+      <p>Payloads are simple text files with .txt extension stored on your Flipper's SD card:</p>
+      <ol>
+        <li>Create a text file on your computer</li>
+        <li>Write your DuckyScript code</li>
+        <li>Save with .txt extension</li>
+        <li>Transfer to Flipper: <code>SD Card/badusb/</code> folder</li>
+      </ol>
+
+      <h3 class="section-subtitle">Example: System Info Grab (Windows)</h3>
+      <div class="code-block">
+        <code>
+REM Get system information<br>
+DELAY 1000<br>
+GUI r<br>
+DELAY 500<br>
+STRING cmd<br>
+ENTER<br>
+DELAY 1000<br>
+STRING systeminfo > %TEMP%\sysinfo.txt<br>
+ENTER<br>
+DELAY 2000<br>
+STRING exit<br>
+ENTER
+        </code>
+      </div>
+
+      <h3 class="section-subtitle">Example: Quick Screenshot (Mac)</h3>
+      <div class="code-block">
+        <code>
+REM Take screenshot on Mac<br>
+DELAY 1000<br>
+GUI SHIFT 3<br>
+DELAY 500
+        </code>
+      </div>
+
+      <h3 class="section-subtitle">Example: Open Website</h3>
+      <div class="code-block">
+        <code>
+REM Open specific website<br>
+DELAY 1000<br>
+GUI r<br>
+DELAY 500<br>
+STRING https://example.com<br>
+ENTER
+        </code>
+      </div>
+
+      <div class="alert alert-info">
+        <div class="alert-title">💡 Pro Tip</div>
+        <p>Always test payloads on your own computer first! Start with longer delays, then optimize once you know it works reliably.</p>
+      </div>
+    </section>
+
+    <!-- Running Payloads -->
+    <section class="content-section">
+      <h2 class="section-title">▶️ Running BadUSB Payloads</h2>
+
+      <h3 class="section-subtitle">Step-by-Step Execution</h3>
+      <ol>
+        <li>Navigate to <strong>Bad USB</strong> on your Flipper</li>
+        <li>Select your payload script from the list</li>
+        <li>Ensure target computer is at the desired starting point (desktop, login screen, etc.)</li>
+        <li>Connect Flipper to target computer via USB</li>
+        <li>Press OK on Flipper to execute the payload</li>
+        <li>Watch as commands execute automatically</li>
+        <li>Disconnect when complete</li>
+      </ol>
+
+      <h3 class="section-subtitle">Important Considerations</h3>
+      <ul>
+        <li><strong>Keyboard Layout</strong> - Ensure target computer uses same layout as your script</li>
+        <li><strong>Computer Speed</strong> - Slower computers may need longer delays</li>
+        <li><strong>Active Window</strong> - Make sure correct window has focus</li>
+        <li><strong>Screen Lock</strong> - Won't work if computer is locked</li>
+        <li><strong>User Context</strong> - Runs with current user's permissions</li>
+      </ul>
+
+      <h3 class="section-subtitle">Debugging Failed Payloads</h3>
+      <ul>
+        <li>Increase DELAY values</li>
+        <li>Test each section individually</li>
+        <li>Check keyboard layout compatibility</li>
+        <li>Verify target OS matches your script</li>
+        <li>Ensure necessary permissions exist</li>
+      </ul>
+    </section>
+
+    <!-- Advanced Techniques -->
+    <section class="content-section">
+      <h2 class="section-title">⚡ Advanced Payload Techniques</h2>
+
+      <h3 class="section-subtitle">Cross-Platform Payloads</h3>
+      <p>Create payloads that detect and adapt to the operating system:</p>
+      <div class="code-block">
+        <code>
+REM This requires testing on each OS<br>
+REM Windows-specific commands here<br>
+GUI r<br>
+DELAY 500<br>
+STRING cmd<br>
+ENTER
+        </code>
+      </div>
+
+      <h3 class="section-subtitle">Exfiltration Techniques</h3>
+      <p>Legitimate uses include backing up your own data or system testing:</p>
+      <ul>
+        <li>Upload to cloud storage (your own accounts only)</li>
+        <li>Email to yourself</li>
+        <li>Save to network share</li>
+        <li>Create local copies in accessible locations</li>
+      </ul>
+
+      <h3 class="section-subtitle">Persistence (For Security Testing)</h3>
+      <p>Understanding persistence helps defend against it:</p>
+      <ul>
+        <li>Startup folder additions</li>
+        <li>Scheduled tasks</li>
+        <li>Registry modifications</li>
+        <li>Service creation</li>
+      </ul>
+
+      <div class="alert alert-warning">
+        <div class="alert-title">⚠️ Ethical Reminder</div>
+        <p>All advanced techniques should only be used on systems you own or have explicit authorization to test as part of legitimate security assessments.</p>
+      </div>
+    </section>
+
+    <!-- Defenses -->
+    <section class="content-section">
+      <h2 class="section-title">🛡️ Defending Against BadUSB</h2>
+
+      <h3 class="section-subtitle">Prevention Strategies</h3>
+      <ul>
+        <li><strong>Physical Security</strong> - Never leave computers unlocked and unattended</li>
+        <li><strong>USB Port Control</strong> - Disable unused USB ports or use port locks</li>
+        <li><strong>Endpoint Protection</strong> - Use software that monitors USB connections</li>
+        <li><strong>User Training</strong> - Educate users about USB threats</li>
+        <li><strong>Screen Lock</strong> - Enable automatic screen lock after brief inactivity</li>
+      </ul>
+
+      <h3 class="section-subtitle">Detection Methods</h3>
+      <ul>
+        <li>Monitor for rapid keyboard input</li>
+        <li>Log and alert on new USB device connections</li>
+        <li>Use specialized anti-BadUSB software</li>
+        <li>Review command history for suspicious activity</li>
+        <li>Implement application whitelisting</li>
+      </ul>
+
+      <h3 class="section-subtitle">System Hardening</h3>
+      <ul>
+        <li>Require admin password for sensitive operations</li>
+        <li>Disable command prompt/PowerShell for standard users</li>
+        <li>Use application control policies</li>
+        <li>Enable full disk encryption</li>
+        <li>Keep systems fully patched</li>
+      </ul>
+    </section>
+
+    <!-- Practice Exercise -->
+    <section class="content-section">
+      <h2 class="section-title">🎯 Practice Exercise</h2>
+
+      <h3 class="section-subtitle">Safe BadUSB Practice</h3>
+      <p>Complete these exercises on your own computer only:</p>
+
+      <ol>
+        <li><strong>Create Hello World Payload</strong>
+          <ul>
+            <li>Write a script that opens Notepad/TextEdit</li>
+            <li>Types a message</li>
+            <li>Saves the file to desktop</li>
+            <li>Test and refine delays</li>
+          </ul>
+        </li>
+
+        <li><strong>System Info Script</strong>
+          <ul>
+            <li>Create payload to gather system information</li>
+            <li>Save output to a text file</li>
+            <li>Open the file when complete</li>
+            <li>Verify all information collected correctly</li>
+          </ul>
+        </li>
+
+        <li><strong>Productivity Automation</strong>
+          <ul>
+            <li>Create a script that opens your daily work applications</li>
+            <li>Arrange windows automatically</li>
+            <li>Open specific websites or documents</li>
+            <li>Time the execution and optimize</li>
+          </ul>
+        </li>
+
+        <li><strong>Document Your Process</strong>
+          <ul>
+            <li>What challenges did you encounter?</li>
+            <li>How did you determine optimal delays?</li>
+            <li>What legitimate uses can you envision?</li>
+            <li>How would you defend against your own payloads?</li>
+          </ul>
+        </li>
+      </ol>
+
+      <div class="alert alert-warning">
+        <div class="alert-title">⚠️ Testing Reminder</div>
+        <p>Only test payloads on your own devices. Never use BadUSB on anyone else's computer without explicit written permission. Save and backup your work before testing potentially disruptive payloads.</p>
+      </div>
+    </section>
+
+    <!-- Lesson Footer -->
+    <footer class="lesson-footer">
+      <div class="completion-section">
+        <div class="xp-reward">+50 XP</div>
+        <p>Complete this lesson to earn your XP and unlock the final module!</p>
+        <button class="complete-btn" id="completeBtn" onclick="markComplete()">
+          Mark Lesson Complete
+        </button>
+        <div class="nav-buttons">
+          <a href="../lesson-4/" class="nav-btn">← Previous Lesson</a>
+          <a href="../../" class="nav-btn">Course Overview</a>
+          <a href="../lesson-6/" class="nav-btn">Next Lesson →</a>
         </div>
-        <div class="progress-track">
-            <div class="progress-fill" id="progress-fill"></div>
-        </div>
-    </div>
-
-    <!-- Top Navigation -->
-<nav class="lesson-nav">
-  <a href="../../" class="nav-link">← Back to Course</a>
-  <span class="lesson-badge">LESSON 5</span>
-  <a href="../lesson-6/" class="nav-link">Next Lesson →</a>
-</nav>
-
-<!-- Bottom Navigation in Footer -->
-<div class="nav-buttons">
-  <a href="../lesson-4/" class="nav-btn">← Previous Lesson</a>
-  <a href="../../" class="nav-btn">Course Overview</a>
-  <a href="../lesson-6/" class="nav-btn">Next Lesson →</a>
-</div>
-
-<!-- JavaScript redirect (in markComplete function) -->
-window.location.href = '../lesson-6/';
-
-<!-- JavaScript constant -->
-const LESSON_ID = 5;
-        <!-- Lesson Header -->
-        <header class="lesson-header">
-            <div class="lesson-number">LESSON 5 OF 6</div>
-            <h1>BadUSB Attacks</h1>
-            <div class="lesson-meta">
-                <div class="meta-item">
-                    <span>⏱️</span>
-                    <span>~45 minutes</span>
-                </div>
-                <div class="meta-item">
-                    <span>📊</span>
-                    <span>Advanced</span>
-                </div>
-                <div class="meta-item">
-                    <span>🎯</span>
-                    <span>Hands-on: 3 exercises</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- Learning Objectives -->
-        <section class="objectives-box">
-            <h2>🎯 What You'll Learn</h2>
-            <ul class="objectives-list">
-                <li>Understand USB HID protocol and how keyboards communicate with computers</li>
-                <li>Learn DuckyScript language for writing BadUSB payloads</li>
-                <li>Create and execute keystroke injection attacks safely</li>
-                <li>Test endpoint security and USB device policies</li>
-                <li>Understand real-world attack scenarios and defenses</li>
-                <li>Conduct responsible Red Team assessments with BadUSB</li>
-            </ul>
-        </section>
-
-        <!-- Main Content -->
-        <article>
-            <!-- Introduction -->
-            <section class="content-section">
-                <h2>Understanding BadUSB Attacks</h2>
-                <p>
-                    BadUSB is a class of USB-based attacks where a device impersonates a keyboard (or other HID device) to automatically inject keystrokes into a target computer. The Flipper Zero can act as a USB keyboard, making it a powerful tool for security testing.
-                </p>
-                <p>
-                    These attacks are effective because computers inherently trust keyboards. When you plug in a keyboard, the system doesn't ask for permission—it just starts accepting input. BadUSB exploits this trust.
-                </p>
-
-                <div class="info-box warning">
-                    <h3>⚠️ CRITICAL LEGAL AND ETHICAL WARNING</h3>
-                    <p>
-                        <strong>BadUSB attacks are extremely powerful and can cause serious harm.</strong>
-                    </p>
-                    <ul>
-                        <li><strong>ONLY</strong> use on systems you own or have explicit written authorization to test</li>
-                        <li>Unauthorized computer access is a serious crime in all jurisdictions</li>
-                        <li>Even "harmless" pranks can result in criminal charges</li>
-                        <li>BadUSB can install malware, exfiltrate data, or destroy systems</li>
-                        <li>Always have a documented scope and authorization for any testing</li>
-                        <li>This lesson is for defensive security professionals only</li>
-                    </ul>
-                    <p style="margin-top: 0.75rem; font-weight: bold;">
-                        If you're not conducting authorized security assessments, do NOT use these techniques.
-                    </p>
-                </div>
-
-                <h3>How BadUSB Works</h3>
-                <ol>
-                    <li><strong>USB Connection:</strong> Flipper connects to computer via USB-C</li>
-                    <li><strong>HID Enumeration:</strong> Computer recognizes Flipper as a keyboard</li>
-                    <li><strong>Trust Assumption:</strong> OS accepts keyboard input without authentication</li>
-                    <li><strong>Script Execution:</strong> Flipper sends pre-programmed keystrokes</li>
-                    <li><strong>Automated Actions:</strong> Computer executes commands as if user typed them</li>
-                    <li><strong>Payload Delivery:</strong> Malicious actions complete before user can react</li>
-                </ol>
-
-                <div class="info-box">
-                    <h3>💡 Why BadUSB is So Effective</h3>
-                    <ul>
-                        <li><strong>No malware signature:</strong> Just keyboard input, not executable files</li>
-                        <li><strong>Bypasses many defenses:</strong> Antivirus doesn't scan keystrokes</li>
-                        <li><strong>Fast execution:</strong> Can run complex payloads in seconds</li>
-                        <li><strong>Physical access advantage:</strong> If you can plug it in, you can run it</li>
-                        <li><strong>Cross-platform:</strong> Works on Windows, Mac, Linux</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- DuckyScript Basics -->
-            <section class="content-section">
-                <h2>DuckyScript Language</h2>
-                <p>
-                    DuckyScript is a simple scripting language originally created for the USB Rubber Ducky. The Flipper Zero uses a compatible syntax, making it easy to write and share BadUSB payloads.
-                </p>
-
-                <h3>Basic Commands</h3>
-                <div class="code-block">
-                    <code>REM This is a comment
-
-DELAY 1000          // Wait 1000ms (1 second)
-
-STRING Hello World  // Type text exactly as written
-
-ENTER              // Press Enter key
-
-GUI r              // Windows+R (Open Run dialog)
-
-CTRL ALT DELETE    // Press Ctrl+Alt+Del simultaneously
-
-ALT F4             // Alt+F4 (Close window)
-
-DOWNARROW          // Press down arrow key
-
-REPEAT 5           // Repeat previous command 5 times</code>
-                </div>
-
-                <h3>Special Keys</h3>
-                <p>DuckyScript supports all standard keyboard keys:</p>
-                <ul>
-                    <li><strong>Modifiers:</strong> CTRL, ALT, SHIFT, GUI (Windows/Command key)</li>
-                    <li><strong>Function Keys:</strong> F1 through F12</li>
-                    <li><strong>Navigation:</strong> UP, DOWN, LEFT, RIGHT, PAGEUP, PAGEDOWN, HOME, END</li>
-                    <li><strong>Special:</strong> ENTER, TAB, ESCAPE, SPACE, DELETE, BACKSPACE</li>
-                    <li><strong>System:</strong> PRINTSCREEN, SCROLLLOCK, PAUSE, INSERT</li>
-                </ul>
-
-                <h3>Your First Script</h3>
-                <p>Let's create a harmless "Hello World" script:</p>
-
-                <div class="script-example">
-                    <h4>hello_world.txt</h4>
-                    <p><strong>Purpose:</strong> Opens Notepad and types a message</p>
-                    <div class="code-block">
-                        <code>REM Hello World BadUSB Script
-REM Opens Notepad and types a greeting
-
-DELAY 1000
-GUI r
-DELAY 500
-STRING notepad
-ENTER
-DELAY 1000
-STRING Hello from Flipper Zero!
-ENTER
-STRING This is a BadUSB demonstration.
-ENTER
-STRING Stay safe and test responsibly!</code>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <h3>💡 Script Writing Tips</h3>
-                    <ul>
-                        <li><strong>Add delays:</strong> Computers vary in speed; generous delays ensure reliability</li>
-                        <li><strong>Comment your code:</strong> Use REM to document what each section does</li>
-                        <li><strong>Test thoroughly:</strong> Always test on your own system first</li>
-                        <li><strong>Handle errors:</strong> Account for dialogs, prompts, or unexpected windows</li>
-                        <li><strong>Use absolute paths:</strong> Don't rely on current directory or environment</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Exercise 1 -->
-            <div class="exercise-box">
-                <h3>🔧 Hands-On Exercise 1: Write and Test Your First Script</h3>
-                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Beginner</p>
-                <p>
-                    <strong>Requirements:</strong> Your own computer for safe testing
-                </p>
-                <ol class="exercise-steps">
-                    <li>Create a new text file on your computer named "test_script.txt"</li>
-                    <li>Write a script that opens Notepad/TextEdit and types your name</li>
-                    <li>Save the file to your Flipper's /badusb/ folder via USB</li>
-                    <li>Navigate to BadUSB menu on Flipper</li>
-                    <li>Select your script</li>
-                    <li>Connect Flipper to your test computer</li>
-                    <li>Execute the script and observe the results</li>
-                    <li>If it doesn't work perfectly, adjust DELAY values and retry</li>
-                    <li>Document what worked and what needed adjustment</li>
-                </ol>
-                <div style="margin-top: 1.5rem;">
-                    <button class="btn-complete" onclick="completeExercise(1)">Mark Exercise Complete</button>
-                </div>
-            </div>
-
-            <!-- Break Reminder 1 -->
-            <div class="break-reminder">
-                <h3>⏸️ Break Point #1</h3>
-                <p>You've learned BadUSB fundamentals and created your first script. Time for a break!</p>
-                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5 minutes to:</p>
-                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
-                    <li>💧 Hydrate</li>
-                    <li>🚶 Stand and move</li>
-                    <li>👀 Rest your eyes</li>
-                </ul>
-                <div class="break-timer" id="break-timer">5:00</div>
-                <div class="break-controls">
-                    <button class="btn-break" onclick="startBreakTimer()">Start 5-Min Break</button>
-                    <button class="btn-break secondary" onclick="skipBreak()">Skip Break</button>
-                </div>
-            </div>
-
-            <!-- Platform-Specific Payloads -->
-            <section class="content-section">
-                <h2>Platform-Specific Techniques</h2>
-                <p>
-                    Different operating systems require different approaches. Let's explore platform-specific techniques for Windows, macOS, and Linux.
-                </p>
-
-                <h3>Windows Payloads</h3>
-                <p>Windows scripts typically use the Run dialog (Win+R) or PowerShell:</p>
-
-                <div class="script-example">
-                    <h4>windows_info_gather.txt</h4>
-                    <p><strong>Purpose:</strong> Demonstrates information gathering (educational only)</p>
-                    <div class="code-block">
-                        <code>REM Windows System Info Collector
-REM Educational demonstration only!
-
-DELAY 1000
-GUI r
-DELAY 300
-STRING cmd
-ENTER
-DELAY 500
-STRING systeminfo > C:\temp\sysinfo.txt
-ENTER
-DELAY 2000
-STRING ipconfig /all >> C:\temp\sysinfo.txt
-ENTER
-DELAY 1000
-STRING exit
-ENTER</code>
-                    </div>
-                </div>
-
-                <h3>macOS Payloads</h3>
-                <p>macOS scripts use Spotlight (Cmd+Space) or Terminal:</p>
-
-                <div class="script-example">
-                    <h4>macos_terminal_test.txt</h4>
-                    <p><strong>Purpose:</strong> Opens Terminal and displays system info</p>
-                    <div class="code-block">
-                        <code>REM macOS Terminal Test Script
-
-DELAY 1000
-GUI SPACE
-DELAY 300
-STRING terminal
-DELAY 200
-ENTER
-DELAY 1000
-STRING echo "System: $(uname -a)"
-ENTER
-DELAY 500
-STRING echo "User: $(whoami)"
-ENTER
-DELAY 500
-STRING exit
-ENTER</code>
-                    </div>
-                </div>
-
-                <h3>Linux Payloads</h3>
-                <p>Linux scripts often target terminal or search:</p>
-
-                <div class="script-example">
-                    <h4>linux_terminal_test.txt</h4>
-                    <p><strong>Purpose:</strong> Opens terminal and runs basic commands</p>
-                    <div class="code-block">
-                        <code>REM Linux Terminal Test Script
-
-DELAY 1000
-CTRL ALT t
-DELAY 800
-STRING echo "Testing BadUSB on Linux"
-ENTER
-DELAY 300
-STRING whoami
-ENTER
-DELAY 300
-STRING pwd
-ENTER
-DELAY 300
-STRING exit
-ENTER</code>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <h3>💡 Cross-Platform Considerations</h3>
-                    <ul>
-                        <li><strong>Keyboard layouts:</strong> QWERTY vs AZERTY vs other layouts affect special characters</li>
-                        <li><strong>Language settings:</strong> Non-English systems may have different shortcuts</li>
-                        <li><strong>Execution speed:</strong> Older/slower computers need longer delays</li>
-                        <li><strong>Security software:</strong> EDR/AV may block or slow command execution</li>
-                        <li><strong>User settings:</strong> Disabled shortcuts or custom configurations can break scripts</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Advanced Payloads -->
-            <section class="content-section">
-                <h2>Advanced Payload Techniques</h2>
-                <p>
-                    For professional security testing, you'll need more sophisticated payloads. Here are some advanced techniques used in real assessments.
-                </p>
-
-                <h3>Reverse Shell Demonstration</h3>
-                <p>
-                    In penetration testing, establishing a reverse shell is a common goal. Here's the concept (educational purposes only):
-                </p>
-
-                <div class="script-example">
-                    <h4>Reverse Shell Concept</h4>
-                    <p><strong>WARNING:</strong> This is for understanding attack methodology only. Never use without authorization!</p>
-                    <div class="code-block">
-                        <code>REM Conceptual reverse shell example
-REM DO NOT USE without explicit authorization
-
-REM 1. Open PowerShell as admin
-REM 2. Download and execute remote payload
-REM 3. Establish connection to attacker machine
-REM 4. Clean up traces
-
-REM This demonstrates why endpoint security is critical!</code>
-                    </div>
-                </div>
-
-                <h3>Credential Harvesting Prevention</h3>
-                <p>
-                    Understanding how BadUSB can attempt to harvest credentials helps you defend against it:
-                </p>
-                <ul>
-                    <li>Scripts can create fake login prompts</li>
-                    <li>Can access browser saved passwords</li>
-                    <li>Can dump credentials from memory (with admin access)</li>
-                    <li>Can keylog subsequent user input</li>
-                </ul>
-
-                <div class="info-box warning">
-                    <h3>⚠️ Defensive Measures</h3>
-                    <p><strong>How to protect against credential harvesting:</strong></p>
-                    <ul>
-                        <li>Use hardware security keys (FIDO2/U2F) instead of passwords</li>
-                        <li>Enable Windows Credential Guard</li>
-                        <li>Implement USB device whitelisting</li>
-                        <li>Use password managers with browser integration</li>
-                        <li>Regular security awareness training</li>
-                    </ul>
-                </div>
-
-                <h3>Data Exfiltration Methods</h3>
-                <p>
-                    BadUSB can exfiltrate data in several ways:
-                </p>
-                <ul>
-                    <li><strong>Cloud Upload:</strong> Upload files to attacker-controlled cloud storage</li>
-                    <li><strong>Email:</strong> Send data via webmail or SMTP</li>
-                    <li><strong>DNS Tunneling:</strong> Encode data in DNS queries</li>
-                    <li><strong>Web Request:</strong> POST data to attacker server</li>
-                    <li><strong>Physical Copy:</strong> Copy data to Flipper's SD card (if mounted as storage)</li>
-                </ul>
-
-                <div class="info-box">
-                    <h3>💡 Detection Methods</h3>
-                    <p>How to detect BadUSB attacks:</p>
-                    <ul>
-                        <li><strong>EDR Software:</strong> Detects rapid command execution patterns</li>
-                        <li><strong>USB Monitoring:</strong> Logs all USB device connections</li>
-                        <li><strong>Command Logging:</strong> Track PowerShell/CMD/Terminal execution</li>
-                        <li><strong>Network Monitoring:</strong> Detect unusual outbound connections</li>
-                        <li><strong>Behavioral Analysis:</strong> AI/ML detects abnormal user behavior</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Exercise 2 -->
-            <div class="exercise-box">
-                <h3>🔧 Hands-On Exercise 2: Multi-Stage Payload</h3>
-                <p><strong>Time:</strong> 20 minutes | <strong>Difficulty:</strong> Intermediate</p>
-                <p>
-                    Create a multi-stage script that performs multiple actions in sequence.
-                </p>
-                <ol class="exercise-steps">
-                    <li>Design a script that opens a text editor</li>
-                    <li>Types system information (OS version, username, date/time)</li>
-                    <li>Saves the file to a specific location</li>
-                    <li>Opens the file location in file explorer</li>
-                    <li>Add appropriate delays between each stage</li>
-                    <li>Test on your system and debug any timing issues</li>
-                    <li>Optimize delays to be as fast as possible while remaining reliable</li>
-                    <li>Document the minimum safe delays for each action</li>
-                </ol>
-                <div style="margin-top: 1.5rem;">
-                    <button class="btn-complete" onclick="completeExercise(2)">Mark Exercise Complete</button>
-                </div>
-            </div>
-
-            <!-- Break Reminder 2 -->
-            <div class="break-reminder">
-                <h3>⏸️ Break Point #2</h3>
-                <p>Great work! You've learned advanced BadUSB techniques. Time for a break!</p>
-                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5-10 minutes to:</p>
-                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
-                    <li>💧 Drink water</li>
-                    <li>🚶 Walk around</li>
-                    <li>🧠 Consider how you'd defend against these attacks</li>
-                </ul>
-                <div class="break-timer" id="break-timer-2">5:00</div>
-                <div class="break-controls">
-                    <button class="btn-break" onclick="startBreakTimer2()">Start 5-Min Break</button>
-                    <button class="btn-break secondary" onclick="skipBreak2()">Skip Break</button>
-                </div>
-            </div>
-
-            <!-- Real-World Attack Scenarios -->
-            <section class="content-section">
-                <h2>Real-World Attack Scenarios</h2>
-                <p>
-                    Understanding real-world attack scenarios helps security professionals better defend against them.
-                </p>
-
-                <div class="attack-grid">
-                    <div class="attack-card">
-                        <h4>Scenario 1: Physical Intrusion</h4>
-                        <p><strong>Attack:</strong> Attacker gains brief physical access to target's computer</p>
-                        <p><strong>Payload:</strong> Install backdoor in under 30 seconds</p>
-                        <p><strong>Defense:</strong> Lock screen when away, USB port locks, security cameras</p>
-                    </div>
-
-                    <div class="attack-card">
-                        <h4>Scenario 2: Social Engineering</h4>
-                        <p><strong>Attack:</strong> "IT support" hands target a "driver updater" USB</p>
-                        <p><strong>Payload:</strong> User willingly plugs in malicious device</p>
-                        <p><strong>Defense:</strong> User training, IT-only USB policy, verification procedures</p>
-                    </div>
-
-                    <div class="attack-card">
-                        <h4>Scenario 3: Supply Chain</h4>
-                        <p><strong>Attack:</strong> Compromised USB keyboard contains BadUSB chip</p>
-                        <p><strong>Payload:</strong> Periodic data exfiltration over months</p>
-                        <p><strong>Defense:</strong> Trusted suppliers only, hardware inspection, anomaly detection</p>
-                    </div>
-
-                    <div class="attack-card">
-                        <h4>Scenario 4: Dropped USB</h4>
-                        <p><strong>Attack:</strong> Attacker leaves "lost" USB in parking lot</p>
-                        <p><strong>Payload:</strong> Curious employee plugs it in to identify owner</p>
-                        <p><strong>Defense:</strong> User training, USB policies, technical controls</p>
-                    </div>
-
-                    <div class="attack-card">
-                        <h4>Scenario 5: Charging Station</h4>
-                        <p><strong>Attack:</strong> Public USB charging station is compromised</p>
-                        <p><strong>Payload:</strong> Data theft from connected phones/devices</p>
-                        <p><strong>Defense:</strong> Use AC adapters, USB data blockers, power-only cables</p>
-                    </div>
-
-                    <div class="attack-card">
-                        <h4>Scenario 6: Insider Threat</h4>
-                        <p><strong>Attack:</strong> Malicious employee uses BadUSB device</p>
-                        <p><strong>Payload:</strong> Steal data or sabotage systems before leaving</p>
-                        <p><strong>Defense:</strong> Monitoring, least privilege, exit interviews, USB logging</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Defense Strategies -->
-            <section class="content-section">
-                <h2>Defending Against BadUSB</h2>
-                <p>
-                    As a security professional, your job is to help organizations defend against these threats. Here's a comprehensive defense strategy.
-                </p>
-
-                <h3>Technical Controls</h3>
-                <ul>
-                    <li>
-                        <strong>USB Device Whitelisting:</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Only allow approved USB devices by hardware ID</li>
-                            <li>Block HID devices except known keyboards/mice</li>
-                            <li>Use Windows Defender Application Control or similar</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Endpoint Detection and Response (EDR):</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Monitor for rapid command execution</li>
-                            <li>Detect PowerShell/CMD anomalies</li>
-                            <li>Alert on suspicious process creation</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>USB Port Management:</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Physically disable unused ports with epoxy/locks</li>
-                            <li>Configure BIOS to disable USB ports</li>
-                            <li>Use USB port blockers for authorized devices</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Privilege Management:</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Users run with standard (not admin) privileges</li>
-                            <li>Require UAC prompts for elevated actions</li>
-                            <li>Just-in-time admin access for IT staff</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Script Execution Policies:</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>PowerShell Constrained Language Mode</li>
-                            <li>Require script signing</li>
-                            <li>Block execution from user-writable directories</li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <h3>Procedural Controls</h3>
-                <ul>
-                    <li><strong>Security Awareness Training:</strong> Educate users about USB threats</li>
-                    <li><strong>Clear Desk Policy:</strong> Lock computers when away</li>
-                    <li><strong>USB Policy:</strong> Document what USB devices are allowed</li>
-                    <li><strong>Incident Response:</strong> Procedures for suspected USB attacks</li>
-                    <li><strong>Regular Audits:</strong> Review USB device logs and user compliance</li>
-                </ul>
-
-                <h3>Physical Controls</h3>
-                <ul>
-                    <li><strong>Access Control:</strong> Limit who can physically access computers</li>
-                    <li><strong>Security Cameras:</strong> Monitor sensitive areas</li>
-                    <li><strong>Screen Privacy:</strong> Position monitors away from public view</li>
-                    <li><strong>Reception Security:</strong> Verify visitors and contractors</li>
-                </ul>
-
-                <div class="info-box success">
-                    <h3>✅ Defense-in-Depth Strategy</h3>
-                    <p>No single control is perfect. Implement multiple layers:</p>
-                    <ul>
-                        <li><strong>Layer 1:</strong> Physical security (prevent access)</li>
-                        <li><strong>Layer 2:</strong> USB device control (prevent connection)</li>
-                        <li><strong>Layer 3:</strong> EDR monitoring (detect execution)</li>
-                        <li><strong>Layer 4:</strong> Privilege management (limit damage)</li>
-                        <li><strong>Layer 5:</strong> User awareness (recognize attacks)</li>
-                        <li><strong>Layer 6:</strong> Incident response (quick containment)</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Red Team Usage -->
-            <section class="content-section">
-                <h2>BadUSB in Red Team Assessments</h2>
-                <p>
-                    For security professionals conducting authorized Red Team engagements, BadUSB is a valuable tool for testing physical security and user awareness.
-                </p>
-
-                <h3>Assessment Planning</h3>
-                <ol>
-                    <li>
-                        <strong>Scope Definition:</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Document authorized targets and systems</li>
-                            <li>Define what actions are permitted</li>
-                            <li>Establish communication protocols</li>
-                            <li>Set boundaries (what's off-limits)</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Payload Development:</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Create non-destructive test payloads</li>
-                            <li>Establish command and control (C2) safely</li>
-                            <li>Include kill switches for emergency stop</li>
-                            <li>Test extensively in lab environment</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Execution:</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Document every action taken</li>
-                            <li>Take photos/videos of physical access</li>
-                            <li>Note time, location, and method used</li>
-                            <li>Collect evidence of compromise</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Reporting:</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Detail vulnerabilities exploited</li>
-                            <li>Provide specific remediation recommendations</li>
-                            <li>Include evidence and demonstrations</li>
-                            <li>Rate findings by severity and exploitability</li>
-                        </ul>
-                    </li>
-                </ol>
-
-                <h3>Ethical Considerations</h3>
-                <div class="info-box warning">
-                    <h3>⚠️ Red Team Ethics</h3>
-                    <ul>
-                        <li><strong>Stay in scope:</strong> Never exceed authorized targets</li>
-                        <li><strong>Minimize impact:</strong> Avoid disrupting business operations</li>
-                        <li><strong>Protect data:</strong> Don't access or exfiltrate real sensitive data</li>
-                        <li><strong>Document everything:</strong> Maintain detailed logs of all actions</li>
-                        <li><strong>Report immediately:</strong> Critical findings should be reported ASAP</li>
-                        <li><strong>Clean up:</strong> Remove all backdoors and artifacts after assessment</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Exercise 3 -->
-            <div class="exercise-box">
-                <h3>🔧 Hands-On Exercise 3: Design a Security Assessment</h3>
-                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Advanced</p>
-                <p>
-                    Plan a hypothetical BadUSB security assessment for your organization (or a fictional company).
-                </p>
-                <ol class="exercise-steps">
-                    <li>Define the assessment scope and objectives</li>
-                    <li>Identify target systems and user groups</li>
-                    <li>Design 3 different BadUSB attack scenarios to test</li>
-                    <li>List the defenses you would expect to encounter</li>
-                    <li>Plan how to safely demonstrate vulnerabilities</li>
-                    <li>Outline your reporting structure</li>
-                    <li>Identify metrics for measuring security posture</li>
-                    <li>Create a timeline for the assessment</li>
-                    <li>Document ethical boundaries and limitations</li>
-                </ol>
-                <div style="margin-top: 1.5rem;">
-                    <button class="btn-complete" onclick="completeExercise(3)">Mark Exercise Complete</button>
-                </div>
-            </div>
-
-            <!-- Best Practices -->
-            <section class="content-section">
-                <h2>Best Practices for BadUSB Testing</h2>
-                <p>
-                    Whether you're testing your own systems or conducting professional assessments, follow these best practices.
-                </p>
-
-                <h3>Script Development</h3>
-                <ul>
-                    <li><strong>Test extensively:</strong> Run scripts dozens of times in controlled environment</li>
-                    <li><strong>Account for failures:</strong> Handle unexpected dialogs or prompts</li>
-                    <li><strong>Make scripts resilient:</strong> Use multiple methods to achieve goals</li>
-                    <li><strong>Keep payloads small:</strong> Shorter scripts are more reliable</li>
-                    <li><strong>Document thoroughly:</strong> Comment every section and assumption</li>
-                </ul>
-
-                <h3>Safety Measures</h3>
-                <ul>
-                    <li><strong>Virtual machines:</strong> Test on VMs before physical systems</li>
-                    <li><strong>Backups:</strong> Ensure target systems are backed up</li>
-                    <li><strong>Rollback plan:</strong> Know how to undo any changes made</li>
-                    <li><strong>Kill switch:</strong> Have emergency stop capability</li>
-                    <li><strong>Supervision:</strong> Never leave running scripts unattended</li>
-                </ul>
-
-                <h3>Legal Protection</h3>
-                <ul>
-                    <li><strong>Written authorization:</strong> Always get signed approval</li>
-                    <li><strong>Scope document:</strong> Clearly define what's allowed</li>
-                    <li><strong>Liability coverage:</strong> Ensure proper insurance</li>
-                    <li><strong>NDA compliance:</strong> Protect client information</li>
-                    <li><strong>Evidence handling:</strong> Follow proper chain of custody</li>
-                </ul>
-
-                <div class="info-box success">
-                    <h3>✅ Professional Standards</h3>
-                    <ul>
-                        <li>Follow industry certifications (OSCP, CEH, GPEN, etc.)</li>
-                        <li>Adhere to professional codes of ethics</li>
-                        <li>Maintain client confidentiality</li>
-                        <li>Provide actionable, helpful recommendations</li>
-                        <li>Continue education and skill development</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Lesson Summary -->
-            <section class="content-section">
-                <h2>Lesson Summary</h2>
-                <p>
-                    Excellent work! You've completed an advanced lesson on BadUSB attacks. This is powerful knowledge—use it responsibly.
-                </p>
-
-                <div class="info-box success">
-                    <h3>✅ Key Takeaways</h3>
-                    <ul>
-                        <li>BadUSB exploits the inherent trust computers place in keyboards</li>
-                        <li>DuckyScript provides a simple language for writing keystroke injection payloads</li>
-                        <li>Scripts must account for platform differences and system variability</li>
-                        <li>Defense requires multiple layers of technical, procedural, and physical controls</li>
-                        <li>EDR software is effective at detecting rapid automated command execution</li>
-                        <li>USB device whitelisting is one of the strongest technical defenses</li>
-                        <li>User awareness training is critical for preventing social engineering attacks</li>
-                        <li>Professional assessments require thorough documentation and ethical conduct</li>
-                    </ul>
-                </div>
-
-                <h3>Skills You've Developed</h3>
-                <ul>
-                    <li>✓ Understanding USB HID protocol and BadUSB attack methodology</li>
-                    <li>✓ Writing DuckyScript payloads for different operating systems</li>
-                    <li>✓ Testing and debugging BadUSB scripts</li>
-                    <li>✓ Designing multi-stage attack scenarios</li>
-                    <li>✓ Implementing comprehensive BadUSB defenses</li>
-                    <li>✓ Planning professional security assessments</li>
-                    <li>✓ Understanding ethical and legal considerations</li>
-                    <li>✓ Applying defense-in-depth security principles</li>
-                </ul>
-
-                <h3>What's Next?</h3>
-                <p>
-                    In <strong>Lesson 6: GPIO & Hardware Interfacing</strong>, you'll learn how to:
-                </p>
-                <ul>
-                    <li>Understand GPIO pins and digital communication protocols</li>
-                    <li>Interface with UART, SPI, and I2C devices</li>
-                    <li>Debug hardware communication issues</li>
-                    <li>Read firmware from chips and devices</li>
-                    <li>Build custom hardware projects with Flipper</li>
-                    <li>Conduct hardware security assessments</li>
-                </ul>
-            </section>
-
-            <!-- Completion -->
-            <div class="info-box success">
-                <h3>🎉 Lesson Complete!</h3>
-                <p>
-                    You've earned <strong>50 XP</strong> for completing this lesson. Your progress has been saved automatically.
-                </p>
-                <p style="margin-top: 1rem;">
-                    Ready for the final lesson on hardware interfacing? Continue to Lesson 6!
-                </p>
-            </div>
-        </article>
-
-        <!-- Navigation -->
-        <nav class="lesson-navigation">
-            <a href="lesson-4.html" class="nav-btn secondary">
-                ← Previous: Infrared Control
-            </a>
-            <a href="lesson-6.html" class="nav-btn primary">
-                Next: GPIO & Hardware →
-            </a>
-        </nav>
-    </div>
-
-    <script>
-        let currentProgress = 0;
-        let exercisesCompleted = [false, false, false];
-
-        function updateProgress() {
-            currentProgress = Math.min(100, (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
-            document.getElementById('progress-fill').style.width = currentProgress + '%';
-            document.getElementById('progress-percent').textContent = Math.round(currentProgress);
-            localStorage.setItem('flipper-lesson-5-progress', currentProgress);
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Storage configuration - syncs with course overview
+    const COURSE_STORAGE_KEY = 'flipper-zero-course';
+    const LESSON_ID = 5;
+
+    // Progress tracking functions
+    async function loadProgress() {
+      try {
+        const result = await window.storage.get(COURSE_STORAGE_KEY);
+        return result ? JSON.parse(result.value) : { completed: [] };
+      } catch (error) {
+        return { completed: [] };
+      }
+    }
+
+    async function saveProgress(progress) {
+      try {
+        await window.storage.set(COURSE_STORAGE_KEY, JSON.stringify(progress));
+        return true;
+      } catch (error) {
+        console.error('Failed to save progress:', error);
+        return false;
+      }
+    }
+
+    async function markComplete() {
+      const btn = document.getElementById('completeBtn');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      const progress = await loadProgress();
+      
+      if (!progress.completed.includes(LESSON_ID)) {
+        progress.completed.push(LESSON_ID);
+        const saved = await saveProgress(progress);
+        
+        if (saved) {
+          btn.textContent = '✓ Lesson Complete!';
+          btn.style.background = 'var(--accent)';
+          setTimeout(() => {
+            window.location.href = '../lesson-6/';
+          }, 1500);
+        } else {
+          btn.textContent = 'Error - Try Again';
+          btn.disabled = false;
         }
+      } else {
+        btn.textContent = '✓ Already Complete';
+      }
+    }
 
-        window.addEventListener('scroll', updateProgress);
+    // Check if already completed
+    async function checkCompletion() {
+      const progress = await loadProgress();
+      if (progress.completed.includes(LESSON_ID)) {
+        const btn = document.getElementById('completeBtn');
+        btn.textContent = '✓ Completed';
+        btn.style.background = 'var(--border)';
+      }
+    }
 
-        function completeExercise(exerciseNum) {
-            exercisesCompleted[exerciseNum - 1] = true;
-            const btn = event.target;
-            btn.classList.add('completed');
-            btn.textContent = '✓ Exercise Completed!';
-            btn.disabled = true;
-            localStorage.setItem(`flipper-lesson-5-exercise-${exerciseNum}`, 'true');
-            
-            if (exercisesCompleted.every(e => e)) {
-                localStorage.setItem('flipper-lesson-5-complete', 'true');
-            }
-        }
+    // Accessibility functions
+    function changeFontSize(size) {
+      document.body.className = document.body.className.replace(/font-\w+/g, '');
+      if (size !== 'normal') {
+        document.body.classList.add('font-' + size);
+      }
+      localStorage.setItem('fontSize', size);
+    }
 
-        let breakInterval, breakInterval2;
-        let breakTimeRemaining = 300;
-        let breakTimeRemaining2 = 300;
+    function toggleContrast() {
+      document.body.classList.toggle('high-contrast');
+      localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
+    }
 
-        function startBreakTimer() {
-            breakTimeRemaining = 300;
-            const timerDisplay = document.getElementById('break-timer');
-            const startBtn = event.target;
-            startBtn.disabled = true;
-            startBtn.textContent = 'Break in Progress...';
-            
-            breakInterval = setInterval(() => {
-                breakTimeRemaining--;
-                const minutes = Math.floor(breakTimeRemaining / 60);
-                const seconds = breakTimeRemaining % 60;
-                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (breakTimeRemaining <= 0) {
-                    clearInterval(breakInterval);
-                    timerDisplay.textContent = 'Break Complete! ✓';
-                    startBtn.disabled = false;
-                    startBtn.textContent = 'Start Another Break';
-                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
-                }
-            }, 1000);
-        }
+    function loadA11yPreferences() {
+      const fontSize = localStorage.getItem('fontSize');
+      if (fontSize && fontSize !== 'normal') {
+        document.body.classList.add('font-' + fontSize);
+      }
 
-        function skipBreak() {
-            if (breakInterval) clearInterval(breakInterval);
-            document.getElementById('break-timer').textContent = '5:00';
-        }
+      const highContrast = localStorage.getItem('highContrast') === 'true';
+      if (highContrast) {
+        document.body.classList.add('high-contrast');
+      }
+    }
 
-        function startBreakTimer2() {
-            breakTimeRemaining2 = 300;
-            const timerDisplay = document.getElementById('break-timer-2');
-            const startBtn = event.target;
-            startBtn.disabled = true;
-            startBtn.textContent = 'Break in Progress...';
-            
-            breakInterval2 = setInterval(() => {
-                breakTimeRemaining2--;
-                const minutes = Math.floor(breakTimeRemaining2 / 60);
-                const seconds = breakTimeRemaining2 % 60;
-                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (breakTimeRemaining2 <= 0) {
-                    clearInterval(breakInterval2);
-                    timerDisplay.textContent = 'Break Complete! ✓';
-                    startBtn.disabled = false;
-                    startBtn.textContent = 'Start Another Break';
-                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
-                }
-            }, 1000);
-        }
-
-        function skipBreak2() {
-            if (breakInterval2) clearInterval(breakInterval2);
-            document.getElementById('break-timer-2').textContent = '5:00';
-        }
-
-        let fontSize = 16;
-        const minFontSize = 12;
-        const maxFontSize = 24;
-
-        function adjustFontSize(change) {
-            fontSize += change * 2;
-            fontSize = Math.max(minFontSize, Math.min(maxFontSize, fontSize));
-            document.documentElement.style.fontSize = fontSize + 'px';
-            localStorage.setItem('fontSize', fontSize);
-        }
-
-        function toggleDyslexiaMode() {
-            document.body.classList.toggle('dyslexia-friendly');
-            localStorage.setItem('dyslexiaMode', document.body.classList.contains('dyslexia-friendly'));
-        }
-
-        function toggleHighContrast() {
-            document.body.classList.toggle('high-contrast');
-            localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
-        }
-
-        function toggleReducedMotion() {
-            document.body.classList.toggle('reduce-motion');
-            localStorage.setItem('reducedMotion', document.body.classList.contains('reduce-motion'));
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedFontSize = localStorage.getItem('fontSize');
-            if (savedFontSize) {
-                fontSize = parseInt(savedFontSize);
-                document.documentElement.style.fontSize = fontSize + 'px';
-            }
-
-            if (localStorage.getItem('dyslexiaMode') === 'true') {
-                document.body.classList.add('dyslexia-friendly');
-            }
-            if (localStorage.getItem('highContrast') === 'true') {
-                document.body.classList.add('high-contrast');
-            }
-            if (localStorage.getItem('reducedMotion') === 'true') {
-                document.body.classList.add('reduce-motion');
-            }
-
-            for (let i = 1; i <= 3; i++) {
-                if (localStorage.getItem(`flipper-lesson-5-exercise-${i}`) === 'true') {
-                    exercisesCompleted[i - 1] = true;
-                    const exercises = document.querySelectorAll('.exercise-box');
-                    if (exercises[i - 1]) {
-                        const btn = exercises[i - 1].querySelector('.btn-complete');
-                        if (btn) {
-                            btn.classList.add('completed');
-                            btn.textContent = '✓ Exercise Completed!';
-                            btn.disabled = true;
-                        }
-                    }
-                }
-            }
-
-            const savedProgress = localStorage.getItem('flipper-lesson-5-progress');
-            if (savedProgress) {
-                currentProgress = parseFloat(savedProgress);
-                document.getElementById('progress-fill').style.width = currentProgress + '%';
-                document.getElementById('progress-percent').textContent = Math.round(currentProgress);
-            }
-        });
-
-        window.addEventListener('beforeunload', () => {
-            if (breakInterval) clearInterval(breakInterval);
-            if (breakInterval2) clearInterval(breakInterval2);
-        });
-    </script>
+    // Initialize
+    loadA11yPreferences();
+    checkCompletion();
+  </script>
 </body>
 </html>
