@@ -1,1650 +1,693 @@
-<h3>💡 125 kHz Reading Tips</h3>
-                    <ul>
-                        <li>The antenna is on the back of the Flipper—place cards there, not on the screen</li>
-                        <li>Keep the card flat and still during reading</li>
-                        <li>Thick cards may need to be pressed firmly against the Flipper</li>
-                        <li>Some cards have the chip offset—try different positions</li>
-                        <li>If it doesn't read, the card might be 13.56 MHz instead</li>
-                    </ul>
-                </div>
-
-                <h3>Reading 13.56 MHz NFC Cards</h3>
-                <ol>
-                    <li>Navigate to <strong>NFC</strong> from the main menu</li>
-                    <li>Select <strong>Read Card</strong></li>
-                    <li>Place the card on the back of the Flipper</li>
-                    <li>Flipper will detect the card type automatically</li>
-                    <li>Review the information displayed (UID, type, capacity)</li>
-                    <li>For writable cards, you may see additional data</li>
-                    <li>Save the card for later use or emulation</li>
-                </ol>
-
-                <h3>Understanding Card Information</h3>
-                <p>
-                    When you read a card, the Flipper displays several important pieces of information:
-                </p>
-                <ul>
-                    <li><strong>UID (Unique Identifier):</strong> The card's serial number, usually 4 or 7 bytes</li>
-                    <li><strong>Card Type:</strong> MIFARE Classic, NTAG, EM4100, etc.</li>
-                    <li><strong>Capacity:</strong> For memory cards, how much data they can store</li>
-                    <li><strong>SAK/ATQA:</strong> Technical identifiers that reveal card capabilities</li>
-                    <li><strong>Sectors:</strong> For MIFARE Classic, the number of data sectors</li>
-                </ul>
-
-                <div class="info-box warning">
-                    <h3>⚠️ What You Can and Can't Read</h3>
-                    <p><strong>Can Read:</strong></p>
-                    <ul>
-                        <li>Card UID and basic information</li>
-                        <li>Card type and manufacturer data</li>
-                        <li>Unencrypted memory areas</li>
-                        <li>Public data on transit cards</li>
-                    </ul>
-                    <p style="margin-top: 1rem;"><strong>Cannot Read:</strong></p>
-                    <ul>
-                        <li>Encrypted sectors without keys</li>
-                        <li>Payment card account numbers (CVV, etc.)</li>
-                        <li>DESFire secure applications</li>
-                        <li>Protected authentication tokens</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Exercise 1 -->
-            <div class="exercise-box">
-                <h3>🔧 Hands-On Exercise 1: Read and Identify Cards</h3>
-                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Beginner</p>
-                <p>
-                    <strong>Requirements:</strong> 2-3 different access cards or NFC tags you own (hotel key, office badge, transit card, etc.)
-                </p>
-                <ol class="exercise-steps">
-                    <li>Gather several different cards you own or have permission to test</li>
-                    <li>Try reading each card with both 125 kHz RFID and NFC menus</li>
-                    <li>Document which frequency each card uses</li>
-                    <li>Record the card type identified by Flipper</li>
-                    <li>Note the UID length (4 bytes, 7 bytes, etc.)</li>
-                    <li>Save each card with a descriptive name</li>
-                    <li>Create a simple inventory of your cards with their properties</li>
-                    <li>Try reading through a wallet or card holder to test range</li>
-                </ol>
-                <div style="margin-top: 1.5rem;">
-                    <button class="btn-complete" onclick="completeExercise(1)">Mark Exercise Complete</button>
-                </div>
-            </div>
-
-            <!-- Cloning Cards -->
-            <section class="content-section">
-                <h2>Cloning and Emulation</h2>
-                <p>
-                    Once you've read a card, you can clone it to a writable card or emulate it directly from your Flipper. This is useful for legitimate purposes like backing up your access cards or testing system vulnerabilities.
-                </p>
-
-                <h3>Cloning to Physical Cards</h3>
-                <p>
-                    To create a physical copy, you'll need blank writable cards:
-                </p>
-                <ul>
-                    <li><strong>For 125 kHz:</strong> T5577 writable cards (cheap, ~$1 each)</li>
-                    <li><strong>For 13.56 MHz:</strong> MIFARE Classic writable cards or NTAG tags</li>
-                    <li>Purchase from electronics suppliers or online retailers</li>
-                    <li>Verify compatibility with your reader system</li>
-                </ul>
-
-                <h3>Cloning Process (125 kHz)</h3>
-                <ol>
-                    <li>Read the source card and save it</li>
-                    <li>Navigate to <strong>125 kHz RFID → Saved</strong></li>
-                    <li>Select your saved card</li>
-                    <li>Choose <strong>Write</strong></li>
-                    <li>Place a blank T5577 card on the Flipper</li>
-                    <li>Confirm the write operation</li>
-                    <li>Test the cloned card with the original reader</li>
-                </ol>
-
-                <h3>Cloning Process (13.56 MHz MIFARE Classic)</h3>
-                <ol>
-                    <li>Read the card (may require key attack for encrypted sectors)</li>
-                    <li>Navigate to <strong>NFC → Saved</strong></li>
-                    <li>Select your saved card</li>
-                    <li>Choose <strong>Write</strong></li>
-                    <li>Place a blank MIFARE Classic card on the Flipper</li>
-                    <li>Wait for the write to complete (takes longer than 125 kHz)</li>
-                    <li>Verify the clone works</li>
-                </ol>
-
-                <div class="info-box">
-                    <h3>💡 UID vs Full Clone</h3>
-                    <p>There are two types of clones:</p>
-                    <ul>
-                        <li><strong>UID Clone:</strong> Copies only the card ID. Works on systems that only check the UID.</li>
-                        <li><strong>Full Clone:</strong> Copies UID and all accessible data. Required for systems that read card contents.</li>
-                    </ul>
-                    <p style="margin-top: 0.75rem;">
-                        Simple access systems often only check the UID, making UID clones sufficient. More sophisticated systems require full clones.
-                    </p>
-                </div>
-
-                <h3>Direct Emulation (No Physical Card Needed)</h3>
-                <p>
-                    One of the Flipper's most powerful features is the ability to emulate cards directly without creating a physical clone:
-                </p>
-                <ol>
-                    <li>Read and save a card</li>
-                    <li>Navigate to <strong>Saved</strong> in the appropriate menu</li>
-                    <li>Select your card</li>
-                    <li>Choose <strong>Emulate</strong></li>
-                    <li>Hold the Flipper up to the reader like a card</li>
-                    <li>The Flipper transmits the card data wirelessly</li>
-                </ol>
-
-                <div class="info-box success">
-                    <h3>✅ Emulation Advantages</h3>
-                    <ul>
-                        <li>No need to buy blank cards</li>
-                        <li>Store unlimited cards on one device</li>
-                        <li>Quick switching between different cards</li>
-                        <li>Can't lose or damage the card</li>
-                        <li>Perfect for testing and demonstrations</li>
-                    </ul>
-                </div>
-
-                <div class="info-box warning">
-                    <h3>⚠️ Emulation Limitations</h3>
-                    <ul>
-                        <li>Some readers detect emulation and reject it</li>
-                        <li>Requires the Flipper to be powered on</li>
-                        <li>More obvious than using a physical card</li>
-                        <li>May not work with very high-security readers</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Exercise 2 -->
-            <div class="exercise-box">
-                <h3>🔧 Hands-On Exercise 2: Emulate a Card</h3>
-                <p><strong>Time:</strong> 10 minutes | <strong>Difficulty:</strong> Beginner</p>
-                <p>
-                    Practice emulating a saved card to understand how it works.
-                </p>
-                <ol class="exercise-steps">
-                    <li>Select one of the cards you saved in Exercise 1</li>
-                    <li>Navigate to the Saved menu and find your card</li>
-                    <li>Choose "Emulate" to start emulation mode</li>
-                    <li>Hold the Flipper up to the original reader (if available)</li>
-                    <li>Test if the emulation works as expected</li>
-                    <li>Try different positions and angles to find optimal placement</li>
-                    <li>Note any differences between using the physical card and emulation</li>
-                    <li>Document your success rate and observations</li>
-                </ol>
-                <div style="margin-top: 1.5rem;">
-                    <button class="btn-complete" onclick="completeExercise(2)">Mark Exercise Complete</button>
-                </div>
-            </div>
-
-            <!-- Break Reminder 2 -->
-            <div class="break-reminder">
-                <h3>⏸️ Break Point #2</h3>
-                <p>Great progress! You've learned how to read, clone, and emulate cards. Time for another break.</p>
-                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5-10 minutes to:</p>
-                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
-                    <li>💧 Drink water</li>
-                    <li>🚶 Walk around</li>
-                    <li>🧠 Think about card security in your daily life</li>
-                </ul>
-                <div class="break-timer" id="break-timer-2">5:00</div>
-                <div class="break-controls">
-                    <button class="btn-break" onclick="startBreakTimer2()">Start 5-Min Break</button>
-                    <button class="btn-break secondary" onclick="skipBreak2()">Skip Break</button>
-                </div>
-            </div>
-
-            <!-- MIFARE Classic Attacks -->
-            <section class="content-section">
-                <h2>MIFARE Classic Security Testing</h2>
-                <p>
-                    MIFARE Classic is one of the most widely deployed contactless card technologies, but it has known cryptographic weaknesses. Understanding these vulnerabilities is essential for security professionals.
-                </p>
-
-                <h3>MIFARE Classic Structure</h3>
-                <p>
-                    MIFARE Classic cards are organized into sectors and blocks:
-                </p>
-                <ul>
-                    <li><strong>1K cards:</strong> 16 sectors, each with 4 blocks (64 blocks total)</li>
-                    <li><strong>4K cards:</strong> 40 sectors with varying block counts (256 blocks total)</li>
-                    <li>Each block stores 16 bytes of data</li>
-                    <li>Each sector is protected by two keys: Key A and Key B</li>
-                    <li>Keys control read/write access to the sector</li>
-                </ul>
-
-                <h3>Default Keys</h3>
-                <p>
-                    Many MIFARE Classic deployments use default or common keys. The Flipper has a dictionary of known keys:
-                </p>
-                <ul>
-                    <li><strong>FFFFFFFFFFFF</strong> (most common default)</li>
-                    <li><strong>A0A1A2A3A4A5</strong> (transport configuration)</li>
-                    <li><strong>000000000000</strong> (sometimes used)</li>
-                    <li>Manufacturer-specific defaults</li>
-                    <li>Industry-specific common keys</li>
-                </ul>
-
-                <h3>Dictionary Attack</h3>
-                <p>
-                    The first attack to try against MIFARE Classic cards:
-                </p>
-                <ol>
-                    <li>Navigate to <strong>NFC → Read Card</strong></li>
-                    <li>Place the MIFARE Classic card on the Flipper</li>
-                    <li>Flipper automatically attempts dictionary attack</li>
-                    <li>Wait for the attack to complete (usually seconds)</li>
-                    <li>If successful, you'll see which sectors were unlocked</li>
-                    <li>Save the card with recovered keys</li>
-                </ol>
-
-                <div class="info-box">
-                    <h3>💡 Dictionary Attack Success Rate</h3>
-                    <p>
-                        Dictionary attacks are surprisingly effective:
-                    </p>
-                    <ul>
-                        <li>~30-40% of deployed systems use default keys</li>
-                        <li>Hotel key cards often use predictable keys</li>
-                        <li>Legacy transit systems frequently vulnerable</li>
-                        <li>Corporate access systems sometimes have default keys on low-security sectors</li>
-                    </ul>
-                </div>
-
-                <h3>Nested Attack (Advanced)</h3>
-                <p>
-                    If the dictionary attack doesn't unlock all sectors, the nested attack uses known keys to crack unknown ones:
-                </p>
-                <ul>
-                    <li>Requires at least one known key from dictionary attack</li>
-                    <li>Exploits cryptographic weakness in MIFARE authentication</li>
-                    <li>Can recover all keys if at least one is known</li>
-                    <li>Takes longer than dictionary attack (several minutes)</li>
-                </ul>
-
-                <h3>Hardnested Attack (Most Advanced)</h3>
-                <p>
-                    When no keys are known, the hardnested attack can still succeed:
-                </p>
-                <ul>
-                    <li>Works even when all keys are non-default</li>
-                    <li>Requires significant computation time</li>
-                    <li>Usually performed on a computer, not Flipper</li>
-                    <li>Demonstrates that MIFARE Classic fundamentally insecure</li>
-                </ul>
-
-                <div class="info-box warning">
-                    <h3>⚠️ The Bottom Line on MIFARE Classic</h3>
-                    <p>
-                        <strong>MIFARE Classic should not be used for high-security applications.</strong>
-                    </p>
-                    <ul>
-                        <li>The encryption algorithm (Crypto-1) is broken</li>
-                        <li>Keys can be recovered with sufficient time and tools</li>
-                        <li>Widely considered obsolete for security-critical systems</li>
-                        <li>Many organizations continue using it due to cost and inertia</li>
-                    </ul>
-                    <p style="margin-top: 0.75rem;">
-                        When assessing systems, recommend upgrading to MIFARE DESFire or other secure alternatives.
-                    </p>
-                </div>
-            </section>
-
-            <!-- Exercise 3 -->
-            <div class="exercise-box">
-                <h3>🔧 Hands-On Exercise 3: MIFARE Classic Analysis</h3>
-                <p><strong>Time:</strong> 15 minutes | <strong>Difficulty:</strong> Intermediate</p>
-                <p>
-                    <strong>Requirements:</strong> A MIFARE Classic card you own (hotel key, transit card, or purchased test card)
-                </p>
-                <ol class="exercise-steps">
-                    <li>Obtain a MIFARE Classic card you're authorized to test</li>
-                    <li>Navigate to NFC → Read Card</li>
-                    <li>Let Flipper perform automatic dictionary attack</li>
-                    <li>Review which sectors were successfully unlocked</li>
-                    <li>Document the percentage of sectors using default keys</li>
-                    <li>If any sectors remain locked, note their sector numbers</li>
-                    <li>Save the card with all recovered data</li>
-                    <li>Try emulating the card to verify it works</li>
-                    <li>Document your findings about the card's security posture</li>
-                </ol>
-                <div style="margin-top: 1.5rem;">
-                    <button class="btn-complete" onclick="completeExercise(3)">Mark Exercise Complete</button>
-                </div>
-            </div>
-
-            <!-- Security Assessment -->
-            <section class="content-section">
-                <h2>Conducting Card Security Assessments</h2>
-                <p>
-                    When authorized to assess an organization's physical access control, follow this methodology:
-                </p>
-
-                <h3>Assessment Process</h3>
-                <ol>
-                    <li>
-                        <strong>Reconnaissance</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Identify card types in use (visual inspection, vendor info)</li>
-                            <li>Determine reader types and models</li>
-                            <li>Understand the access control architecture</li>
-                            <li>Document card distribution and management processes</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Technical Testing</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Read issued cards to identify technology</li>
-                            <li>Test for default or weak keys (MIFARE Classic)</li>
-                            <li>Attempt cloning and emulation</li>
-                            <li>Test reader response to cloned cards</li>
-                            <li>Assess UID-only vs full-authentication systems</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Range Testing</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Test maximum read distance for attacks</li>
-                            <li>Assess feasibility of wallet skimming</li>
-                            <li>Document environmental factors affecting range</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Process Review</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Evaluate card issuance procedures</li>
-                            <li>Review card revocation processes</li>
-                            <li>Assess physical security of card stock</li>
-                            <li>Check for regular security updates</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 1rem;">
-                        <strong>Reporting</strong>
-                        <ul style="margin-top: 0.5rem;">
-                            <li>Document all vulnerabilities found</li>
-                            <li>Provide risk ratings and impact assessments</li>
-                            <li>Recommend specific remediation steps</li>
-                            <li>Suggest timeline for improvements</li>
-                        </ul>
-                    </li>
-                </ol>
-
-                <h3>Common Vulnerabilities to Test For</h3>
-                <div class="card-grid">
-                    <div class="card-type">
-                        <h4>UID-Only Authentication</h4>
-                        <p>System only checks the card UID, not encrypted data.</p>
-                        <p><strong>Risk:</strong> High - trivial to clone</p>
-                        <p><strong>Test:</strong> Clone UID to blank card and test access</p>
-                    </div>
-
-                    <div class="card-type">
-                        <h4>Default Encryption Keys</h4>
-                        <p>MIFARE Classic using factory-default keys.</p>
-                        <p><strong>Risk:</strong> High - keys easily recovered</p>
-                        <p><strong>Test:</strong> Dictionary attack reveals default keys</p>
-                    </div>
-
-                    <div class="card-type">
-                        <h4>No Encryption</h4>
-                        <p>125 kHz cards with no security features.</p>
-                        <p><strong>Risk:</strong> Critical - anyone can clone</p>
-                        <p><strong>Test:</strong> Simple read and write to T5577</p>
-                    </div>
-
-                    <div class="card-type">
-                        <h4>Weak Key Diversity</h4>
-                        <p>All cards in deployment use same keys.</p>
-                        <p><strong>Risk:</strong> High - one compromise affects all</p>
-                        <p><strong>Test:</strong> Compare keys across multiple cards</p>
-                    </div>
-
-                    <div class="card-type">
-                        <h4>No Card Revocation</h4>
-                        <p>Lost/stolen cards not properly deactivated.</p>
-                        <p><strong>Risk:</strong> Medium - extended exposure window</p>
-                        <p><strong>Test:</strong> Check if old cards still work</p>
-                    </div>
-
-                    <div class="card-type">
-                        <h4>Physical Security Gaps</h4>
-                        <p>Readers accessible for tampering or relay attacks.</p>
-                        <p><strong>Risk:</strong> Varies by location</p>
-                        <p><strong>Test:</strong> Physical inspection of readers</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Best Practices -->
-            <section class="content-section">
-                <h2>Security Best Practices</h2>
-                <p>
-                    When you identify vulnerabilities, provide concrete recommendations for improvement:
-                </p>
-
-                <h3>Immediate Improvements</h3>
-                <ul>
-                    <li><strong>Change default keys:</strong> If using MIFARE Classic, program unique keys</li>
-                    <li><strong>Enable full authentication:</strong> Check card data, not just UID</li>
-                    <li><strong>Implement card revocation:</strong> Deactivate lost/stolen cards promptly</li>
-                    <li><strong>Physical reader security:</strong> Install readers in tamper-resistant enclosures</li>
-                    <li><strong>Regular audits:</strong> Periodically test card security</li>
-                </ul>
-
-                <h3>Long-Term Upgrades</h3>
-                <ul>
-                    <li><strong>Migrate to secure card technology:</strong> MIFARE DESFire, iClass SE, or similar</li>
-                    <li><strong>Implement multi-factor:</strong> Combine cards with PIN codes or biometrics</li>
-                    <li><strong>Use mobile credentials:</strong> Leverage smartphone-based access</li>
-                    <li><strong>Network-based management:</strong> Real-time card activation/deactivation</li>
-                    <li><strong>Logging and monitoring:</strong> Track all access attempts</li>
-                </ul>
-
-                <div class="info-box success">
-                    <h3>✅ Recommended Card Technologies</h3>
-                    <p>For new deployments or upgrades, recommend:</p>
-                    <ul>
-                        <li><strong>MIFARE DESFire EV2/EV3:</strong> Industry standard, strong encryption</li>
-                        <li><strong>HID iClass SE:</strong> Secure, widely supported</li>
-                        <li><strong>Mobile credentials:</strong> Smartphone-based, highly secure</li>
-                        <li><strong>Smart cards with PKI:</strong> For highest security requirements</li>
-                    </ul>
-                    <p style="margin-top: 0.75rem;">
-                        Avoid: EM4100, HID Prox (125 kHz), MIFARE Classic for new deployments.
-                    </p>
-                </div>
-            </section>
-
-            <!-- Advanced Topics -->
-            <section class="content-section">
-                <h2>Advanced Topics</h2>
-                <p>
-                    For security researchers wanting to go deeper, here are advanced concepts to explore:
-                </p>
-
-                <h3>Relay Attacks</h3>
-                <p>
-                    Relay attacks extend the range of contactless cards by relaying communication between a legitimate card and a reader:
-                </p>
-                <ul>
-                    <li>Attacker places reader near victim's card (in wallet)</li>
-                    <li>Signal is relayed to accomplice at target location</li>
-                    <li>Accomplice gains access using relayed signal</li>
-                    <li>Difficult to detect and prevent</li>
-                    <li><strong>Mitigation:</strong> Distance-bounding protocols, shielded wallets</li>
-                </ul>
-
-                <h3>UID Modification</h3>
-                <p>
-                    Some writable cards allow UID modification (called "magic" cards):
-                </p>
-                <ul>
-                    <li>Can set any desired UID</li>
-                    <li>Useful for testing UID-based systems</li>
-                    <li>Some systems detect magic cards</li>
-                    <li>Available as "Chinese magic cards" or "Gen1/Gen2" cards</li>
-                </ul>
-
-                <h3>Analyzing Custom Protocols</h3>
-                <p>
-                    Organizations sometimes implement proprietary card formats:
-                </p>
-                <ul>
-                    <li>Requires reverse engineering card data structure</li>
-                    <li>Look for patterns in data across multiple cards</li>
-                    <li>Identify facility codes, user IDs, checksums</li>
-                    <li>Test variations to understand validation logic</li>
-                </ul>
-
-                <div class="info-box">
-                    <h3>💡 Learning Resources</h3>
-                    <p>To deepen your knowledge:</p>
-                    <ul>
-                        <li>Study MIFARE documentation (NXP website)</li>
-                        <li>Read academic papers on RFID security</li>
-                        <li>Explore Proxmark3 advanced capabilities</li>
-                        <li>Join RFID/NFC security communities</li>
-                        <li>Practice with dedicated test cards and readers</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Lesson Summary -->
-            <section class="content-section">
-                <h2>Lesson Summary</h2>
-                <p>
-                    Excellent work! You've completed a comprehensive introduction to NFC and RFID security. Let's review your accomplishments:
-                </p>
-
-                <div class="info-box success">
-                    <h3>✅ Key Takeaways</h3>
-                    <ul>
-                        <li>125 kHz RFID and 13.56 MHz NFC are fundamentally different technologies</li>
-                        <li>Common card types range from simple EM4100 to secure MIFARE DESFire</li>
-                        <li>Many deployed systems use weak or default security configurations</li>
-                        <li>MIFARE Classic encryption is broken and should not be used for high security</li>
-                        <li>Cards can be read, cloned, or emulated depending on their technology</li>
-                        <li>UID-only authentication is trivially bypassed</li>
-                        <li>Security assessments should follow a methodical process</li>
-                        <li>Always recommend migration to modern, secure card technologies</li>
-                    </ul>
-                </div>
-
-                <h3>Skills You've Developed</h3>
-                <ul>
-                    <li>✓ Reading and identifying different card types</li>
-                    <li>✓ Understanding card data structures and security mechanisms</li>
-                    <li>✓ Cloning cards to writable blanks</li>
-                    <li>✓ Emulating cards directly from Flipper</li>
-                    <li>✓ Performing dictionary attacks on MIFARE Classic</li>
-                    <li>✓ Conducting systematic card security assessments</li>
-                    <li>✓ Identifying common vulnerabilities</li>
-                    <li>✓ Recommending appropriate security improvements</li>
-                </ul>
-
-                <h3>What's Next?</h3>
-                <p>
-                    In <strong>Lesson 4: Infrared Control Systems</strong>, you'll learn how to:
-                </p>
-                <ul>
-                    <li>Capture and replay infrared remote controls</li>
-                    <li>Build a universal remote with your Flipper</li>
-                    <li>Understand IR protocols and encoding</li>
-                    <li>Create custom IR commands</li>
-                    <li>Test smart home device security</li>
-                    <li>Explore practical applications for IR control</li>
-                </ul>
-            </section>
-
-            <!-- Completion -->
-            <div class="info-box success">
-                <h3>🎉 Lesson Complete!</h3>
-                <p>
-                    You've earned <strong>50 XP</strong> for completing this lesson. Your progress has been saved automatically.
-                </p>
-                <p style="margin-top: 1rem;">
-                    Ready to learn about infrared hacking? Continue to Lesson 4!
-                </p>
-            </div>
-        </article>
-
-   <!-- Top Navigation -->
-<nav class="lesson-nav">
-  <a href="../../" class="nav-link">← Back to Course</a>
-  <span class="lesson-badge">LESSON 4</span>
-  <a href="../lesson-5/" class="nav-link">Next Lesson →</a>
-</nav>
-
-<!-- Bottom Navigation in Footer -->
-<div class="nav-buttons">
-  <a href="../lesson-3/" class="nav-btn">← Previous Lesson</a>
-  <a href="../../" class="nav-btn">Course Overview</a>
-  <a href="../lesson-5/" class="nav-btn">Next Lesson →</a>
-</div>
-
-<!-- JavaScript redirect (in markComplete function) -->
-window.location.href = '../lesson-5/';
-
-<!-- JavaScript constant -->
-const LESSON_ID = 4;
-                Next: Infrared Control →
-            </a>
-        </nav>
-    </div>
-
-    <script>
-        let currentProgress = 0;
-        let exercisesCompleted = [false, false, false];
-
-        function updateProgress() {
-            currentProgress = Math.min(100, (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
-            document.getElementById('progress-fill').style.width = currentProgress + '%';
-            document.getElementById('progress-percent').textContent = Math.round(currentProgress);
-            localStorage.setItem('flipper-lesson-3-progress', currentProgress);
-        }
-
-        window.addEventListener('scroll', updateProgress);
-
-        function completeExercise(exerciseNum) {
-            exercisesCompleted[exerciseNum - 1] = true;
-            const btn = event.target;
-            btn.classList.add('completed');
-            btn.textContent = '✓ Exercise Completed!';
-            btn.disabled = true;
-            localStorage.setItem(`flipper-lesson-3-exercise-${exerciseNum}`, 'true');
-            
-            if (exercisesCompleted.every(e => e)) {
-                localStorage.setItem('flipper-lesson-3-complete', 'true');
-            }
-        }
-
-        let breakInterval, breakInterval2;
-        let breakTimeRemaining = 300;
-        let breakTimeRemaining2 = 300;
-
-        function startBreakTimer() {
-            breakTimeRemaining = 300;
-            const timerDisplay = document.getElementById('break-timer');
-            const startBtn = event.target;
-            startBtn.disabled = true;
-            startBtn.textContent = 'Break in Progress...';
-            
-            breakInterval = setInterval(() => {
-                breakTimeRemaining--;
-                const minutes = Math.floor(breakTimeRemaining / 60);
-                const seconds = breakTimeRemaining % 60;
-                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (breakTimeRemaining <= 0) {
-                    clearInterval(breakInterval);
-                    timerDisplay.textContent = 'Break Complete! ✓';
-                    startBtn.disabled = false;
-                    startBtn.textContent = 'Start Another Break';
-                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
-                }
-            }, 1000);
-        }
-
-        function skipBreak() {
-            if (breakInterval) clearInterval(breakInterval);
-            document.getElementById('break-timer').textContent = '5:00';
-        }
-
-        function startBreakTimer2() {
-            breakTimeRemaining2 = 300;
-            const timerDisplay = document.getElementById('break-timer-2');
-            const startBtn = event.target;
-            startBtn.disabled = true;
-            startBtn.textContent = 'Break in Progress...';
-            
-            breakInterval2 = setInterval(() => {
-                breakTimeRemaining2--;
-                const minutes = Math.floor(breakTimeRemaining2 / 60);
-                const seconds = breakTimeRemaining2 % 60;
-                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (breakTimeRemaining2 <= 0) {
-                    clearInterval(breakInterval2);
-                    timerDisplay.textContent = 'Break Complete! ✓';
-                    startBtn.disabled = false;
-                    startBtn.textContent = 'Start Another Break';
-                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
-                }
-            }, 1000);
-        }
-
-        function skipBreak2() {
-            if (breakInterval2) clearInterval(breakInterval2);
-            document.getElementById('break-timer-2').textContent = '5:00';
-        }
-
-        let fontSize = 16;
-        const minFontSize = 12;
-        const maxFontSize = 24;
-
-        function adjustFontSize(change) {
-            fontSize += change * 2;
-            fontSize = Math.max(minFontSize, Math.min(maxFontSize, fontSize));
-            document.documentElement.style.fontSize = fontSize + 'px';
-            localStorage.setItem('fontSize', fontSize);
-        }
-
-        function toggleDyslexiaMode() {
-            document.body.classList.toggle('dyslexia-friendly');
-            localStorage.setItem('dyslexiaMode', document.body.classList.contains('dyslexia-friendly'));
-        }
-
-        function toggleHighContrast() {
-            document.body.classList.toggle('high-contrast');
-            localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
-        }
-
-        function toggleReducedMotion() {
-            document.body.classList.toggle('reduce-motion');
-            localStorage.setItem('reducedMotion', document.body.classList.contains('reduce-motion'));
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedFontSize = localStorage.getItem('fontSize');
-            if (savedFontSize) {
-                fontSize = parseInt(savedFontSize);
-                document.documentElement.style.fontSize = fontSize + 'px';
-            }
-
-            if (localStorage.getItem('dyslexiaMode') === 'true') {
-                document.body.classList.add('dyslexia-friendly');
-            }
-            if (localStorage.getItem('highContrast') === 'true') {
-                document.body.classList.add('high-contrast');
-            }
-            if (localStorage.getItem('reducedMotion') === 'true') {
-                document.body.classList.add('reduce-motion');
-            }
-
-            for (let i = 1; i <= 3; i++) {
-                if (localStorage.getItem(`flipper-lesson-3-exercise-${i}`) === 'true') {
-                    exercisesCompleted[i - 1] = true;
-                    const exercises = document.querySelectorAll('.exercise-box');
-                    if (exercises[i - 1]) {
-                        const btn = exercises[i - 1].querySelector('.btn-complete');
-                        if (btn) {
-                            btn.classList.add('completed');
-                            btn.textContent = '✓ Exercise Completed!';
-                            btn.disabled = true;
-                        }
-                    }
-                }
-            }
-
-            const savedProgress = localStorage.getItem('flipper-lesson-3-progress');
-            if (savedProgress) {
-                currentProgress = parseFloat(savedProgress);
-                document.getElementById('progress-fill').style.width = currentProgress + '%';
-                document.getElementById('progress-percent').textContent = Math.round(currentProgress);
-            }
-        });
-
-        window.addEventListener('beforeunload', () => {
-            if (breakInterval) clearInterval(breakInterval);
-            if (breakInterval2) clearInterval(breakInterval2);
-        });
-    </script>
-</body>
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 3: NFC & RFID Exploitation | Flipper Zero Course</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #0a0a0a;
-            --bg-medium: #1a1a1a;
-            --bg-light: #2a2a2a;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent: #00ff88;
-            --accent-dim: #00cc6a;
-            --border: #333333;
-            --warning: #ff6b6b;
-            --info: #4dabf7;
-            --success: #51cf66;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Atkinson Hyperlegible', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
-            padding-top: 120px;
-        }
-
-        .accessibility-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: var(--bg-medium);
-            padding: 0.75rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--border);
-            z-index: 1000;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .accessibility-controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .control-group label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .btn-control {
-            background: var(--bg-light);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .btn-control:hover {
-            background: var(--bg-dark);
-            border-color: var(--accent);
-        }
-
-        .progress-bar {
-            position: fixed;
-            top: 52px;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: var(--bg-medium);
-            border-bottom: 2px solid var(--border);
-            z-index: 999;
-            padding: 0.75rem 1rem;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .progress-text {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .xp-badge {
-            background: var(--accent);
-            color: var(--bg-dark);
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .progress-track {
-            width: 100%;
-            height: 8px;
-            background: var(--bg-light);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--accent-dim));
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .nav-breadcrumb {
-            background: var(--bg-medium);
-            padding: 1rem;
-            border-bottom: 2px solid var(--border);
-            margin-bottom: 2rem;
-        }
-
-        .breadcrumb {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            font-size: 0.9rem;
-            flex-wrap: wrap;
-        }
-
-        .breadcrumb a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            color: var(--text-secondary);
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 2rem 3rem;
-        }
-
-        .lesson-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .lesson-number {
-            color: var(--accent);
-            font-size: 1rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .lesson-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .lesson-meta {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .objectives-box {
-            background: var(--bg-medium);
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .objectives-box h2 {
-            color: var(--accent);
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .objectives-list {
-            list-style: none;
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .objectives-list li {
-            display: flex;
-            align-items: start;
-            gap: 0.75rem;
-            padding: 0.5rem;
-            background: var(--bg-light);
-            border-radius: 4px;
-        }
-
-        .objectives-list li::before {
-            content: "✓";
-            color: var(--accent);
-            font-weight: bold;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .content-section {
-            margin: 2rem 0;
-        }
-
-        .content-section h2 {
-            color: var(--accent);
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .content-section h3 {
-            color: var(--text-primary);
-            font-size: 1.4rem;
-            margin: 1.5rem 0 0.75rem;
-        }
-
-        .content-section p {
-            margin-bottom: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        .content-section ul,
-        .content-section ol {
-            margin: 1rem 0 1rem 2rem;
-            color: var(--text-secondary);
-        }
-
-        .content-section li {
-            margin: 0.5rem 0;
-        }
-
-        .info-box {
-            background: var(--bg-medium);
-            border-left: 4px solid var(--info);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-
-        .info-box.warning {
-            border-left-color: var(--warning);
-        }
-
-        .info-box.success {
-            border-left-color: var(--success);
-        }
-
-        .info-box h3 {
-            color: var(--info);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .info-box.warning h3 {
-            color: var(--warning);
-        }
-
-        .info-box.success h3 {
-            color: var(--success);
-        }
-
-        .info-box ul {
-            margin-left: 1.5rem;
-        }
-
-        .comparison-table {
-            width: 100%;
-            background: var(--bg-medium);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-            margin: 1.5rem 0;
-        }
-
-        .comparison-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .comparison-table th {
-            background: var(--bg-light);
-            color: var(--accent);
-            padding: 1rem;
-            text-align: left;
-            font-weight: bold;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .comparison-table td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-secondary);
-        }
-
-        .comparison-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .comparison-table tr:hover {
-            background: var(--bg-light);
-        }
-
-        .tech-diagram {
-            background: var(--bg-medium);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .card-type {
-            background: var(--bg-light);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.5rem;
-        }
-
-        .card-type h4 {
-            color: var(--accent);
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
-        }
-
-        .card-type p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin: 0.5rem 0;
-        }
-
-        .card-type ul {
-            margin: 0.5rem 0 0 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .exercise-box {
-            background: var(--bg-medium);
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .exercise-box h3 {
-            color: var(--accent);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .exercise-steps {
-            counter-reset: step-counter;
-            list-style: none;
-        }
-
-        .exercise-steps li {
-            counter-increment: step-counter;
-            margin: 1rem 0;
-            padding-left: 3rem;
-            position: relative;
-        }
-
-        .exercise-steps li::before {
-            content: counter(step-counter);
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: var(--accent);
-            color: var(--bg-dark);
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .btn-complete {
-            background: var(--accent);
-            color: var(--bg-dark);
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-
-        .btn-complete:hover {
-            background: var(--accent-dim);
-            transform: scale(1.02);
-        }
-
-        .btn-complete.completed {
-            background: var(--success);
-        }
-
-        .break-reminder {
-            background: linear-gradient(135deg, var(--bg-medium), var(--bg-light));
-            border: 2px solid var(--warning);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 3rem 0;
-            text-align: center;
-        }
-
-        .break-reminder h3 {
-            color: var(--warning);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .break-reminder p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .break-timer {
-            font-size: 3rem;
-            color: var(--accent);
-            font-weight: bold;
-            margin: 1rem 0;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .break-controls {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-break {
-            background: var(--warning);
-            color: var(--bg-dark);
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-
-        .btn-break:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-
-        .btn-break.secondary {
-            background: var(--bg-light);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .code-block {
-            background: var(--bg-medium);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            overflow-x: auto;
-        }
-
-        .code-block code {
-            font-family: 'Courier New', monospace;
-            color: var(--accent);
-            font-size: 0.9rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-
-        .lesson-navigation {
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 2px solid var(--border);
-        }
-
-        .nav-btn {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-            text-decoration: none;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .nav-btn.primary {
-            background: var(--accent);
-            color: var(--bg-dark);
-            border: none;
-        }
-
-        .nav-btn.secondary {
-            background: var(--bg-medium);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .nav-btn:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding-top: 140px;
-            }
-
-            .lesson-header h1 {
-                font-size: 1.8rem;
-            }
-
-            .lesson-meta {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .card-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .lesson-navigation {
-                flex-direction: column;
-            }
-        }
-
-        body.dyslexia-friendly {
-            letter-spacing: 0.05em;
-            word-spacing: 0.1em;
-        }
-
-        body.high-contrast {
-            --bg-dark: #000000;
-            --bg-medium: #1a1a1a;
-            --border: #ffffff;
-        }
-
-        .reduce-motion * {
-            animation: none !important;
-            transition: none !important;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 3: RFID & NFC Hacking | tw¡st3d_¡nk Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --accent: #00ff88;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --border: #333;
+      --warning: #ff9500;
+    }
+
+    body {
+      font-family: 'Atkinson Hyperlegible', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.8;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Accessibility Controls */
+    .a11y-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+    }
+
+    .a11y-btn {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .a11y-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .a11y-btn:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Navigation */
+    .lesson-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .lesson-badge {
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* Header */
+    .lesson-header {
+      margin-bottom: 40px;
+    }
+
+    .lesson-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, var(--accent), #00ccff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .lesson-meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Content Sections */
+    .content-section {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+
+    .section-subtitle {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      color: var(--text-primary);
+    }
+
+    p {
+      margin-bottom: 15px;
+      color: var(--text-secondary);
+    }
+
+    /* Alert Boxes */
+    .alert {
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      border: 2px solid;
+    }
+
+    .alert-warning {
+      background: rgba(255, 149, 0, 0.1);
+      border-color: var(--warning);
+      color: var(--warning);
+    }
+
+    .alert-info {
+      background: rgba(0, 255, 136, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .alert-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 25px;
+      margin-bottom: 20px;
+      color: var(--text-secondary);
+    }
+
+    li {
+      margin-bottom: 10px;
+      line-height: 1.7;
+    }
+
+    /* Progress Footer */
+    .lesson-footer {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin-top: 40px;
+    }
+
+    .completion-section {
+      text-align: center;
+    }
+
+    .xp-reward {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .complete-btn {
+      background: var(--accent);
+      color: var(--bg-dark);
+      border: none;
+      padding: 15px 40px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .complete-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0, 255, 136, 0.4);
+    }
+
+    .complete-btn:disabled {
+      background: var(--border);
+      color: var(--text-secondary);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: var(--bg-dark);
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-btn:hover {
+      background: var(--accent);
+      color: var(--bg-dark);
+    }
+
+    /* Font Size Classes */
+    body.font-small { font-size: 14px; }
+    body.font-large { font-size: 18px; }
+    body.font-xl { font-size: 22px; }
+
+    /* High Contrast Mode */
+    body.high-contrast {
+      --bg-dark: #000000;
+      --bg-card: #1a1a1a;
+      --text-primary: #ffffff;
+      --border: #00ff88;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .lesson-title {
+        font-size: 2rem;
+      }
+
+      .a11y-controls {
+        position: static;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Accessibility Bar -->
-    <div class="accessibility-bar">
-        <div class="accessibility-controls">
-            <div class="control-group">
-                <label for="font-size">Text Size:</label>
-                <button class="btn-control" onclick="adjustFontSize(-1)">A-</button>
-                <button class="btn-control" onclick="adjustFontSize(1)">A+</button>
-            </div>
-            <button class="btn-control" onclick="toggleDyslexiaMode()">Dyslexia Mode</button>
-            <button class="btn-control" onclick="toggleHighContrast()">High Contrast</button>
-            <button class="btn-control" onclick="toggleReducedMotion()">Reduce Motion</button>
-        </div>
+  <div class="container">
+    <!-- Accessibility Controls -->
+    <div class="a11y-controls">
+      <button class="a11y-btn" onclick="changeFontSize('small')" aria-label="Decrease font size">A-</button>
+      <button class="a11y-btn" onclick="changeFontSize('normal')" aria-label="Normal font size">A</button>
+      <button class="a11y-btn" onclick="changeFontSize('large')" aria-label="Increase font size">A+</button>
+      <button class="a11y-btn" onclick="changeFontSize('xl')" aria-label="Extra large font size">A++</button>
+      <button class="a11y-btn" onclick="toggleContrast()" aria-label="Toggle high contrast">◐</button>
     </div>
 
-    <!-- Progress Bar -->
-    <div class="progress-bar">
-        <div class="progress-info">
-            <span class="progress-text">Lesson Progress: <span id="progress-percent">0</span>%</span>
-            <span class="xp-badge">+50 XP</span>
-        </div>
-        <div class="progress-track">
-            <div class="progress-fill" id="progress-fill"></div>
-        </div>
-    </div>
-
-    <!-- Breadcrumb Navigation -->
-    <nav class="nav-breadcrumb">
-        <div class="breadcrumb">
-            <a href="../../index.html">Academy</a>
-            <span>→</span>
-            <a href="../index.html">Flipper Zero</a>
-            <span>→</span>
-            <span>Lesson 3</span>
-        </div>
+    <!-- Navigation -->
+    <nav class="lesson-nav">
+      <a href="../../" class="nav-link">← Back to Course</a>
+      <span class="lesson-badge">LESSON 3</span>
+      <a href="../lesson-4/" class="nav-link">Next Lesson →</a>
     </nav>
 
-    <div class="container">
-        <!-- Lesson Header -->
-        <header class="lesson-header">
-            <div class="lesson-number">LESSON 3 OF 6</div>
-            <h1>NFC & RFID Exploitation</h1>
-            <div class="lesson-meta">
-                <div class="meta-item">
-                    <span>⏱️</span>
-                    <span>~45 minutes</span>
-                </div>
-                <div class="meta-item">
-                    <span>📊</span>
-                    <span>Intermediate</span>
-                </div>
-                <div class="meta-item">
-                    <span>🎯</span>
-                    <span>Hands-on: 3 exercises</span>
-                </div>
-            </div>
-        </header>
+    <!-- Lesson Header -->
+    <header class="lesson-header">
+      <h1 class="lesson-title">RFID & NFC Hacking</h1>
+      <div class="lesson-meta">
+        <span class="meta-item">⏱️ 50 minutes</span>
+        <span class="meta-item">⚡ 50 XP</span>
+        <span class="meta-item">📶 Difficulty: Medium</span>
+      </div>
+    </header>
 
-        <!-- Learning Objectives -->
-        <section class="objectives-box">
-            <h2>🎯 What You'll Learn</h2>
-            <ul class="objectives-list">
-                <li>Understand the differences between NFC, RFID, and contactless technologies</li>
-                <li>Read and analyze access cards, badges, and key fobs</li>
-                <li>Clone simple cards and emulate them on your Flipper</li>
-                <li>Identify security vulnerabilities in card-based access systems</li>
-                <li>Test MIFARE Classic encryption and authentication</li>
-                <li>Conduct responsible security assessments of physical access control</li>
-            </ul>
-        </section>
+    <!-- Introduction -->
+    <section class="content-section">
+      <h2 class="section-title">🔐 Introduction to RFID & NFC</h2>
+      
+      <p>Radio Frequency Identification (RFID) and Near Field Communication (NFC) are everywhere in modern life. From office access cards to hotel key cards, contactless payment systems to public transportation passes, these technologies power countless access control and identification systems.</p>
 
-        <!-- Main Content -->
-        <article>
-            <!-- Introduction -->
-            <section class="content-section">
-                <h2>Understanding Contactless Technology</h2>
-                <p>
-                    Contactless cards and badges are everywhere—office access cards, hotel keys, transit passes, payment cards, and more. The Flipper Zero can interact with these technologies for security testing and research purposes.
-                </p>
-                <p>
-                    This lesson focuses on two main technologies: RFID (Radio Frequency Identification) and NFC (Near Field Communication). While related, they serve different purposes and have distinct security characteristics.
-                </p>
+      <p>The Flipper Zero can read, save, emulate, and in some cases, clone both RFID (125 kHz) and NFC (13.56 MHz) cards and tags. This lesson will teach you how these systems work and how to interact with them safely and legally.</p>
 
-                <div class="info-box warning">
-                    <h3>⚠️ Critical Legal Warning</h3>
-                    <p>
-                        <strong>Card cloning and unauthorized access are serious crimes.</strong>
-                    </p>
-                    <ul>
-                        <li>Never clone or use payment cards (credit/debit)—this is fraud</li>
-                        <li>Only test access cards you own or have explicit authorization to test</li>
-                        <li>Don't gain unauthorized entry to buildings or restricted areas</li>
-                        <li>Respect privacy—don't scan cards in other people's wallets</li>
-                        <li>Some countries criminalize possession of cloning devices</li>
-                    </ul>
-                    <p style="margin-top: 0.75rem;">
-                        This lesson is for security professionals learning to test and improve access control systems they're authorized to assess.
-                    </p>
-                </div>
-            </section>
+      <div class="alert alert-warning">
+        <div class="alert-title">⚠️ Legal Warning</div>
+        <p>Cloning or emulating access cards without authorization is illegal. Only test with cards you own or have explicit permission to use. This lesson is for educational and security research purposes only.</p>
+      </div>
+    </section>
 
-            <!-- NFC vs RFID -->
-            <section class="content-section">
-                <h2>NFC vs RFID: Key Differences</h2>
-                <p>
-                    While both use radio frequencies for communication, they're designed for different applications.
-                </p>
+    <!-- Understanding RFID -->
+    <section class="content-section">
+      <h2 class="section-title">📡 Understanding RFID Technology</h2>
 
-                <div class="comparison-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Feature</th>
-                                <th>Low Frequency RFID (125 kHz)</th>
-                                <th>High Frequency NFC (13.56 MHz)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Frequency</strong></td>
-                                <td>125 kHz</td>
-                                <td>13.56 MHz</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Read Range</strong></td>
-                                <td>Up to 10cm typical</td>
-                                <td>Up to 10cm (intentionally limited)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Data Rate</strong></td>
-                                <td>Very slow</td>
-                                <td>106-424 kbps</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Typical Uses</strong></td>
-                                <td>Access cards, key fobs, animal tags</td>
-                                <td>Payment cards, transit cards, smartphones</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Security</strong></td>
-                                <td>Usually none (just a static ID)</td>
-                                <td>Can include encryption and authentication</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Complexity</strong></td>
-                                <td>Simple, easy to clone</td>
-                                <td>More complex, better security</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+      <h3 class="section-subtitle">What is RFID?</h3>
+      <p>RFID (Radio Frequency Identification) uses electromagnetic fields to automatically identify and track tags attached to objects. The Flipper Zero works with Low Frequency (LF) RFID at 125 kHz.</p>
 
-                <div class="info-box">
-                    <h3>💡 Quick Rule of Thumb</h3>
-                    <ul>
-                        <li><strong>125 kHz RFID:</strong> Older technology, simpler, less secure. Common in legacy access systems.</li>
-                        <li><strong>13.56 MHz NFC:</strong> Modern technology, more features, better security. Used in payment cards and smartphones.</li>
-                    </ul>
-                </div>
-            </section>
+      <h3 class="section-subtitle">Common 125 kHz RFID Applications</h3>
+      <ul>
+        <li><strong>Building Access Cards</strong> - Office buildings, apartments, parking garages</li>
+        <li><strong>Hotel Key Cards</strong> - Many hotels use 125 kHz RFID</li>
+        <li><strong>Pet Microchips</strong> - Identification chips implanted in animals</li>
+        <li><strong>Vehicle Immobilizers</strong> - Car key authentication systems</li>
+        <li><strong>Time & Attendance</strong> - Employee clock-in/out systems</li>
+      </ul>
 
-            <!-- Card Types -->
-            <section class="content-section">
-                <h2>Common Card Types</h2>
-                <p>
-                    Understanding what type of card you're dealing with is the first step in security assessment. Here are the most common types you'll encounter:
-                </p>
+      <h3 class="section-subtitle">How RFID Works</h3>
+      <ol>
+        <li><strong>Card/Tag</strong> - Contains a coil antenna and microchip (no battery needed)</li>
+        <li><strong>Reader</strong> - Emits electromagnetic field at 125 kHz</li>
+        <li><strong>Power Transfer</strong> - Card enters field and harvests energy inductively</li>
+        <li><strong>Data Transmission</strong> - Card modulates field to send its unique ID</li>
+        <li><strong>Authentication</strong> - Reader verifies ID against database</li>
+      </ol>
 
-                <div class="tech-diagram">
-                    <h3 style="color: var(--accent); margin-bottom: 1rem;">Card Technology Breakdown</h3>
-                    <div class="card-grid">
-                        <div class="card-type">
-                            <h4>EM4100 (125 kHz)</h4>
-                            <p><strong>Security:</strong> None (read-only ID)</p>
-                            <p><strong>Common in:</strong></p>
-                            <ul>
-                                <li>Older access control systems</li>
-                                <li>Key fobs for buildings</li>
-                                <li>Some gym memberships</li>
-                            </ul>
-                            <p style="margin-top: 0.75rem; color: var(--warning);"><strong>Easily cloned!</strong> Just contains a static ID number.</p>
-                        </div>
+      <div class="alert alert-info">
+        <div class="alert-title">💡 Key Insight</div>
+        <p>Most 125 kHz RFID systems only transmit a simple ID number with no encryption. This makes them vulnerable to cloning if physical access to a valid card is obtained.</p>
+      </div>
+    </section>
 
-                        <div class="card-type">
-                            <h4>HID Prox (125 kHz)</h4>
-                            <p><strong>Security:</strong> Minimal (proprietary format)</p>
-                            <p><strong>Common in:</strong></p>
-                            <ul>
-                                <li>Corporate access systems</li>
-                                <li>Government facilities</li>
-                                <li>Parking garages</li>
-                            </ul>
-                            <p style="margin-top: 0.75rem; color: var(--warning);"><strong>Can be cloned</strong> with proper tools and knowledge.</p>
-                        </div>
+    <!-- Reading RFID -->
+    <section class="content-section">
+      <h2 class="section-title">📖 Reading RFID Cards</h2>
 
-                        <div class="card-type">
-                            <h4>MIFARE Classic (13.56 MHz)</h4>
-                            <p><strong>Security:</strong> Weak encryption (broken)</p>
-                            <p><strong>Common in:</strong></p>
-                            <ul>
-                                <li>Transit systems worldwide</li>
-                                <li>Hotel room keys</li>
-                                <li>Access control systems</li>
-                            </ul>
-                            <p style="margin-top: 0.75rem; color: var(--info);"><strong>Encryption is crackable</strong> with known attacks.</p>
-                        </div>
+      <h3 class="section-subtitle">Step-by-Step: Reading a Card</h3>
+      <ol>
+        <li>Navigate to <strong>125 kHz RFID</strong> from the main menu</li>
+        <li>Select <strong>Read</strong></li>
+        <li>Hold the card flat against the back of the Flipper Zero</li>
+        <li>Wait for the read confirmation (vibration + visual feedback)</li>
+        <li>View the card data displayed on screen</li>
+        <li>Choose <strong>Save</strong> to store the card data</li>
+      </ol>
 
-                        <div class="card-type">
-                            <h4>MIFARE DESFire (13.56 MHz)</h4>
-                            <p><strong>Security:</strong> Strong (AES, 3DES)</p>
-                            <p><strong>Common in:</strong></p>
-                            <ul>
-                                <li>High-security access systems</li>
-                                <li>Government ID cards</li>
-                                <li>Secure transit systems</li>
-                            </ul>
-                            <p style="margin-top: 0.75rem; color: var(--success);"><strong>Secure</strong> when properly implemented.</p>
-                        </div>
+      <h3 class="section-subtitle">What You'll See</h3>
+      <p>When reading an RFID card, the Flipper displays:</p>
+      <ul>
+        <li><strong>Card Type</strong> - EM4100, HID Prox, Indala, etc.</li>
+        <li><strong>UID/ID Number</strong> - The unique identifier</li>
+        <li><strong>Format</strong> - How the data is encoded</li>
+        <li><strong>Raw Data</strong> - Hexadecimal representation</li>
+      </ul>
 
-                        <div class="card-type">
-                            <h4>EMV Payment Cards (13.56 MHz)</h4>
-                            <p><strong>Security:</strong> Very strong (tokenization)</p>
-                            <p><strong>Common in:</strong></p>
-                            <ul>
-                                <li>Credit and debit cards</li>
-                                <li>Contactless payment systems</li>
-                            </ul>
-                            <p style="margin-top: 0.75rem; color: var(--success);"><strong>Cannot be cloned</strong> for fraudulent use. Don't try!</p>
-                        </div>
+      <div class="alert alert-info">
+        <div class="alert-title">💡 Pro Tip</div>
+        <p>Position matters! Hold the card flat against the back center of the Flipper for best results. Some cards may need to be positioned at specific angles.</p>
+      </div>
+    </section>
 
-                        <div class="card-type">
-                            <h4>NTAG (13.56 MHz)</h4>
-                            <p><strong>Security:</strong> Varies (can be locked)</p>
-                            <p><strong>Common in:</strong></p>
-                            <ul>
-                                <li>NFC tags and stickers</li>
-                                <li>Smart posters</li>
-                                <li>Product authentication</li>
-                            </ul>
-                            <p style="margin-top: 0.75rem; color: var(--info);"><strong>Often writable</strong> for legitimate applications.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+    <!-- Understanding NFC -->
+    <section class="content-section">
+      <h2 class="section-title">📲 Understanding NFC Technology</h2>
 
-            <!-- Break Reminder 1 -->
-            <div class="break-reminder">
-                <h3>⏸️ Break Point #1</h3>
-                <p>You've learned the fundamentals of NFC and RFID technology. Time for a quick break!</p>
-                <p style="font-size: 0.95rem; margin-top: 1rem;">Take 5 minutes to:</p>
-                <ul style="list-style: none; padding: 0; margin: 1rem 0;">
-                    <li>💧 Hydrate</li>
-                    <li>🚶 Stand and stretch</li>
-                    <li>👀 Rest your eyes</li>
-                </ul>
-                <div class="break-timer" id="break-timer">5:00</div>
-                <div class="break-controls">
-                    <button class="btn-break" onclick="startBreakTimer()">Start 5-Min Break</button>
-                    <button class="btn-break secondary" onclick="skipBreak()">Skip Break</button>
-                </div>
-            </div>
+      <h3 class="section-subtitle">What is NFC?</h3>
+      <p>NFC (Near Field Communication) operates at 13.56 MHz and supports more complex protocols than basic RFID. It's based on ISO/IEC 14443 standards and can handle bidirectional communication.</p>
 
-            <!-- Reading Cards -->
-            <section class="content-section">
-                <h2>Reading and Analyzing Cards</h2>
-                <p>
-                    The first step in any card security assessment is reading and identifying what you're dealing with. The Flipper Zero makes this straightforward.
-                </p>
+      <h3 class="section-subtitle">Common NFC Applications</h3>
+      <ul>
+        <li><strong>Contactless Payments</strong> - Credit/debit cards, mobile payment (Apple Pay, Google Pay)</li>
+        <li><strong>Public Transportation</strong> - Metro cards, bus passes</li>
+        <li><strong>Modern Access Control</strong> - Advanced building security systems</li>
+        <li><strong>Smart Posters</strong> - NFC tags for information sharing</li>
+        <li><strong>Device Pairing</strong> - Bluetooth pairing, WiFi credentials</li>
+      </ul>
 
-                <h3>Reading 125 kHz RFID Cards</h3>
-                <ol>
-                    <li>Navigate to <strong>125 kHz RFID</strong> from the main menu</li>
-                    <li>Select <strong>Read</strong></li>
-                    <li>Hold the card flat against the back of the Flipper</li>
-                    <li>Wait for the vibration confirming successful read</li>
-                    <li>View the card information displayed</li>
-                    <li>Press OK to save the card</li>
-                </ol>
+      <h3 class="section-subtitle">NFC Card Types</h3>
+      <ul>
+        <li><strong>MIFARE Classic</strong> - Common but cryptographically weak (1K, 4K variants)</li>
+        <li><strong>MIFARE Ultralight</strong> - Simple, low-cost tags with minimal security</li>
+        <li><strong>MIFARE DESFire</strong> - Advanced security with encryption (harder to attack)</li>
+        <li><strong>NTAG Series</strong> - Popular for consumer NFC tags</li>
+        <li><strong>EMV Payment Cards</strong> - Bank cards (cannot be cloned due to security)</li>
+      </ul>
 
-                <div class="info-box">
-                    <h3>💡 125 kHz Reading Tips</h3>
-                    <ul>
+      <div class="alert alert-warning">
+        <div class="alert-title">⚠️ Important</div>
+        <p>Modern payment cards (EMV) use advanced cryptography and cannot be cloned. Attempting to read payment card data for fraudulent purposes is a serious crime.</p>
+      </div>
+    </section>
+
+    <!-- Reading NFC -->
+    <section class="content-section">
+      <h2 class="section-title">📱 Reading NFC Cards</h2>
+
+      <h3 class="section-subtitle">Step-by-Step: Reading NFC</h3>
+      <ol>
+        <li>Navigate to <strong>NFC</strong> from the main menu</li>
+        <li>Select <strong>Read Card</strong></li>
+        <li>Hold the card against the back of the Flipper</li>
+        <li>The Flipper will detect and identify the card type</li>
+        <li>View detailed card information</li>
+        <li>Save the card data if desired</li>
+      </ol>
+
+      <h3 class="section-subtitle">Understanding Card Data</h3>
+      <p>NFC cards contain more complex data structures:</p>
+      <ul>
+        <li><strong>UID</strong> - Unique identifier (4, 7, or 10 bytes)</li>
+        <li><strong>Card Type</strong> - MIFARE Classic, Ultralight, DESFire, etc.</li>
+        <li><strong>Memory Structure</strong> - Sectors, blocks, pages depending on type</li>
+        <li><strong>Access Keys</strong> - Required for reading/writing protected areas</li>
+        <li><strong>Application Data</strong> - Stored information (balance, access rights, etc.)</li>
+      </ul>
+
+      <h3 class="section-subtitle">MIFARE Classic Attack</h3>
+      <p>For MIFARE Classic cards with default or weak keys, the Flipper can attempt dictionary attacks:</p>
+      <ol>
+        <li>Read card to detect type (MIFARE Classic)</li>
+        <li>Select <strong>Detect Reader</strong> to gather authentication attempts</li>
+        <li>Use built-in dictionary to find keys</li>
+        <li>Once keys found, read full card contents</li>
+      </ol>
+    </section>
+
+    <!-- Emulation -->
+    <section class="content-section">
+      <h2 class="section-title">🎭 Emulating Cards</h2>
+
+      <h3 class="section-subtitle">RFID Emulation</h3>
+      <p>After saving an RFID card, you can emulate it:</p>
+      <ol>
+        <li>Go to <strong>125 kHz RFID</strong> → <strong>Saved</strong></li>
+        <li>Select your saved card</li>
+        <li>Choose <strong>Emulate</strong></li>
+        <li>Hold Flipper to reader as you would a card</li>
+        <li>The reader should accept it as the original card</li>
+      </ol>
+
+      <h3 class="section-subtitle">NFC Emulation</h3>
+      <p>NFC emulation works similarly but with more complexity:</p>
+      <ol>
+        <li>Navigate to <strong>NFC</strong> → <strong>Saved</strong></li>
+        <li>Select saved card file</li>
+        <li>Choose <strong>Emulate</strong></li>
+        <li>Present Flipper to NFC reader</li>
+      </ol>
+
+      <div class="alert alert-info">
+        <div class="alert-title">💡 Emulation Limitations</div>
+        <p>Some advanced cards cannot be emulated due to:</p>
+        <ul>
+          <li>Encrypted sectors requiring authentication</li>
+          <li>Challenge-response protocols</li>
+          <li>Dynamic cryptograms (like EMV payment cards)</li>
+          <li>UID-specific encryption</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Practical Exercise -->
+    <section class="content-section">
+      <h2 class="section-title">🎯 Practical Exercise</h2>
+
+      <h3 class="section-subtitle">Safe Practice Activity</h3>
+      <p>Practice reading and emulating with cards you own:</p>
+
+      <ol>
+        <li><strong>Prepare Materials</strong>
+          <ul>
+            <li>Old hotel key card (expired)</li>
+            <li>Spare building access card (if you have permission)</li>
+            <li>Blank NFC tags for practice</li>
+          </ul>
+        </li>
+        
+        <li><strong>RFID Practice</strong>
+          <ul>
+            <li>Read your 125 kHz card</li>
+            <li>Save it with a descriptive name</li>
+            <li>Emulate and test on the original reader</li>
+            <li>Document the card type and ID format</li>
+          </ul>
+        </li>
+        
+        <li><strong>NFC Practice</strong>
+          <ul>
+            <li>Read an NFC tag or card</li>
+            <li>Examine the card structure</li>
+            <li>If MIFARE Classic, attempt key recovery</li>
+            <li>Save and test emulation</li>
+          </ul>
+        </li>
+        
+        <li><strong>Analysis</strong>
+          <ul>
+            <li>Compare security between different card types</li>
+            <li>Note which cards have encryption</li>
+            <li>Understand why some cannot be cloned</li>
+          </ul>
+        </li>
+      </ol>
+
+      <div class="alert alert-warning">
+        <div class="alert-title">⚠️ Remember</div>
+        <p>Only test cards you own or have explicit written permission to test. Unauthorized access card cloning is illegal and unethical.</p>
+      </div>
+    </section>
+
+    <!-- Security Considerations -->
+    <section class="content-section">
+      <h2 class="section-title">🛡️ Security Considerations</h2>
+
+      <h3 class="section-subtitle">Vulnerabilities in Access Systems</h3>
+      <ul>
+        <li><strong>Simple UID-Based Systems</strong> - No encryption, easy to clone</li>
+        <li><strong>Default Keys</strong> - Many MIFARE Classic deployments use factory defaults</li>
+        <li><strong>Physical Security</strong> - If attacker can read your card, they can clone it</li>
+        <li><strong>Weak Cryptography</strong> - MIFARE Classic crypto has been broken</li>
+      </ul>
+
+      <h3 class="section-subtitle">Better Security Practices</h3>
+      <ul>
+        <li>Use modern DESFire or encrypted cards</li>
+        <li>Implement additional authentication factors</li>
+        <li>Monitor for duplicate card usage</li>
+        <li>Use card + PIN systems</li>
+        <li>Regularly audit access logs</li>
+      </ul>
+
+      <h3 class="section-subtitle">Protecting Your Cards</h3>
+      <ul>
+        <li>Use RFID-blocking wallets or sleeves</li>
+        <li>Keep sensitive cards physically secure</li>
+        <li>Report lost cards immediately</li>
+        <li>Be aware of social engineering attempts</li>
+      </ul>
+    </section>
+
+    <!-- Lesson Footer -->
+    <footer class="lesson-footer">
+      <div class="completion-section">
+        <div class="xp-reward">+50 XP</div>
+        <p>Complete this lesson to earn your XP and unlock the next module!</p>
+        <button class="complete-btn" id="completeBtn" onclick="markComplete()">
+          Mark Lesson Complete
+        </button>
+        <div class="nav-buttons">
+          <a href="../lesson-2/" class="nav-btn">← Previous Lesson</a>
+          <a href="../../" class="nav-btn">Course Overview</a>
+          <a href="../lesson-4/" class="nav-btn">Next Lesson →</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Storage configuration - syncs with course overview
+    const COURSE_STORAGE_KEY = 'flipper-zero-course';
+    const LESSON_ID = 3;
+
+    // Progress tracking functions
+    async function loadProgress() {
+      try {
+        const result = await window.storage.get(COURSE_STORAGE_KEY);
+        return result ? JSON.parse(result.value) : { completed: [] };
+      } catch (error) {
+        return { completed: [] };
+      }
+    }
+
+    async function saveProgress(progress) {
+      try {
+        await window.storage.set(COURSE_STORAGE_KEY, JSON.stringify(progress));
+        return true;
+      } catch (error) {
+        console.error('Failed to save progress:', error);
+        return false;
+      }
+    }
+
+    async function markComplete() {
+      const btn = document.getElementById('completeBtn');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      const progress = await loadProgress();
+      
+      if (!progress.completed.includes(LESSON_ID)) {
+        progress.completed.push(LESSON_ID);
+        const saved = await saveProgress(progress);
+        
+        if (saved) {
+          btn.textContent = '✓ Lesson Complete!';
+          btn.style.background = 'var(--accent)';
+          setTimeout(() => {
+            window.location.href = '../lesson-4/';
+          }, 1500);
+        } else {
+          btn.textContent = 'Error - Try Again';
+          btn.disabled = false;
+        }
+      } else {
+        btn.textContent = '✓ Already Complete';
+      }
+    }
+
+    // Check if already completed
+    async function checkCompletion() {
+      const progress = await loadProgress();
+      if (progress.completed.includes(LESSON_ID)) {
+        const btn = document.getElementById('completeBtn');
+        btn.textContent = '✓ Completed';
+        btn.style.background = 'var(--border)';
+      }
+    }
+
+    // Accessibility functions
+    function changeFontSize(size) {
+      document.body.className = document.body.className.replace(/font-\w+/g, '');
+      if (size !== 'normal') {
+        document.body.classList.add('font-' + size);
+      }
+      localStorage.setItem('fontSize', size);
+    }
+
+    function toggleContrast() {
+      document.body.classList.toggle('high-contrast');
+      localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
+    }
+
+    function loadA11yPreferences() {
+      const fontSize = localStorage.getItem('fontSize');
+      if (fontSize && fontSize !== 'normal') {
+        document.body.classList.add('font-' + fontSize);
+      }
+
+      const highContrast = localStorage.getItem('highContrast') === 'true';
+      if (highContrast) {
+        document.body.classList.add('high-contrast');
+      }
+    }
+
+    // Initialize
+    loadA11yPreferences();
+    checkCompletion();
+  </script>
+</body>
+</html>
