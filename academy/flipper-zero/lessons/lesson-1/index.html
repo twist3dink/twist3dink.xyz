@@ -1,557 +1,474 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>if(window.location.pathname.endsWith(".html")){window.location.replace(window.location.pathname.slice(0,-5)+"/");}</script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson 1: Introduction to Flipper Zero | tw¡st3d_¡nk Academy</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1: Getting Started | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    :root {
-      --bg-dark: #0a0a0a;
-      --bg-card: #1a1a1a;
-      --accent: #00ff88;
-      --text-primary: #ffffff;
-      --text-secondary: #b0b0b0;
-      --border: #333;
-    }
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
 
-    body {
-      font-family: 'Atkinson Hyperlegible', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-primary);
-      line-height: 1.8;
-      padding: 20px;
-    }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+        .lesson-header {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
 
-    /* Accessibility Controls */
-    .a11y-controls {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 15px;
-      z-index: 1000;
-      display: flex;
-      gap: 10px;
-    }
+        .lesson-header h1 {
+            color: #00ff88;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
 
-    .a11y-btn {
-      background: var(--bg-dark);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
+        .lesson-meta {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
 
-    .a11y-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+        .lesson-header button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
 
-    .a11y-btn:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
+        .lesson-header button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
 
-    /* Navigation */
-    .lesson-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
+        .content-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
 
-    .nav-link {
-      color: var(--text-secondary);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.3s ease;
-    }
+        .content-section h2 {
+            color: #00ff88;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
 
-    .nav-link:hover {
-      color: var(--accent);
-    }
+        .content-section h3 {
+            color: #00ff88;
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem 0;
+        }
 
-    .lesson-badge {
-      background: var(--bg-card);
-      border: 2px solid var(--accent);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 700;
-      color: var(--accent);
-    }
+        .content-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.3px;
+        }
 
-    /* Header */
-    .lesson-header {
-      margin-bottom: 40px;
-    }
+        .content-section ul {
+            margin: 1rem 0 1rem 2rem;
+        }
 
-    .lesson-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 15px;
-      background: linear-gradient(135deg, var(--accent), #00ccff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+        .content-section li {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
 
-    .lesson-meta {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-    }
+        .note-box {
+            background: #1a1a1a;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
 
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        .warning-box {
+            background: #2a1a1a;
+            border-left: 4px solid #ff4444;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
 
-    /* Content Sections */
-    .content-section {
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 30px;
-    }
+        .warning-box strong {
+            color: #ff4444;
+        }
 
-    .section-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: var(--accent);
-    }
+        #complete-btn {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            margin: 2rem 0;
+            transition: all 0.3s;
+        }
 
-    .section-subtitle {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-top: 25px;
-      margin-bottom: 15px;
-      color: var(--text-primary);
-    }
+        #complete-btn:hover {
+            background: #00dd77;
+        }
 
-    p {
-      margin-bottom: 15px;
-      color: var(--text-secondary);
-    }
+        #complete-btn.completed {
+            background: #333;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            cursor: default;
+        }
 
-    /* Lists */
-    ul, ol {
-      margin-left: 25px;
-      margin-bottom: 20px;
-      color: var(--text-secondary);
-    }
+        #complete-btn.error {
+            background: #ff4444;
+            color: #fff;
+        }
 
-    li {
-      margin-bottom: 10px;
-      line-height: 1.7;
-    }
+        .nav-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 2rem;
+        }
 
-    /* Progress Footer */
-    .lesson-footer {
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 30px;
-      margin-top: 40px;
-    }
+        .nav-section button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
 
-    .completion-section {
-      text-align: center;
-    }
+        .nav-section button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
 
-    .xp-reward {
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
 
-    .complete-btn {
-      background: var(--accent);
-      color: var(--bg-dark);
-      border: none;
-      padding: 15px 40px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 20px;
-    }
+        .nav-buttons a {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
 
-    .complete-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 24px rgba(0, 255, 136, 0.4);
-    }
+        .nav-buttons a:first-child {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+        }
 
-    .complete-btn:disabled {
-      background: var(--border);
-      color: var(--text-secondary);
-      cursor: not-allowed;
-      transform: none;
-    }
+        .nav-buttons a:first-child:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
 
-    .nav-buttons {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
+        .nav-buttons a:last-child {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: 2px solid #00ff88;
+        }
 
-    .nav-btn {
-      background: var(--bg-dark);
-      color: var(--accent);
-      border: 2px solid var(--accent);
-      padding: 12px 30px;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
+        .nav-buttons a:last-child:hover {
+            background: #00dd77;
+        }
 
-    .nav-btn:hover {
-      background: var(--accent);
-      color: var(--bg-dark);
-    }
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
 
-    /* Font Size Classes */
-    body.font-small { font-size: 14px; }
-    body.font-large { font-size: 18px; }
-    body.font-xl { font-size: 22px; }
+            .lesson-header h1 {
+                font-size: 1.5rem;
+            }
 
-    /* High Contrast Mode */
-    body.high-contrast {
-      --bg-dark: #000000;
-      --bg-card: #1a1a1a;
-      --text-primary: #ffffff;
-      --border: #00ff88;
-    }
+            .content-section {
+                padding: 1.5rem;
+            }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .lesson-title {
-        font-size: 2rem;
-      }
+            .nav-buttons {
+                flex-direction: column;
+            }
 
-      .a11y-controls {
-        position: static;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-      }
-    }
-  </style>
+            .nav-buttons a {
+                min-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Accessibility Controls -->
-    <div class="a11y-controls">
-      <button class="a11y-btn" onclick="changeFontSize('small')" aria-label="Decrease font size">A-</button>
-      <button class="a11y-btn" onclick="changeFontSize('normal')" aria-label="Normal font size">A</button>
-      <button class="a11y-btn" onclick="changeFontSize('large')" aria-label="Increase font size">A+</button>
-      <button class="a11y-btn" onclick="changeFontSize('xl')" aria-label="Extra large font size">A++</button>
-      <button class="a11y-btn" onclick="toggleContrast()" aria-label="Toggle high contrast">◐</button>
+    <div class="container">
+        <div class="lesson-header">
+            <h1>Lesson 1: Getting Started with Flipper Zero</h1>
+            <p class="lesson-meta">Estimated time: 15 minutes | XP Reward: 50</p>
+            <button onclick="scrollToBottom()">Skip to Bottom ↓</button>
+        </div>
+
+        <div class="content-section">
+            <h2>What is Flipper Zero?</h2>
+            <p>Flipper Zero is a portable multi-tool designed for pentesters, hardware hackers, and technology enthusiasts. Think of it as a Swiss Army knife for digital exploration and security research. This pocket-sized device packs an impressive array of wireless communication capabilities into a playful, approachable package.</p>
+            
+            <p>At its core, Flipper Zero is built on open-source principles. Both the hardware schematics and firmware are publicly available, allowing a vibrant community to contribute improvements, create custom applications, and share knowledge. This openness makes it an exceptional learning platform for understanding how various wireless protocols and communication systems work.</p>
+
+            <div class="note-box">
+                <strong>Important:</strong> Flipper Zero is a legitimate educational and professional tool. It's designed to help you understand the technology around you, test your own devices for security vulnerabilities, and learn about wireless communication protocols in a hands-on way.
+            </div>
+
+            <p>The device operates entirely legally when used for authorized testing and educational purposes. Security professionals use it to assess the security of access control systems, while hobbyists use it to learn about radio frequencies, infrared communication, and digital protocols that surround us in daily life.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>What's in the Box</h2>
+            <p>When you unbox your Flipper Zero, you'll find:</p>
+            <ul>
+                <li><strong>The main Flipper Zero unit</strong> with its distinctive dolphin-themed LCD screen</li>
+                <li><strong>USB-C cable</strong> for charging and data transfer</li>
+                <li><strong>Quick start documentation</strong> to get you up and running</li>
+            </ul>
+
+            <p>You'll notice the device is surprisingly lightweight and compact, roughly the size of a small TV remote. The build quality is solid, with a sturdy plastic case that can handle daily carry in a pocket or bag.</p>
+
+            <div class="note-box">
+                <strong>Pro Tip:</strong> While not included in the box, investing in a microSD card (Class 10 or higher, up to 128GB) is highly recommended. This allows you to store captured signals, custom firmware, and additional applications.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Hardware Overview</h2>
+            <p>Let's familiarize yourself with the physical components of your Flipper Zero:</p>
+
+            <h3>Control Interface</h3>
+            <ul>
+                <li><strong>5-button directional pad</strong> - Navigate menus with Up, Down, Left, Right, and OK (center press)</li>
+                <li><strong>Back button</strong> - Located below the screen, returns to previous menu or cancels actions</li>
+                <li><strong>1.4" LCD screen</strong> - Orange backlit display with clear visibility in various lighting conditions</li>
+            </ul>
+
+            <h3>Communication Modules</h3>
+            <ul>
+                <li><strong>GPIO pins</strong> - 18 general-purpose input/output pins for connecting external hardware</li>
+                <li><strong>SD card slot</strong> - Located on the right side for expanded storage</li>
+                <li><strong>USB-C port</strong> - Charging, data transfer, and BadUSB functionality</li>
+                <li><strong>IR transceiver</strong> - Top-mounted infrared LED for remote control emulation</li>
+                <li><strong>Sub-GHz antenna</strong> - Internal antenna for 300-928 MHz radio communication</li>
+                <li><strong>RFID/NFC reader</strong> - Built into the back panel for reading access cards and tags</li>
+            </ul>
+
+            <p>The device is powered by an STM32 microcontroller and includes Bluetooth capabilities for wireless connectivity with your smartphone or computer. The 2000mAh battery provides several days of typical use on a single charge.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>First Power-On</h2>
+            <p>Let's get your Flipper Zero up and running:</p>
+
+            <h3>Charging Your Device</h3>
+            <p>Before first use, connect your Flipper Zero to a USB power source using the included USB-C cable. The device can be used while charging, but it's recommended to let it fully charge initially (approximately 2 hours from empty).</p>
+
+            <p>A battery indicator appears on the screen showing charge status. You'll see a small lightning bolt icon when actively charging.</p>
+
+            <h3>Initial Setup</h3>
+            <p>When you first power on your Flipper Zero (hold the Back button for 3 seconds), you'll be greeted by the setup screen. The device will walk you through basic configuration:</p>
+
+            <ul>
+                <li>Region selection (affects Sub-GHz frequencies available based on local regulations)</li>
+                <li>Time and date setting</li>
+                <li>Optional Bluetooth pairing with the mobile app</li>
+            </ul>
+
+            <h3>Meet Your Dolphin</h3>
+            <p>One of Flipper's most charming features is the animated dolphin companion that lives on your home screen. This isn't just a cute mascot - the dolphin's appearance changes based on how much you use your Flipper, unlocking new animations and expressions as you level up.</p>
+
+            <div class="note-box">
+                <strong>Fun Fact:</strong> The dolphin has multiple moods and animations. Pet it by pressing OK on the home screen, or interact with it through various gestures. It's a delightful way to personalize your device!
+            </div>
+
+            <h3>Navigation Basics</h3>
+            <p>Use the directional pad to navigate through menus. The OK button (center) selects items, while the Back button returns to the previous screen or cancels actions. Long-pressing the Back button from the home screen opens quick settings.</p>
+
+            <p>The interface is intuitive and designed to be learned quickly through exploration. Don't worry about breaking anything - the menus are designed to prevent accidental harmful actions.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Important Legal & Ethical Notice</h2>
+            
+            <div class="warning-box">
+                <strong>⚠️ CRITICAL INFORMATION - READ CAREFULLY</strong>
+                <p style="margin-top: 0.5rem;">The Flipper Zero is a powerful tool that must be used responsibly and legally. Understanding these guidelines is essential before proceeding with this course.</p>
+            </div>
+
+            <h3>Legal Guidelines</h3>
+            <p><strong>Only test devices you own or have explicit written permission to test.</strong> Unauthorized access to electronic systems, even for "testing" purposes, is illegal in virtually every jurisdiction worldwide. This includes:</p>
+
+            <ul>
+                <li>Access control systems (doors, gates, parking barriers)</li>
+                <li>Vehicles that don't belong to you</li>
+                <li>RFID/NFC cards or systems you're not authorized to access</li>
+                <li>Computer systems via BadUSB attacks</li>
+                <li>Wireless networks and devices</li>
+            </ul>
+
+            <p><strong>It is illegal to access systems without permission</strong>, regardless of your intentions. "I was just testing security" is not a valid legal defense. In many countries, unauthorized access carries severe penalties including fines and imprisonment.</p>
+
+            <h3>Educational Purpose</h3>
+            <p>This course is designed for educational purposes only. The goal is to help you understand how these technologies work, appreciate security vulnerabilities in everyday systems, and use this knowledge responsibly - whether for authorized penetration testing, securing your own systems, or simply satisfying intellectual curiosity.</p>
+
+            <h3>Your Responsibility</h3>
+            <p>By continuing with this course and using your Flipper Zero, you acknowledge that:</p>
+
+            <ul>
+                <li>You are responsible for your own actions and must comply with all local laws</li>
+                <li>tw¡st3d_¡nk Academy and course creators assume no responsibility for misuse of this information</li>
+                <li>You will use these tools and knowledge ethically and legally</li>
+                <li>You understand the potential consequences of unauthorized access or malicious use</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Ethical Hacking Principles:</strong> True security professionals follow strict ethical guidelines. Always obtain written permission, never cause harm, respect privacy, and disclose vulnerabilities responsibly to those who can fix them.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Key Takeaway</h2>
+            <p>Flipper Zero is a powerful educational tool that opens the door to understanding the wireless technologies surrounding us every day. From the RFID badge you tap at work to the infrared remote on your coffee table, these systems become transparent and understandable through hands-on exploration.</p>
+
+            <p>However, with this power comes significant responsibility. The same capabilities that make Flipper Zero an excellent learning tool can also be misused. Always operate within legal boundaries, test only your own devices, and approach this knowledge with respect for others' privacy and security.</p>
+
+            <p>As you progress through this course, you'll gain practical skills in wireless communication, security testing, and hardware hacking. Use this knowledge to make systems more secure, not to exploit them.</p>
+
+            <div class="note-box">
+                <strong>Ready to Continue?</strong> You now understand what Flipper Zero is, its capabilities, and the critical importance of responsible use. In the next lesson, we'll dive deep into navigating the interface and exploring all the menus and features available to you.
+            </div>
+        </div>
+
+        <button id="complete-btn" onclick="markComplete()">Mark Lesson as Complete</button>
+
+        <div class="nav-section">
+            <button onclick="scrollToTop()">Back to Top ↑</button>
+            <div class="nav-buttons">
+                <a href="../../">← Course Overview</a>
+                <a href="../lesson-2/">Next Lesson →</a>
+            </div>
+        </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="lesson-nav">
-      <a href="../../" class="nav-link">← Back to Course</a>
-      <span class="lesson-badge">LESSON 1</span>
-      <a href="../lesson-2/" class="nav-link">Next Lesson →</a>
-    </nav>
-
-    <!-- Lesson Header -->
-    <header class="lesson-header">
-      <h1 class="lesson-title">Introduction to Flipper Zero</h1>
-      <div class="lesson-meta">
-        <span class="meta-item">⏱️ 30 minutes</span>
-        <span class="meta-item">⚡ 50 XP</span>
-        <span class="meta-item">📶 Difficulty: Beginner</span>
-      </div>
-    </header>
-
-    <!-- Introduction -->
-    <section class="content-section">
-      <h2 class="section-title">🐬 Welcome to Flipper Zero</h2>
-      
-      <p>Welcome to your journey into hardware hacking! The Flipper Zero is a portable multi-tool for pentesters and hardware enthusiasts. Think of it as the Swiss Army knife of the digital world - a versatile device that can interact with various access control systems, radio protocols, RFID, NFC, infrared, and more.</p>
-
-      <p>In this introductory lesson, you'll learn the fundamentals of your Flipper Zero device, understand its capabilities, and get comfortable with its interface. By the end of this lesson, you'll be ready to explore the exciting world of wireless protocols and hardware security.</p>
-    </section>
-
-    <!-- What is Flipper Zero -->
-    <section class="content-section">
-      <h2 class="section-title">🔍 What is Flipper Zero?</h2>
-
-      <p>Flipper Zero is an open-source, programmable multi-tool designed for hardware exploration and security research. Released in 2020 through a successful Kickstarter campaign, it has become one of the most popular tools for learning about wireless protocols and access control systems.</p>
-
-      <h3 class="section-subtitle">Key Features</h3>
-      <ul>
-        <li><strong>Sub-GHz Radio</strong> - Interact with wireless devices operating below 1 GHz (garage doors, remote controls, weather stations)</li>
-        <li><strong>RFID & NFC</strong> - Read, save, and emulate 125 kHz and 13.56 MHz cards and tags</li>
-        <li><strong>Infrared</strong> - Control TVs, air conditioners, and other IR-controlled devices</li>
-        <li><strong>GPIO Pins</strong> - Connect to hardware interfaces and program microcontrollers</li>
-        <li><strong>iButton</strong> - Read and emulate iButton contact keys</li>
-        <li><strong>BadUSB</strong> - Execute automated keystroke injection attacks for testing</li>
-        <li><strong>U2F</strong> - Use as a second-factor authentication token</li>
-      </ul>
-
-      <h3 class="section-subtitle">Device Specifications</h3>
-      <ul>
-        <li>Processor: STM32WB55 (dual-core Arm Cortex-M4 & M0+)</li>
-        <li>Display: 128x64 monochrome LCD</li>
-        <li>Battery: 2000 mAh (charges via USB-C)</li>
-        <li>Storage: microSD card support (up to 64GB)</li>
-        <li>Size: Compact and pocket-friendly (100mm x 40mm x 25mm)</li>
-      </ul>
-    </section>
-
-    <!-- Getting Started -->
-    <section class="content-section">
-      <h2 class="section-title">🚀 Getting Started</h2>
-
-      <h3 class="section-subtitle">Powering On Your Device</h3>
-      <ol>
-        <li>Press and hold the BACK button (middle button) for 2 seconds</li>
-        <li>You'll see the Flipper Zero boot animation</li>
-        <li>The main menu will appear with several icons</li>
-      </ol>
-
-      <h3 class="section-subtitle">Understanding the Interface</h3>
-      <p>Flipper Zero has a simple 5-button control scheme:</p>
-      <ul>
-        <li><strong>Directional Pad (Up/Down/Left/Right)</strong> - Navigate menus and options</li>
-        <li><strong>OK Button</strong> - Select items and confirm actions</li>
-        <li><strong>BACK Button</strong> - Return to previous screen or cancel</li>
-      </ul>
-
-      <h3 class="section-subtitle">Main Menu Overview</h3>
-      <ul>
-        <li><strong>Sub-GHz</strong> - Access radio frequency tools</li>
-        <li><strong>125 kHz RFID</strong> - Low-frequency RFID operations</li>
-        <li><strong>NFC</strong> - High-frequency contactless card operations</li>
-        <li><strong>Infrared</strong> - IR remote control features</li>
-        <li><strong>GPIO</strong> - Hardware interface and programming</li>
-        <li><strong>iButton</strong> - Contact key reader/emulator</li>
-        <li><strong>Bad USB</strong> - USB keystroke injection</li>
-        <li><strong>U2F</strong> - Two-factor authentication</li>
-      </ul>
-    </section>
-
-    <!-- Firmware and Updates -->
-    <section class="content-section">
-      <h2 class="section-title">⚙️ Firmware & Updates</h2>
-
-      <p>Keeping your Flipper Zero firmware up to date ensures you have access to the latest features, bug fixes, and security improvements.</p>
-
-      <h3 class="section-subtitle">Updating Firmware</h3>
-      <ol>
-        <li>Connect your Flipper Zero to your computer via USB-C</li>
-        <li>Install the qFlipper desktop application (available for Windows, macOS, and Linux)</li>
-        <li>Open qFlipper and it will automatically detect your device</li>
-        <li>Click "Update" if a new firmware version is available</li>
-        <li>Wait for the update process to complete (do not disconnect during update!)</li>
-      </ol>
-
-      <h3 class="section-subtitle">Custom Firmware Options</h3>
-      <p>The Flipper Zero community has developed several custom firmware options that add additional features:</p>
-      <ul>
-        <li><strong>Unleashed</strong> - Extended frequency ranges and additional features</li>
-        <li><strong>RogueMaster</strong> - Enhanced gaming and custom animations</li>
-        <li><strong>Official Firmware</strong> - Most stable, recommended for beginners</li>
-      </ul>
-      <p><em>Note: For this course, we recommend staying with official firmware until you're comfortable with the basics.</em></p>
-    </section>
-
-    <!-- Safety and Ethics -->
-    <section class="content-section">
-      <h2 class="section-title">⚖️ Safety, Ethics & Legal Considerations</h2>
-
-      <p>With great power comes great responsibility. The Flipper Zero is a powerful tool that must be used ethically and legally.</p>
-
-      <h3 class="section-subtitle">Legal Guidelines</h3>
-      <ul>
-        <li><strong>Only test devices you own or have explicit permission to test</strong></li>
-        <li>Transmitting on regulated frequencies may be illegal in your jurisdiction</li>
-        <li>Unauthorized access to systems is illegal in most countries</li>
-        <li>Research your local laws regarding radio transmission and access control</li>
-      </ul>
-
-      <h3 class="section-subtitle">Ethical Hacking Principles</h3>
-      <ul>
-        <li><strong>Obtain Permission</strong> - Always get written consent before testing systems</li>
-        <li><strong>Responsible Disclosure</strong> - Report vulnerabilities to manufacturers properly</li>
-        <li><strong>Do No Harm</strong> - Never damage systems or compromise privacy</li>
-        <li><strong>Learn & Educate</strong> - Use your knowledge to improve security, not exploit it</li>
-      </ul>
-
-      <h3 class="section-subtitle">Best Practices</h3>
-      <ul>
-        <li>Start with your own devices (spare remote controls, old access cards)</li>
-        <li>Practice in controlled environments</li>
-        <li>Document your experiments for learning purposes</li>
-        <li>Join the community and share knowledge responsibly</li>
-      </ul>
-    </section>
-
-    <!-- First Steps -->
-    <section class="content-section">
-      <h2 class="section-title">👣 Your First Steps</h2>
-
-      <h3 class="section-subtitle">Practice Exercise</h3>
-      <p>Before moving to the next lesson, familiarize yourself with these basic operations:</p>
-      <ol>
-        <li><strong>Navigation Practice</strong> - Explore each menu item using the directional pad</li>
-        <li><strong>Settings Exploration</strong> - Go to Settings and review available options</li>
-        <li><strong>Power Management</strong> - Practice turning the device on/off and checking battery level</li>
-        <li><strong>Screen Lock</strong> - Learn to lock/unlock the screen (hold UP + DOWN)</li>
-      </ol>
-
-      <h3 class="section-subtitle">Recommended Setup</h3>
-      <ul>
-        <li>Insert a microSD card (8GB or larger recommended)</li>
-        <li>Enable Auto-Lock in Settings for security</li>
-        <li>Set screen brightness to comfortable level</li>
-        <li>Explore the built-in games (Snake, anyone?)</li>
-      </ul>
-    </section>
-
-    <!-- Lesson Footer -->
-    <footer class="lesson-footer">
-      <div class="completion-section">
-        <div class="xp-reward">+50 XP</div>
-        <p>Complete this lesson to earn your XP and unlock the next module!</p>
-        <button class="complete-btn" id="completeBtn" onclick="markComplete()">
-          Mark Lesson Complete
-        </button>
-        <div class="nav-buttons">
-          <a href="../../" class="nav-btn">Course Overview</a>
-          <a href="../lesson-2/" class="nav-btn">Next Lesson →</a>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <script>
-    // Storage configuration - syncs with course overview
-    const COURSE_STORAGE_KEY = 'flipper-zero-course';
-    const LESSON_ID = 1;
-
-    // Progress tracking functions
-    async function loadProgress() {
-      try {
-        const result = await window.storage.get(COURSE_STORAGE_KEY);
-        return result ? JSON.parse(result.value) : { completed: [] };
-      } catch (error) {
-        return { completed: [] };
-      }
-    }
-
-    async function saveProgress(progress) {
-      try {
-        await window.storage.set(COURSE_STORAGE_KEY, JSON.stringify(progress));
-        return true;
-      } catch (error) {
-        console.error('Failed to save progress:', error);
-        return false;
-      }
-    }
-
-    async function markComplete() {
-      const btn = document.getElementById('completeBtn');
-      btn.disabled = true;
-      btn.textContent = 'Saving...';
-
-      const progress = await loadProgress();
-      
-      if (!progress.completed.includes(LESSON_ID)) {
-        progress.completed.push(LESSON_ID);
-        const saved = await saveProgress(progress);
-        
-        if (saved) {
-          btn.textContent = '✓ Lesson Complete!';
-          btn.style.background = 'var(--accent)';
-          setTimeout(() => {
-            window.location.href = '../lesson-2/';
-          }, 1500);
-        } else {
-          btn.textContent = 'Error - Try Again';
-          btn.disabled = false;
+    <script>
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'instant'
+            });
         }
-      } else {
-        btn.textContent = '✓ Already Complete';
-      }
-    }
 
-    // Check if already completed
-    async function checkCompletion() {
-      const progress = await loadProgress();
-      if (progress.completed.includes(LESSON_ID)) {
-        const btn = document.getElementById('completeBtn');
-        btn.textContent = '✓ Completed';
-        btn.style.background = 'var(--border)';
-      }
-    }
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'instant'
+            });
+        }
 
-    // Accessibility functions
-    function changeFontSize(size) {
-      document.body.className = document.body.className.replace(/font-\w+/g, '');
-      if (size !== 'normal') {
-        document.body.classList.add('font-' + size);
-      }
-      localStorage.setItem('fontSize', size);
-    }
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('flipper-progress');
+                return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            } catch (e) {
+                console.error('Error loading progress:', e);
+                return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            }
+        }
 
-    function toggleContrast() {
-      document.body.classList.toggle('high-contrast');
-      localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
-    }
+        function saveProgress(progress) {
+            try {
+                localStorage.setItem('flipper-progress', JSON.stringify(progress));
+                return true;
+            } catch (e) {
+                console.error('Error saving progress:', e);
+                return false;
+            }
+        }
 
-    function loadA11yPreferences() {
-      const fontSize = localStorage.getItem('fontSize');
-      if (fontSize && fontSize !== 'normal') {
-        document.body.classList.add('font-' + fontSize);
-      }
+        function markComplete() {
+            const btn = document.getElementById('complete-btn');
+            const currentLessonNumber = 1;
+            
+            const progress = loadProgress();
+            
+            if (!progress.completedLessons.includes(currentLessonNumber)) {
+                progress.completedLessons.push(currentLessonNumber);
+                progress.totalXP += 50;
+                
+                if (progress.currentLesson === currentLessonNumber) {
+                    progress.currentLesson = currentLessonNumber + 1;
+                }
+                
+                const saved = saveProgress(progress);
+                
+                if (saved) {
+                    btn.textContent = '✓ Lesson Complete';
+                    btn.classList.add('completed');
+                } else {
+                    btn.textContent = 'Error - Try Again';
+                    btn.classList.add('error');
+                    setTimeout(() => {
+                        btn.textContent = 'Mark Lesson as Complete';
+                        btn.classList.remove('error');
+                    }, 2000);
+                }
+            }
+        }
 
-      const highContrast = localStorage.getItem('highContrast') === 'true';
-      if (highContrast) {
-        document.body.classList.add('high-contrast');
-      }
-    }
-
-    // Initialize
-    loadA11yPreferences();
-    checkCompletion();
-  </script>
+        window.addEventListener('load', () => {
+            const progress = loadProgress();
+            const currentLessonNumber = 1;
+            const btn = document.getElementById('complete-btn');
+            
+            if (progress.completedLessons.includes(currentLessonNumber)) {
+                btn.textContent = '✓ Lesson Complete';
+                btn.classList.add('completed');
+            }
+        });
+    </script>
 </body>
 </html>
