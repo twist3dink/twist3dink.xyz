@@ -1,693 +1,670 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson 3: RFID & NFC Hacking | tw¡st3d_¡nk Academy</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3: Sub-GHz Fundamentals | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    :root {
-      --bg-dark: #0a0a0a;
-      --bg-card: #1a1a1a;
-      --accent: #00ff88;
-      --text-primary: #ffffff;
-      --text-secondary: #b0b0b0;
-      --border: #333;
-      --warning: #ff9500;
-    }
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
 
-    body {
-      font-family: 'Atkinson Hyperlegible', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-primary);
-      line-height: 1.8;
-      padding: 20px;
-    }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+        .lesson-header {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
 
-    /* Accessibility Controls */
-    .a11y-controls {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 15px;
-      z-index: 1000;
-      display: flex;
-      gap: 10px;
-    }
+        .lesson-header h1 {
+            color: #00ff88;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
 
-    .a11y-btn {
-      background: var(--bg-dark);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
+        .lesson-meta {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
 
-    .a11y-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+        .lesson-header button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
 
-    .a11y-btn:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
+        .lesson-header button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
 
-    /* Navigation */
-    .lesson-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
+        .content-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
 
-    .nav-link {
-      color: var(--text-secondary);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.3s ease;
-    }
+        .content-section h2 {
+            color: #00ff88;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
 
-    .nav-link:hover {
-      color: var(--accent);
-    }
+        .content-section h3 {
+            color: #00ff88;
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem 0;
+        }
 
-    .lesson-badge {
-      background: var(--bg-card);
-      border: 2px solid var(--accent);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 700;
-      color: var(--accent);
-    }
+        .content-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.3px;
+        }
 
-    /* Header */
-    .lesson-header {
-      margin-bottom: 40px;
-    }
+        .content-section ul, .content-section ol {
+            margin: 1rem 0 1rem 2rem;
+        }
 
-    .lesson-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 15px;
-      background: linear-gradient(135deg, var(--accent), #00ccff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+        .content-section li {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
 
-    .lesson-meta {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-    }
+        .note-box {
+            background: #1a1a1a;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
 
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        .warning-box {
+            background: #2a1a1a;
+            border-left: 4px solid #ff4444;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
 
-    /* Content Sections */
-    .content-section {
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 30px;
-    }
+        .warning-box strong {
+            color: #ff4444;
+        }
 
-    .section-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: var(--accent);
-    }
+        #complete-btn {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            margin: 2rem 0;
+            transition: all 0.3s;
+        }
 
-    .section-subtitle {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-top: 25px;
-      margin-bottom: 15px;
-      color: var(--text-primary);
-    }
+        #complete-btn:hover {
+            background: #00dd77;
+        }
 
-    p {
-      margin-bottom: 15px;
-      color: var(--text-secondary);
-    }
+        #complete-btn.completed {
+            background: #333;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            cursor: default;
+        }
 
-    /* Alert Boxes */
-    .alert {
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      border: 2px solid;
-    }
+        #complete-btn.locked {
+            background: #333;
+            color: #666;
+            border: 2px solid #666;
+            cursor: not-allowed;
+        }
 
-    .alert-warning {
-      background: rgba(255, 149, 0, 0.1);
-      border-color: var(--warning);
-      color: var(--warning);
-    }
+        #complete-btn.error {
+            background: #ff4444;
+            color: #fff;
+        }
 
-    .alert-info {
-      background: rgba(0, 255, 136, 0.1);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+        .nav-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 2rem;
+        }
 
-    .alert-title {
-      font-weight: 700;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        .nav-section button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
 
-    /* Lists */
-    ul, ol {
-      margin-left: 25px;
-      margin-bottom: 20px;
-      color: var(--text-secondary);
-    }
+        .nav-section button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
 
-    li {
-      margin-bottom: 10px;
-      line-height: 1.7;
-    }
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
 
-    /* Progress Footer */
-    .lesson-footer {
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 30px;
-      margin-top: 40px;
-    }
+        .nav-buttons a {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
 
-    .completion-section {
-      text-align: center;
-    }
+        .nav-buttons a:nth-child(1),
+        .nav-buttons a:nth-child(2) {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+        }
 
-    .xp-reward {
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
+        .nav-buttons a:nth-child(1):hover,
+        .nav-buttons a:nth-child(2):hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
 
-    .complete-btn {
-      background: var(--accent);
-      color: var(--bg-dark);
-      border: none;
-      padding: 15px 40px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 20px;
-    }
+        .nav-buttons a:nth-child(3) {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: 2px solid #00ff88;
+        }
 
-    .complete-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 24px rgba(0, 255, 136, 0.4);
-    }
+        .nav-buttons a:nth-child(3):hover {
+            background: #00dd77;
+        }
 
-    .complete-btn:disabled {
-      background: var(--border);
-      color: var(--text-secondary);
-      cursor: not-allowed;
-      transform: none;
-    }
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
 
-    .nav-buttons {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
+            .lesson-header h1 {
+                font-size: 1.5rem;
+            }
 
-    .nav-btn {
-      background: var(--bg-dark);
-      color: var(--accent);
-      border: 2px solid var(--accent);
-      padding: 12px 30px;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
+            .content-section {
+                padding: 1.5rem;
+            }
 
-    .nav-btn:hover {
-      background: var(--accent);
-      color: var(--bg-dark);
-    }
+            .nav-buttons {
+                flex-direction: column;
+            }
 
-    /* Font Size Classes */
-    body.font-small { font-size: 14px; }
-    body.font-large { font-size: 18px; }
-    body.font-xl { font-size: 22px; }
-
-    /* High Contrast Mode */
-    body.high-contrast {
-      --bg-dark: #000000;
-      --bg-card: #1a1a1a;
-      --text-primary: #ffffff;
-      --border: #00ff88;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .lesson-title {
-        font-size: 2rem;
-      }
-
-      .a11y-controls {
-        position: static;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-      }
-    }
-  </style>
+            .nav-buttons a {
+                min-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Accessibility Controls -->
-    <div class="a11y-controls">
-      <button class="a11y-btn" onclick="changeFontSize('small')" aria-label="Decrease font size">A-</button>
-      <button class="a11y-btn" onclick="changeFontSize('normal')" aria-label="Normal font size">A</button>
-      <button class="a11y-btn" onclick="changeFontSize('large')" aria-label="Increase font size">A+</button>
-      <button class="a11y-btn" onclick="changeFontSize('xl')" aria-label="Extra large font size">A++</button>
-      <button class="a11y-btn" onclick="toggleContrast()" aria-label="Toggle high contrast">◐</button>
+    <div class="container">
+        <div class="lesson-header">
+            <h1>Lesson 3: Sub-GHz Fundamentals</h1>
+            <p class="lesson-meta">Estimated time: 25 minutes | XP Reward: 50</p>
+            <button onclick="scrollToBottom()">Skip to Bottom ↓</button>
+        </div>
+
+        <div class="content-section">
+            <h2>What is Sub-GHz?</h2>
+            <p>Sub-GHz refers to radio frequencies below 1 gigahertz (GHz). These frequencies are part of the electromagnetic spectrum used for wireless communication over short to medium distances. Unlike WiFi or Bluetooth which operate at 2.4 GHz or 5 GHz, sub-GHz frequencies offer better penetration through walls and obstacles, making them ideal for remote control applications.</p>
+
+            <h3>Common Frequencies</h3>
+            <p>Flipper Zero can transmit and receive on several sub-GHz bands, though available frequencies depend on your region due to regulatory restrictions:</p>
+
+            <ul>
+                <li><strong>315 MHz:</strong> Popular in North America for garage door openers, car key fobs, and security systems</li>
+                <li><strong>433 MHz:</strong> Widely used internationally for remote controls, wireless doorbells, weather stations, and IoT devices</li>
+                <li><strong>868 MHz:</strong> Common in Europe for home automation, smart meters, and industrial sensors</li>
+                <li><strong>915 MHz:</strong> Used in North America for similar applications as 868 MHz in Europe</li>
+            </ul>
+
+            <h3>Real-World Applications</h3>
+            <p>Sub-GHz technology is everywhere in our daily lives:</p>
+            <ul>
+                <li><strong>Garage Door Openers:</strong> Most residential garage doors use 310-390 MHz signals</li>
+                <li><strong>Car Key Fobs:</strong> Remote unlock, lock, and trunk release functions</li>
+                <li><strong>Wireless Doorbells:</strong> Battery-powered transmitters that don't require wiring</li>
+                <li><strong>Weather Stations:</strong> Outdoor sensors transmitting temperature and humidity data</li>
+                <li><strong>Tire Pressure Monitors:</strong> Sensors in vehicle tires reporting pressure levels</li>
+                <li><strong>Home Security Systems:</strong> Window and door sensors communicating with alarm panels</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Why Sub-GHz?</strong> Lower frequencies travel farther and penetrate obstacles better than higher frequencies. A 433 MHz signal can easily pass through walls, making it perfect for remote controls that need to work from outside your home or across large distances.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>How Sub-GHz Communication Works</h2>
+            <p>Understanding the basics of radio communication helps you make sense of what Flipper is capturing and replaying.</p>
+
+            <h3>Transmitter and Receiver Basics</h3>
+            <p>Every wireless system has two components:</p>
+            <ul>
+                <li><strong>Transmitter:</strong> Converts electrical signals into radio waves and broadcasts them through an antenna (your car key fob button press)</li>
+                <li><strong>Receiver:</strong> Captures radio waves with an antenna and converts them back into electrical signals (the car's receiver module)</li>
+            </ul>
+
+            <p>When you press a button on a remote control, the transmitter encodes your command (like "unlock door") into a specific radio signal pattern and broadcasts it. The receiver listens for this pattern and, when recognized, executes the corresponding action.</p>
+
+            <h3>Modulation Types</h3>
+            <p>Modulation is how information is encoded onto a radio carrier wave. Think of it as different "languages" for transmitting data:</p>
+
+            <ul>
+                <li><strong>AM (Amplitude Modulation):</strong> Changes the signal strength to encode data, similar to how AM radio works</li>
+                <li><strong>FM (Frequency Modulation):</strong> Varies the frequency slightly to encode information</li>
+                <li><strong>ASK (Amplitude Shift Keying):</strong> Simple on/off modulation, like Morse code with radio waves</li>
+                <li><strong>FSK (Frequency Shift Keying):</strong> Switches between two frequencies to represent binary data (0s and 1s)</li>
+            </ul>
+
+            <p>Flipper Zero automatically detects the modulation type used by most common devices, making signal analysis easier.</p>
+
+            <h3>Signal Strength and Range</h3>
+            <p>The effective range of sub-GHz communication depends on several factors:</p>
+            <ul>
+                <li>Transmitter power output (typically 10-100 milliwatts for consumer devices)</li>
+                <li>Antenna design and quality</li>
+                <li>Environmental obstacles (walls, metal structures, interference)</li>
+                <li>Receiver sensitivity</li>
+            </ul>
+
+            <p>Flipper Zero's range varies by frequency but typically matches or slightly exceeds the original device's range when replaying captured signals.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Using Flipper's Sub-GHz Module</h2>
+            <p>Navigate to the Sub-GHz menu from the home screen to access five primary functions:</p>
+
+            <h3>Read RAW</h3>
+            <p>This is your go-to tool for capturing unknown or unrecognized signals. Raw mode records the actual radio waveform without trying to decode it, making it useful for:</p>
+            <ul>
+                <li>Capturing signals from devices Flipper doesn't recognize</li>
+                <li>Recording complex or proprietary protocols</li>
+                <li>Analyzing timing and modulation patterns</li>
+            </ul>
+            <p>Raw captures are larger files and may not work perfectly on replay, but they're invaluable for learning and experimentation.</p>
+
+            <h3>Read</h3>
+            <p>Use this mode when you want Flipper to automatically identify and decode known protocols. When activated, Flipper listens on the configured frequency and displays decoded information when it recognizes a signal. This mode works with:</p>
+            <ul>
+                <li>Princeton protocol (common in garage openers and simple remotes)</li>
+                <li>KeeLoq (used in many car key fobs)</li>
+                <li>Star Line (vehicle security systems)</li>
+                <li>And dozens of other recognized protocols</li>
+            </ul>
+
+            <h3>Saved</h3>
+            <p>Access your library of previously captured signals. Each saved file includes the frequency, modulation, and protocol information needed to replay it. You can organize saves into folders for easy management.</p>
+
+            <h3>Add Manually</h3>
+            <p>For advanced users, this allows creating custom signals by manually entering frequency, modulation type, and data values. Useful for reconstructing known protocols or testing specific signal parameters.</p>
+
+            <h3>Frequency Analyzer</h3>
+            <p>This powerful tool scans the radio spectrum to find active frequencies in your environment. It displays signal strength across different frequencies, helping you identify which channels are in use. Perfect for discovering what frequency a device uses before attempting to capture it.</p>
+
+            <div class="note-box">
+                <strong>Pro Tip:</strong> Always start with Frequency Analyzer when working with an unknown device. It tells you exactly where to look, saving time and increasing your chances of a successful capture.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Capturing a Signal</h2>
+            <p>Let's walk through capturing a signal from a wireless device you own:</p>
+
+            <h3>Step-by-Step Process</h3>
+            <ol>
+                <li><strong>Identify your target:</strong> Choose a device you own (wireless doorbell, garage remote, etc.)</li>
+                <li><strong>Open Sub-GHz menu:</strong> Navigate to Sub-GHz from the main menu</li>
+                <li><strong>Select capture mode:</strong>
+                    <ul>
+                        <li>Use "Read" if you know the device uses a common protocol</li>
+                        <li>Use "Read RAW" for unknown devices or better compatibility</li>
+                    </ul>
+                </li>
+                <li><strong>Set frequency:</strong> Select the appropriate frequency for your region and device (often 433.92 MHz or 315 MHz)</li>
+                <li><strong>Position devices:</strong> Hold your remote near Flipper (within 1 foot for best results)</li>
+                <li><strong>Start capture:</strong> Press OK to begin listening</li>
+                <li><strong>Activate remote:</strong> Press the button on your device once</li>
+                <li><strong>Observe feedback:</strong> Flipper will show signal detection and strength</li>
+                <li><strong>Save capture:</strong> Press OK to save, then name your file descriptively</li>
+            </ol>
+
+            <h3>Reading the Signal Data</h3>
+            <p>After capturing, Flipper displays information about the signal:</p>
+            <ul>
+                <li><strong>Frequency:</strong> The exact frequency detected (e.g., 433.920 MHz)</li>
+                <li><strong>Protocol:</strong> Identified protocol name (if recognized)</li>
+                <li><strong>Key:</strong> The unique data code transmitted</li>
+                <li><strong>Bit length:</strong> Number of bits in the transmission</li>
+                <li><strong>TE (Time Element):</strong> Timing information for the signal</li>
+            </ul>
+
+            <h3>Saving Captures</h3>
+            <p>When saving, you'll be prompted to name your file. Use descriptive names that help you remember what the capture does:</p>
+            <ul>
+                <li>✓ Good: "garage_door_open" or "doorbell_frontdoor"</li>
+                <li>✗ Poor: "signal1" or "test"</li>
+            </ul>
+
+            <h3>Naming Conventions</h3>
+            <p>Develop a consistent naming system to stay organized:</p>
+            <ul>
+                <li>Include device type: garage, car, doorbell, fan</li>
+                <li>Include function: open, close, unlock, button1</li>
+                <li>Include location if relevant: frontdoor, bedroom, workshop</li>
+                <li>Use underscores or hyphens instead of spaces</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Troubleshooting Captures:</strong> If Flipper doesn't detect your signal, try moving closer to the device, checking that you're on the correct frequency, or using Read RAW mode for better compatibility.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Replaying Signals</h2>
+            <p>Once you've captured a signal, replaying it is straightforward - but there are important considerations.</p>
+
+            <h3>How to Transmit Saved Signals</h3>
+            <ol>
+                <li>Navigate to Sub-GHz → Saved</li>
+                <li>Browse to your saved signal file</li>
+                <li>Select the file and press OK</li>
+                <li>Choose "Emulate" or "Send" option</li>
+                <li>Press OK to transmit the signal</li>
+            </ol>
+
+            <p>Flipper will broadcast the saved signal at the same frequency and with the same modulation as captured. The transmission typically lasts a fraction of a second, just like pressing the original remote button.</p>
+
+            <h3>Legal Considerations</h3>
+            <div class="warning-box">
+                <strong>⚠️ CRITICAL LEGAL WARNING</strong>
+                <p style="margin-top: 0.5rem;">Only replay signals for devices you own or have explicit permission to control. Transmitting signals to systems you don't own is illegal and can result in:</p>
+                <ul style="margin-top: 0.5rem;">
+                    <li>Criminal charges for unauthorized access</li>
+                    <li>FCC violations (United States) or equivalent regulatory penalties</li>
+                    <li>Civil liability for damages</li>
+                    <li>Confiscation of equipment</li>
+                </ul>
+            </div>
+
+            <h3>Testing on Your Own Devices Only</h3>
+            <p>The golden rule: If you don't own it, don't transmit to it. This includes:</p>
+            <ul>
+                <li>Your neighbor's garage door</li>
+                <li>Vehicles in a parking lot</li>
+                <li>Store security systems</li>
+                <li>Smart home devices in other people's homes</li>
+            </ul>
+
+            <p>Testing on your own devices is legal and educational. It helps you understand security vulnerabilities in your own systems and make informed decisions about upgrades or security improvements.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Common Sub-GHz Protocols</h2>
+            <p>Understanding protocol types helps you predict what you can and cannot capture or replay.</p>
+
+            <h3>Rolling Codes vs Fixed Codes</h3>
+            <p><strong>Fixed Code Systems:</strong></p>
+            <ul>
+                <li>Transmit the same signal every time you press the button</li>
+                <li>Simple and cheap to implement</li>
+                <li>Can be captured and replayed perfectly</li>
+                <li>Common in older garage doors, basic remotes, and budget devices</li>
+                <li>Security vulnerability: anyone who captures the signal can replay it</li>
+            </ul>
+
+            <p><strong>Rolling Code Systems (Hopping Codes):</strong></p>
+            <ul>
+                <li>Generate a new, unique code for each button press</li>
+                <li>Both transmitter and receiver stay synchronized using a shared algorithm</li>
+                <li>After use, each code becomes invalid</li>
+                <li>Common in modern car key fobs and newer garage openers</li>
+                <li>Much more secure against replay attacks</li>
+            </ul>
+
+            <h3>Princeton Protocol</h3>
+            <p>One of the most common fixed-code protocols. Used in countless inexpensive wireless devices including doorbells, simple RF remotes, and older garage openers. Princeton signals are easy to capture and replay.</p>
+
+            <h3>KeeLoq Protocol</h3>
+            <p>A rolling code system used primarily in automotive key fobs and some garage door openers. KeeLoq is designed to prevent replay attacks by changing the code with each transmission. While Flipper can capture KeeLoq signals, replaying them typically won't work due to the rolling code mechanism.</p>
+
+            <h3>Why Some Signals Can't Be Replayed</h3>
+            <p>Several factors can prevent successful signal replay:</p>
+            <ul>
+                <li><strong>Rolling codes:</strong> The captured code has already been used and is now invalid</li>
+                <li><strong>Encryption:</strong> Signal data is encrypted and can't be decoded without keys</li>
+                <li><strong>Challenge-response:</strong> System requires bidirectional communication</li>
+                <li><strong>Time-based codes:</strong> Signal includes timestamp validation</li>
+                <li><strong>Regional restrictions:</strong> Flipper may block certain frequencies in your region</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Learning Opportunity:</strong> When you encounter a signal that can't be replayed, it's an opportunity to learn about why. Research the protocol and understand the security mechanisms that protect it. This knowledge makes you a better security professional.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Legal & Safety Warnings</h2>
+            
+            <div class="warning-box">
+                <strong>⚠️ REGULATORY COMPLIANCE REQUIRED</strong>
+                <p style="margin-top: 0.5rem;">Radio frequency transmissions are regulated by government agencies worldwide. Understanding and following these regulations is not optional.</p>
+            </div>
+
+            <h3>FCC Regulations (United States)</h3>
+            <p>The Federal Communications Commission regulates all radio transmissions in the US:</p>
+            <ul>
+                <li><strong>Part 15 Compliance:</strong> Flipper operates under Part 15 rules as an unlicensed transmitter</li>
+                <li><strong>Power Limits:</strong> Must not exceed specified power output limits for each frequency band</li>
+                <li><strong>Interference:</strong> Must not cause harmful interference to licensed services</li>
+                <li><strong>Frequency Restrictions:</strong> Some frequencies are restricted or require licenses</li>
+            </ul>
+
+            <h3>Jamming is Illegal</h3>
+            <p>Intentionally interfering with wireless communications is a serious federal crime:</p>
+            <ul>
+                <li>Jamming or blocking any radio frequency is illegal</li>
+                <li>This includes WiFi, cellular, GPS, emergency services, and sub-GHz bands</li>
+                <li>Penalties include fines up to $112,500 and imprisonment</li>
+                <li>Flipper Zero is not designed for jamming and attempting to use it this way violates federal law</li>
+            </ul>
+
+            <h3>Only Test Your Own Devices</h3>
+            <p>We cannot overstate this enough: transmitting signals to control or interact with devices you don't own is illegal. Period. This applies even if:</p>
+            <ul>
+                <li>You're "just testing" or "curious"</li>
+                <li>The device is in a public place</li>
+                <li>You think the owner won't notice</li>
+                <li>You plan to tell the owner afterward</li>
+            </ul>
+
+            <p>Legal security testing requires written authorization and proper contracts. Unauthorized testing is hacking, regardless of intent.</p>
+
+            <h3>Interference Concerns</h3>
+            <p>Even when testing your own devices, be mindful of unintended interference:</p>
+            <ul>
+                <li>Your transmission might accidentally affect nearby similar devices</li>
+                <li>Multiple transmissions in quick succession could disrupt neighbors' equipment</li>
+                <li>Test in controlled environments when possible</li>
+                <li>If you notice your actions affecting others' systems, stop immediately</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Ethical Standard:</strong> True professionals in security and technology prioritize responsible disclosure and ethical behavior. The skills you're learning should make technology more secure, not exploit it for personal gain or amusement.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Key Takeaway</h2>
+            <p>Sub-GHz radio communication is one of Flipper Zero's most powerful and educational features. Understanding how wireless protocols work gives you insight into the invisible radio waves constantly surrounding us, from car key fobs to wireless doorbells to home security systems.</p>
+
+            <p>The ability to capture and analyze these signals is incredibly valuable for security research, device testing, and understanding technology. However, this power must be wielded responsibly. Always:</p>
+
+            <ul>
+                <li>Test only devices you own</li>
+                <li>Respect others' privacy and property</li>
+                <li>Follow local radio frequency regulations</li>
+                <li>Use knowledge to improve security, not exploit vulnerabilities</li>
+            </ul>
+
+            <p>As you experiment with Sub-GHz, you'll develop an intuition for how these systems work, which protocols are secure, and where vulnerabilities exist. This knowledge is the foundation for becoming a skilled security researcher.</p>
+
+            <div class="note-box">
+                <strong>Coming Next:</strong> In Lesson 4, we'll explore RFID and NFC technologies - the systems behind access cards, contactless payments, and modern identification systems. You'll learn the differences between various card types and how to analyze their security.
+            </div>
+        </div>
+
+        <button id="complete-btn" onclick="markComplete()">Complete Previous Lesson First</button>
+
+        <div class="nav-section">
+            <button onclick="scrollToTop()">Back to Top ↑</button>
+            <div class="nav-buttons">
+                <a href="../lesson-2/">← Previous Lesson</a>
+                <a href="../../">Course Overview</a>
+                <a href="../lesson-4/">Next Lesson →</a>
+            </div>
+        </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="lesson-nav">
-      <a href="../../" class="nav-link">← Back to Course</a>
-      <span class="lesson-badge">LESSON 3</span>
-      <a href="../lesson-4/" class="nav-link">Next Lesson →</a>
-    </nav>
-
-    <!-- Lesson Header -->
-    <header class="lesson-header">
-      <h1 class="lesson-title">RFID & NFC Hacking</h1>
-      <div class="lesson-meta">
-        <span class="meta-item">⏱️ 50 minutes</span>
-        <span class="meta-item">⚡ 50 XP</span>
-        <span class="meta-item">📶 Difficulty: Medium</span>
-      </div>
-    </header>
-
-    <!-- Introduction -->
-    <section class="content-section">
-      <h2 class="section-title">🔐 Introduction to RFID & NFC</h2>
-      
-      <p>Radio Frequency Identification (RFID) and Near Field Communication (NFC) are everywhere in modern life. From office access cards to hotel key cards, contactless payment systems to public transportation passes, these technologies power countless access control and identification systems.</p>
-
-      <p>The Flipper Zero can read, save, emulate, and in some cases, clone both RFID (125 kHz) and NFC (13.56 MHz) cards and tags. This lesson will teach you how these systems work and how to interact with them safely and legally.</p>
-
-      <div class="alert alert-warning">
-        <div class="alert-title">⚠️ Legal Warning</div>
-        <p>Cloning or emulating access cards without authorization is illegal. Only test with cards you own or have explicit permission to use. This lesson is for educational and security research purposes only.</p>
-      </div>
-    </section>
-
-    <!-- Understanding RFID -->
-    <section class="content-section">
-      <h2 class="section-title">📡 Understanding RFID Technology</h2>
-
-      <h3 class="section-subtitle">What is RFID?</h3>
-      <p>RFID (Radio Frequency Identification) uses electromagnetic fields to automatically identify and track tags attached to objects. The Flipper Zero works with Low Frequency (LF) RFID at 125 kHz.</p>
-
-      <h3 class="section-subtitle">Common 125 kHz RFID Applications</h3>
-      <ul>
-        <li><strong>Building Access Cards</strong> - Office buildings, apartments, parking garages</li>
-        <li><strong>Hotel Key Cards</strong> - Many hotels use 125 kHz RFID</li>
-        <li><strong>Pet Microchips</strong> - Identification chips implanted in animals</li>
-        <li><strong>Vehicle Immobilizers</strong> - Car key authentication systems</li>
-        <li><strong>Time & Attendance</strong> - Employee clock-in/out systems</li>
-      </ul>
-
-      <h3 class="section-subtitle">How RFID Works</h3>
-      <ol>
-        <li><strong>Card/Tag</strong> - Contains a coil antenna and microchip (no battery needed)</li>
-        <li><strong>Reader</strong> - Emits electromagnetic field at 125 kHz</li>
-        <li><strong>Power Transfer</strong> - Card enters field and harvests energy inductively</li>
-        <li><strong>Data Transmission</strong> - Card modulates field to send its unique ID</li>
-        <li><strong>Authentication</strong> - Reader verifies ID against database</li>
-      </ol>
-
-      <div class="alert alert-info">
-        <div class="alert-title">💡 Key Insight</div>
-        <p>Most 125 kHz RFID systems only transmit a simple ID number with no encryption. This makes them vulnerable to cloning if physical access to a valid card is obtained.</p>
-      </div>
-    </section>
-
-    <!-- Reading RFID -->
-    <section class="content-section">
-      <h2 class="section-title">📖 Reading RFID Cards</h2>
-
-      <h3 class="section-subtitle">Step-by-Step: Reading a Card</h3>
-      <ol>
-        <li>Navigate to <strong>125 kHz RFID</strong> from the main menu</li>
-        <li>Select <strong>Read</strong></li>
-        <li>Hold the card flat against the back of the Flipper Zero</li>
-        <li>Wait for the read confirmation (vibration + visual feedback)</li>
-        <li>View the card data displayed on screen</li>
-        <li>Choose <strong>Save</strong> to store the card data</li>
-      </ol>
-
-      <h3 class="section-subtitle">What You'll See</h3>
-      <p>When reading an RFID card, the Flipper displays:</p>
-      <ul>
-        <li><strong>Card Type</strong> - EM4100, HID Prox, Indala, etc.</li>
-        <li><strong>UID/ID Number</strong> - The unique identifier</li>
-        <li><strong>Format</strong> - How the data is encoded</li>
-        <li><strong>Raw Data</strong> - Hexadecimal representation</li>
-      </ul>
-
-      <div class="alert alert-info">
-        <div class="alert-title">💡 Pro Tip</div>
-        <p>Position matters! Hold the card flat against the back center of the Flipper for best results. Some cards may need to be positioned at specific angles.</p>
-      </div>
-    </section>
-
-    <!-- Understanding NFC -->
-    <section class="content-section">
-      <h2 class="section-title">📲 Understanding NFC Technology</h2>
-
-      <h3 class="section-subtitle">What is NFC?</h3>
-      <p>NFC (Near Field Communication) operates at 13.56 MHz and supports more complex protocols than basic RFID. It's based on ISO/IEC 14443 standards and can handle bidirectional communication.</p>
-
-      <h3 class="section-subtitle">Common NFC Applications</h3>
-      <ul>
-        <li><strong>Contactless Payments</strong> - Credit/debit cards, mobile payment (Apple Pay, Google Pay)</li>
-        <li><strong>Public Transportation</strong> - Metro cards, bus passes</li>
-        <li><strong>Modern Access Control</strong> - Advanced building security systems</li>
-        <li><strong>Smart Posters</strong> - NFC tags for information sharing</li>
-        <li><strong>Device Pairing</strong> - Bluetooth pairing, WiFi credentials</li>
-      </ul>
-
-      <h3 class="section-subtitle">NFC Card Types</h3>
-      <ul>
-        <li><strong>MIFARE Classic</strong> - Common but cryptographically weak (1K, 4K variants)</li>
-        <li><strong>MIFARE Ultralight</strong> - Simple, low-cost tags with minimal security</li>
-        <li><strong>MIFARE DESFire</strong> - Advanced security with encryption (harder to attack)</li>
-        <li><strong>NTAG Series</strong> - Popular for consumer NFC tags</li>
-        <li><strong>EMV Payment Cards</strong> - Bank cards (cannot be cloned due to security)</li>
-      </ul>
-
-      <div class="alert alert-warning">
-        <div class="alert-title">⚠️ Important</div>
-        <p>Modern payment cards (EMV) use advanced cryptography and cannot be cloned. Attempting to read payment card data for fraudulent purposes is a serious crime.</p>
-      </div>
-    </section>
-
-    <!-- Reading NFC -->
-    <section class="content-section">
-      <h2 class="section-title">📱 Reading NFC Cards</h2>
-
-      <h3 class="section-subtitle">Step-by-Step: Reading NFC</h3>
-      <ol>
-        <li>Navigate to <strong>NFC</strong> from the main menu</li>
-        <li>Select <strong>Read Card</strong></li>
-        <li>Hold the card against the back of the Flipper</li>
-        <li>The Flipper will detect and identify the card type</li>
-        <li>View detailed card information</li>
-        <li>Save the card data if desired</li>
-      </ol>
-
-      <h3 class="section-subtitle">Understanding Card Data</h3>
-      <p>NFC cards contain more complex data structures:</p>
-      <ul>
-        <li><strong>UID</strong> - Unique identifier (4, 7, or 10 bytes)</li>
-        <li><strong>Card Type</strong> - MIFARE Classic, Ultralight, DESFire, etc.</li>
-        <li><strong>Memory Structure</strong> - Sectors, blocks, pages depending on type</li>
-        <li><strong>Access Keys</strong> - Required for reading/writing protected areas</li>
-        <li><strong>Application Data</strong> - Stored information (balance, access rights, etc.)</li>
-      </ul>
-
-      <h3 class="section-subtitle">MIFARE Classic Attack</h3>
-      <p>For MIFARE Classic cards with default or weak keys, the Flipper can attempt dictionary attacks:</p>
-      <ol>
-        <li>Read card to detect type (MIFARE Classic)</li>
-        <li>Select <strong>Detect Reader</strong> to gather authentication attempts</li>
-        <li>Use built-in dictionary to find keys</li>
-        <li>Once keys found, read full card contents</li>
-      </ol>
-    </section>
-
-    <!-- Emulation -->
-    <section class="content-section">
-      <h2 class="section-title">🎭 Emulating Cards</h2>
-
-      <h3 class="section-subtitle">RFID Emulation</h3>
-      <p>After saving an RFID card, you can emulate it:</p>
-      <ol>
-        <li>Go to <strong>125 kHz RFID</strong> → <strong>Saved</strong></li>
-        <li>Select your saved card</li>
-        <li>Choose <strong>Emulate</strong></li>
-        <li>Hold Flipper to reader as you would a card</li>
-        <li>The reader should accept it as the original card</li>
-      </ol>
-
-      <h3 class="section-subtitle">NFC Emulation</h3>
-      <p>NFC emulation works similarly but with more complexity:</p>
-      <ol>
-        <li>Navigate to <strong>NFC</strong> → <strong>Saved</strong></li>
-        <li>Select saved card file</li>
-        <li>Choose <strong>Emulate</strong></li>
-        <li>Present Flipper to NFC reader</li>
-      </ol>
-
-      <div class="alert alert-info">
-        <div class="alert-title">💡 Emulation Limitations</div>
-        <p>Some advanced cards cannot be emulated due to:</p>
-        <ul>
-          <li>Encrypted sectors requiring authentication</li>
-          <li>Challenge-response protocols</li>
-          <li>Dynamic cryptograms (like EMV payment cards)</li>
-          <li>UID-specific encryption</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Practical Exercise -->
-    <section class="content-section">
-      <h2 class="section-title">🎯 Practical Exercise</h2>
-
-      <h3 class="section-subtitle">Safe Practice Activity</h3>
-      <p>Practice reading and emulating with cards you own:</p>
-
-      <ol>
-        <li><strong>Prepare Materials</strong>
-          <ul>
-            <li>Old hotel key card (expired)</li>
-            <li>Spare building access card (if you have permission)</li>
-            <li>Blank NFC tags for practice</li>
-          </ul>
-        </li>
-        
-        <li><strong>RFID Practice</strong>
-          <ul>
-            <li>Read your 125 kHz card</li>
-            <li>Save it with a descriptive name</li>
-            <li>Emulate and test on the original reader</li>
-            <li>Document the card type and ID format</li>
-          </ul>
-        </li>
-        
-        <li><strong>NFC Practice</strong>
-          <ul>
-            <li>Read an NFC tag or card</li>
-            <li>Examine the card structure</li>
-            <li>If MIFARE Classic, attempt key recovery</li>
-            <li>Save and test emulation</li>
-          </ul>
-        </li>
-        
-        <li><strong>Analysis</strong>
-          <ul>
-            <li>Compare security between different card types</li>
-            <li>Note which cards have encryption</li>
-            <li>Understand why some cannot be cloned</li>
-          </ul>
-        </li>
-      </ol>
-
-      <div class="alert alert-warning">
-        <div class="alert-title">⚠️ Remember</div>
-        <p>Only test cards you own or have explicit written permission to test. Unauthorized access card cloning is illegal and unethical.</p>
-      </div>
-    </section>
-
-    <!-- Security Considerations -->
-    <section class="content-section">
-      <h2 class="section-title">🛡️ Security Considerations</h2>
-
-      <h3 class="section-subtitle">Vulnerabilities in Access Systems</h3>
-      <ul>
-        <li><strong>Simple UID-Based Systems</strong> - No encryption, easy to clone</li>
-        <li><strong>Default Keys</strong> - Many MIFARE Classic deployments use factory defaults</li>
-        <li><strong>Physical Security</strong> - If attacker can read your card, they can clone it</li>
-        <li><strong>Weak Cryptography</strong> - MIFARE Classic crypto has been broken</li>
-      </ul>
-
-      <h3 class="section-subtitle">Better Security Practices</h3>
-      <ul>
-        <li>Use modern DESFire or encrypted cards</li>
-        <li>Implement additional authentication factors</li>
-        <li>Monitor for duplicate card usage</li>
-        <li>Use card + PIN systems</li>
-        <li>Regularly audit access logs</li>
-      </ul>
-
-      <h3 class="section-subtitle">Protecting Your Cards</h3>
-      <ul>
-        <li>Use RFID-blocking wallets or sleeves</li>
-        <li>Keep sensitive cards physically secure</li>
-        <li>Report lost cards immediately</li>
-        <li>Be aware of social engineering attempts</li>
-      </ul>
-    </section>
-
-    <!-- Lesson Footer -->
-    <footer class="lesson-footer">
-      <div class="completion-section">
-        <div class="xp-reward">+50 XP</div>
-        <p>Complete this lesson to earn your XP and unlock the next module!</p>
-        <button class="complete-btn" id="completeBtn" onclick="markComplete()">
-          Mark Lesson Complete
-        </button>
-        <div class="nav-buttons">
-          <a href="../lesson-2/" class="nav-btn">← Previous Lesson</a>
-          <a href="../../" class="nav-btn">Course Overview</a>
-          <a href="../lesson-4/" class="nav-btn">Next Lesson →</a>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <script>
-    // Storage configuration - syncs with course overview
-    const COURSE_STORAGE_KEY = 'flipper-zero-course';
-    const LESSON_ID = 3;
-
-    // Progress tracking functions
-    async function loadProgress() {
-      try {
-        const result = await window.storage.get(COURSE_STORAGE_KEY);
-        return result ? JSON.parse(result.value) : { completed: [] };
-      } catch (error) {
-        return { completed: [] };
-      }
-    }
-
-    async function saveProgress(progress) {
-      try {
-        await window.storage.set(COURSE_STORAGE_KEY, JSON.stringify(progress));
-        return true;
-      } catch (error) {
-        console.error('Failed to save progress:', error);
-        return false;
-      }
-    }
-
-    async function markComplete() {
-      const btn = document.getElementById('completeBtn');
-      btn.disabled = true;
-      btn.textContent = 'Saving...';
-
-      const progress = await loadProgress();
-      
-      if (!progress.completed.includes(LESSON_ID)) {
-        progress.completed.push(LESSON_ID);
-        const saved = await saveProgress(progress);
-        
-        if (saved) {
-          btn.textContent = '✓ Lesson Complete!';
-          btn.style.background = 'var(--accent)';
-          setTimeout(() => {
-            window.location.href = '../lesson-4/';
-          }, 1500);
-        } else {
-          btn.textContent = 'Error - Try Again';
-          btn.disabled = false;
+    <script>
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'instant'
+            });
         }
-      } else {
-        btn.textContent = '✓ Already Complete';
-      }
-    }
 
-    // Check if already completed
-    async function checkCompletion() {
-      const progress = await loadProgress();
-      if (progress.completed.includes(LESSON_ID)) {
-        const btn = document.getElementById('completeBtn');
-        btn.textContent = '✓ Completed';
-        btn.style.background = 'var(--border)';
-      }
-    }
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'instant'
+            });
+        }
 
-    // Accessibility functions
-    function changeFontSize(size) {
-      document.body.className = document.body.className.replace(/font-\w+/g, '');
-      if (size !== 'normal') {
-        document.body.classList.add('font-' + size);
-      }
-      localStorage.setItem('fontSize', size);
-    }
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('flipper-progress');
+                return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            } catch (e) {
+                console.error('Error loading progress:', e);
+                return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            }
+        }
 
-    function toggleContrast() {
-      document.body.classList.toggle('high-contrast');
-      localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
-    }
+        function saveProgress(progress) {
+            try {
+                localStorage.setItem('flipper-progress', JSON.stringify(progress));
+                return true;
+            } catch (e) {
+                console.error('Error saving progress:', e);
+                return false;
+            }
+        }
 
-    function loadA11yPreferences() {
-      const fontSize = localStorage.getItem('fontSize');
-      if (fontSize && fontSize !== 'normal') {
-        document.body.classList.add('font-' + fontSize);
-      }
+        function markComplete() {
+            const btn = document.getElementById('complete-btn');
+            const currentLessonNumber = 3;
+            const progress = loadProgress();
+            
+            if (!progress.completedLessons.includes(currentLessonNumber - 1)) {
+                return;
+            }
+            
+            if (!progress.completedLessons.includes(currentLessonNumber)) {
+                progress.completedLessons.push(currentLessonNumber);
+                progress.totalXP += 50;
+                
+                if (progress.currentLesson === currentLessonNumber) {
+                    progress.currentLesson = currentLessonNumber + 1;
+                }
+                
+                const saved = saveProgress(progress);
+                
+                if (saved) {
+                    btn.textContent = '✓ Lesson Complete';
+                    btn.classList.remove('locked');
+                    btn.classList.add('completed');
+                } else {
+                    btn.textContent = 'Error - Try Again';
+                    btn.classList.add('error');
+                    setTimeout(() => {
+                        btn.textContent = 'Mark Lesson as Complete';
+                        btn.classList.remove('error');
+                    }, 2000);
+                }
+            }
+        }
 
-      const highContrast = localStorage.getItem('highContrast') === 'true';
-      if (highContrast) {
-        document.body.classList.add('high-contrast');
-      }
-    }
-
-    // Initialize
-    loadA11yPreferences();
-    checkCompletion();
-  </script>
+        window.addEventListener('load', () => {
+            const progress = loadProgress();
+            const currentLessonNumber = 3;
+            const btn = document.getElementById('complete-btn');
+            
+            if (progress.completedLessons.includes(currentLessonNumber)) {
+                btn.textContent = '✓ Lesson Complete';
+                btn.classList.add('completed');
+            }
+            else if (progress.completedLessons.includes(currentLessonNumber - 1)) {
+                btn.textContent = 'Mark Lesson as Complete';
+                btn.classList.remove('locked');
+            }
+            else {
+                btn.textContent = 'Complete Previous Lesson First';
+                btn.classList.add('locked');
+            }
+        });
+    </script>
 </body>
 </html>
