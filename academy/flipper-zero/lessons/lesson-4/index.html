@@ -73,36 +73,74 @@
     }
 
     /* Navigation */
-    .lesson-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
+    <!-- Progress tracking -->
+      <script>
+        let lessonProgress = {
+          currentLesson: 1,
+          completedLessons: [],
+          totalXP: 0
+        };
 
-    .nav-link {
-      color: var(--text-secondary);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.3s ease;
-    }
+        function loadProgress() {
+          try {
+            const saved = localStorage.getItem('flipper-progress');
+            if (saved) {
+              lessonProgress = JSON.parse(saved);
+              updateProgressDisplay();
+            }
+          } catch (error) {
+            console.error('Failed to load progress:', error);
+            document.getElementById('complete-btn').textContent = 'Error - Try Again';
+          }
+        }
 
-    .nav-link:hover {
-      color: var(--accent);
-    }
+        function saveProgress() {
+          try {
+            localStorage.setItem('flipper-progress', JSON.stringify(lessonProgress));
+          } catch (error) {
+            console.error('Failed to save progress:', error);
+            document.getElementById('complete-btn').textContent = 'Error - Try Again';
+          }
+        }
 
-    .lesson-badge {
-      background: var(--bg-card);
-      border: 2px solid var(--accent);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 700;
-      color: var(--accent);
-    }
+        function updateProgressDisplay() {
+          const xpDisplay = document.getElementById('current-xp');
+          const completeBtn = document.getElementById('complete-btn');
+          
+          if (xpDisplay) {
+            xpDisplay.textContent = `${lessonProgress.totalXP} XP`;
+          }
+          
+          if (lessonProgress.completedLessons.includes(4)) {
+            completeBtn.textContent = '✓ Lesson Complete';
+            completeBtn.style.background = '#1a1a1a';
+            completeBtn.style.border = '2px solid #00ff88';
+            completeBtn.style.cursor = 'default';
+          }
+        }
+
+        function markComplete() {
+          if (!lessonProgress.completedLessons.includes(4)) {
+            lessonProgress.completedLessons.push(4);
+            lessonProgress.totalXP += 50;
+            lessonProgress.currentLesson = Math.max(lessonProgress.currentLesson, 5);
+            saveProgress();
+            updateProgressDisplay();
+          }
+        }
+
+        // Navigation functions
+        function scrollToBottom() {
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function scrollToTop() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Load progress on page load
+        loadProgress();
+      </script>
 
     /* Header */
     .lesson-header {
