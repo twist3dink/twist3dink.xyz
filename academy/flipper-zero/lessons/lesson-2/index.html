@@ -1,752 +1,597 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>if(window.location.pathname.endsWith(".html")){window.location.replace(window.location.pathname.slice(0,-5)+"/");}</script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson 2: Sub-GHz Radio Fundamentals | tw¡st3d_¡nk Academy</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 2: Navigating the Interface | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    :root {
-      --bg-dark: #0a0a0a;
-      --bg-card: #1a1a1a;
-      --accent: #00ff88;
-      --text-primary: #ffffff;
-      --text-secondary: #b0b0b0;
-      --border: #333;
-      --warning: #ff9500;
-    }
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
 
-    body {
-      font-family: 'Atkinson Hyperlegible', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-primary);
-      line-height: 1.8;
-      padding: 20px;
-    }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+        .lesson-header {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
 
-    /* Accessibility Controls */
-    .a11y-controls {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 15px;
-      z-index: 1000;
-      display: flex;
-      gap: 10px;
-    }
+        .lesson-header h1 {
+            color: #00ff88;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
 
-    .a11y-btn {
-      background: var(--bg-dark);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
+        .lesson-meta {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
 
-    .a11y-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+        .lesson-header button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
 
-    .a11y-btn:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
+        .lesson-header button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
 
-    <!-- Top Navigation -->
-<nav class="lesson-nav">
-  <a href="../../" class="nav-link">← Back to Course</a>
-  <span class="lesson-badge">LESSON 2</span>
-  <a href="../lesson-3/" class="nav-link">Next Lesson →</a>
-</nav>
+        .content-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
 
-<!-- Bottom Navigation -->
-<div class="nav-buttons">
-  <a href="../lesson-1/" class="nav-btn">← Previous Lesson</a>
-  <a href="../../" class="nav-btn">Course Overview</a>
-  <a href="../lesson-3/" class="nav-btn">Next Lesson →</a>
-</div>
+        .content-section h2 {
+            color: #00ff88;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
 
-<!-- JavaScript redirect -->
-setTimeout(() => {
-  window.location.href = '../lesson-3/';
-}, 1500);
-    .nav-link {
-      color: var(--text-secondary);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.3s ease;
-    }
+        .content-section h3 {
+            color: #00ff88;
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem 0;
+        }
 
-    .nav-link:hover {
-      color: var(--accent);
-    }
+        .content-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.3px;
+        }
 
-    .lesson-badge {
-      background: var(--bg-card);
-      border: 2px solid var(--accent);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 700;
-      color: var(--accent);
-    }
+        .content-section ul {
+            margin: 1rem 0 1rem 2rem;
+        }
 
-    /* Header */
-    .lesson-header {
-      margin-bottom: 40px;
-    }
+        .content-section li {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
 
-    .lesson-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 15px;
-      background: linear-gradient(135deg, var(--accent), #00ccff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+        .note-box {
+            background: #1a1a1a;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
 
-    .lesson-meta {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-    }
+        .warning-box {
+            background: #2a1a1a;
+            border-left: 4px solid #ff4444;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
 
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        #complete-btn {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            margin: 2rem 0;
+            transition: all 0.3s;
+        }
 
-    /* Content Sections */
-    .content-section {
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 30px;
-    }
+        #complete-btn:hover {
+            background: #00dd77;
+        }
 
-    .section-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: var(--accent);
-    }
+        #complete-btn.completed {
+            background: #333;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            cursor: default;
+        }
 
-    .section-subtitle {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-top: 25px;
-      margin-bottom: 15px;
-      color: var(--text-primary);
-    }
+        #complete-btn.locked {
+            background: #333;
+            color: #666;
+            border: 2px solid #666;
+            cursor: not-allowed;
+        }
 
-    p {
-      margin-bottom: 15px;
-      color: var(--text-secondary);
-    }
+        #complete-btn.error {
+            background: #ff4444;
+            color: #fff;
+        }
 
-    /* Alert Boxes */
-    .alert {
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      border: 2px solid;
-    }
+        .nav-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 2rem;
+        }
 
-    .alert-warning {
-      background: rgba(255, 149, 0, 0.1);
-      border-color: var(--warning);
-      color: var(--warning);
-    }
+        .nav-section button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
 
-    .alert-info {
-      background: rgba(0, 255, 136, 0.1);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+        .nav-section button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
 
-    .alert-title {
-      font-weight: 700;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
 
-    /* Lists */
-    ul, ol {
-      margin-left: 25px;
-      margin-bottom: 20px;
-      color: var(--text-secondary);
-    }
+        .nav-buttons a {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
 
-    li {
-      margin-bottom: 10px;
-      line-height: 1.7;
-    }
+        .nav-buttons a:nth-child(1),
+        .nav-buttons a:nth-child(2) {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+        }
 
-    /* Code Blocks */
-    .code-block {
-      background: var(--bg-dark);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      overflow-x: auto;
-      font-family: 'Courier New', monospace;
-      font-size: 0.9rem;
-    }
+        .nav-buttons a:nth-child(1):hover,
+        .nav-buttons a:nth-child(2):hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
 
-    .code-block code {
-      color: var(--accent);
-    }
+        .nav-buttons a:nth-child(3) {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: 2px solid #00ff88;
+        }
 
-    /* Interactive Elements */
-    .interactive-demo {
-      background: var(--bg-dark);
-      border: 2px solid var(--accent);
-      border-radius: 12px;
-      padding: 25px;
-      margin-bottom: 20px;
-    }
+        .nav-buttons a:nth-child(3):hover {
+            background: #00dd77;
+        }
 
-    .demo-title {
-      font-weight: 700;
-      margin-bottom: 15px;
-      color: var(--accent);
-    }
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
 
-    .frequency-display {
-      font-size: 2rem;
-      font-weight: 700;
-      text-align: center;
-      color: var(--accent);
-      margin: 20px 0;
-      font-family: 'Courier New', monospace;
-    }
+            .lesson-header h1 {
+                font-size: 1.5rem;
+            }
 
-    .frequency-slider {
-      width: 100%;
-      height: 8px;
-      border-radius: 4px;
-      background: var(--border);
-      outline: none;
-      margin-bottom: 15px;
-      -webkit-appearance: none;
-    }
+            .content-section {
+                padding: 1.5rem;
+            }
 
-    .frequency-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-    }
+            .nav-buttons {
+                flex-direction: column;
+            }
 
-    .frequency-slider::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-      border: none;
-    }
-
-    /* Progress Footer */
-    .lesson-footer {
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 30px;
-      margin-top: 40px;
-    }
-
-    .completion-section {
-      text-align: center;
-    }
-
-    .xp-reward {
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-
-    .complete-btn {
-      background: var(--accent);
-      color: var(--bg-dark);
-      border: none;
-      padding: 15px 40px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 20px;
-    }
-
-    .complete-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 24px rgba(0, 255, 136, 0.4);
-    }
-
-    .complete-btn:disabled {
-      background: var(--border);
-      color: var(--text-secondary);
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .nav-buttons {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    .nav-btn {
-      background: var(--bg-dark);
-      color: var(--accent);
-      border: 2px solid var(--accent);
-      padding: 12px 30px;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .nav-btn:hover {
-      background: var(--accent);
-      color: var(--bg-dark);
-    }
-
-    /* Font Size Classes */
-    body.font-small { font-size: 14px; }
-    body.font-large { font-size: 18px; }
-    body.font-xl { font-size: 22px; }
-
-    /* High Contrast Mode */
-    body.high-contrast {
-      --bg-dark: #000000;
-      --bg-card: #1a1a1a;
-      --text-primary: #ffffff;
-      --border: #00ff88;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .lesson-title {
-        font-size: 2rem;
-      }
-
-      .a11y-controls {
-        position: static;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-      }
-    }
-  </style>
+            .nav-buttons a {
+                min-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Accessibility Controls -->
-    <div class="a11y-controls">
-      <button class="a11y-btn" onclick="changeFontSize('small')" aria-label="Decrease font size">A-</button>
-      <button class="a11y-btn" onclick="changeFontSize('normal')" aria-label="Normal font size">A</button>
-      <button class="a11y-btn" onclick="changeFontSize('large')" aria-label="Increase font size">A+</button>
-      <button class="a11y-btn" onclick="changeFontSize('xl')" aria-label="Extra large font size">A++</button>
-      <button class="a11y-btn" onclick="toggleContrast()" aria-label="Toggle high contrast">◐</button>
+    <div class="container">
+        <div class="lesson-header">
+            <h1>Lesson 2: Navigating the Flipper Interface</h1>
+            <p class="lesson-meta">Estimated time: 20 minutes | XP Reward: 50</p>
+            <button onclick="scrollToBottom()">Skip to Bottom ↓</button>
+        </div>
+
+        <div class="content-section">
+            <h2>The Main Menu</h2>
+            <p>When you power on your Flipper Zero, you're greeted by the home screen featuring your animated dolphin companion. Press any directional button or OK to access the main menu, which serves as your gateway to all of Flipper's capabilities.</p>
+
+            <p>The main menu is organized into distinct sections, each representing a different wireless technology or functionality:</p>
+
+            <h3>125kHz RFID</h3>
+            <p>Low-frequency RFID operations for reading and emulating common access cards, key fobs, and pet identification tags. This frequency is widely used in building access control and animal tracking.</p>
+
+            <h3>NFC (Near Field Communication)</h3>
+            <p>High-frequency 13.56MHz operations for contactless cards, including payment cards, transit passes, and modern access control systems. NFC supports more complex protocols and data structures than 125kHz RFID.</p>
+
+            <h3>Sub-GHz</h3>
+            <p>Radio frequency communication below 1 GHz, used by garage door openers, car key fobs, wireless doorbells, weather stations, and many other remote control devices. This is one of Flipper's most versatile modules.</p>
+
+            <h3>Infrared</h3>
+            <p>IR remote control emulation for TVs, air conditioners, projectors, and other consumer electronics. Flipper can learn new remotes and comes with an extensive database of universal remote codes.</p>
+
+            <h3>iButton</h3>
+            <p>1-Wire protocol devices, commonly used for physical access control systems, particularly in commercial and industrial settings. These look like small metal buttons that touch a reader.</p>
+
+            <h3>Bad USB</h3>
+            <p>USB Human Interface Device (HID) emulation, allowing Flipper to act as a keyboard or mouse. This enables automated keystroke injection for penetration testing and system automation.</p>
+
+            <h3>U2F (Universal 2nd Factor)</h3>
+            <p>Two-factor authentication key emulation for securing online accounts. Flipper can store and use U2F credentials for enhanced account security.</p>
+
+            <h3>GPIO</h3>
+            <p>General Purpose Input/Output access for connecting external hardware, sensors, and custom projects. This opens up endless possibilities for hardware hacking and IoT experimentation.</p>
+
+            <div class="note-box">
+                <strong>Navigation Tip:</strong> The main menu wraps around - if you keep pressing down, you'll eventually circle back to the top. The interface is designed for one-handed operation with muscle memory in mind.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Button Functions</h2>
+            <p>Mastering the button layout is essential for efficient navigation. Flipper's control scheme is intuitive but has some nuances worth understanding:</p>
+
+            <h3>The Directional Pad (D-Pad)</h3>
+            <ul>
+                <li><strong>Up/Down:</strong> Navigate through menu items, scroll through lists, adjust values</li>
+                <li><strong>Left/Right:</strong> Switch between tabs, change settings, adjust parameters</li>
+                <li><strong>OK (Center Press):</strong> Select menu items, confirm actions, interact with objects</li>
+            </ul>
+
+            <h3>The Back Button</h3>
+            <p>Located below the screen, this button has multiple functions depending on context:</p>
+            <ul>
+                <li><strong>Single press:</strong> Return to previous menu or cancel current action</li>
+                <li><strong>Long press (home screen):</strong> Quick access to settings and system information</li>
+                <li><strong>Long press (3 seconds when off):</strong> Power on the device</li>
+                <li><strong>Long press (3 seconds when on):</strong> Power menu with shutdown and reboot options</li>
+            </ul>
+
+            <h3>Long Press Behaviors</h3>
+            <p>Many menu items support long-press actions that provide additional options or shortcuts. For example, long-pressing on a saved file often brings up options to rename, delete, or get information about it.</p>
+
+            <div class="note-box">
+                <strong>Pro Tip:</strong> When in doubt, press Back to return to a familiar screen. The interface is designed to be forgiving - you won't accidentally damage anything or lose data by exploring.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>The Dolphin</h2>
+            <p>Your virtual companion isn't just decoration - it's an integral part of the Flipper Zero experience and a clever gamification system that encourages exploration and learning.</p>
+
+            <h3>Leveling Up</h3>
+            <p>The dolphin gains experience points (XP) as you use your Flipper. Every action you take - reading an RFID card, capturing a Sub-GHz signal, using the IR remote - earns XP. As you accumulate XP, your dolphin levels up and unlocks new animations and expressions.</p>
+
+            <h3>Animation Changes</h3>
+            <p>Different dolphin levels feature unique idle animations, reactions, and behaviors. Higher-level dolphins have more personality and interactive elements. This serves as a visual representation of your growing expertise with the device.</p>
+
+            <h3>Interactive Features</h3>
+            <p>Press OK on the home screen to pet your dolphin - it will react with happy animations. The dolphin also responds to certain actions throughout the interface, providing subtle feedback on what you're doing.</p>
+
+            <h3>Easter Eggs</h3>
+            <p>The Flipper community has discovered various hidden features and special dolphin behaviors. Exploring the interface with curiosity often reveals these delightful surprises. We won't spoil them all - discovering them yourself is part of the fun!</p>
+
+            <div class="note-box">
+                <strong>Fun Fact:</strong> The dolphin's design was inspired by the idea that dolphins are playful, intelligent creatures that communicate through sound waves - much like how Flipper Zero communicates through radio waves!
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Settings Menu</h2>
+            <p>Access settings by long-pressing the Back button from the home screen, or by navigating to the Settings option in the main menu. Understanding these options helps you customize Flipper to your preferences and keep it running smoothly.</p>
+
+            <h3>System Settings</h3>
+            <ul>
+                <li><strong>Device Info:</strong> View firmware version, hardware revision, serial number, and storage information</li>
+                <li><strong>Region:</strong> Set your geographic region to comply with local radio frequency regulations</li>
+                <li><strong>Date & Time:</strong> Configure time settings (important for certain protocols and logging)</li>
+                <li><strong>Auto Lock:</strong> Set automatic screen lock timeout for privacy</li>
+                <li><strong>LCD Settings:</strong> Adjust brightness and screen timeout to balance visibility with battery life</li>
+            </ul>
+
+            <h3>Bluetooth Configuration</h3>
+            <p>Flipper Zero includes Bluetooth Low Energy (BLE) for wireless connectivity:</p>
+            <ul>
+                <li>Pair with the official mobile app for remote control</li>
+                <li>Transfer files wirelessly between Flipper and smartphone</li>
+                <li>Access remote logging and debugging features</li>
+                <li>Enable or disable Bluetooth to save battery when not needed</li>
+            </ul>
+
+            <h3>Display Options</h3>
+            <p>Customize the visual experience:</p>
+            <ul>
+                <li><strong>Theme:</strong> Choose different color schemes or animations</li>
+                <li><strong>Clock Display:</strong> Toggle clock visibility on home screen</li>
+                <li><strong>Notifications:</strong> Configure how alerts and messages appear</li>
+            </ul>
+
+            <h3>Storage Management</h3>
+            <p>Monitor and manage your SD card storage:</p>
+            <ul>
+                <li>View total and available storage space</li>
+                <li>Format SD card (caution: erases all data)</li>
+                <li>Browse internal vs external storage</li>
+                <li>Manage save files and databases</li>
+            </ul>
+
+            <h3>Firmware Updates</h3>
+            <p>Keep your Flipper current with the latest features and security patches:</p>
+            <ul>
+                <li><strong>Update Channel:</strong> Choose between stable releases or development builds</li>
+                <li><strong>Update via SD Card:</strong> Manual firmware installation from update files</li>
+                <li><strong>Update via App:</strong> Wireless updates through the mobile application</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>Important:</strong> Never interrupt a firmware update in progress. Ensure your battery is above 30% before starting an update to prevent potential issues.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>File Browser</h2>
+            <p>Flipper's file browser is your window into the device's storage system, where all captured signals, saved configurations, and custom files are stored.</p>
+
+            <h3>SD Card Navigation</h3>
+            <p>The file system is organized into clear folders:</p>
+            <ul>
+                <li><strong>/subghz/</strong> - Captured and saved Sub-GHz signals</li>
+                <li><strong>/nfc/</strong> - NFC card dumps and emulation files</li>
+                <li><strong>/rfid/</strong> - 125kHz RFID card data</li>
+                <li><strong>/infrared/</strong> - IR remote control files</li>
+                <li><strong>/ibutton/</strong> - iButton key data</li>
+                <li><strong>/badusb/</strong> - Bad USB script files</li>
+                <li><strong>/apps/</strong> - Third-party applications and plugins</li>
+            </ul>
+
+            <h3>File Management</h3>
+            <p>Navigate through folders using the D-pad. When you select a file, you'll see options to:</p>
+            <ul>
+                <li><strong>Open/Run:</strong> Execute or emulate the file</li>
+                <li><strong>Info:</strong> View file details and metadata</li>
+                <li><strong>Edit:</strong> Modify compatible file types</li>
+                <li><strong>Rename:</strong> Change the file name</li>
+                <li><strong>Delete:</strong> Remove the file (with confirmation)</li>
+            </ul>
+
+            <h3>Supported File Types</h3>
+            <p>Flipper works with various file formats specific to each module:</p>
+            <ul>
+                <li><strong>.sub</strong> - Sub-GHz signal files</li>
+                <li><strong>.nfc</strong> - NFC dump files</li>
+                <li><strong>.rfid</strong> - RFID card data</li>
+                <li><strong>.ir</strong> - Infrared remote files</li>
+                <li><strong>.txt</strong> - BadUSB scripts (Ducky Script format)</li>
+                <li><strong>.fap</strong> - Flipper Application Package (third-party apps)</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Organization Tip:</strong> Create subfolders within each module's directory to organize your files by category. For example, /subghz/cars/, /subghz/garage-doors/, etc. This makes finding specific captures much easier as your library grows.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Quick Tips</h2>
+            <p>Here are some essential best practices to get the most out of your Flipper Zero:</p>
+
+            <h3>Battery Management</h3>
+            <ul>
+                <li>Flipper uses a 2000mAh rechargeable lithium battery that lasts 3-7 days with typical use</li>
+                <li>The device can operate while charging via USB-C</li>
+                <li>Disable Bluetooth when not in use to extend battery life significantly</li>
+                <li>Lower screen brightness reduces power consumption</li>
+                <li>The battery indicator shows remaining charge - plan ahead for extended field work</li>
+            </ul>
+
+            <h3>SD Card Recommendations</h3>
+            <p>While Flipper has internal storage, an SD card dramatically expands its capabilities:</p>
+            <ul>
+                <li><strong>Size:</strong> 8-32GB is plenty for most users; supports up to 128GB</li>
+                <li><strong>Speed:</strong> Use Class 10 or UHS-I cards for best performance</li>
+                <li><strong>Format:</strong> FAT32 file system is required</li>
+                <li><strong>Quality:</strong> Use reputable brands to avoid corruption and read errors</li>
+            </ul>
+
+            <h3>Firmware Update Process</h3>
+            <p>Keeping firmware current ensures you have the latest features and security improvements:</p>
+
+            <ol>
+                <li><strong>Check current version:</strong> Settings → Device Info</li>
+                <li><strong>Visit official website:</strong> flipperzero.one or use the mobile app</li>
+                <li><strong>Download firmware:</strong> Choose stable or development channel</li>
+                <li><strong>Install update:</strong> Via mobile app (easiest) or SD card</li>
+                <li><strong>Verify installation:</strong> Check version after reboot</li>
+            </ol>
+
+            <div class="note-box">
+                <strong>Custom Firmware:</strong> The community has created alternative firmware options like Unleashed and Xtreme that offer additional features. These are safe to use but void some warranties. Research thoroughly before switching from official firmware.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Practice Exercise</h2>
+            <p>Now that you understand the interface, take 10 minutes to explore your Flipper:</p>
+
+            <ol>
+                <li>Navigate through each main menu option and observe what's available</li>
+                <li>Long-press the Back button to access quick settings</li>
+                <li>Check your firmware version in Settings → Device Info</li>
+                <li>Browse the file system and familiarize yourself with the folder structure</li>
+                <li>Pet your dolphin on the home screen and watch its reaction</li>
+                <li>Adjust your screen brightness to a comfortable level</li>
+                <li>Enable or configure Bluetooth if you have the mobile app</li>
+            </ol>
+
+            <p>Don't worry about understanding what each module does yet - we'll cover the functionality in detail in upcoming lessons. For now, focus on becoming comfortable with navigation and menu structure.</p>
+
+            <div class="note-box">
+                <strong>Next Up:</strong> In Lesson 3, we'll dive into our first practical module - Sub-GHz communication. You'll learn how to capture and analyze radio signals from everyday devices around your home.
+            </div>
+        </div>
+
+        <button id="complete-btn" onclick="markComplete()">Complete Previous Lesson First</button>
+
+        <div class="nav-section">
+            <button onclick="scrollToTop()">Back to Top ↑</button>
+            <div class="nav-buttons">
+                <a href="../lesson-1/">← Previous Lesson</a>
+                <a href="../../">Course Overview</a>
+                <a href="../lesson-3/">Next Lesson →</a>
+            </div>
+        </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="lesson-nav">
-      <a href="index.html" class="nav-link">← Back to Course</a>
-      <span class="lesson-badge">LESSON 2</span>
-      <a href="../lesson-3/" class="nav-link">Next Lesson →</a>
-    </nav>
-
-    <!-- Lesson Header -->
-    <header class="lesson-header">
-      <h1 class="lesson-title">Sub-GHz Radio Fundamentals</h1>
-      <div class="lesson-meta">
-        <span class="meta-item">⏱️ 45 minutes</span>
-        <span class="meta-item">⚡ 50 XP</span>
-        <span class="meta-item">📶 Difficulty: Medium</span>
-      </div>
-    </header>
-
-    <!-- Introduction -->
-    <section class="content-section">
-      <h2 class="section-title">📡 Introduction to Sub-GHz Communication</h2>
-      
-      <p>Sub-gigahertz radio frequencies are the invisible highways of wireless communication. From garage door openers to car key fobs, weather stations to wireless doorbells, these frequencies power countless devices we interact with daily.</p>
-
-      <p>The Flipper Zero's Sub-GHz module can receive, analyze, and transmit signals in several frequency bands commonly used for short-range wireless communication. This lesson will teach you how to safely explore this fascinating domain.</p>
-
-      <div class="alert alert-warning">
-        <div class="alert-title">⚠️ Legal Notice</div>
-        <p>Transmitting on certain frequencies may be regulated or illegal in your jurisdiction. This lesson is for educational purposes only. Always ensure you have permission to interact with any wireless system and comply with local regulations regarding radio frequency transmission.</p>
-      </div>
-    </section>
-
-    <!-- Understanding Sub-GHz -->
-    <section class="content-section">
-      <h2 class="section-title">🔍 Understanding Sub-GHz Frequencies</h2>
-
-      <h3 class="section-subtitle">What are Sub-GHz Frequencies?</h3>
-      <p>Sub-GHz refers to radio frequencies below 1 gigahertz (1000 MHz). The Flipper Zero primarily works with these common bands:</p>
-
-      <ul>
-        <li><strong>315 MHz</strong> - Popular in North America for garage doors, car remotes, and security systems</li>
-        <li><strong>433.92 MHz</strong> - Widely used in Europe and Asia for remote controls and sensors</li>
-        <li><strong>868 MHz</strong> - European standard for home automation and IoT devices</li>
-        <li><strong>915 MHz</strong> - North American ISM band for various wireless applications</li>
-      </ul>
-
-      <h3 class="section-subtitle">Why Sub-GHz?</h3>
-      <p>These lower frequencies offer several advantages over higher frequency bands like WiFi (2.4 GHz) or Bluetooth:</p>
-
-      <ul>
-        <li><strong>Better penetration</strong> - Lower frequencies pass through walls and obstacles more easily</li>
-        <li><strong>Longer range</strong> - Signals can travel further with the same transmission power</li>
-        <li><strong>Lower power consumption</strong> - Ideal for battery-powered devices</li>
-        <li><strong>Simpler protocols</strong> - Many devices use basic on-off keying (OOK) modulation</li>
-      </ul>
-
-      <div class="interactive-demo">
-        <div class="demo-title">🎯 Interactive: Frequency Explorer</div>
-        <p>Slide to explore different Sub-GHz frequencies used by the Flipper Zero:</p>
-        <div class="frequency-display" id="frequencyDisplay">315.00 MHz</div>
-        <input type="range" min="300" max="928" value="315" class="frequency-slider" id="frequencySlider">
-        <p id="frequencyInfo" style="text-align: center; color: var(--text-secondary);"></p>
-      </div>
-    </section>
-
-    <!-- Capturing Signals -->
-    <section class="content-section">
-      <h2 class="section-title">📥 Capturing RF Signals</h2>
-
-      <h3 class="section-subtitle">The Capture Process</h3>
-      <p>Capturing a signal is the first step in understanding how wireless devices communicate. Here's how to do it with the Flipper Zero:</p>
-
-      <ol>
-        <li><strong>Navigate to Sub-GHz menu</strong> - From the main menu, select "Sub-GHz"</li>
-        <li><strong>Choose "Read"</strong> - This puts the device into listening mode</li>
-        <li><strong>Select frequency</strong> - Pick the appropriate frequency for your target device</li>
-        <li><strong>Trigger the device</strong> - Press the button on your remote/key fob</li>
-        <li><strong>Analyze the capture</strong> - The Flipper will show signal characteristics</li>
-        <li><strong>Save the signal</strong> - Give it a descriptive name for later use</li>
-      </ol>
-
-      <div class="alert alert-info">
-        <div class="alert-title">💡 Pro Tip</div>
-        <p>Start with a device you own, like a spare garage door remote or a wireless doorbell. This ensures you're legally authorized to experiment with the signal and can safely test transmissions.</p>
-      </div>
-
-      <h3 class="section-subtitle">Understanding Signal Characteristics</h3>
-      <p>When you capture a signal, the Flipper Zero displays several important parameters:</p>
-
-      <ul>
-        <li><strong>Frequency</strong> - The exact frequency in MHz (e.g., 433.92 MHz)</li>
-        <li><strong>Modulation</strong> - Usually AM (Amplitude Modulation) for simple devices</li>
-        <li><strong>RAW data</strong> - The actual timing of signal pulses</li>
-        <li><strong>Protocol</strong> - If recognized, shows the encoding scheme (Princeton, etc.)</li>
-      </ul>
-
-      <div class="code-block">
-        <code>
-Example Signal Data:<br>
-Frequency: 433.92 MHz<br>
-Preset: FuriHalSubGhzPresetOok650Async<br>
-Protocol: Princeton<br>
-Key: 00 00 00 00 00 12 34 56<br>
-TE: 350 us
-        </code>
-      </div>
-    </section>
-
-    <!-- Analyzing & Replaying -->
-    <section class="content-section">
-      <h2 class="section-title">🔄 Analyzing and Replaying Signals</h2>
-
-      <h3 class="section-subtitle">Signal Analysis</h3>
-      <p>After capturing a signal, take time to understand what you've recorded:</p>
-
-      <ul>
-        <li><strong>Static vs Rolling Codes</strong> - Static codes are the same every time; rolling codes change with each press</li>
-        <li><strong>Bit length</strong> - Typically 24-64 bits for simple remotes</li>
-        <li><strong>Timing accuracy</strong> - Critical for successful replay</li>
-        <li><strong>Signal strength</strong> - Indicated by RSSI (Received Signal Strength Indicator)</li>
-      </ul>
-
-      <h3 class="section-subtitle">Replaying Captured Signals</h3>
-      <p>Once you've captured and analyzed a signal, you can replay it:</p>
-
-      <ol>
-        <li>Navigate to "Sub-GHz" → "Saved"</li>
-        <li>Select your saved signal file</li>
-        <li>Choose "Send" to transmit the signal</li>
-        <li>The Flipper will replay the exact timing captured</li>
-      </ol>
-
-      <div class="alert alert-warning">
-        <div class="alert-title">⚠️ Important: Rolling Codes</div>
-        <p>Many modern car key fobs and garage door openers use rolling code technology. These codes change with each transmission and cannot be simply replayed. Attempting to replay a rolling code will not work and may desynchronize the remote with its receiver.</p>
-      </div>
-
-      <h3 class="section-subtitle">When Replay Works</h3>
-      <p>Successful replay attacks work on devices using static codes, such as:</p>
-      <ul>
-        <li>Older garage door openers (pre-1990s)</li>
-        <li>Simple wireless doorbells</li>
-        <li>Some remote control outlets</li>
-        <li>Basic weather station sensors</li>
-        <li>Certain RF-based toys</li>
-      </ul>
-    </section>
-
-    <!-- Practical Exercise -->
-    <section class="content-section">
-      <h2 class="section-title">🎯 Practical Exercise</h2>
-
-      <h3 class="section-subtitle">Your First Capture & Replay</h3>
-      <p>Let's practice with a safe, legal target - a wireless doorbell or remote control you own:</p>
-
-      <ol>
-        <li><strong>Preparation</strong>
-          <ul>
-            <li>Charge your Flipper Zero fully</li>
-            <li>Have your target remote ready</li>
-            <li>Find an area away from other RF interference</li>
-          </ul>
-        </li>
-        <li><strong>Capture Phase</strong>
-          <ul>
-            <li>Open Sub-GHz → Read</li>
-            <li>Try 433.92 MHz first (most common)</li>
-            <li>Press your remote button</li>
-            <li>Observe the signal capture</li>
-            <li>Save with a descriptive name</li>
-          </ul>
-        </li>
-        <li><strong>Analysis Phase</strong>
-          <ul>
-            <li>Review the captured data</li>
-            <li>Note the frequency and modulation</li>
-            <li>Check if a protocol was identified</li>
-          </ul>
-        </li>
-        <li><strong>Replay Phase</strong>
-          <ul>
-            <li>Navigate to your saved signal</li>
-            <li>Stand at the same distance from the receiver</li>
-            <li>Send the signal</li>
-            <li>Verify the device responds</li>
-          </ul>
-        </li>
-      </ol>
-
-      <div class="alert alert-info">
-        <div class="alert-title">✅ Success Criteria</div>
-        <p>You've mastered this lesson when you can successfully capture a signal from your own remote and replay it to trigger the same action. Document your findings: What frequency? What protocol? Did replay work on the first try?</p>
-      </div>
-    </section>
-
-    <!-- Best Practices -->
-    <section class="content-section">
-      <h2 class="section-title">✨ Best Practices & Safety</h2>
-
-      <h3 class="section-subtitle">Ethical Guidelines</h3>
-      <ul>
-        <li><strong>Only test devices you own</strong> - Never attempt to capture or replay signals from systems you don't have permission to test</li>
-        <li><strong>Respect privacy</strong> - Some signals may contain personal information</li>
-        <li><strong>Know your local laws</strong> - RF transmission is regulated differently worldwide</li>
-        <li><strong>Practice responsible disclosure</strong> - If you find a vulnerability, report it properly</li>
-      </ul>
-
-      <h3 class="section-subtitle">Technical Tips</h3>
-      <ul>
-        <li>Start captures from a close distance (1-2 meters) for cleaner signals</li>
-        <li>Save multiple captures of the same signal to compare consistency</li>
-        <li>Use the frequency analyzer to find the exact frequency before capturing</li>
-        <li>Keep your Flipper Zero's firmware updated for best protocol support</li>
-        <li>Document your experiments with notes on frequency, distance, and results</li>
-      </ul>
-    </section>
-
-    <!-- Lesson Footer -->
-    <footer class="lesson-footer">
-      <div class="completion-section">
-        <div class="xp-reward">+50 XP</div>
-        <p>Complete this lesson to earn your XP and unlock the next module!</p>
-        <button class="complete-btn" id="completeBtn" onclick="markComplete()">
-          Mark Lesson Complete
-        </button>
-        <div class="nav-buttons">
-          <a href="lesson-1.html" class="nav-btn">← Previous Lesson</a>
-          <a href="index.html" class="nav-btn">Course Overview</a>
-          <a href="../lesson-3/" class="nav-btn">Next Lesson →</a>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <script>
-    // Storage configuration - syncs with course overview
-    const COURSE_STORAGE_KEY = 'flipper-zero-course';
-    const LESSON_ID = 2;
-
-    // Frequency explorer interactive
-    const slider = document.getElementById('frequencySlider');
-    const display = document.getElementById('frequencyDisplay');
-    const info = document.getElementById('frequencyInfo');
-
-    const frequencyInfo = {
-      315: { band: '315 MHz', use: 'Popular in North America for garage doors and car remotes' },
-      433: { band: '433.92 MHz', use: 'Widely used in Europe/Asia for remote controls and sensors' },
-      868: { band: '868 MHz', use: 'European standard for home automation and IoT devices' },
-      915: { band: '915 MHz', use: 'North American ISM band for wireless applications' }
-    };
-
-    slider.addEventListener('input', (e) => {
-      const freq = parseFloat(e.target.value);
-      display.textContent = freq.toFixed(2) + ' MHz';
-      
-      // Find closest standard frequency
-      let closest = 315;
-      let minDiff = Math.abs(freq - 315);
-      
-      [433, 868, 915].forEach(f => {
-        const diff = Math.abs(freq - f);
-        if (diff < minDiff) {
-          minDiff = diff;
-          closest = f;
+    <script>
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'instant'
+            });
         }
-      });
-      
-      if (minDiff < 20) {
-        info.textContent = frequencyInfo[closest].use;
-      } else {
-        info.textContent = 'Custom frequency range';
-      }
-    });
 
-    // Progress tracking functions
-    async function loadProgress() {
-      try {
-        const result = await window.storage.get(COURSE_STORAGE_KEY);
-        return result ? JSON.parse(result.value) : { completed: [] };
-      } catch (error) {
-        return { completed: [] };
-      }
-    }
-
-    async function saveProgress(progress) {
-      try {
-        await window.storage.set(COURSE_STORAGE_KEY, JSON.stringify(progress));
-        return true;
-      } catch (error) {
-        console.error('Failed to save progress:', error);
-        return false;
-      }
-    }
-
-    async function markComplete() {
-      const btn = document.getElementById('completeBtn');
-      btn.disabled = true;
-      btn.textContent = 'Saving...';
-
-      const progress = await loadProgress();
-      
-      if (!progress.completed.includes(LESSON_ID)) {
-        progress.completed.push(LESSON_ID);
-        const saved = await saveProgress(progress);
-        
-        if (saved) {
-          btn.textContent = '✓ Lesson Complete!';
-          btn.style.background = 'var(--accent)';
-          setTimeout(() => {
-            window.location.href = 'lesson-3.html';
-          }, 1500);
-        } else {
-          btn.textContent = 'Error - Try Again';
-          btn.disabled = false;
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'instant'
+            });
         }
-      } else {
-        btn.textContent = '✓ Already Complete';
-      }
-    }
 
-    // Check if already completed
-    async function checkCompletion() {
-      const progress = await loadProgress();
-      if (progress.completed.includes(LESSON_ID)) {
-        const btn = document.getElementById('completeBtn');
-        btn.textContent = '✓ Completed';
-        btn.style.background = 'var(--border)';
-      }
-    }
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('flipper-progress');
+                return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            } catch (e) {
+                console.error('Error loading progress:', e);
+                return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            }
+        }
 
-    // Accessibility functions
-    function changeFontSize(size) {
-      document.body.className = document.body.className.replace(/font-\w+/g, '');
-      if (size !== 'normal') {
-        document.body.classList.add('font-' + size);
-      }
-      localStorage.setItem('fontSize', size);
-    }
+        function saveProgress(progress) {
+            try {
+                localStorage.setItem('flipper-progress', JSON.stringify(progress));
+                return true;
+            } catch (e) {
+                console.error('Error saving progress:', e);
+                return false;
+            }
+        }
 
-    function toggleContrast() {
-      document.body.classList.toggle('high-contrast');
-      localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
-    }
+        function markComplete() {
+            const btn = document.getElementById('complete-btn');
+            const currentLessonNumber = 2;
+            const progress = loadProgress();
+            
+            // Check if previous lesson is completed
+            if (!progress.completedLessons.includes(currentLessonNumber - 1)) {
+                return; // Don't allow completion if locked
+            }
+            
+            if (!progress.completedLessons.includes(currentLessonNumber)) {
+                progress.completedLessons.push(currentLessonNumber);
+                progress.totalXP += 50;
+                
+                if (progress.currentLesson === currentLessonNumber) {
+                    progress.currentLesson = currentLessonNumber + 1;
+                }
+                
+                const saved = saveProgress(progress);
+                
+                if (saved) {
+                    btn.textContent = '✓ Lesson Complete';
+                    btn.classList.remove('locked');
+                    btn.classList.add('completed');
+                } else {
+                    btn.textContent = 'Error - Try Again';
+                    btn.classList.add('error');
+                    setTimeout(() => {
+                        btn.textContent = 'Mark Lesson as Complete';
+                        btn.classList.remove('error');
+                    }, 2000);
+                }
+            }
+        }
 
-    function loadA11yPreferences() {
-      const fontSize = localStorage.getItem('fontSize');
-      if (fontSize && fontSize !== 'normal') {
-        document.body.classList.add('font-' + fontSize);
-      }
-
-      const highContrast = localStorage.getItem('highContrast') === 'true';
-      if (highContrast) {
-        document.body.classList.add('high-contrast');
-      }
-    }
-
-    // Initialize
-    loadA11yPreferences();
-    checkCompletion();
-  </script>
+        window.addEventListener('load', () => {
+            const progress = loadProgress();
+            const currentLessonNumber = 2;
+            const btn = document.getElementById('complete-btn');
+            
+            // Check if this lesson is completed
+            if (progress.completedLessons.includes(currentLessonNumber)) {
+                btn.textContent = '✓ Lesson Complete';
+                btn.classList.add('completed');
+            }
+            // Check if previous lesson is completed (unlock this lesson)
+            else if (progress.completedLessons.includes(currentLessonNumber - 1)) {
+                btn.textContent = 'Mark Lesson as Complete';
+                btn.classList.remove('locked');
+            }
+            // Lesson is locked
+            else {
+                btn.textContent = 'Complete Previous Lesson First';
+                btn.classList.add('locked');
+            }
+        });
+    </script>
 </body>
 </html>
