@@ -1,670 +1,566 @@
+# Course Overview
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flipper Zero Course | tw¡st3d_¡nk Academy</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipper Zero Mastery Course - tw¡st3d_¡nk Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    :root {
-      --bg-dark: #0a0a0a;
-      --bg-card: #1a1a1a;
-      --accent: #00ff88;
-      --text-primary: #ffffff;
-      --text-secondary: #b0b0b0;
-      --border: #333;
-    }
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
 
-    body {
-      font-family: 'Atkinson Hyperlegible', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-primary);
-      line-height: 1.6;
-      padding: 20px;
-    }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
 
-    /* Accessibility Controls */
-    .a11y-controls {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 15px;
-      z-index: 1000;
-      display: flex;
-      gap: 10px;
-    }
+        .header h1 {
+            color: #00ff88;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
 
-    .a11y-btn {
-      background: var(--bg-dark);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
+        .header p {
+            color: #999;
+            font-size: 1.1rem;
+        }
 
-    .a11y-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
 
-    .a11y-btn:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
+        .stat-card {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            text-align: center;
+        }
 
-    /* Header */
-    .header {
-      margin-bottom: 40px;
-    }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ff88;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
 
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-secondary);
-      text-decoration: none;
-      margin-bottom: 20px;
-      transition: color 0.3s ease;
-    }
+        .stat-label {
+            color: #999;
+            font-size: 0.9rem;
+        }
 
-    .back-link:hover {
-      color: var(--accent);
-    }
+        .section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
 
-    .course-title {
-      font-size: 3rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      background: linear-gradient(135deg, var(--accent), #00ccff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+        .section h2 {
+            color: #00ff88;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
 
-    .course-subtitle {
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      margin-bottom: 30px;
-    }
+        .prerequisites {
+            list-style: none;
+        }
 
-    /* Progress Dashboard */
-    .progress-dashboard {
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 40px;
-    }
+        .prerequisites li {
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: #0a0a0a;
+            border-radius: 4px;
+            border-left: 3px solid #00ff88;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
+        .prerequisites li::before {
+            content: "✓";
+            color: #00ff88;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
 
-    .progress-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
+        .lessons-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
 
-    .progress-percentage {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--accent);
-    }
+        .lesson-card {
+            background: #0a0a0a;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .progress-bar-container {
-      width: 100%;
-      height: 12px;
-      background: var(--bg-dark);
-      border-radius: 6px;
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
+        .lesson-card.unlocked {
+            border-color: #00ff88;
+            cursor: pointer;
+        }
 
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), #00ccff);
-      border-radius: 6px;
-      transition: width 0.5s ease;
-    }
+        .lesson-card.unlocked:hover {
+            background: #1a1a1a;
+            transform: translateY(-2px);
+        }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 20px;
-    }
+        .lesson-card.completed {
+            border-color: #00ff88;
+            background: #0f1f15;
+        }
 
-    .stat-card {
-      background: var(--bg-dark);
-      padding: 15px;
-      border-radius: 8px;
-      text-align: center;
-    }
+        .lesson-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
-    .stat-value {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--accent);
-      display: block;
-    }
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
 
-    .stat-label {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
+        .lesson-number {
+            font-size: 0.9rem;
+            color: #00ff88;
+            font-weight: 700;
+        }
 
-    /* Course Prerequisites */
-    .prerequisites {
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 40px;
-    }
+        .lesson-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
 
-    .prerequisites h2 {
-      font-size: 1.5rem;
-      margin-bottom: 15px;
-      color: var(--accent);
-    }
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
 
-    .prereq-list {
-      list-style: none;
-      display: grid;
-      gap: 10px;
-    }
+        .status-badge.completed {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
 
-    .prereq-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px;
-      background: var(--bg-dark);
-      border-radius: 8px;
-    }
+        .status-badge.unlocked {
+            background: transparent;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
 
-    .prereq-icon {
-      color: var(--accent);
-      font-size: 1.2rem;
-    }
+        .status-badge.locked {
+            background: #333;
+            color: #666;
+        }
 
-    /* Lessons Grid */
-    .lessons-grid {
-      display: grid;
-      gap: 25px;
-      margin-bottom: 40px;
-    }
+        .lesson-title {
+            font-size: 1.4rem;
+            color: #e0e0e0;
+            margin-bottom: 0.5rem;
+        }
 
-    .lesson-card {
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 25px;
-      transition: all 0.3s ease;
-      position: relative;
-      cursor: pointer;
-    }
+        .lesson-card.locked .lesson-title {
+            color: #666;
+        }
 
-    .lesson-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 255, 136, 0.2);
-    }
+        .lesson-description {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
 
-    .lesson-card.completed {
-      border-color: var(--accent);
-    }
+        .lesson-meta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: #666;
+        }
 
-    .lesson-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      margin-bottom: 15px;
-    }
+        .lesson-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
 
-    .lesson-number {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      font-weight: 700;
-    }
+        .lesson-card.unlocked .lesson-meta {
+            color: #999;
+        }
 
-    .completion-check {
-      width: 24px;
-      height: 24px;
-      border: 2px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-    }
+        .start-button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 1.5rem;
+            background: #00ff88;
+            color: #0a0a0a;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
 
-    .lesson-card.completed .completion-check {
-      background: var(--accent);
-      border-color: var(--accent);
-    }
+        .start-button:hover {
+            background: #00dd77;
+        }
 
-    .checkmark {
-      display: none;
-      color: var(--bg-dark);
-      font-weight: 700;
-    }
+        .lesson-card.locked .start-button {
+            display: none;
+        }
 
-    .lesson-card.completed .checkmark {
-      display: block;
-    }
+        .lock-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            opacity: 0.3;
+        }
 
-    .lesson-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
+        .lesson-card.unlocked .lock-icon {
+            display: none;
+        }
 
-    .lesson-description {
-      color: var(--text-secondary);
-      margin-bottom: 15px;
-      line-height: 1.6;
-    }
+        .note-box {
+            background: #1a1a1a;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
 
-    .lesson-meta {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin-bottom: 15px;
-    }
+        .progress-bar-container {
+            background: #0a0a0a;
+            border-radius: 10px;
+            height: 30px;
+            margin: 2rem 0;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
 
-    .meta-badge {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      background: var(--bg-dark);
-      border-radius: 6px;
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-    }
+        .progress-bar {
+            background: linear-gradient(90deg, #00ff88, #00dd77);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a0a0a;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
 
-    .xp-badge {
-      background: linear-gradient(135deg, var(--accent), #00ccff);
-      color: var(--bg-dark);
-      font-weight: 700;
-    }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
 
-    .difficulty {
-      display: flex;
-      gap: 3px;
-    }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
 
-    .difficulty-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--border);
-      border-radius: 50%;
-    }
+            .lesson-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
 
-    .difficulty-dot.filled {
-      background: var(--accent);
-    }
-
-    .lesson-prereqs {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
-    }
-
-    .cta-button {
-      background: var(--accent);
-      color: var(--bg-dark);
-      border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      width: 100%;
-      margin-top: 15px;
-    }
-
-    .cta-button:hover {
-      transform: scale(1.02);
-      box-shadow: 0 4px 16px rgba(0, 255, 136, 0.4);
-    }
-
-    .cta-button:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    /* Font Size Classes */
-    body.font-small { font-size: 14px; }
-    body.font-large { font-size: 18px; }
-    body.font-xl { font-size: 22px; }
-
-    /* High Contrast Mode */
-    body.high-contrast {
-      --bg-dark: #000000;
-      --bg-card: #1a1a1a;
-      --text-primary: #ffffff;
-      --border: #00ff88;
-    }
-
-    /* Reduced Motion */
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation: none !important;
-        transition: none !important;
-      }
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .course-title {
-        font-size: 2rem;
-      }
-
-      .a11y-controls {
-        position: static;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-      }
-
-      .progress-header {
-        flex-direction: column;
-        align-items: start;
-      }
-    }
-  </style>
+            .lesson-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Accessibility Controls -->
-    <div class="a11y-controls">
-      <button class="a11y-btn" onclick="changeFontSize('small')" aria-label="Decrease font size">A-</button>
-      <button class="a11y-btn" onclick="changeFontSize('normal')" aria-label="Normal font size">A</button>
-      <button class="a11y-btn" onclick="changeFontSize('large')" aria-label="Increase font size">A+</button>
-      <button class="a11y-btn" onclick="changeFontSize('xl')" aria-label="Extra large font size">A++</button>
-      <button class="a11y-btn" onclick="toggleContrast()" aria-label="Toggle high contrast">◐</button>
-    </div>
-
-    <!-- Header -->
-    <div class="header">
-      <a href="../index.html" class="back-link">← Back to Academy</a>
-      <h1 class="course-title">Flipper Zero Mastery</h1>
-      <p class="course-subtitle">Master hardware hacking with the Swiss Army knife of wireless tools</p>
-    </div>
-
-    <!-- Progress Dashboard -->
-    <div class="progress-dashboard">
-      <div class="progress-header">
-        <h2 class="progress-title">Your Progress</h2>
-        <span class="progress-percentage" id="progressPercentage">0%</span>
-      </div>
-      <div class="progress-bar-container">
-        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
-      </div>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span class="stat-value" id="completedLessons">0</span>
-          <span class="stat-label">Lessons Completed</span>
+    <div class="container">
+        <div class="header">
+            <h1>🐬 Flipper Zero Mastery</h1>
+            <p>Complete Course - From Beginner to Advanced</p>
         </div>
-        <div class="stat-card">
-          <span class="stat-value">6</span>
-          <span class="stat-label">Total Lessons</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-value">~4.5h</span>
-          <span class="stat-label">Total Duration</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-value" id="earnedXP">0</span>
-          <span class="stat-label">XP Earned</span>
-        </div>
-      </div>
-    </div>
 
-    <!-- Course Prerequisites -->
-    <div class="prerequisites">
-      <h2>📋 Course Prerequisites</h2>
-      <ul class="prereq-list">
-        <li class="prereq-item">
-          <span class="prereq-icon">✓</span>
-          <span>Basic understanding of wireless protocols (WiFi, Bluetooth, RFID)</span>
-        </li>
-        <li class="prereq-item">
-          <span class="prereq-icon">✓</span>
-          <span>Flipper Zero device (or access to emulator for theory)</span>
-        </li>
-        <li class="prereq-item">
-          <span class="prereq-icon">✓</span>
-          <span>Familiarity with command-line interfaces</span>
-        </li>
-        <li class="prereq-item">
-          <span class="prereq-icon">✓</span>
-          <span>Basic knowledge of security concepts (optional but helpful)</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Lessons Grid -->
-    <div class="lessons-grid" id="lessonsGrid"></div>
-  </div>
-
-  <script>
-    // Lesson data
-    const lessons = [
-      {
-        id: 1,
-        title: "Introduction to Flipper Zero",
-        description: "Get started with your Flipper Zero. Learn about its capabilities, interface, and basic operations.",
-        duration: "30 min",
-        xp: 50,
-        difficulty: 1,
-        prerequisites: "None",
-        file: "lessons/lesson-1/"
-      },
-      {
-        id: 2,
-        title: "Sub-GHz Radio Fundamentals",
-        description: "Explore sub-gigahertz radio frequencies. Learn to capture, analyze, and replay RF signals.",
-        duration: "45 min",
-        xp: 50,
-        difficulty: 2,
-        prerequisites: "Lesson 1",
-        file: "lessons/lesson-2/"
-      },
-      {
-        id: 3,
-        title: "RFID & NFC Hacking",
-        description: "Master RFID and NFC protocols. Read, clone, and emulate access cards and tags.",
-        duration: "50 min",
-        xp: 50,
-        difficulty: 2,
-        prerequisites: "Lesson 1",
-        file: "lessons/lesson-3/"
-      },
-      {
-        id: 4,
-        title: "Infrared Control Mastery",
-        description: "Control devices with IR signals. Capture, save, and transmit infrared remote commands.",
-        duration: "35 min",
-        xp: 50,
-        difficulty: 1,
-        prerequisites: "Lesson 1",
-        file: "lessons/lesson-4/"
-      },
-      {
-        id: 5,
-        title: "BadUSB & Automation",
-        description: "Create automated scripts using BadUSB. Learn payload development and HID attacks.",
-        duration: "55 min",
-        xp: 50,
-        difficulty: 3,
-        prerequisites: "Lessons 1-4",
-        file: "lessons/lesson-5/"
-      },
-      {
-        id: 6,
-        title: "Advanced Projects & Ethics",
-        description: "Build complex projects and understand ethical hacking principles. Responsible disclosure and legal boundaries.",
-        duration: "45 min",
-        xp: 50,
-        difficulty: 3,
-        prerequisites: "Lessons 1-5",
-        file: "lessons/lesson-6/"
-      }
-    ];
-
-    // Storage keys
-    const STORAGE_KEY = 'flipper-zero-course';
-
-    // Load completion data
-    async function loadProgress() {
-      try {
-        const result = await window.storage.get(STORAGE_KEY);
-        return result ? JSON.parse(result.value) : { completed: [] };
-      } catch (error) {
-        return { completed: [] };
-      }
-    }
-
-    // Save completion data
-    async function saveProgress(progress) {
-      try {
-        await window.storage.set(STORAGE_KEY, JSON.stringify(progress));
-      } catch (error) {
-        console.error('Failed to save progress:', error);
-      }
-    }
-
-    // Calculate and update progress
-    async function updateProgress() {
-      const progress = await loadProgress();
-      const completedCount = progress.completed.length;
-      const percentage = Math.round((completedCount / lessons.length) * 100);
-      const earnedXP = completedCount * 50;
-
-      document.getElementById('progressPercentage').textContent = percentage + '%';
-      document.getElementById('progressBar').style.width = percentage + '%';
-      document.getElementById('completedLessons').textContent = completedCount;
-      document.getElementById('earnedXP').textContent = earnedXP;
-
-      return progress;
-    }
-
-    // Render difficulty dots
-    function renderDifficulty(level) {
-      let dots = '';
-      for (let i = 1; i <= 3; i++) {
-        dots += `<span class="difficulty-dot ${i <= level ? 'filled' : ''}"></span>`;
-      }
-      return dots;
-    }
-
-    // Render lessons
-    async function renderLessons() {
-      const progress = await updateProgress();
-      const grid = document.getElementById('lessonsGrid');
-
-      grid.innerHTML = lessons.map(lesson => {
-        const isCompleted = progress.completed.includes(lesson.id);
-        return `
-          <div class="lesson-card ${isCompleted ? 'completed' : ''}" onclick="goToLesson(${lesson.id})">
-            <div class="lesson-header">
-              <span class="lesson-number">LESSON ${lesson.id}</span>
-              <div class="completion-check">
-                <span class="checkmark">✓</span>
-              </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number" id="completed-count">0</span>
+                <span class="stat-label">Lessons Completed</span>
             </div>
-            <h3 class="lesson-title">${lesson.title}</h3>
-            <p class="lesson-description">${lesson.description}</p>
-            <div class="lesson-meta">
-              <div class="meta-badge xp-badge">
-                ⚡ ${lesson.xp} XP
-              </div>
-              <div class="meta-badge">
-                ⏱️ ${lesson.duration}
-              </div>
-              <div class="meta-badge">
-                <div class="difficulty">
-                  ${renderDifficulty(lesson.difficulty)}
+            <div class="stat-card">
+                <span class="stat-number">6</span>
+                <span class="stat-label">Total Lessons</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">~2h 15m</span>
+                <span class="stat-label">Total Duration</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="xp-count">0</span>
+                <span class="stat-label">XP Earned</span>
+            </div>
+        </div>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar" style="width: 0%">
+                <span id="progress-text">0% Complete</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📋 Course Prerequisites</h2>
+            <ul class="prerequisites">
+                <li>Flipper Zero device (or willingness to learn theory first)</li>
+                <li>Basic curiosity about wireless technologies</li>
+                <li>Commitment to ethical and legal use</li>
+                <li>No prior hacking experience required!</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📚 Course Curriculum</h2>
+            <div class="note-box">
+                <strong>🔒 Sequential Learning:</strong> Lessons unlock as you complete them. Focus on one lesson at a time to build a solid foundation!
+            </div>
+            
+            <div class="lessons-grid" id="lessons-grid">
+                <!-- Lesson 1 -->
+                <div class="lesson-card unlocked" data-lesson="1">
+                    <div class="lock-icon">🔓</div>
+                    <div class="lesson-header">
+                        <span class="lesson-number">LESSON 1</span>
+                        <div class="lesson-status">
+                            <span class="status-badge unlocked">Start</span>
+                        </div>
+                    </div>
+                    <h3 class="lesson-title">Getting Started with Flipper Zero</h3>
+                    <p class="lesson-description">
+                        Introduction to your Flipper Zero, understanding its capabilities, hardware overview, and essential legal/ethical guidelines for responsible use.
+                    </p>
+                    <div class="lesson-meta">
+                        <span>⏱️ 15 minutes</span>
+                        <span>⭐ 50 XP</span>
+                        <span>📝 Beginner</span>
+                    </div>
+                    <a href="lessons/lesson-1/" class="start-button">Start Lesson →</a>
                 </div>
-              </div>
+
+                <!-- Lesson 2 -->
+                <div class="lesson-card locked" data-lesson="2">
+                    <div class="lock-icon">🔒</div>
+                    <div class="lesson-header">
+                        <span class="lesson-number">LESSON 2</span>
+                        <div class="lesson-status">
+                            <span class="status-badge locked">Locked</span>
+                        </div>
+                    </div>
+                    <h3 class="lesson-title">Navigating the Flipper Interface</h3>
+                    <p class="lesson-description">
+                        Master the menu system, understand button functions, configure settings, and learn to use the file browser efficiently.
+                    </p>
+                    <div class="lesson-meta">
+                        <span>⏱️ 20 minutes</span>
+                        <span>⭐ 50 XP</span>
+                        <span>📝 Beginner</span>
+                    </div>
+                    <a href="lessons/lesson-2/" class="start-button">Start Lesson →</a>
+                </div>
+
+                <!-- Lesson 3 -->
+                <div class="lesson-card locked" data-lesson="3">
+                    <div class="lock-icon">🔒</div>
+                    <div class="lesson-header">
+                        <span class="lesson-number">LESSON 3</span>
+                        <div class="lesson-status">
+                            <span class="status-badge locked">Locked</span>
+                        </div>
+                    </div>
+                    <h3 class="lesson-title">Sub-GHz Fundamentals</h3>
+                    <p class="lesson-description">
+                        Explore radio frequencies, learn to capture and replay signals, understand protocols like Princeton and KeeLoq, and follow legal guidelines.
+                    </p>
+                    <div class="lesson-meta">
+                        <span>⏱️ 25 minutes</span>
+                        <span>⭐ 50 XP</span>
+                        <span>📝 Intermediate</span>
+                    </div>
+                    <a href="lessons/lesson-3/" class="start-button">Start Lesson →</a>
+                </div>
+
+                <!-- Lesson 4 -->
+                <div class="lesson-card locked" data-lesson="4">
+                    <div class="lock-icon">🔒</div>
+                    <div class="lesson-header">
+                        <span class="lesson-number">LESSON 4</span>
+                        <div class="lesson-status">
+                            <span class="status-badge locked">Locked</span>
+                        </div>
+                    </div>
+                    <h3 class="lesson-title">RFID & NFC Basics</h3>
+                    <p class="lesson-description">
+                        Understand different card types (125kHz, 13.56MHz), learn reading and emulation techniques, explore MIFARE Classic vulnerabilities, and security considerations.
+                    </p>
+                    <div class="lesson-meta">
+                        <span>⏱️ 25 minutes</span>
+                        <span>⭐ 50 XP</span>
+                        <span>📝 Intermediate</span>
+                    </div>
+                    <a href="lessons/lesson-4/" class="start-button">Start Lesson →</a>
+                </div>
+
+                <!-- Lesson 5 -->
+                <div class="lesson-card locked" data-lesson="5">
+                    <div class="lock-icon">🔒</div>
+                    <div class="lesson-header">
+                        <span class="lesson-number">LESSON 5</span>
+                        <div class="lesson-status">
+                            <span class="status-badge locked">Locked</span>
+                        </div>
+                    </div>
+                    <h3 class="lesson-title">Infrared Communication</h3>
+                    <p class="lesson-description">
+                        Master IR remote control, learn signal capture and replay, use the universal remote database, and create custom remote configurations.
+                    </p>
+                    <div class="lesson-meta">
+                        <span>⏱️ 20 minutes</span>
+                        <span>⭐ 50 XP</span>
+                        <span>📝 Intermediate</span>
+                    </div>
+                    <a href="lessons/lesson-5/" class="start-button">Start Lesson →</a>
+                </div>
+
+                <!-- Lesson 6 -->
+                <div class="lesson-card locked" data-lesson="6">
+                    <div class="lock-icon">🔒</div>
+                    <div class="lesson-header">
+                        <span class="lesson-number">LESSON 6</span>
+                        <div class="lesson-status">
+                            <span class="status-badge locked">Locked</span>
+                        </div>
+                    </div>
+                    <h3 class="lesson-title">BadUSB & GPIO</h3>
+                    <p class="lesson-description">
+                        Learn automated keystroke injection, write Ducky Script, understand GPIO hardware interaction, and explore advanced security testing with strict safety protocols.
+                    </p>
+                    <div class="lesson-meta">
+                        <span>⏱️ 30 minutes</span>
+                        <span>⭐ 50 XP</span>
+                        <span>📝 Advanced</span>
+                    </div>
+                    <a href="lessons/lesson-6/" class="start-button">Start Lesson →</a>
+                </div>
             </div>
-            <div class="lesson-prereqs">
-              📌 Prerequisites: ${lesson.prerequisites}
-            </div>
-            <button class="cta-button" onclick="goToLesson(${lesson.id}); event.stopPropagation();">
-              ${isCompleted ? 'Review Lesson' : 'Start Lesson'} →
-            </button>
-          </div>
-        `;
-      }).join('');
-    }
+        </div>
 
-    // Navigate to lesson
-    function goToLesson(lessonId) {
-      const lesson = lessons.find(l => l.id === lessonId);
-      if (lesson) {
-        window.location.href = lesson.file;
-      }
-    }
+        <div class="section">
+            <h2>🎓 What You'll Learn</h2>
+            <ul class="prerequisites">
+                <li>Wireless protocol fundamentals (Sub-GHz, RFID, NFC, IR)</li>
+                <li>Security testing methodologies and ethical hacking principles</li>
+                <li>Hardware interaction through GPIO pins</li>
+                <li>Automated system interaction with BadUSB</li>
+                <li>Legal and ethical boundaries in security research</li>
+                <li>Practical skills for penetration testing and IoT security</li>
+            </ul>
+        </div>
+    </div>
 
-    // Accessibility functions
-    function changeFontSize(size) {
-      document.body.className = document.body.className.replace(/font-\w+/g, '');
-      if (size !== 'normal') {
-        document.body.classList.add('font-' + size);
-      }
-      localStorage.setItem('fontSize', size);
-    }
+    <script>
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('flipper-progress');
+                return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            } catch (e) {
+                console.error('Error loading progress:', e);
+                return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            }
+        }
 
-    function toggleContrast() {
-      document.body.classList.toggle('high-contrast');
-      localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
-    }
+        function updateUI() {
+            const progress = loadProgress();
+            const totalLessons = 6;
+            
+            // Update stats
+            document.getElementById('completed-count').textContent = progress.completedLessons.length;
+            document.getElementById('xp-count').textContent = progress.totalXP;
+            
+            // Update progress bar
+            const percentage = Math.round((progress.completedLessons.length / totalLessons) * 100);
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = percentage + '% Complete';
+            
+            // Update lesson cards
+            for (let i = 1; i <= totalLessons; i++) {
+                const card = document.querySelector(`[data-lesson="${i}"]`);
+                const statusBadge = card.querySelector('.status-badge');
+                
+                if (progress.completedLessons.includes(i)) {
+                    // Lesson is completed
+                    card.classList.remove('locked', 'unlocked');
+                    card.classList.add('completed');
+                    statusBadge.classList.remove('locked', 'unlocked');
+                    statusBadge.classList.add('completed');
+                    statusBadge.textContent = '✓ Complete';
+                } else if (i === 1 || progress.completedLessons.includes(i - 1)) {
+                    // Lesson is unlocked (first lesson or previous lesson completed)
+                    card.classList.remove('locked', 'completed');
+                    card.classList.add('unlocked');
+                    statusBadge.classList.remove('locked', 'completed');
+                    statusBadge.classList.add('unlocked');
+                    statusBadge.textContent = 'Start';
+                } else {
+                    // Lesson is locked
+                    card.classList.remove('unlocked', 'completed');
+                    card.classList.add('locked');
+                    statusBadge.classList.remove('unlocked', 'completed');
+                    statusBadge.classList.add('locked');
+                    statusBadge.textContent = 'Locked';
+                }
+            }
+        }
 
-    // Load accessibility preferences
-    function loadA11yPreferences() {
-      const fontSize = localStorage.getItem('fontSize');
-      if (fontSize && fontSize !== 'normal') {
-        document.body.classList.add('font-' + fontSize);
-      }
+        // Prevent navigation to locked lessons
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.lesson-card');
+            if (card && card.classList.contains('locked')) {
+                e.preventDefault();
+                const lessonNumber = card.dataset.lesson;
+                alert(`🔒 Lesson ${lessonNumber} is locked. Complete the previous lesson to unlock it!`);
+            }
+        });
 
-      const highContrast = localStorage.getItem('highContrast') === 'true';
-      if (highContrast) {
-        document.body.classList.add('high-contrast');
-      }
-    }
+        // Update UI on page load
+        window.addEventListener('load', updateUI);
 
-    // Initialize
-    loadA11yPreferences();
-    renderLessons();
-  </script>
+        // Update UI when returning to page (in case progress changed)
+        window.addEventListener('focus', updateUI);
+    </script>
 </body>
 </html>
