@@ -1,709 +1,753 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>if(window.location.pathname.endsWith(".html")){window.location.replace(window.location.pathname.slice(0,-5)+"/");}</script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson 4: Infrared Control Mastery | tw¡st3d_¡nk Academy</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 4: RFID & NFC Basics | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    :root {
-      --bg-dark: #0a0a0a;
-      --bg-card: #1a1a1a;
-      --accent: #00ff88;
-      --text-primary: #ffffff;
-      --text-secondary: #b0b0b0;
-      --border: #333;
-    }
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
 
-    body {
-      font-family: 'Atkinson Hyperlegible', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-primary);
-      line-height: 1.8;
-      padding: 20px;
-    }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+        .lesson-header {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
 
-    /* Accessibility Controls */
-    .a11y-controls {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 15px;
-      z-index: 1000;
-      display: flex;
-      gap: 10px;
-    }
+        .lesson-header h1 {
+            color: #00ff88;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
 
-    .a11y-btn {
-      background: var(--bg-dark);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
+        .lesson-meta {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
 
-    .a11y-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+        .lesson-header button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
 
-    .a11y-btn:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
+        .lesson-header button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
 
-    /* Navigation */
-    <!-- Progress tracking -->
-      <script>
-        let lessonProgress = {
-          currentLesson: 1,
-          completedLessons: [],
-          totalXP: 0
-        };
+        .content-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
 
-        function loadProgress() {
-          try {
-            const saved = localStorage.getItem('flipper-progress');
-            if (saved) {
-              lessonProgress = JSON.parse(saved);
-              updateProgressDisplay();
+        .content-section h2 {
+            color: #00ff88;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section h3 {
+            color: #00ff88;
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .content-section ul, .content-section ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .content-section li {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .note-box {
+            background: #1a1a1a;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #2a1a1a;
+            border-left: 4px solid #ff4444;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box strong {
+            color: #ff4444;
+        }
+
+        #complete-btn {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            margin: 2rem 0;
+            transition: all 0.3s;
+        }
+
+        #complete-btn:hover {
+            background: #00dd77;
+        }
+
+        #complete-btn.completed {
+            background: #333;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            cursor: default;
+        }
+
+        #complete-btn.locked {
+            background: #333;
+            color: #666;
+            border: 2px solid #666;
+            cursor: not-allowed;
+        }
+
+        #complete-btn.error {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .nav-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 2rem;
+        }
+
+        .nav-section button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .nav-section button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-buttons a {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .nav-buttons a:nth-child(1),
+        .nav-buttons a:nth-child(2) {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .nav-buttons a:nth-child(1):hover,
+        .nav-buttons a:nth-child(2):hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .nav-buttons a:nth-child(3) {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: 2px solid #00ff88;
+        }
+
+        .nav-buttons a:nth-child(3):hover {
+            background: #00dd77;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
             }
-          } catch (error) {
-            console.error('Failed to load progress:', error);
-            document.getElementById('complete-btn').textContent = 'Error - Try Again';
-          }
-        }
 
-        function saveProgress() {
-          try {
-            localStorage.setItem('flipper-progress', JSON.stringify(lessonProgress));
-          } catch (error) {
-            console.error('Failed to save progress:', error);
-            document.getElementById('complete-btn').textContent = 'Error - Try Again';
-          }
-        }
+            .lesson-header h1 {
+                font-size: 1.5rem;
+            }
 
-        function updateProgressDisplay() {
-          const xpDisplay = document.getElementById('current-xp');
-          const completeBtn = document.getElementById('complete-btn');
-          
-          if (xpDisplay) {
-            xpDisplay.textContent = `${lessonProgress.totalXP} XP`;
-          }
-          
-          if (lessonProgress.completedLessons.includes(4)) {
-            completeBtn.textContent = '✓ Lesson Complete';
-            completeBtn.style.background = '#1a1a1a';
-            completeBtn.style.border = '2px solid #00ff88';
-            completeBtn.style.cursor = 'default';
-          }
-        }
+            .content-section {
+                padding: 1.5rem;
+            }
 
-        function markComplete() {
-          if (!lessonProgress.completedLessons.includes(4)) {
-            lessonProgress.completedLessons.push(4);
-            lessonProgress.totalXP += 50;
-            lessonProgress.currentLesson = Math.max(lessonProgress.currentLesson, 5);
-            saveProgress();
-            updateProgressDisplay();
-          }
-        }
+            .nav-buttons {
+                flex-direction: column;
+            }
 
-        // Navigation functions
+            .nav-buttons a {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <h1>Lesson 4: RFID & NFC Basics</h1>
+            <p class="lesson-meta">Estimated time: 25 minutes | XP Reward: 50</p>
+            <button onclick="scrollToBottom()">Skip to Bottom ↓</button>
+        </div>
+
+        <div class="content-section">
+            <h2>Understanding RFID</h2>
+            <p>RFID stands for Radio Frequency Identification - a technology that uses electromagnetic fields to automatically identify and track tags attached to objects. Unlike barcodes which require line-of-sight scanning, RFID works through proximity reading, making it faster and more convenient for access control and identification systems.</p>
+
+            <h3>Two Types of RFID</h3>
+            <p>Flipper Zero supports both major RFID frequency ranges:</p>
+
+            <p><strong>Low Frequency (125kHz) RFID:</strong></p>
+            <ul>
+                <li>Older, established technology dating back to the 1980s</li>
+                <li>Shorter read range (typically inches)</li>
+                <li>Better penetration through materials and water</li>
+                <li>Commonly used in building access control, pet microchips, and older security systems</li>
+                <li>Generally simpler and cheaper to implement</li>
+            </ul>
+
+            <p><strong>High Frequency (13.56MHz) RFID/NFC:</strong></p>
+            <ul>
+                <li>Newer technology with more capabilities</li>
+                <li>Slightly longer read range (up to several inches)</li>
+                <li>Supports more complex data structures and encryption</li>
+                <li>Used in modern access systems, transit passes, passports, and contactless payments</li>
+                <li>Can support bidirectional communication</li>
+            </ul>
+
+            <h3>Passive vs Active Tags</h3>
+            <p><strong>Passive Tags</strong> (what you'll encounter most often) have no internal power source. They draw power from the reader's electromagnetic field, making them lightweight, inexpensive, and maintenance-free. This is why access cards don't need batteries.</p>
+
+            <p><strong>Active Tags</strong> contain their own power source (battery) and can transmit signals over longer distances. These are less common and typically used in industrial applications like vehicle tracking or asset management.</p>
+
+            <h3>Common Uses</h3>
+            <ul>
+                <li><strong>Access Control:</strong> Office building entry cards, hotel room keys, gym membership cards</li>
+                <li><strong>Pet Identification:</strong> Microchips implanted in pets for identification if lost</li>
+                <li><strong>Inventory Management:</strong> Tracking products in warehouses and retail stores</li>
+                <li><strong>Asset Tracking:</strong> Monitoring valuable equipment in hospitals, libraries, and businesses</li>
+                <li><strong>Vehicle Immobilizers:</strong> Car keys with RFID chips that prevent unauthorized starting</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Historical Note:</strong> RFID technology was originally developed during World War II to identify friendly aircraft. The same basic principle - using radio waves to identify objects - now powers everything from library book tracking to contactless payments.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>125kHz RFID</h2>
+            <p>Low-frequency RFID is the simpler of the two systems Flipper supports. Navigate to the RFID menu from the home screen to access these functions:</p>
+
+            <h3>Read</h3>
+            <p>Place a 125kHz card or tag against the back of your Flipper Zero (where the RFID antenna is located). Flipper will detect and display information about the card including:</p>
+            <ul>
+                <li><strong>Card Type:</strong> Protocol identification (EM4100, HIDProx, etc.)</li>
+                <li><strong>UID (Unique Identifier):</strong> The card's identification number</li>
+                <li><strong>Additional Data:</strong> Facility codes or other embedded information</li>
+            </ul>
+
+            <h3>Saved</h3>
+            <p>Access your library of previously read 125kHz cards. Each save includes all the necessary information to emulate that card.</p>
+
+            <h3>Add Manually</h3>
+            <p>For advanced users, manually enter card data if you know the UID and protocol. Useful for reconstructing cards from documentation or creating test cards with specific parameters.</p>
+
+            <h3>Common Protocols</h3>
+            <p><strong>EM4100:</strong> One of the most widespread 125kHz protocols, found in countless access control systems, parking garage tags, and older security implementations. These cards typically contain only a unique ID number with no additional security.</p>
+
+            <p><strong>HIDProx:</strong> Manufactured by HID Global, these are professional-grade access cards used in corporate and institutional settings. They often include facility codes alongside the card number, allowing organizations to identify which site a card belongs to.</p>
+
+            <h3>Clone Limitations and Security</h3>
+            <p>Most 125kHz RFID cards are relatively easy to clone because they lack encryption and transmit the same UID every time they're read. Flipper can save and emulate these cards, effectively acting as a clone. However:</p>
+
+            <ul>
+                <li>Flipper's emulation isn't perfect for all card types</li>
+                <li>Some readers check for specific card characteristics beyond just the UID</li>
+                <li>Professional installations may log access attempts and detect anomalies</li>
+                <li>Cloning someone else's access card without permission is illegal</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>Legal Reminder:</strong> Only read and emulate cards that belong to you or that you have explicit written permission to test. Unauthorized access to buildings or systems using cloned credentials is a serious crime.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>NFC (Near Field Communication)</h2>
+            <p>NFC is a subset of RFID operating at 13.56MHz with enhanced capabilities for bidirectional communication. Navigate to the NFC menu to explore these functions.</p>
+
+            <h3>Two-Way Communication</h3>
+            <p>Unlike simple RFID which is read-only, NFC supports sophisticated back-and-forth communication between devices. This enables:</p>
+            <ul>
+                <li>Secure authentication protocols</li>
+                <li>Data reading and writing</li>
+                <li>Cryptographic operations performed on the card itself</li>
+                <li>Dynamic responses based on reader commands</li>
+            </ul>
+
+            <h3>Types of NFC Cards</h3>
+
+            <p><strong>NTAG (NFC Tag):</strong></p>
+            <ul>
+                <li>Simple, affordable tags for basic data storage</li>
+                <li>Often used in smart posters, product tags, and NFC stickers</li>
+                <li>Can store URLs, text, or small amounts of data</li>
+                <li>Easy to read and often writable</li>
+            </ul>
+
+            <p><strong>MIFARE Classic:</strong></p>
+            <ul>
+                <li>Extremely common in transit systems and access control</li>
+                <li>Divided into sectors with access keys</li>
+                <li>Has known security vulnerabilities that can be exploited</li>
+                <li>Still widely deployed despite security concerns</li>
+            </ul>
+
+            <p><strong>MIFARE Ultralight:</strong></p>
+            <ul>
+                <li>Simplified version of MIFARE with less memory</li>
+                <li>Lower cost makes it popular for disposable applications</li>
+                <li>Used in event tickets, public transport day passes</li>
+                <li>Minimal security features</li>
+            </ul>
+
+            <p><strong>MIFARE DESFire:</strong></p>
+            <ul>
+                <li>Modern, secure implementation with strong encryption</li>
+                <li>Resistant to known attacks against older MIFARE cards</li>
+                <li>Supports multiple applications on one card</li>
+                <li>Commonly found in modern corporate access systems and secure transit cards</li>
+            </ul>
+
+            <h3>Uses of NFC</h3>
+            <ul>
+                <li><strong>Contactless Payments:</strong> Credit cards, mobile payment systems (Apple Pay, Google Pay)</li>
+                <li><strong>Transit Systems:</strong> Subway cards, bus passes, train tickets</li>
+                <li><strong>Smart Posters:</strong> Touch to get information or visit a website</li>
+                <li><strong>Access Control:</strong> Modern building entry systems</li>
+                <li><strong>Identity Documents:</strong> Passports, national ID cards</li>
+                <li><strong>Device Pairing:</strong> Quick Bluetooth pairing by tapping devices together</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Reading RFID/NFC Cards</h2>
+            <p>Let's walk through the process of reading different card types with your Flipper Zero.</p>
+
+            <h3>Step-by-Step Reading Process</h3>
+            <ol>
+                <li><strong>Select the appropriate module:</strong>
+                    <ul>
+                        <li>125kHz RFID menu for low-frequency cards</li>
+                        <li>NFC menu for 13.56MHz cards</li>
+                    </ul>
+                </li>
+                <li><strong>Choose "Read" option</strong> from the menu</li>
+                <li><strong>Position the card:</strong> Place it against the back of the Flipper where the antenna is located</li>
+                <li><strong>Hold steady:</strong> Keep the card in position for 1-2 seconds</li>
+                <li><strong>Observe results:</strong> Flipper displays card information on screen</li>
+                <li><strong>Save if desired:</strong> Press OK to save the card data with a descriptive name</li>
+            </ol>
+
+            <div class="note-box">
+                <strong>Pro Tip:</strong> If you're not sure whether a card is 125kHz or 13.56MHz, try the NFC reader first - it will often tell you if it detects a low-frequency card instead. You can also look for the NFC symbol (four curved lines) printed on many 13.56MHz cards.
+            </div>
+
+            <h3>Understanding Card Data</h3>
+            <p>When Flipper reads a card, it displays different information depending on the card type:</p>
+
+            <p><strong>For 125kHz Cards:</strong></p>
+            <ul>
+                <li>Protocol type (EM4100, HIDProx, etc.)</li>
+                <li>UID - The unique identifier number</li>
+                <li>Facility Code (for HID cards)</li>
+                <li>Card Number</li>
+            </ul>
+
+            <p><strong>For NFC Cards:</strong></p>
+            <ul>
+                <li>Card type (NTAG, MIFARE Classic, etc.)</li>
+                <li>UID - Usually 4 or 7 bytes</li>
+                <li>SAK (Select Acknowledge) - Indicates card type</li>
+                <li>ATQA (Answer To Request) - More type information</li>
+                <li>Memory size and structure</li>
+            </ul>
+
+            <h3>UID vs Full Card Data</h3>
+            <p>The <strong>UID (Unique Identifier)</strong> is like a serial number assigned to each card. Some simple access systems only check the UID, making them easier to clone. More sophisticated systems read additional data from the card or perform cryptographic challenges.</p>
+
+            <p><strong>Full card data</strong> includes everything stored on the card - the UID plus any additional information in the card's memory sectors. This might include access permissions, transit balance, or encrypted credentials.</p>
+
+            <h3>Encrypted vs Unencrypted Sectors</h3>
+            <p>Many NFC cards divide their memory into sectors, each protected by access keys:</p>
+            <ul>
+                <li><strong>Unencrypted/Default Keys:</strong> Some sectors use factory default keys that Flipper knows. These can be read immediately.</li>
+                <li><strong>Encrypted Sectors:</strong> Sectors with custom keys require knowing or cracking those keys to access the data</li>
+                <li><strong>Protected Sectors:</strong> Some modern cards use hardware-level protection that makes reading impossible without proper authentication</li>
+            </ul>
+
+            <p>Flipper will show you which sectors it can read and which are protected, giving you insight into the card's security implementation.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Saving and Emulating</h2>
+            <p>Once you've read a card, Flipper can save that data and later emulate the card - essentially pretending to be it.</p>
+
+            <h3>Saving Card Data</h3>
+            <p>After reading a card, press OK to save it. You'll be prompted to name the file. Use descriptive names like:</p>
+            <ul>
+                <li>"work_office_badge"</li>
+                <li>"gym_membership"</li>
+                <li>"apartment_building_entry"</li>
+                <li>"parking_garage_fob"</li>
+            </ul>
+
+            <p>Saved cards are stored in the appropriate folder (/rfid/ or /nfc/) on your SD card and can be accessed later from the "Saved" menu.</p>
+
+            <h3>Emulation Mode</h3>
+            <p>To emulate a saved card:</p>
+            <ol>
+                <li>Navigate to Saved in the RFID or NFC menu</li>
+                <li>Select your saved card file</li>
+                <li>Choose "Emulate" option</li>
+                <li>Hold Flipper up to the reader as you would the original card</li>
+            </ol>
+
+            <p>Flipper will transmit the saved card data, and if the system accepts it, you'll gain access just as if you'd used the original card.</p>
+
+            <h3>Limitations of Emulation</h3>
+            <p>While Flipper's emulation is impressive, it's not perfect:</p>
+            <ul>
+                <li><strong>Timing differences:</strong> Some readers detect that response timing doesn't match genuine cards</li>
+                <li><strong>Physical characteristics:</strong> Professional readers might check card thickness, antenna properties, or other physical attributes</li>
+                <li><strong>Cryptographic limitations:</strong> Cards with secure chips performing cryptographic operations can't be fully emulated without breaking the encryption</li>
+                <li><strong>UID restrictions:</strong> Some readers whitelist specific UID ranges and reject others</li>
+            </ul>
+
+            <h3>Testing Your Own Cards</h3>
+            <p>The primary educational use of emulation is testing the security of your own access systems:</p>
+            <ul>
+                <li>Can your office building be accessed with a cloned badge?</li>
+                <li>Does your apartment's entry system accept emulated cards?</li>
+                <li>Are your personal RFID-based security systems vulnerable to replay attacks?</li>
+            </ul>
+
+            <p>This knowledge helps you make informed decisions about upgrading to more secure systems or implementing additional security layers.</p>
+
+            <div class="warning-box">
+                <strong>Legal Boundary:</strong> Testing your own security is legal and educational. Using emulation to access systems you're not authorized to enter - even with a cloned version of your own legitimate card used outside permitted areas - can violate laws and organizational policies.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>MIFARE Classic Deep Dive</h2>
+            <p>MIFARE Classic deserves special attention as it's extremely common yet has well-known security weaknesses that make it a perfect learning subject.</p>
+
+            <h3>Sector and Block Structure</h3>
+            <p>MIFARE Classic cards (typically 1K or 4K versions) organize memory into sectors:</p>
+            <ul>
+                <li><strong>MIFARE Classic 1K:</strong> 16 sectors, each containing 4 blocks of 16 bytes</li>
+                <li><strong>MIFARE Classic 4K:</strong> 32 sectors (first 32) + 8 sectors of larger size</li>
+            </ul>
+
+            <p>Each sector has:</p>
+            <ul>
+                <li>3 data blocks for storing information</li>
+                <li>1 sector trailer containing access keys and permissions</li>
+            </ul>
+
+            <p>The first sector (sector 0) contains manufacturer data including the UID and is typically read-only.</p>
+
+            <h3>Keys and Authentication</h3>
+            <p>Each sector is protected by two keys:</p>
+            <ul>
+                <li><strong>Key A:</strong> Usually used for reading data</li>
+                <li><strong>Key B:</strong> Often used for writing data</li>
+            </ul>
+
+            <p>To access a sector, you must authenticate using one of these keys. The sector trailer defines what operations each key allows (read, write, increment, decrement, etc.).</p>
+
+            <h3>Dictionary Attacks</h3>
+            <p>Many MIFARE Classic deployments use default or common keys. Flipper includes a dictionary of known keys and can automatically try them when reading cards. This "dictionary attack" succeeds surprisingly often because:</p>
+            <ul>
+                <li>Installers sometimes leave factory default keys in place</li>
+                <li>Common keys like all zeros or all ones are widely used</li>
+                <li>Many vendors use the same keys across all their installations</li>
+            </ul>
+
+            <p>When Flipper successfully authenticates with a dictionary key, it can read (and potentially modify) that sector's data.</p>
+
+            <h3>Security Vulnerabilities</h3>
+            <p>MIFARE Classic has several known weaknesses discovered by security researchers:</p>
+            <ul>
+                <li><strong>Crypto-1 Cipher:</strong> The proprietary encryption algorithm has been fully reverse-engineered and broken</li>
+                <li><strong>Nested Authentication:</strong> If you know one key, you can often derive other keys on the same card</li>
+                <li><strong>Card-Only Attacks:</strong> With specialized tools, all keys can be extracted in under a minute</li>
+            </ul>
+
+            <p>Despite these vulnerabilities, MIFARE Classic remains deployed in millions of systems worldwide because upgrading infrastructure is expensive and complex.</p>
+
+            <div class="note-box">
+                <strong>Learning Value:</strong> Studying MIFARE Classic's vulnerabilities teaches important lessons about cryptographic implementation, backwards compatibility challenges, and why security-through-obscurity fails. Modern systems like MIFARE DESFire learned from these mistakes.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Security Considerations</h2>
+            <p>Understanding why some cards can't be cloned helps you appreciate the evolution of RFID security.</p>
+
+            <h3>Why Some Cards Can't Be Cloned</h3>
+            <p>Modern, secure RFID and NFC systems implement multiple layers of protection:</p>
+
+            <ul>
+                <li><strong>Diversified Keys:</strong> Each card has unique cryptographic keys derived from a master secret</li>
+                <li><strong>Mutual Authentication:</strong> Both card and reader prove their identities to each other</li>
+                <li><strong>Encrypted Communication:</strong> Data exchanged between card and reader is encrypted</li>
+                <li><strong>Secure Elements:</strong> Tamper-resistant chips that perform cryptography internally</li>
+                <li><strong>Anti-Cloning Measures:</strong> Physical characteristics that are difficult to replicate</li>
+            </ul>
+
+            <h3>Encrypted Payment Cards</h3>
+            <p>Contactless payment cards (Visa payWave, Mastercard PayPass, etc.) use sophisticated security:</p>
+            <ul>
+                <li>EMV (Europay, Mastercard, Visa) cryptographic standards</li>
+                <li>Dynamic authentication codes that change with each transaction</li>
+                <li>Card verification codes generated by secure chips</li>
+                <li>Transaction counters that prevent replay attacks</li>
+            </ul>
+
+            <p>While Flipper can read some information from payment cards (like the card number), it cannot clone them in a way that would allow fraudulent transactions. The cryptographic operations happen inside a secure chip that doesn't reveal its secrets.</p>
+
+            <h3>Building Access Systems</h3>
+            <p>Professional access control systems employ multiple security layers:</p>
+            <ul>
+                <li><strong>Online Systems:</strong> Check credentials against a central database in real-time</li>
+                <li><strong>Time Restrictions:</strong> Cards only work during specific hours</li>
+                <li><strong>Location Restrictions:</strong> Card must be used at specific readers in sequence (anti-passback)</li>
+                <li><strong>Biometric Integration:</strong> Card plus fingerprint or facial recognition</li>
+                <li><strong>Audit Trails:</strong> Every access attempt is logged and monitored</li>
+            </ul>
+
+            <p>These layered approaches mean that even if someone clones a card, they may still be detected or denied access.</p>
+
+            <h3>Legal Implications</h3>
+            <p>The legal framework around RFID cloning is clear:</p>
+            <ul>
+                <li>Reading and cloning your own cards for testing: Generally legal</li>
+                <li>Researching vulnerabilities in systems you own: Legal and encouraged</li>
+                <li>Cloning someone else's credentials: Illegal (theft/fraud)</li>
+                <li>Using cloned credentials for unauthorized access: Criminal offense (computer fraud, trespassing)</li>
+                <li>Selling cloned credentials or cloning services: Illegal (conspiracy, fraud)</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>Clear Boundary:</strong> The skills you're learning are for understanding technology and securing your own systems. Using these capabilities to access places or systems you're not authorized to enter is a crime, regardless of whether you think you "should" have access or are "just testing" without permission.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Practice Exercise</h2>
+            <p>Now it's time to explore RFID and NFC with your own cards:</p>
+
+            <ol>
+                <li><strong>Gather your cards:</strong> Find 2-3 RFID/NFC cards you own (building access, gym membership, transit card, etc.)</li>
+                <li><strong>Identify the type:</strong> Try reading each card with both the RFID and NFC modules to determine which frequency they use</li>
+                <li><strong>Read and analyze:</strong> For each card, note what information Flipper displays - UID, card type, accessible sectors</li>
+                <li><strong>Save the cards:</strong> Practice saving each card with a descriptive name</li>
+                <li><strong>Test emulation:</strong> Try emulating one of your cards on its corresponding reader (only test on systems you're authorized to access)</li>
+                <li><strong>Compare security:</strong> Which cards seem more secure? Which provide more information? Why do you think different levels of security were chosen?</li>
+            </ol>
+
+            <div class="note-box">
+                <strong>Reflection Questions:</strong> After this exercise, consider: How secure are the access control systems you use daily? If you managed the security for a building, what type of cards would you choose and why? What additional security layers beyond just the card would you implement?
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Key Takeaway</h2>
+            <p>RFID and NFC technologies form the backbone of modern contactless identification and access control. From the 125kHz cards in your office building to the NFC chip in your credit card, these systems balance convenience with security in different ways.</p>
+
+            <p>Through hands-on exploration with Flipper Zero, you've learned to:</p>
+            <ul>
+                <li>Distinguish between different RFID/NFC frequencies and protocols</li>
+                <li>Read and interpret card data</li>
+                <li>Understand the difference between secure and insecure implementations</li>
+                <li>Recognize why some cards can be cloned while others cannot</li>
+                <li>Appreciate the security considerations in real-world deployments</li>
+            </ul>
+
+            <p>This knowledge empowers you to make informed decisions about the security systems in your own life and understand the vulnerabilities that may exist in older or improperly configured systems.</p>
+
+            <div class="note-box">
+                <strong>Next Lesson:</strong> In Lesson 5, we'll explore infrared communication - learning how to capture and replay remote control signals from TVs, air conditioners, and other consumer electronics. Get ready to turn your Flipper into a universal remote!
+            </div>
+        </div>
+
+        <button id="complete-btn" onclick="markComplete()">Complete Previous Lesson First</button>
+
+        <div class="nav-section">
+            <button onclick="scrollToTop()">Back to Top ↑</button>
+            <div class="nav-buttons">
+                <a href="../lesson-3/">← Previous Lesson</a>
+                <a href="../../">Course Overview</a>
+                <a href="../lesson-5/">Next Lesson →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
         function scrollToBottom() {
-          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'instant'
+            });
         }
 
         function scrollToTop() {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({
+                top: 0,
+                behavior: 'instant'
+            });
         }
 
-        // Load progress on page load
-        loadProgress();
-      </script>
-
-    /* Header */
-    .lesson-header {
-      margin-bottom: 40px;
-    }
-
-    .lesson-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 15px;
-      background: linear-gradient(135deg, var(--accent), #00ccff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .lesson-meta {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-    }
-
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Content Sections */
-    .content-section {
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 30px;
-    }
-
-    .section-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: var(--accent);
-    }
-
-    .section-subtitle {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-top: 25px;
-      margin-bottom: 15px;
-      color: var(--text-primary);
-    }
-
-    p {
-      margin-bottom: 15px;
-      color: var(--text-secondary);
-    }
-
-    /* Alert Boxes */
-    .alert {
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      border: 2px solid;
-    }
-
-    .alert-info {
-      background: rgba(0, 255, 136, 0.1);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .alert-title {
-      font-weight: 700;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Lists */
-    ul, ol {
-      margin-left: 25px;
-      margin-bottom: 20px;
-      color: var(--text-secondary);
-    }
-
-    li {
-      margin-bottom: 10px;
-      line-height: 1.7;
-    }
-
-    /* Progress Footer */
-    .lesson-footer {
-      background: var(--bg-card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 30px;
-      margin-top: 40px;
-    }
-
-    .completion-section {
-      text-align: center;
-    }
-
-    .xp-reward {
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-
-    .complete-btn {
-      background: var(--accent);
-      color: var(--bg-dark);
-      border: none;
-      padding: 15px 40px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 20px;
-    }
-
-    .complete-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 24px rgba(0, 255, 136, 0.4);
-    }
-
-    .complete-btn:disabled {
-      background: var(--border);
-      color: var(--text-secondary);
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .nav-buttons {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    .nav-btn {
-      background: var(--bg-dark);
-      color: var(--accent);
-      border: 2px solid var(--accent);
-      padding: 12px 30px;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .nav-btn:hover {
-      background: var(--accent);
-      color: var(--bg-dark);
-    }
-
-    /* Font Size Classes */
-    body.font-small { font-size: 14px; }
-    body.font-large { font-size: 18px; }
-    body.font-xl { font-size: 22px; }
-
-    /* High Contrast Mode */
-    body.high-contrast {
-      --bg-dark: #000000;
-      --bg-card: #1a1a1a;
-      --text-primary: #ffffff;
-      --border: #00ff88;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .lesson-title {
-        font-size: 2rem;
-      }
-
-      .a11y-controls {
-        position: static;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <!-- Accessibility Controls -->
-    <div class="a11y-controls">
-      <button class="a11y-btn" onclick="changeFontSize('small')" aria-label="Decrease font size">A-</button>
-      <button class="a11y-btn" onclick="changeFontSize('normal')" aria-label="Normal font size">A</button>
-      <button class="a11y-btn" onclick="changeFontSize('large')" aria-label="Increase font size">A+</button>
-      <button class="a11y-btn" onclick="changeFontSize('xl')" aria-label="Extra large font size">A++</button>
-      <button class="a11y-btn" onclick="toggleContrast()" aria-label="Toggle high contrast">◐</button>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="lesson-nav">
-      <a href="../../" class="nav-link">← Back to Course</a>
-      <span class="lesson-badge">LESSON 4</span>
-      <a href="../lesson-5/" class="nav-link">Next Lesson →</a>
-    </nav>
-
-    <!-- Lesson Header -->
-    <header class="lesson-header">
-      <h1 class="lesson-title">Infrared Control Mastery</h1>
-      <div class="lesson-meta">
-        <span class="meta-item">⏱️ 35 minutes</span>
-        <span class="meta-item">⚡ 50 XP</span>
-        <span class="meta-item">📶 Difficulty: Beginner</span>
-      </div>
-    </header>
-
-    <!-- Introduction -->
-    <section class="content-section">
-      <h2 class="section-title">📡 Introduction to Infrared</h2>
-      
-      <p>Infrared (IR) communication is one of the oldest and most ubiquitous wireless technologies. From TV remotes to air conditioners, projectors to stereo systems, IR controls are everywhere. The Flipper Zero's infrared capabilities turn it into a universal remote control with learning and replay features.</p>
-
-      <p>In this lesson, you'll learn how IR communication works, how to capture signals from existing remotes, and how to use the Flipper Zero as a universal controller for IR-enabled devices.</p>
-
-      <div class="alert alert-info">
-        <div class="alert-title">💡 Fun Fact</div>
-        <p>IR remotes have been around since the 1950s! The technology remains popular because it's simple, cheap, and doesn't require pairing or batteries in the receiver.</p>
-      </div>
-    </section>
-
-    <!-- How IR Works -->
-    <section class="content-section">
-      <h2 class="section-title">🔬 How Infrared Communication Works</h2>
-
-      <h3 class="section-subtitle">The Basics of IR</h3>
-      <p>Infrared is electromagnetic radiation with wavelengths longer than visible light but shorter than radio waves. Most consumer IR devices use wavelengths around 940 nanometers, which is invisible to the human eye but visible to cameras and the Flipper Zero's IR receiver.</p>
-
-      <h3 class="section-subtitle">IR Signal Components</h3>
-      <ul>
-        <li><strong>Carrier Frequency</strong> - Typically 38 kHz (sometimes 36, 40, or 56 kHz)</li>
-        <li><strong>Modulation</strong> - The carrier is turned on/off in specific patterns</li>
-        <li><strong>Protocol</strong> - Standard encoding schemes (NEC, RC5, RC6, SIRC, Samsung, etc.)</li>
-        <li><strong>Command Data</strong> - Binary data representing specific button presses</li>
-      </ul>
-
-      <h3 class="section-subtitle">How a Remote Works</h3>
-      <ol>
-        <li><strong>Button Press</strong> - You press a button on the remote</li>
-        <li><strong>Encode</strong> - Microcontroller converts button to protocol-specific data</li>
-        <li><strong>Modulate</strong> - Data modulates the 38 kHz carrier wave</li>
-        <li><strong>Transmit</strong> - IR LED sends the modulated signal</li>
-        <li><strong>Receive</strong> - Device's IR receiver demodulates the signal</li>
-        <li><strong>Decode</strong> - Device interprets the command and performs action</li>
-      </ol>
-
-      <h3 class="section-subtitle">Common IR Protocols</h3>
-      <ul>
-        <li><strong>NEC</strong> - Popular protocol used by many Asian manufacturers</li>
-        <li><strong>RC5/RC6</strong> - Philips protocol, common in European devices</li>
-        <li><strong>SIRC</strong> - Sony Infrared Remote Control protocol</li>
-        <li><strong>Samsung</strong> - Protocol used by Samsung devices</li>
-        <li><strong>Raw</strong> - Direct timing data when protocol is unknown</li>
-      </ul>
-    </section>
-
-    <!-- Learning IR Signals -->
-    <section class="content-section">
-      <h2 class="section-title">📖 Learning IR Signals</h2>
-
-      <h3 class="section-subtitle">Step-by-Step: Capturing a Remote</h3>
-      <ol>
-        <li>Navigate to <strong>Infrared</strong> from the main menu</li>
-        <li>Select <strong>Learn New Remote</strong></li>
-        <li>Point your existing remote at the Flipper's IR receiver (top of device)</li>
-        <li>Press the button you want to capture</li>
-        <li>The Flipper will display the captured signal and protocol</li>
-        <li>Name the button (e.g., "Power", "Vol+", "Ch Up")</li>
-        <li>Repeat for all buttons you want to capture</li>
-        <li>Save the complete remote file</li>
-      </ol>
-
-      <h3 class="section-subtitle">Tips for Successful Capture</h3>
-      <ul>
-        <li>Hold the remote 2-5 cm away from the Flipper's IR receiver</li>
-        <li>Point directly at the receiver (top center of Flipper)</li>
-        <li>Press buttons firmly and hold briefly</li>
-        <li>If capture fails, try adjusting distance and angle</li>
-        <li>Some remotes may need fresh batteries for strong signals</li>
-      </ul>
-
-      <div class="alert alert-info">
-        <div class="alert-title">💡 Pro Tip</div>
-        <p>You can see IR signals with your smartphone camera! Point the remote at your phone's camera and press a button - you'll see the IR LED light up on screen.</p>
-      </div>
-
-      <h3 class="section-subtitle">Understanding Captured Data</h3>
-      <p>When the Flipper captures an IR signal, it displays:</p>
-      <ul>
-        <li><strong>Protocol Name</strong> - If recognized (NEC, RC5, etc.)</li>
-        <li><strong>Address</strong> - Device identifier code</li>
-        <li><strong>Command</strong> - Specific button command code</li>
-        <li><strong>Raw Timing</strong> - If protocol is unknown</li>
-      </ul>
-    </section>
-
-    <!-- Using Captured Remotes -->
-    <section class="content-section">
-      <h2 class="section-title">🎮 Using Captured Remotes</h2>
-
-      <h3 class="section-subtitle">Transmitting Saved Commands</h3>
-      <ol>
-        <li>Go to <strong>Infrared</strong> → <strong>Saved Remotes</strong></li>
-        <li>Select your saved remote file</li>
-        <li>Choose the button you want to send</li>
-        <li>Point Flipper's IR transmitter (bottom) at the device</li>
-        <li>Press OK to send the command</li>
-      </ol>
-
-      <h3 class="section-subtitle">Universal Remotes</h3>
-      <p>The Flipper comes with pre-loaded universal remote databases for common devices:</p>
-      <ul>
-        <li><strong>TVs</strong> - Power, volume, channel controls for major brands</li>
-        <li><strong>Audio Systems</strong> - Stereo and speaker controls</li>
-        <li><strong>Projectors</strong> - Common projector commands</li>
-        <li><strong>Air Conditioners</strong> - Temperature and mode controls</li>
-      </ul>
-
-      <p>To use universal remotes:</p>
-      <ol>
-        <li>Go to <strong>Infrared</strong> → <strong>Universal Remotes</strong></li>
-        <li>Select device type (TV, Audio, etc.)</li>
-        <li>Try different brand profiles until one works</li>
-        <li>Save the working profile for future use</li>
-      </ol>
-
-      <div class="alert alert-info">
-        <div class="alert-title">💡 Quick Trick</div>
-        <p>At a restaurant or bar with TVs? Use the universal TV remote to find the power button. Most TVs respond to one of the universal profiles!</p>
-      </div>
-    </section>
-
-    <!-- Advanced Features -->
-    <section class="content-section">
-      <h2 class="section-title">⚡ Advanced IR Features</h2>
-
-      <h3 class="section-subtitle">Raw Signal Capture</h3>
-      <p>When the Flipper can't identify a protocol, it captures raw timing data:</p>
-      <ul>
-        <li>Records exact on/off timing of IR pulses</li>
-        <li>Works with any IR device, even proprietary protocols</li>
-        <li>Larger file sizes than protocol-based captures</li>
-        <li>Perfect for unusual or custom IR devices</li>
-      </ul>
-
-      <h3 class="section-subtitle">Brute Force Mode</h3>
-      <p>For TV power control, you can try all known TV power commands:</p>
-      <ol>
-        <li>Go to <strong>Infrared</strong> → <strong>Universal Remotes</strong> → <strong>TVs</strong></li>
-        <li>Select a brand or use "All"</li>
-        <li>Choose <strong>Power</strong> button</li>
-        <li>The Flipper will cycle through all known power codes</li>
-        <li>Watch the TV - when it responds, note which code worked</li>
-      </ol>
-
-      <h3 class="section-subtitle">Debugging Signals</h3>
-      <p>You can analyze captured signals in detail:</p>
-      <ul>
-        <li>View raw timing data</li>
-        <li>Check protocol parameters</li>
-        <li>Compare different captures of the same button</li>
-        <li>Identify transmission errors or weak signals</li>
-      </ul>
-    </section>
-
-    <!-- Practical Applications -->
-    <section class="content-section">
-      <h2 class="section-title">🎯 Practical Applications</h2>
-
-      <h3 class="section-subtitle">Home Automation</h3>
-      <ul>
-        <li>Create custom remote layouts for your devices</li>
-        <li>Combine multiple remotes into one</li>
-        <li>Control devices that lost their original remotes</li>
-        <li>Set up macro commands (future firmware feature)</li>
-      </ul>
-
-      <h3 class="section-subtitle">Security Research</h3>
-      <ul>
-        <li>Analyze IR security systems (within legal boundaries)</li>
-        <li>Test IR-based access control</li>
-        <li>Study protocol implementation differences</li>
-        <li>Document proprietary IR protocols</li>
-      </ul>
-
-      <h3 class="section-subtitle">Backup & Recovery</h3>
-      <ul>
-        <li>Save all your remote controls before batteries die</li>
-        <li>Create backups of hard-to-replace remotes</li>
-        <li>Share remote files with friends/family</li>
-        <li>Keep digital copies of remotes for moved/sold devices</li>
-      </ul>
-    </section>
-
-    <!-- Practice Exercise -->
-    <section class="content-section">
-      <h2 class="section-title">🏋️ Practice Exercise</h2>
-
-      <h3 class="section-subtitle">Build Your Universal Remote</h3>
-      <p>Complete this hands-on exercise to master IR control:</p>
-
-      <ol>
-        <li><strong>Capture a TV Remote</strong>
-          <ul>
-            <li>Find a TV remote in your home</li>
-            <li>Learn power, volume up/down, and channel up/down buttons</li>
-            <li>Save as "My TV Remote"</li>
-            <li>Test each button by controlling the TV</li>
-          </ul>
-        </li>
-
-        <li><strong>Test Universal Remotes</strong>
-          <ul>
-            <li>Try the universal TV remote on different TVs</li>
-            <li>Test audio controls on a stereo or soundbar</li>
-            <li>Find which brands work with your devices</li>
-          </ul>
-        </li>
-
-        <li><strong>Capture Another Device</strong>
-          <ul>
-            <li>Choose an air conditioner, fan, or other IR device</li>
-            <li>Learn the most useful buttons</li>
-            <li>Test signal strength at different distances</li>
-            <li>Note maximum effective range</li>
-          </ul>
-        </li>
-
-        <li><strong>Document Your Findings</strong>
-          <ul>
-            <li>Which protocols did your devices use?</li>
-            <li>What was the maximum transmission range?</li>
-            <li>Did any devices use raw/unknown protocols?</li>
-            <li>How consistent were repeated captures?</li>
-          </ul>
-        </li>
-      </ol>
-
-      <div class="alert alert-info">
-        <div class="alert-title">✅ Success Criteria</div>
-        <p>You've mastered this lesson when you can successfully capture, save, and replay IR commands from at least two different devices!</p>
-      </div>
-    </section>
-
-    <!-- Lesson Footer -->
-    <footer class="lesson-footer">
-      <div class="completion-section">
-        <div class="xp-reward">+50 XP</div>
-        <p>Complete this lesson to earn your XP and unlock the next module!</p>
-        <button class="complete-btn" id="completeBtn" onclick="markComplete()">
-          Mark Lesson Complete
-        </button>
-        <div class="nav-buttons">
-          <a href="../lesson-3/" class="nav-btn">← Previous Lesson</a>
-          <a href="../../" class="nav-btn">Course Overview</a>
-          <a href="../lesson-5/" class="nav-btn">Next Lesson →</a>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <script>
-    // Storage configuration - syncs with course overview
-    const COURSE_STORAGE_KEY = 'flipper-zero-course';
-    const LESSON_ID = 4;
-
-    // Progress tracking functions
-    async function loadProgress() {
-      try {
-        const result = await window.storage.get(COURSE_STORAGE_KEY);
-        return result ? JSON.parse(result.value) : { completed: [] };
-      } catch (error) {
-        return { completed: [] };
-      }
-    }
-
-    async function saveProgress(progress) {
-      try {
-        await window.storage.set(COURSE_STORAGE_KEY, JSON.stringify(progress));
-        return true;
-      } catch (error) {
-        console.error('Failed to save progress:', error);
-        return false;
-      }
-    }
-
-    async function markComplete() {
-      const btn = document.getElementById('completeBtn');
-      btn.disabled = true;
-      btn.textContent = 'Saving...';
-
-      const progress = await loadProgress();
-      
-      if (!progress.completed.includes(LESSON_ID)) {
-        progress.completed.push(LESSON_ID);
-        const saved = await saveProgress(progress);
-        
-        if (saved) {
-          btn.textContent = '✓ Lesson Complete!';
-          btn.style.background = 'var(--accent)';
-          setTimeout(() => {
-            window.location.href = '../lesson-5/';
-          }, 1500);
-        } else {
-          btn.textContent = 'Error - Try Again';
-          btn.disabled = false;
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('flipper-progress');
+                return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            } catch (e) {
+                console.error('Error loading progress:', e);
+                return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            }
         }
-      } else {
-        btn.textContent = '✓ Already Complete';
-      }
-    }
 
-    // Check if already completed
-    async function checkCompletion() {
-      const progress = await loadProgress();
-      if (progress.completed.includes(LESSON_ID)) {
-        const btn = document.getElementById('completeBtn');
-        btn.textContent = '✓ Completed';
-        btn.style.background = 'var(--border)';
-      }
-    }
+        function saveProgress(progress) {
+            try {
+                localStorage.setItem('flipper-progress', JSON.stringify(progress));
+                return true;
+            } catch (e) {
+                console.error('Error saving progress:', e);
+                return false;
+            }
+        }
 
-    // Accessibility functions
-    function changeFontSize(size) {
-      document.body.className = document.body.className.replace(/font-\w+/g, '');
-      if (size !== 'normal') {
-        document.body.classList.add('font-' + size);
-      }
-      localStorage.setItem('fontSize', size);
-    }
+        function markComplete() {
+            const btn = document.getElementById('complete-btn');
+            const currentLessonNumber = 4;
+            const progress = loadProgress();
+            
+            if (!progress.completedLessons.includes(currentLessonNumber - 1)) {
+                return;
+            }
+            
+            if (!progress.completedLessons.includes(currentLessonNumber)) {
+                progress.completedLessons.push(currentLessonNumber);
+                progress.totalXP += 50;
+                
+                if (progress.currentLesson === currentLessonNumber) {
+                    progress.currentLesson = currentLessonNumber + 1;
+                }
+                
+                const saved = saveProgress(progress);
+                
+                if (saved) {
+                    btn.textContent = '✓ Lesson Complete';
+                    btn.classList.remove('locked');
+                    btn.classList.add('completed');
+                } else {
+                    btn.textContent = 'Error - Try Again';
+                    btn.classList.add('error');
+                    setTimeout(() => {
+                        btn.textContent = 'Mark Lesson as Complete';
+                        btn.classList.remove('error');
+                    }, 2000);
+                }
+            }
+        }
 
-    function toggleContrast() {
-      document.body.classList.toggle('high-contrast');
-      localStorage.setItem('highContrast', document.body.classList.contains('high-contrast'));
-    }
-
-    function loadA11yPreferences() {
-      const fontSize = localStorage.getItem('fontSize');
-      if (fontSize && fontSize !== 'normal') {
-        document.body.classList.add('font-' + fontSize);
-      }
-
-      const highContrast = localStorage.getItem('highContrast') === 'true';
-      if (highContrast) {
-        document.body.classList.add('high-contrast');
-      }
-    }
-
-    // Initialize
-    loadA11yPreferences();
-    checkCompletion();
-  </script>
+        window.addEventListener('load', () => {
+            const progress = loadProgress();
+            const currentLessonNumber = 4;
+            const btn = document.getElementById('complete-btn');
+            
+            if (progress.completedLessons.includes(currentLessonNumber)) {
+                btn.textContent = '✓ Lesson Complete';
+                btn.classList.add('completed');
+            }
+            else if (progress.completedLessons.includes(currentLessonNumber - 1)) {
+                btn.textContent = 'Mark Lesson as Complete';
+                btn.classList.remove('locked');
+            }
+            else {
+                btn.textContent = 'Complete Previous Lesson First';
+                btn.classList.add('locked');
+            }
+        });
+    </script>
 </body>
 </html>
