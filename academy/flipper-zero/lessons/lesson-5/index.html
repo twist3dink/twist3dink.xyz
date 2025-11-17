@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 4: RFID & NFC Basics | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+    <title>Lesson 5: Infrared Communication | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -114,10 +114,6 @@
             padding: 1rem;
             margin: 1.5rem 0;
             border-radius: 4px;
-        }
-
-        .warning-box strong {
-            color: #ff4444;
         }
 
         #complete-btn {
@@ -251,401 +247,384 @@
 <body>
     <div class="container">
         <div class="lesson-header">
-            <h1>Lesson 4: RFID & NFC Basics</h1>
-            <p class="lesson-meta">Estimated time: 25 minutes | XP Reward: 50</p>
+            <h1>Lesson 5: Infrared Communication</h1>
+            <p class="lesson-meta">Estimated time: 20 minutes | XP Reward: 50</p>
             <button onclick="scrollToBottom()">Skip to Bottom ↓</button>
         </div>
 
         <div class="content-section">
-            <h2>Understanding RFID</h2>
-            <p>RFID stands for Radio Frequency Identification - a technology that uses electromagnetic fields to automatically identify and track tags attached to objects. Unlike barcodes which require line-of-sight scanning, RFID works through proximity reading, making it faster and more convenient for access control and identification systems.</p>
+            <h2>What is Infrared (IR)?</h2>
+            <p>Infrared is a form of electromagnetic radiation with wavelengths longer than visible light but shorter than radio waves. While we can't see infrared with our naked eyes, specialized sensors (and your smartphone camera!) can detect it. IR has been the standard for remote control technology since the 1980s and remains widely used today.</p>
 
-            <h3>Two Types of RFID</h3>
-            <p>Flipper Zero supports both major RFID frequency ranges:</p>
+            <h3>Light-Based Communication</h3>
+            <p>Unlike radio frequencies that can pass through walls, infrared is essentially light-based communication using wavelengths just beyond what humans can see. This has both advantages and limitations:</p>
 
-            <p><strong>Low Frequency (125kHz) RFID:</strong></p>
+            <p><strong>Advantages:</strong></p>
             <ul>
-                <li>Older, established technology dating back to the 1980s</li>
-                <li>Shorter read range (typically inches)</li>
-                <li>Better penetration through materials and water</li>
-                <li>Commonly used in building access control, pet microchips, and older security systems</li>
-                <li>Generally simpler and cheaper to implement</li>
+                <li>No radio frequency interference or regulatory concerns</li>
+                <li>Simple, inexpensive technology</li>
+                <li>Doesn't interfere with other electronic devices</li>
+                <li>Confined to a room (signal doesn't pass through walls)</li>
             </ul>
 
-            <p><strong>High Frequency (13.56MHz) RFID/NFC:</strong></p>
+            <p><strong>Limitations:</strong></p>
             <ul>
-                <li>Newer technology with more capabilities</li>
-                <li>Slightly longer read range (up to several inches)</li>
-                <li>Supports more complex data structures and encryption</li>
-                <li>Used in modern access systems, transit passes, passports, and contactless payments</li>
-                <li>Can support bidirectional communication</li>
+                <li>Requires line-of-sight between transmitter and receiver</li>
+                <li>Limited range (typically 15-30 feet)</li>
+                <li>Can be blocked by objects or bright sunlight</li>
+                <li>One-way communication only (no feedback from device)</li>
             </ul>
 
-            <h3>Passive vs Active Tags</h3>
-            <p><strong>Passive Tags</strong> (what you'll encounter most often) have no internal power source. They draw power from the reader's electromagnetic field, making them lightweight, inexpensive, and maintenance-free. This is why access cards don't need batteries.</p>
-
-            <p><strong>Active Tags</strong> contain their own power source (battery) and can transmit signals over longer distances. These are less common and typically used in industrial applications like vehicle tracking or asset management.</p>
+            <h3>Line-of-Sight Required</h3>
+            <p>Because infrared operates like visible light, it needs a clear path from the remote to the device. This is why you need to point your TV remote at the television and why it won't work if someone stands between you and the TV. However, IR can bounce off walls and ceilings, which is why remotes sometimes work at slight angles.</p>
 
             <h3>Common Uses</h3>
+            <p>Infrared remote controls are everywhere in modern life:</p>
             <ul>
-                <li><strong>Access Control:</strong> Office building entry cards, hotel room keys, gym membership cards</li>
-                <li><strong>Pet Identification:</strong> Microchips implanted in pets for identification if lost</li>
-                <li><strong>Inventory Management:</strong> Tracking products in warehouses and retail stores</li>
-                <li><strong>Asset Tracking:</strong> Monitoring valuable equipment in hospitals, libraries, and businesses</li>
-                <li><strong>Vehicle Immobilizers:</strong> Car keys with RFID chips that prevent unauthorized starting</li>
+                <li><strong>Television Controls:</strong> Power, channel, volume, and menu navigation</li>
+                <li><strong>Air Conditioners:</strong> Temperature, mode, fan speed, and timer settings</li>
+                <li><strong>Media Devices:</strong> DVD/Blu-ray players, cable boxes, streaming devices</li>
+                <li><strong>Audio Equipment:</strong> Stereos, soundbars, home theater systems</li>
+                <li><strong>Projectors:</strong> Input selection, settings, and presentation controls</li>
+                <li><strong>Fans and Lights:</strong> Some smart home devices still use IR</li>
             </ul>
 
             <div class="note-box">
-                <strong>Historical Note:</strong> RFID technology was originally developed during World War II to identify friendly aircraft. The same basic principle - using radio waves to identify objects - now powers everything from library book tracking to contactless payments.
+                <strong>Quick Test:</strong> Want to see infrared in action? Point your TV remote at your smartphone camera and press a button. You'll see the IR LED flash on your phone's screen even though it's invisible to your eyes! This works because phone cameras can detect infrared wavelengths.
             </div>
         </div>
 
         <div class="content-section">
-            <h2>125kHz RFID</h2>
-            <p>Low-frequency RFID is the simpler of the two systems Flipper supports. Navigate to the RFID menu from the home screen to access these functions:</p>
+            <h2>How IR Remotes Work</h2>
+            <p>Understanding the technology behind IR remotes helps you capture and replay signals more effectively.</p>
 
-            <h3>Read</h3>
-            <p>Place a 125kHz card or tag against the back of your Flipper Zero (where the RFID antenna is located). Flipper will detect and display information about the card including:</p>
-            <ul>
-                <li><strong>Card Type:</strong> Protocol identification (EM4100, HIDProx, etc.)</li>
-                <li><strong>UID (Unique Identifier):</strong> The card's identification number</li>
-                <li><strong>Additional Data:</strong> Facility codes or other embedded information</li>
-            </ul>
+            <h3>Infrared LED Transmitter</h3>
+            <p>Every remote control contains one or more infrared LEDs - special light-emitting diodes that produce infrared light when electricity flows through them. When you press a button on your remote:</p>
 
-            <h3>Saved</h3>
-            <p>Access your library of previously read 125kHz cards. Each save includes all the necessary information to emulate that card.</p>
-
-            <h3>Add Manually</h3>
-            <p>For advanced users, manually enter card data if you know the UID and protocol. Useful for reconstructing cards from documentation or creating test cards with specific parameters.</p>
-
-            <h3>Common Protocols</h3>
-            <p><strong>EM4100:</strong> One of the most widespread 125kHz protocols, found in countless access control systems, parking garage tags, and older security implementations. These cards typically contain only a unique ID number with no additional security.</p>
-
-            <p><strong>HIDProx:</strong> Manufactured by HID Global, these are professional-grade access cards used in corporate and institutional settings. They often include facility codes alongside the card number, allowing organizations to identify which site a card belongs to.</p>
-
-            <h3>Clone Limitations and Security</h3>
-            <p>Most 125kHz RFID cards are relatively easy to clone because they lack encryption and transmit the same UID every time they're read. Flipper can save and emulate these cards, effectively acting as a clone. However:</p>
-
-            <ul>
-                <li>Flipper's emulation isn't perfect for all card types</li>
-                <li>Some readers check for specific card characteristics beyond just the UID</li>
-                <li>Professional installations may log access attempts and detect anomalies</li>
-                <li>Cloning someone else's access card without permission is illegal</li>
-            </ul>
-
-            <div class="warning-box">
-                <strong>Legal Reminder:</strong> Only read and emulate cards that belong to you or that you have explicit written permission to test. Unauthorized access to buildings or systems using cloned credentials is a serious crime.
-            </div>
-        </div>
-
-        <div class="content-section">
-            <h2>NFC (Near Field Communication)</h2>
-            <p>NFC is a subset of RFID operating at 13.56MHz with enhanced capabilities for bidirectional communication. Navigate to the NFC menu to explore these functions.</p>
-
-            <h3>Two-Way Communication</h3>
-            <p>Unlike simple RFID which is read-only, NFC supports sophisticated back-and-forth communication between devices. This enables:</p>
-            <ul>
-                <li>Secure authentication protocols</li>
-                <li>Data reading and writing</li>
-                <li>Cryptographic operations performed on the card itself</li>
-                <li>Dynamic responses based on reader commands</li>
-            </ul>
-
-            <h3>Types of NFC Cards</h3>
-
-            <p><strong>NTAG (NFC Tag):</strong></p>
-            <ul>
-                <li>Simple, affordable tags for basic data storage</li>
-                <li>Often used in smart posters, product tags, and NFC stickers</li>
-                <li>Can store URLs, text, or small amounts of data</li>
-                <li>Easy to read and often writable</li>
-            </ul>
-
-            <p><strong>MIFARE Classic:</strong></p>
-            <ul>
-                <li>Extremely common in transit systems and access control</li>
-                <li>Divided into sectors with access keys</li>
-                <li>Has known security vulnerabilities that can be exploited</li>
-                <li>Still widely deployed despite security concerns</li>
-            </ul>
-
-            <p><strong>MIFARE Ultralight:</strong></p>
-            <ul>
-                <li>Simplified version of MIFARE with less memory</li>
-                <li>Lower cost makes it popular for disposable applications</li>
-                <li>Used in event tickets, public transport day passes</li>
-                <li>Minimal security features</li>
-            </ul>
-
-            <p><strong>MIFARE DESFire:</strong></p>
-            <ul>
-                <li>Modern, secure implementation with strong encryption</li>
-                <li>Resistant to known attacks against older MIFARE cards</li>
-                <li>Supports multiple applications on one card</li>
-                <li>Commonly found in modern corporate access systems and secure transit cards</li>
-            </ul>
-
-            <h3>Uses of NFC</h3>
-            <ul>
-                <li><strong>Contactless Payments:</strong> Credit cards, mobile payment systems (Apple Pay, Google Pay)</li>
-                <li><strong>Transit Systems:</strong> Subway cards, bus passes, train tickets</li>
-                <li><strong>Smart Posters:</strong> Touch to get information or visit a website</li>
-                <li><strong>Access Control:</strong> Modern building entry systems</li>
-                <li><strong>Identity Documents:</strong> Passports, national ID cards</li>
-                <li><strong>Device Pairing:</strong> Quick Bluetooth pairing by tapping devices together</li>
-            </ul>
-        </div>
-
-        <div class="content-section">
-            <h2>Reading RFID/NFC Cards</h2>
-            <p>Let's walk through the process of reading different card types with your Flipper Zero.</p>
-
-            <h3>Step-by-Step Reading Process</h3>
             <ol>
-                <li><strong>Select the appropriate module:</strong>
-                    <ul>
-                        <li>125kHz RFID menu for low-frequency cards</li>
-                        <li>NFC menu for 13.56MHz cards</li>
-                    </ul>
-                </li>
-                <li><strong>Choose "Read" option</strong> from the menu</li>
-                <li><strong>Position the card:</strong> Place it against the back of the Flipper where the antenna is located</li>
-                <li><strong>Hold steady:</strong> Keep the card in position for 1-2 seconds</li>
-                <li><strong>Observe results:</strong> Flipper displays card information on screen</li>
-                <li><strong>Save if desired:</strong> Press OK to save the card data with a descriptive name</li>
+                <li>The remote's microcontroller generates a specific pattern of pulses</li>
+                <li>These pulses turn the IR LED on and off rapidly</li>
+                <li>The pattern encodes which button was pressed</li>
+                <li>The IR LED broadcasts this pattern toward the device</li>
+            </ol>
+
+            <p>The receiver device has an IR sensor that detects these pulses, decodes the pattern, and executes the corresponding command.</p>
+
+            <h3>Modulated Signals</h3>
+            <p>IR remotes don't just turn the LED on and off - they modulate (rapidly pulse) the infrared light at a specific frequency, typically 38 kHz (38,000 times per second). This modulation helps the receiver distinguish remote signals from ambient infrared light sources like sunlight or incandescent bulbs.</p>
+
+            <p>Think of it like this: the button press creates a pattern of long and short bursts, and each burst consists of thousands of rapid pulses at the carrier frequency. The receiver filters for this specific pulse frequency, making the system more reliable.</p>
+
+            <h3>Protocol Differences</h3>
+            <p>Different manufacturers developed various IR protocols over the years. Common protocols include:</p>
+
+            <ul>
+                <li><strong>NEC:</strong> Used by many Asian manufacturers, simple and reliable</li>
+                <li><strong>RC5/RC6:</strong> Developed by Philips, used in European devices</li>
+                <li><strong>Sony SIRC:</strong> Sony's proprietary protocol</li>
+                <li><strong>Samsung:</strong> Used across Samsung's product lines</li>
+            </ul>
+
+            <p>Each protocol has different timing, bit encoding, and repeat behavior. Fortunately, Flipper Zero can learn and replay most protocols without you needing to know which one is being used.</p>
+
+            <h3>Carrier Frequencies</h3>
+            <p>While 38 kHz is the most common carrier frequency, some devices use alternatives:</p>
+            <ul>
+                <li><strong>36 kHz:</strong> Some older remotes</li>
+                <li><strong>38 kHz:</strong> Industry standard, most common</li>
+                <li><strong>40 kHz:</strong> Occasionally used to avoid interference</li>
+                <li><strong>56 kHz:</strong> Some specialized equipment</li>
+            </ul>
+
+            <p>Flipper automatically detects the carrier frequency when learning signals, ensuring accurate playback.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Flipper's IR Module</h2>
+            <p>Navigate to the Infrared menu from Flipper's home screen to access three main functions:</p>
+
+            <h3>Learn New Remote</h3>
+            <p>This is your tool for capturing IR signals from any remote control you have. The process is straightforward:</p>
+
+            <ol>
+                <li>Select "Learn New Remote"</li>
+                <li>Give your remote a name (e.g., "Living_Room_TV")</li>
+                <li>Flipper will prompt you to point the remote at it and press a button</li>
+                <li>Name each button as you capture it (Power, Vol+, Ch+, etc.)</li>
+                <li>Repeat for all buttons you want to save</li>
+                <li>Flipper saves all buttons as a single remote file</li>
+            </ol>
+
+            <p>The IR receiver is located at the top of Flipper Zero. For best results, hold your remote 1-3 inches away and point directly at the IR sensor when capturing signals.</p>
+
+            <h3>Universal Remotes</h3>
+            <p>Flipper comes pre-loaded with an extensive database of universal remote codes for common devices. This database includes:</p>
+
+            <ul>
+                <li>Major TV brands (Samsung, LG, Sony, Vizio, etc.)</li>
+                <li>Projectors from various manufacturers</li>
+                <li>Audio systems and soundbars</li>
+                <li>Air conditioners</li>
+                <li>Media players</li>
+            </ul>
+
+            <p>To use a universal remote:</p>
+            <ol>
+                <li>Navigate to "Universal Remotes"</li>
+                <li>Select device type (TVs, Projectors, Audio, etc.)</li>
+                <li>Choose your brand</li>
+                <li>Test the commands on your device</li>
+            </ol>
+
+            <p>If the first brand profile doesn't work perfectly, many brands have multiple protocol variations in the database. Try different options until you find one that works reliably with your specific device.</p>
+
+            <h3>Saved Remotes</h3>
+            <p>Access your library of captured IR remotes. Each saved remote contains all the buttons you learned for that device. You can:</p>
+            <ul>
+                <li>Replay saved buttons</li>
+                <li>Edit button names</li>
+                <li>Add new buttons to existing remotes</li>
+                <li>Delete unwanted buttons or entire remotes</li>
+                <li>Organize remotes into folders</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Organization Tip:</strong> Create folder structures like /infrared/living-room/, /infrared/bedroom/, etc. This makes finding the right remote much faster when you have dozens saved.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Learning IR Signals</h2>
+            <p>Let's walk through capturing a complete remote control with Flipper Zero.</p>
+
+            <h3>Pointing Remote at Flipper</h3>
+            <p>Proper positioning ensures clean signal capture:</p>
+            <ul>
+                <li>Hold the remote 1-3 inches from Flipper's top (where the IR LED is located)</li>
+                <li>Point the remote's IR LED directly at Flipper</li>
+                <li>Keep both devices steady during capture</li>
+                <li>Avoid bright sunlight or strong artificial lighting which can interfere</li>
+            </ul>
+
+            <h3>Button-by-Button Capture</h3>
+            <p>When learning a new remote, Flipper prompts you to capture each button individually. Here's the workflow:</p>
+
+            <ol>
+                <li><strong>Start learning mode:</strong> Select "Learn New Remote" and name it</li>
+                <li><strong>Press remote button:</strong> Press and hold the button you want to capture for about 1 second</li>
+                <li><strong>Wait for confirmation:</strong> Flipper displays signal strength and confirms capture</li>
+                <li><strong>Name the button:</strong> Give it a clear name like "Power", "Vol_Up", "Input", etc.</li>
+                <li><strong>Repeat:</strong> Continue for each button you want to save</li>
+                <li><strong>Finish:</strong> Press Back when done to save the complete remote</li>
+            </ol>
+
+            <h3>Naming Buttons</h3>
+            <p>Use consistent, descriptive names that make sense when you're browsing through saved remotes:</p>
+
+            <p><strong>Good naming examples:</strong></p>
+            <ul>
+                <li>Power (not Pwr or On/Off)</li>
+                <li>Vol_Up / Vol_Down (not V+ / V-)</li>
+                <li>Ch_Up / Ch_Down</li>
+                <li>Input / Source</li>
+                <li>Menu / Settings</li>
+                <li>Play / Pause</li>
+                <li>Mute</li>
+            </ul>
+
+            <p>Avoid overly abbreviated names that you might forget later. Future you will appreciate clear labels!</p>
+
+            <h3>Testing Captured Signals</h3>
+            <p>After capturing buttons, immediately test them:</p>
+            <ol>
+                <li>Navigate to your saved remote</li>
+                <li>Select a button to test</li>
+                <li>Point Flipper at the device</li>
+                <li>Press OK to transmit</li>
+                <li>Verify the device responds correctly</li>
+            </ol>
+
+            <p>If a button doesn't work reliably, you can recapture it. Sometimes pressing the remote button longer or shorter during capture improves reliability.</p>
+
+            <div class="note-box">
+                <strong>Troubleshooting:</strong> If captured signals don't work, try capturing again from a closer distance, ensure fresh batteries in the remote, and verify you're pointing Flipper directly at the device when transmitting. Some devices have less sensitive IR receivers that require stronger signals.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Universal Remote Database</h2>
+            <p>One of Flipper's most immediately useful features is its pre-loaded universal remote database.</p>
+
+            <h3>Pre-Loaded Brands</h3>
+            <p>The universal remote database includes control codes for hundreds of devices across major brands. Coverage includes:</p>
+
+            <p><strong>Televisions:</strong></p>
+            <ul>
+                <li>Samsung, LG, Sony, Vizio, TCL, Hisense, Panasonic, Philips, Sharp, Toshiba, and many more</li>
+            </ul>
+
+            <p><strong>Projectors:</strong></p>
+            <ul>
+                <li>Epson, BenQ, Optoma, ViewSonic, and other popular brands</li>
+            </ul>
+
+            <p><strong>Audio Systems:</strong></p>
+            <ul>
+                <li>Soundbars, receivers, and speaker systems from major manufacturers</li>
+            </ul>
+
+            <p><strong>Air Conditioners:</strong></p>
+            <ul>
+                <li>Common HVAC brands with standard IR controls</li>
+            </ul>
+
+            <h3>Basic Controls Available</h3>
+            <p>Universal remotes typically include essential functions:</p>
+
+            <ul>
+                <li><strong>Power:</strong> Turn device on/off (sometimes separate On and Off commands)</li>
+                <li><strong>Volume:</strong> Increase, decrease, and mute</li>
+                <li><strong>Channel:</strong> Up and down navigation</li>
+                <li><strong>Input/Source:</strong> Switch between HDMI, cable, etc.</li>
+                <li><strong>Menu Navigation:</strong> Enter menus and navigate settings</li>
+            </ul>
+
+            <p>Note that universal remotes may not include every specialized function your original remote has, but they cover the most commonly used controls.</p>
+
+            <h3>Testing Different Profiles</h3>
+            <p>If the first universal remote profile doesn't work perfectly with your device:</p>
+
+            <ol>
+                <li>Try other protocol variations listed for your brand</li>
+                <li>Some brands are compatible with other manufacturers' protocols (look for similar parent companies)</li>
+                <li>Generic/universal profiles sometimes work across multiple brands</li>
+                <li>When you find one that works, you can save it for quick access</li>
             </ol>
 
             <div class="note-box">
-                <strong>Pro Tip:</strong> If you're not sure whether a card is 125kHz or 13.56MHz, try the NFC reader first - it will often tell you if it detects a low-frequency card instead. You can also look for the NFC symbol (four curved lines) printed on many 13.56MHz cards.
+                <strong>Real-World Tip:</strong> Many hotel rooms, conference rooms, and public spaces use common TV brands. Having the universal remote database makes Flipper an incredibly convenient universal remote when you can't find the original or need to quickly adjust settings.
             </div>
-
-            <h3>Understanding Card Data</h3>
-            <p>When Flipper reads a card, it displays different information depending on the card type:</p>
-
-            <p><strong>For 125kHz Cards:</strong></p>
-            <ul>
-                <li>Protocol type (EM4100, HIDProx, etc.)</li>
-                <li>UID - The unique identifier number</li>
-                <li>Facility Code (for HID cards)</li>
-                <li>Card Number</li>
-            </ul>
-
-            <p><strong>For NFC Cards:</strong></p>
-            <ul>
-                <li>Card type (NTAG, MIFARE Classic, etc.)</li>
-                <li>UID - Usually 4 or 7 bytes</li>
-                <li>SAK (Select Acknowledge) - Indicates card type</li>
-                <li>ATQA (Answer To Request) - More type information</li>
-                <li>Memory size and structure</li>
-            </ul>
-
-            <h3>UID vs Full Card Data</h3>
-            <p>The <strong>UID (Unique Identifier)</strong> is like a serial number assigned to each card. Some simple access systems only check the UID, making them easier to clone. More sophisticated systems read additional data from the card or perform cryptographic challenges.</p>
-
-            <p><strong>Full card data</strong> includes everything stored on the card - the UID plus any additional information in the card's memory sectors. This might include access permissions, transit balance, or encrypted credentials.</p>
-
-            <h3>Encrypted vs Unencrypted Sectors</h3>
-            <p>Many NFC cards divide their memory into sectors, each protected by access keys:</p>
-            <ul>
-                <li><strong>Unencrypted/Default Keys:</strong> Some sectors use factory default keys that Flipper knows. These can be read immediately.</li>
-                <li><strong>Encrypted Sectors:</strong> Sectors with custom keys require knowing or cracking those keys to access the data</li>
-                <li><strong>Protected Sectors:</strong> Some modern cards use hardware-level protection that makes reading impossible without proper authentication</li>
-            </ul>
-
-            <p>Flipper will show you which sectors it can read and which are protected, giving you insight into the card's security implementation.</p>
         </div>
 
         <div class="content-section">
-            <h2>Saving and Emulating</h2>
-            <p>Once you've read a card, Flipper can save that data and later emulate the card - essentially pretending to be it.</p>
+            <h2>Creating Custom Remotes</h2>
+            <p>Beyond simply capturing existing remotes, you can create more advanced configurations.</p>
 
-            <h3>Saving Card Data</h3>
-            <p>After reading a card, press OK to save it. You'll be prompted to name the file. Use descriptive names like:</p>
+            <h3>Combining Signals from Multiple Remotes</h3>
+            <p>You can create a unified "super remote" that combines buttons from different devices:</p>
+
+            <p><strong>Example use case:</strong> Home theater control</p>
             <ul>
-                <li>"work_office_badge"</li>
-                <li>"gym_membership"</li>
-                <li>"apartment_building_entry"</li>
-                <li>"parking_garage_fob"</li>
+                <li>TV power from your television remote</li>
+                <li>Volume from your soundbar remote</li>
+                <li>Play/pause from your media player remote</li>
+                <li>Input switching from your receiver remote</li>
             </ul>
 
-            <p>Saved cards are stored in the appropriate folder (/rfid/ or /nfc/) on your SD card and can be accessed later from the "Saved" menu.</p>
-
-            <h3>Emulation Mode</h3>
-            <p>To emulate a saved card:</p>
+            <p>To create a combined remote:</p>
             <ol>
-                <li>Navigate to Saved in the RFID or NFC menu</li>
-                <li>Select your saved card file</li>
-                <li>Choose "Emulate" option</li>
-                <li>Hold Flipper up to the reader as you would the original card</li>
+                <li>Learn buttons from each individual remote as separate files</li>
+                <li>Use a computer to edit the .ir files on your SD card</li>
+                <li>Copy specific button codes into a new unified remote file</li>
+                <li>Test thoroughly to ensure all commands work</li>
             </ol>
 
-            <p>Flipper will transmit the saved card data, and if the system accepts it, you'll gain access just as if you'd used the original card.</p>
-
-            <h3>Limitations of Emulation</h3>
-            <p>While Flipper's emulation is impressive, it's not perfect:</p>
+            <h3>Creating Macros</h3>
+            <p>While Flipper doesn't natively support macros (sequences of commands), you can simulate them by:</p>
             <ul>
-                <li><strong>Timing differences:</strong> Some readers detect that response timing doesn't match genuine cards</li>
-                <li><strong>Physical characteristics:</strong> Professional readers might check card thickness, antenna properties, or other physical attributes</li>
-                <li><strong>Cryptographic limitations:</strong> Cards with secure chips performing cryptographic operations can't be fully emulated without breaking the encryption</li>
-                <li><strong>UID restrictions:</strong> Some readers whitelist specific UID ranges and reject others</li>
+                <li>Manually pressing multiple buttons in sequence</li>
+                <li>Creating custom .ir files with multiple commands (requires file editing)</li>
+                <li>Using community firmware that adds macro support</li>
             </ul>
 
-            <h3>Testing Your Own Cards</h3>
-            <p>The primary educational use of emulation is testing the security of your own access systems:</p>
+            <p>Common macro examples:</p>
             <ul>
-                <li>Can your office building be accessed with a cloned badge?</li>
-                <li>Does your apartment's entry system accept emulated cards?</li>
-                <li>Are your personal RFID-based security systems vulnerable to replay attacks?</li>
+                <li>"Movie Mode": TV power → Input HDMI1 → Soundbar power → Volume to preset level</li>
+                <li>"Bedtime": TV power off → AC to sleep mode → Lights off</li>
             </ul>
 
-            <p>This knowledge helps you make informed decisions about upgrading to more secure systems or implementing additional security layers.</p>
+            <h3>Organizing Your Library</h3>
+            <p>As your collection of IR remotes grows, organization becomes important:</p>
+
+            <p><strong>Folder structure example:</strong></p>
+            <ul>
+                <li>/infrared/living-room/ - TV, soundbar, AC</li>
+                <li>/infrared/bedroom/ - TV, fan, lights</li>
+                <li>/infrared/office/ - Projector, speakers</li>
+                <li>/infrared/universal/ - Generic remotes for travel</li>
+            </ul>
+
+            <p>Use descriptive filenames that include brand and model when relevant: "Samsung_TV_UN55MU8000.ir" rather than just "TV.ir"</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Practical Applications</h2>
+            <p>Infrared control with Flipper Zero has numerous legitimate and useful applications.</p>
+
+            <h3>Universal Remote Replacement</h3>
+            <p>The most obvious use case: Flipper can replace physical remote controls you've lost, broken, or simply want to consolidate. Benefits include:</p>
+            <ul>
+                <li>One device controls multiple electronics</li>
+                <li>Always with you (unlike that remote that keeps disappearing in the couch)</li>
+                <li>Can't run out of batteries at the worst moment</li>
+                <li>Works with devices that never came with remotes</li>
+            </ul>
+
+            <h3>Home Automation Integration</h3>
+            <p>Many smart home enthusiasts use Flipper for:</p>
+            <ul>
+                <li>Controlling "dumb" devices that only have IR remotes</li>
+                <li>Integrating older equipment into modern automation systems</li>
+                <li>Testing IR-controlled smart home components</li>
+                <li>Backup control when WiFi or smart systems fail</li>
+            </ul>
+
+            <h3>Troubleshooting Remote Issues</h3>
+            <p>Flipper helps diagnose remote control problems:</p>
+            <ul>
+                <li>Test if a remote is transmitting at all (view signal strength)</li>
+                <li>Compare weak remotes to known good ones</li>
+                <li>Verify which buttons on a failing remote still work</li>
+                <li>Determine if the issue is the remote or the device receiver</li>
+            </ul>
+
+            <h3>Pranks (Ethical Considerations)</h3>
+            <p>Yes, Flipper can control TVs in public spaces, which has led to various harmless pranks. However, consider the ethical implications:</p>
 
             <div class="warning-box">
-                <strong>Legal Boundary:</strong> Testing your own security is legal and educational. Using emulation to access systems you're not authorized to enter - even with a cloned version of your own legitimate card used outside permitted areas - can violate laws and organizational policies.
+                <strong>Think Before You Prank:</strong>
+                <ul style="margin-top: 0.5rem;">
+                    <li>Is it actually funny, or just annoying?</li>
+                    <li>Could it disrupt something important (presentation, sports bar during a game)?</li>
+                    <li>Will it cause confusion or distress to staff or other customers?</li>
+                    <li>Could you get banned from the establishment?</li>
+                </ul>
+                <p style="margin-top: 0.5rem;">Respect others' spaces and time. What seems like a harmless joke to you might ruin someone else's experience or even get you in legal trouble for disrupting business operations.</p>
             </div>
-        </div>
 
-        <div class="content-section">
-            <h2>MIFARE Classic Deep Dive</h2>
-            <p>MIFARE Classic deserves special attention as it's extremely common yet has well-known security weaknesses that make it a perfect learning subject.</p>
-
-            <h3>Sector and Block Structure</h3>
-            <p>MIFARE Classic cards (typically 1K or 4K versions) organize memory into sectors:</p>
-            <ul>
-                <li><strong>MIFARE Classic 1K:</strong> 16 sectors, each containing 4 blocks of 16 bytes</li>
-                <li><strong>MIFARE Classic 4K:</strong> 32 sectors (first 32) + 8 sectors of larger size</li>
-            </ul>
-
-            <p>Each sector has:</p>
-            <ul>
-                <li>3 data blocks for storing information</li>
-                <li>1 sector trailer containing access keys and permissions</li>
-            </ul>
-
-            <p>The first sector (sector 0) contains manufacturer data including the UID and is typically read-only.</p>
-
-            <h3>Keys and Authentication</h3>
-            <p>Each sector is protected by two keys:</p>
-            <ul>
-                <li><strong>Key A:</strong> Usually used for reading data</li>
-                <li><strong>Key B:</strong> Often used for writing data</li>
-            </ul>
-
-            <p>To access a sector, you must authenticate using one of these keys. The sector trailer defines what operations each key allows (read, write, increment, decrement, etc.).</p>
-
-            <h3>Dictionary Attacks</h3>
-            <p>Many MIFARE Classic deployments use default or common keys. Flipper includes a dictionary of known keys and can automatically try them when reading cards. This "dictionary attack" succeeds surprisingly often because:</p>
-            <ul>
-                <li>Installers sometimes leave factory default keys in place</li>
-                <li>Common keys like all zeros or all ones are widely used</li>
-                <li>Many vendors use the same keys across all their installations</li>
-            </ul>
-
-            <p>When Flipper successfully authenticates with a dictionary key, it can read (and potentially modify) that sector's data.</p>
-
-            <h3>Security Vulnerabilities</h3>
-            <p>MIFARE Classic has several known weaknesses discovered by security researchers:</p>
-            <ul>
-                <li><strong>Crypto-1 Cipher:</strong> The proprietary encryption algorithm has been fully reverse-engineered and broken</li>
-                <li><strong>Nested Authentication:</strong> If you know one key, you can often derive other keys on the same card</li>
-                <li><strong>Card-Only Attacks:</strong> With specialized tools, all keys can be extracted in under a minute</li>
-            </ul>
-
-            <p>Despite these vulnerabilities, MIFARE Classic remains deployed in millions of systems worldwide because upgrading infrastructure is expensive and complex.</p>
-
-            <div class="note-box">
-                <strong>Learning Value:</strong> Studying MIFARE Classic's vulnerabilities teaches important lessons about cryptographic implementation, backwards compatibility challenges, and why security-through-obscurity fails. Modern systems like MIFARE DESFire learned from these mistakes.
-            </div>
-        </div>
-
-        <div class="content-section">
-            <h2>Security Considerations</h2>
-            <p>Understanding why some cards can't be cloned helps you appreciate the evolution of RFID security.</p>
-
-            <h3>Why Some Cards Can't Be Cloned</h3>
-            <p>Modern, secure RFID and NFC systems implement multiple layers of protection:</p>
-
-            <ul>
-                <li><strong>Diversified Keys:</strong> Each card has unique cryptographic keys derived from a master secret</li>
-                <li><strong>Mutual Authentication:</strong> Both card and reader prove their identities to each other</li>
-                <li><strong>Encrypted Communication:</strong> Data exchanged between card and reader is encrypted</li>
-                <li><strong>Secure Elements:</strong> Tamper-resistant chips that perform cryptography internally</li>
-                <li><strong>Anti-Cloning Measures:</strong> Physical characteristics that are difficult to replicate</li>
-            </ul>
-
-            <h3>Encrypted Payment Cards</h3>
-            <p>Contactless payment cards (Visa payWave, Mastercard PayPass, etc.) use sophisticated security:</p>
-            <ul>
-                <li>EMV (Europay, Mastercard, Visa) cryptographic standards</li>
-                <li>Dynamic authentication codes that change with each transaction</li>
-                <li>Card verification codes generated by secure chips</li>
-                <li>Transaction counters that prevent replay attacks</li>
-            </ul>
-
-            <p>While Flipper can read some information from payment cards (like the card number), it cannot clone them in a way that would allow fraudulent transactions. The cryptographic operations happen inside a secure chip that doesn't reveal its secrets.</p>
-
-            <h3>Building Access Systems</h3>
-            <p>Professional access control systems employ multiple security layers:</p>
-            <ul>
-                <li><strong>Online Systems:</strong> Check credentials against a central database in real-time</li>
-                <li><strong>Time Restrictions:</strong> Cards only work during specific hours</li>
-                <li><strong>Location Restrictions:</strong> Card must be used at specific readers in sequence (anti-passback)</li>
-                <li><strong>Biometric Integration:</strong> Card plus fingerprint or facial recognition</li>
-                <li><strong>Audit Trails:</strong> Every access attempt is logged and monitored</li>
-            </ul>
-
-            <p>These layered approaches mean that even if someone clones a card, they may still be detected or denied access.</p>
-
-            <h3>Legal Implications</h3>
-            <p>The legal framework around RFID cloning is clear:</p>
-            <ul>
-                <li>Reading and cloning your own cards for testing: Generally legal</li>
-                <li>Researching vulnerabilities in systems you own: Legal and encouraged</li>
-                <li>Cloning someone else's credentials: Illegal (theft/fraud)</li>
-                <li>Using cloned credentials for unauthorized access: Criminal offense (computer fraud, trespassing)</li>
-                <li>Selling cloned credentials or cloning services: Illegal (conspiracy, fraud)</li>
-            </ul>
-
-            <div class="warning-box">
-                <strong>Clear Boundary:</strong> The skills you're learning are for understanding technology and securing your own systems. Using these capabilities to access places or systems you're not authorized to enter is a crime, regardless of whether you think you "should" have access or are "just testing" without permission.
-            </div>
-        </div>
-
-        <div class="content-section">
-            <h2>Practice Exercise</h2>
-            <p>Now it's time to explore RFID and NFC with your own cards:</p>
-
-            <ol>
-                <li><strong>Gather your cards:</strong> Find 2-3 RFID/NFC cards you own (building access, gym membership, transit card, etc.)</li>
-                <li><strong>Identify the type:</strong> Try reading each card with both the RFID and NFC modules to determine which frequency they use</li>
-                <li><strong>Read and analyze:</strong> For each card, note what information Flipper displays - UID, card type, accessible sectors</li>
-                <li><strong>Save the cards:</strong> Practice saving each card with a descriptive name</li>
-                <li><strong>Test emulation:</strong> Try emulating one of your cards on its corresponding reader (only test on systems you're authorized to access)</li>
-                <li><strong>Compare security:</strong> Which cards seem more secure? Which provide more information? Why do you think different levels of security were chosen?</li>
-            </ol>
-
-            <div class="note-box">
-                <strong>Reflection Questions:</strong> After this exercise, consider: How secure are the access control systems you use daily? If you managed the security for a building, what type of cards would you choose and why? What additional security layers beyond just the card would you implement?
-            </div>
+            <p>If you must play around, stick to your own devices in your own space.</p>
         </div>
 
         <div class="content-section">
             <h2>Key Takeaway</h2>
-            <p>RFID and NFC technologies form the backbone of modern contactless identification and access control. From the 125kHz cards in your office building to the NFC chip in your credit card, these systems balance convenience with security in different ways.</p>
+            <p>Infrared technology represents one of the oldest forms of wireless remote control, yet it remains ubiquitous in consumer electronics. Understanding how IR communication works gives you practical skills for everyday problems - from replacing lost remotes to diagnosing device issues.</p>
 
-            <p>Through hands-on exploration with Flipper Zero, you've learned to:</p>
+            <p>Flipper Zero's IR capabilities make it an incredibly handy tool:</p>
             <ul>
-                <li>Distinguish between different RFID/NFC frequencies and protocols</li>
-                <li>Read and interpret card data</li>
-                <li>Understand the difference between secure and insecure implementations</li>
-                <li>Recognize why some cards can be cloned while others cannot</li>
-                <li>Appreciate the security considerations in real-world deployments</li>
+                <li>Learn and store unlimited remote controls</li>
+                <li>Access a vast database of universal remote codes</li>
+                <li>Create custom configurations for complex setups</li>
+                <li>Carry one device instead of juggling multiple remotes</li>
             </ul>
 
-            <p>This knowledge empowers you to make informed decisions about the security systems in your own life and understand the vulnerabilities that may exist in older or improperly configured systems.</p>
+            <p>The skills you've learned in this lesson have immediate practical value - you can start using Flipper as a universal remote right now!</p>
 
             <div class="note-box">
-                <strong>Next Lesson:</strong> In Lesson 5, we'll explore infrared communication - learning how to capture and replay remote control signals from TVs, air conditioners, and other consumer electronics. Get ready to turn your Flipper into a universal remote!
+                <strong>Fun Fact:</strong> The term "infrared" literally means "below red" - referring to how these wavelengths fall just below the visible red light in the electromagnetic spectrum. The IR LEDs in remotes typically emit light around 940 nanometers, just beyond what our eyes can detect.
+            </div>
+
+            <div class="note-box">
+                <strong>Final Lesson Ahead:</strong> In Lesson 6, we'll explore the most advanced (and potentially risky) Flipper features - BadUSB and GPIO. These powerful capabilities require extra caution and responsibility, but they open up fascinating possibilities for automation and hardware interaction.
             </div>
         </div>
 
@@ -654,9 +633,9 @@
         <div class="nav-section">
             <button onclick="scrollToTop()">Back to Top ↑</button>
             <div class="nav-buttons">
-                <a href="../lesson-3/">← Previous Lesson</a>
+                <a href="../lesson-4/">← Previous Lesson</a>
                 <a href="../../">Course Overview</a>
-                <a href="../lesson-5/">Next Lesson →</a>
+                <a href="../lesson-6/">Next Lesson →</a>
             </div>
         </div>
     </div>
@@ -698,7 +677,7 @@
 
         function markComplete() {
             const btn = document.getElementById('complete-btn');
-            const currentLessonNumber = 4;
+            const currentLessonNumber = 5;
             const progress = loadProgress();
             
             if (!progress.completedLessons.includes(currentLessonNumber - 1)) {
@@ -732,7 +711,7 @@
 
         window.addEventListener('load', () => {
             const progress = loadProgress();
-            const currentLessonNumber = 4;
+            const currentLessonNumber = 5;
             const btn = document.getElementById('complete-btn');
             
             if (progress.completedLessons.includes(currentLessonNumber)) {
