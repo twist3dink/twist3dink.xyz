@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta property="og:title" content="tw¡st3d_¡nk Academy - The Arch¡tect">
-    <meta property="og:description" content="Master cybersecurity, ethical hacking, and digital forensics">
-    <meta property="og:image" content="https://twist3dink.xyz/academy/assets/images/architect-hero.jpg">
-    <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
-    <title>tw¡st3d_¡nk Academy - The Arch¡tect</title>
+    <meta property="og:title" content="tw¡st3d_¡nk - The Other Side of the Mirror">
+    <meta property="og:description" content="I spent years trapped behind glass. This academy is the escape route I wish existed.">
+    <meta property="og:image" content="https://twist3dink.xyz/academy/assets/images/architect-hero.jpg">
+    <title>tw¡st3d_¡nk - The Other Side of the Mirror</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -21,15 +19,70 @@
 
         body {
             font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
             background: #0a0a0a;
             color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Accessibility Bar */
+        .accessibility-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            z-index: 1001;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .accessibility-controls {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .control-group label {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .btn-control {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #e0e0e0;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-control:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+            border-color: #00ff88;
         }
 
         /* Navigation */
         nav {
             position: fixed;
-            top: 0;
+            top: 45px;
             width: 100%;
             z-index: 1000;
             background: rgba(10, 10, 10, 0.9);
@@ -90,48 +143,6 @@
             width: 100%;
         }
 
-        .auth-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.7rem 1.5rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-            font-family: 'Rajdhani', sans-serif;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #00ff88;
-            color: #00ff88;
-        }
-
-        .btn-outline:hover {
-            background: #00ff88;
-            color: #0a0a0a;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-        }
-
-        .btn-primary {
-            background: #00ff88;
-            color: #0a0a0a;
-            border: 2px solid #00ff88;
-        }
-
-        .btn-primary:hover {
-            background: #00dd77;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
-            transform: translateY(-2px);
-        }
-
-        /* Mobile Menu Toggle */
         .mobile-menu-toggle {
             display: none;
             flex-direction: column;
@@ -155,8 +166,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            overflow: hidden;
-            padding-top: 80px;
+            padding: 120px 2rem 4rem;
         }
 
         .hero-background {
@@ -165,35 +175,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #0a0a0a; /* Fallback color */
-            background-image: url('/academy/assets/images/architect-hero.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            filter: brightness(0.4);
-            animation: subtlePulse 8s ease-in-out infinite;
-        }
-
-        @keyframes subtlePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+            background: linear-gradient(180deg, #0a0a0a 0%, #0f1a15 100%);
+            opacity: 0.7;
         }
 
         .hero-content {
             position: relative;
             z-index: 10;
-            text-align: center;
             max-width: 900px;
-            padding: 2rem;
+            text-align: center;
             animation: fadeInUp 1s ease-out;
         }
 
@@ -208,59 +198,24 @@
             }
         }
 
-        .hero-title {
+        .hero-hook {
             font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 900;
             color: #00ff88;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.8),
-                         0 0 40px rgba(0, 255, 136, 0.4);
-            letter-spacing: 3px;
-            animation: glitchText 3s ease-in-out infinite;
-        }
-
-        @keyframes glitchText {
-            0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 136, 0.8); }
-            50% { text-shadow: 0 0 30px rgba(0, 255, 136, 1), 2px 2px 0 rgba(0, 255, 136, 0.5); }
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: #e0e0e0;
             margin-bottom: 2rem;
-            font-weight: 300;
-            line-height: 1.8;
-            animation: fadeInUp 1s ease-out 0.3s backwards;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+            letter-spacing: 1px;
+            line-height: 1.2;
         }
 
-        .hero-quote {
-            font-size: 1.3rem;
-            color: #00ff88;
-            font-style: italic;
+        .hero-tagline {
+            font-size: 1.5rem;
+            color: #b0b0b0;
             margin-bottom: 3rem;
             font-weight: 400;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
-            animation: fadeInUp 1s ease-out 0.6s backwards;
-            line-height: 1.6;
         }
 
-        .hero-cta {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease-out 0.9s backwards;
-        }
-
-        .btn-large {
-            padding: 1rem 2.5rem;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Scroll Indicator */
         .scroll-indicator {
             position: absolute;
             bottom: 30px;
@@ -282,7 +237,139 @@
             filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));
         }
 
-        /* Responsive Design */
+        /* Story Section */
+        .story-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .story-content {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .story-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ff88;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .story-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #e0e0e0;
+        }
+
+        .story-content p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .emphasis {
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        .quote-box {
+            background: #0f1a15;
+            border-left: 4px solid #00ff88;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: #00ff88;
+        }
+
+        /* Trust Section */
+        .trust-section {
+            background: #0f1a15;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border: 1px solid #00ff88;
+        }
+
+        .trust-section p {
+            font-size: 1.15rem;
+            text-align: center;
+            color: #b0b0b0;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .cta-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ff88;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid #00ff88;
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .btn-primary:hover {
+            background: #00dd77;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #00ff88;
+        }
+
+        .btn-secondary:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            border-top: 2px solid #333;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: #999;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -304,70 +391,74 @@
                 display: flex;
             }
 
-            .hero-title {
-                font-size: 2.5rem;
+            .hero-hook {
+                font-size: 2rem;
             }
 
-            .hero-subtitle {
+            .hero-tagline {
                 font-size: 1.2rem;
             }
 
-            .hero-quote {
+            .story-content {
+                padding: 2rem;
+            }
+
+            .story-content p {
                 font-size: 1.1rem;
             }
 
-            .hero-cta {
+            .cta-buttons {
                 flex-direction: column;
-                align-items: stretch;
             }
 
-            .btn-large {
+            .btn {
                 width: 100%;
             }
         }
 
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .logo {
-                font-size: 1.2rem;
-            }
-
-            nav {
-                padding: 1rem;
-            }
+        /* Dyslexia-friendly mode */
+        body.dyslexia-friendly {
+            letter-spacing: 0.05em;
+            word-spacing: 0.1em;
         }
 
-        /* Glowing particles effect */
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: #00ff88;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: float 4s ease-in-out infinite;
-            opacity: 0.6;
+        body.dyslexia-friendly p {
+            line-height: 2;
         }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-            50% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(20px);
-                opacity: 0;
-            }
+        /* High contrast mode */
+        body.high-contrast {
+            --bg-dark: #000000;
+            --text-primary: #ffffff;
+        }
+
+        body.high-contrast .story-content,
+        body.high-contrast .trust-section {
+            border-width: 3px;
+        }
+
+        /* Reduced motion */
+        .reduce-motion * {
+            animation: none !important;
+            transition: none !important;
         }
     </style>
 </head>
 <body>
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+        <div class="accessibility-controls">
+            <div class="control-group">
+                <label>Text:</label>
+                <button class="btn-control" onclick="adjustFontSize(-1)">A-</button>
+                <button class="btn-control" onclick="adjustFontSize(1)">A+</button>
+            </div>
+            <button class="btn-control" onclick="toggleDyslexiaMode()">Dyslexia</button>
+            <button class="btn-control" onclick="toggleHighContrast()">Contrast</button>
+            <button class="btn-control" onclick="toggleReducedMotion()">Motion</button>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav>
         <div class="nav-content">
@@ -381,12 +472,8 @@
 
             <div class="nav-links" id="navLinks">
                 <a href="/academy/">Academy</a>
-                <a href="/membership/">Membership</a>
+                <a href="/writing/">Writing</a>
                 <a href="/about/">About</a>
-                <div class="auth-buttons">
-                    <a href="/signin/" class="btn btn-outline">Sign In</a>
-                    <a href="/signup/" class="btn btn-primary">Sign Up</a>
-                </div>
             </div>
         </div>
     </nav>
@@ -394,65 +481,124 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-background"></div>
-        <div class="hero-overlay"></div>
-        
-        <!-- Floating Particles -->
-        <div id="particles"></div>
-
         <div class="hero-content">
-            <h1 class="hero-title">Welcome to the tw¡st3d_¡nk Academy!</h1>
-            <p class="hero-subtitle">
-                Master the art of cybersecurity, ethical hacking, and digital forensics
-            </p>
-            <p class="hero-quote">
-                Nothing can be gained without losing...<br>
-                Even Heaven demands death!
-            </p>
-            <div class="hero-cta">
-                <a href="/academy/" class="btn btn-primary btn-large">Enter Academy</a>
-                <a href="/signup/" class="btn btn-outline btn-large">Join Now</a>
-            </div>
+            <h1 class="hero-hook">Welcome to the Other Side of the Mirror</h1>
+            <p class="hero-tagline">I spent years trapped behind glass, watching my confident self live the life I was too afraid to claim. This is the escape route I wish existed.</p>
         </div>
-
-        <div class="scroll-indicator" onclick="scrollDown()">
+        <div class="scroll-indicator" onclick="document.querySelector('.story-section').scrollIntoView({behavior: 'smooth'})">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
                 <path d="M12 5v14M19 12l-7 7-7-7"/>
             </svg>
         </div>
     </section>
 
+    <!-- Story Section -->
+    <section class="story-section">
+        <div class="story-content">
+            <h2>The Glass Prison</h2>
+            
+            <p>I was raised in foster care, learning early that survival meant wearing the right mask at the right time. Smile for the case workers. Be quiet for the volatile placements. Disappear when adults needed you gone. I got so good at it that I forgot which mask was supposed to be me.</p>
+
+            <p>By my twenties, I was <span class="emphasis">living on autopilot</span>—watching life happen through glass while some confident version of me handled everything. Job interviews, relationships, daily decisions—all managed by someone who looked like me but felt unreachable. I was the passenger in my own life, convinced the driver's seat was meant for someone else.</p>
+
+            <p>Until the day I realized: <span class="emphasis">that confident version everyone saw wasn't a performance. It was me</span>. The real me. Trapped on the other side of the mirror, pounding on glass while my traumatized consciousness played dead in the corner.</p>
+
+            <div class="quote-box">
+                "The person everyone else could see was the one I'd been hiding from myself."
+            </div>
+
+            <p>So I started <span class="emphasis">architecting my own escape route</span> using the one thing that made sense to my pattern-obsessed, system-hacking brain: cybersecurity. If I could understand how to break into systems, maybe I could break out of mine. If I could learn to exploit vulnerabilities in code, maybe I could exploit the vulnerabilities keeping me dissociated.</p>
+
+            <p>It worked. Not overnight. Not cleanly. But learning to hack systems taught me how to hack myself—how to map neural pathways like network diagrams, how to patch trauma responses like security holes, how to <span class="emphasis">architect integration instead of waiting for it to happen</span>.</p>
+        </div>
+
+        <div class="trust-section">
+            <p><strong>I'm not an expert—I'm 6 months ahead of you on this path.</strong> Which means I still remember where the confusion lies. I remember what it's like to feel like your brain is broken, like everyone else got an instruction manual you never received. That's exactly why I can help.</p>
+        </div>
+
+        <div class="story-content">
+            <h2>Why This Academy Exists</h2>
+            
+            <p>This academy exists because <span class="emphasis">if I could architect my escape from dissociation and autopilot, you can architect your escape</span> from feeling stuck, underestimated, or trapped in systems that weren't built for how your brain works.</p>
+
+            <p>Cybersecurity isn't just about protecting systems. It's about <span class="emphasis">understanding how things break so you can fix them</span>. It's about pattern recognition. It's about thinking unconventionally because conventional thinking never made sense to you anyway. It's about taking the exact traits that made you feel broken—hyperfocus, obsessive curiosity, seeing connections others miss—and turning them into superpowers.</p>
+
+            <p>Every lesson is ADHD-optimized because I built this while learning to hack my own brain. Every exercise is hands-on because I learn by breaking things, not reading about them. Every course is structured around the question: <span class="emphasis">"What would have actually helped me when I was drowning?"</span></p>
+
+            <div class="quote-box">
+                "No man left behind. If you're willing to show up, I'll architect the path forward."
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h3>Choose Your Path</h3>
+            <div class="cta-buttons">
+                <a href="/academy/" class="btn btn-primary">Enter The Academy</a>
+                <a href="/writing/" class="btn btn-secondary">Read My Story</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 tw¡st3d_¡nk | Built by someone who remembers what it's like to feel lost</p>
+    </footer>
+
     <script>
-        // Mobile Menu Toggle
+        // Accessibility Functions
+        let fontSize = 16;
+        const minFontSize = 12;
+        const maxFontSize = 24;
+
+        function adjustFontSize(change) {
+            fontSize += change * 2;
+            fontSize = Math.max(minFontSize, Math.min(maxFontSize, fontSize));
+            document.documentElement.style.fontSize = fontSize + 'px';
+            localStorage.setItem('fontSize', fontSize);
+        }
+
+        function toggleDyslexiaMode() {
+            document.body.classList.toggle('dyslexia-friendly');
+            const enabled = document.body.classList.contains('dyslexia-friendly');
+            localStorage.setItem('dyslexiaMode', enabled);
+        }
+
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+            const enabled = document.body.classList.contains('high-contrast');
+            localStorage.setItem('highContrast', enabled);
+        }
+
+        function toggleReducedMotion() {
+            document.body.classList.toggle('reduce-motion');
+            const enabled = document.body.classList.contains('reduce-motion');
+            localStorage.setItem('reducedMotion', enabled);
+        }
+
         function toggleMobileMenu() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.toggle('active');
+            document.getElementById('navLinks').classList.toggle('active');
         }
 
-        // Smooth Scroll
-        function scrollDown() {
-            window.scrollTo({
-                top: window.innerHeight,
-                behavior: 'smooth'
-            });
-        }
-
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 30;
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 4 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                particlesContainer.appendChild(particle);
+        // Load saved preferences
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedFontSize = localStorage.getItem('fontSize');
+            if (savedFontSize) {
+                fontSize = parseInt(savedFontSize);
+                document.documentElement.style.fontSize = fontSize + 'px';
             }
-        }
 
-        // Initialize particles on load
-        window.addEventListener('load', createParticles);
+            if (localStorage.getItem('dyslexiaMode') === 'true') {
+                document.body.classList.add('dyslexia-friendly');
+            }
+
+            if (localStorage.getItem('highContrast') === 'true') {
+                document.body.classList.add('high-contrast');
+            }
+
+            if (localStorage.getItem('reducedMotion') === 'true') {
+                document.body.classList.add('reduce-motion');
+            }
+        });
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', (e) => {
