@@ -1,4 +1,4 @@
 {
-    "claudeCode.useCtrlEnterToSend": false,
+    "claudeCode.useCtrlEnterToSend": true,
     "claudeCodeUI.wsl.enabled": true
 }
