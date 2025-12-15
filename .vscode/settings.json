@@ -1,5 +1,11 @@
 {
     "CodeGPT.apiKey": "CodeGPT Plus",
     "workbench.editor.enablePreviewFromQuickOpen": true,
-    "workbench.editor.enablePreviewFromCodeNavigation": true
+    "workbench.editor.enablePreviewFromCodeNavigation": true,
+    "json.trace.server": "messages",
+    "npm.enableRunFromFolder": true,
+    "php.validate.executablePath": "",
+    "npm-intellisense.scanDevDependencies": true,
+    "php.validate.enable": false,
+    "mediaPreview.video.autoPlay": true
 }
