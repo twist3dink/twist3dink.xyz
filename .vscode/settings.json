@@ -7,5 +7,6 @@
     "php.validate.executablePath": "",
     "npm-intellisense.scanDevDependencies": true,
     "php.validate.enable": false,
-    "mediaPreview.video.autoPlay": true
+    "mediaPreview.video.autoPlay": true,
+    "vscodeGrok.model": "grok-code-fast"
 }
