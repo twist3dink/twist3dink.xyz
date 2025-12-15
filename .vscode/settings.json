@@ -8,5 +8,7 @@
     "npm-intellisense.scanDevDependencies": true,
     "php.validate.enable": false,
     "mediaPreview.video.autoPlay": true,
-    "vscodeGrok.model": "grok-code-fast"
+    "vscodeGrok.model": "grok-code-fast",
+    "claudeCodeChatUI.api.useCustomAPI": true,
+    "claudeCodeChatUI.mcp.enabled": true
 }

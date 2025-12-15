@@ -3,6 +3,7 @@
         "ms-edgedevtools.vscode-edge-devtools",
         "danielsanmedium.dscodegpt",
         "ndestates.grok-integration",
-        "erikkralj.vscode-grok"
+        "erikkralj.vscode-grok",
+        "gitbook.gitbook-vscode"
     ]
 }
