@@ -54,6 +54,5 @@
     "python.linting.pylintEnabled": true,
     "python.formatting.provider": "black",
     "prettier.resolveGlobalModules": true,
-    "python.globalModuleInstallation": true,
-    "npm.exclude": ""
+    "python.globalModuleInstallation": true
 }
