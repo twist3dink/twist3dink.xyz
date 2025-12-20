@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1: CIA Triad & Threat Modeling | Course 0 - tw¡st3d_¡nk Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-header {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
+
+        .lesson-header h1 {
+            color: #00ff88;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-meta {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-objectives {
+            background: #0f1a15;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .lesson-objectives h3 {
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-objectives ul {
+            margin-left: 1.5rem;
+        }
+
+        .lesson-header button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .lesson-header button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .content-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
+
+        .content-section h2 {
+            color: #00ff88;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section h3 {
+            color: #00ff88;
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .content-section ul, .content-section ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .content-section li {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .scenario-box {
+            background: #0f1a15;
+            border: 2px solid #00ff88;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .scenario-box h3 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .attack-scenario {
+            background: #2a1a1a;
+            border-left: 4px solid #ff4444;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .attack-scenario strong {
+            color: #ff4444;
+        }
+
+        .note-box {
+            background: #1a1a1a;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #2a1a1a;
+            border-left: 4px solid #ff4444;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box strong {
+            color: #ff4444;
+        }
+
+        .tier-grid {
+            display: grid;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .tier-card {
+            background: #0a0a0a;
+            border: 2px solid #333;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .tier-card.tier-1 { border-color: #ff4444; }
+        .tier-card.tier-2 { border-color: #ff8844; }
+        .tier-card.tier-3 { border-color: #ffaa44; }
+        .tier-card.tier-4 { border-color: #44aaff; }
+        .tier-card.tier-5 { border-color: #666; }
+
+        .tier-card h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-card.tier-1 h4 { color: #ff4444; }
+        .tier-card.tier-2 h4 { color: #ff8844; }
+        .tier-card.tier-3 h4 { color: #ffaa44; }
+        .tier-card.tier-4 h4 { color: #44aaff; }
+        .tier-card.tier-5 h4 { color: #666; }
+
+        .exercise-box {
+            background: #0f1a15;
+            border: 3px solid #00ff88;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .exercise-box h3 {
+            color: #00ff88;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-prompt {
+            background: #0a0a0a;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #00ff88;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            background: #0a0a0a;
+            border: 2px solid #333;
+            color: #e0e0e0;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            margin: 1rem 0;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+
+        .success-criteria {
+            background: #0f1a15;
+            border: 2px solid #00ff88;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .success-criteria h3 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .success-criteria ul {
+            margin-left: 1.5rem;
+        }
+
+        .success-criteria li {
+            margin: 0.8rem 0;
+        }
+
+        #complete-btn {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            margin: 2rem 0;
+            transition: all 0.3s;
+        }
+
+        #complete-btn:hover {
+            background: #00dd77;
+        }
+
+        #complete-btn.completed {
+            background: #333;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            cursor: default;
+        }
+
+        #complete-btn.error {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .nav-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 2rem;
+        }
+
+        .nav-section button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .nav-section button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-buttons a {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .nav-buttons a:first-child {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .nav-buttons a:first-child:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .nav-buttons a:last-child {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: 2px solid #00ff88;
+        }
+
+        .nav-buttons a:last-child:hover {
+            background: #00dd77;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .lesson-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .content-section {
+                padding: 1.5rem;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .nav-buttons a {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <h1>Lesson 1: CIA Triad & Threat Modeling</h1>
+            <p class="lesson-meta">Estimated time: 45 minutes | XP Reward: 50</p>
+            
+            <div class="lesson-objectives">
+                <h3>🎯 What You'll Learn</h3>
+                <ul>
+                    <li>The CIA Triad: Confidentiality, Integrity, Availability</li>
+                    <li>How to identify your "crown jewels" (critical assets)</li>
+                    <li>Why some assets matter more than others</li>
+                    <li>How to prioritize defense based on real-world impact</li>
+                    <li>Single points of failure and how to eliminate them</li>
+                </ul>
+            </div>
+            
+            <button onclick="scrollToBottom()">Skip to Exercise ↓</button>
+        </div>
+
+        <div class="content-section">
+            <h2>Welcome to the War Room</h2>
+            <p>You're not here to memorize definitions. You're here because you're building something that matters—whether it's an academy, a business, a project, or just your own digital infrastructure. And if you're building something that matters, someone will eventually try to break it.</p>
+
+            <p>This lesson isn't about theory. It's about <strong>threat modeling your actual operation</strong> using real-world scenarios. We'll use tw¡st3d_¡nk Academy as the worked example, then you'll do the same exercise for your own infrastructure.</p>
+
+            <div class="scenario-box">
+                <h3>🎮 Your Role: Security Architect</h3>
+                <p>Imagine you're the security architect for your business. Your job isn't to defend everything equally—that's impossible and expensive. Your job is to:</p>
+                <ul>
+                    <li>Identify what actually matters (crown jewels)</li>
+                    <li>Understand how each asset could be attacked</li>
+                    <li>Prioritize defenses based on real impact</li>
+                    <li>Eliminate single points of failure</li>
+                </ul>
+                <p><strong>By the end of this lesson, you'll have a threat model for your own operation.</strong></p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>The CIA Triad: Not That CIA</h2>
+            <p>Every security decision comes down to three properties. Understanding these isn't about memorizing definitions—it's about recognizing which one matters most in different situations.</p>
+
+            <h3>Confidentiality: Keeping Secrets</h3>
+            <p><strong>Definition:</strong> Only authorized people can access the information.</p>
+            
+            <div class="attack-scenario">
+                <strong>🔴 Attack Scenario:</strong> Someone gains access to your Namecheap account and sees your domain registrar credentials. Now they can see your DNS configuration, email forwarding rules, and payment methods.
+            </div>
+
+            <p><strong>Real Impact:</strong> Reconnaissance for future attacks. They know your infrastructure layout now.</p>
+
+            <h3>Integrity: Trust the Truth</h3>
+            <p><strong>Definition:</strong> Data hasn't been tampered with. What you see is what was intended.</p>
+            
+            <div class="attack-scenario">
+                <strong>🔴 Attack Scenario:</strong> An attacker compromises your GitHub account and modifies a Flipper Zero lesson. They inject a malicious BadUSB script that students copy and run, thinking it's from you. The script steals credentials.
+            </div>
+
+            <p><strong>Real Impact:</strong> Supply chain attack. Your students get compromised, your reputation is destroyed, and you lose all trust permanently. This is <em>catastrophic</em>—worse than losing confidentiality or availability.</p>
+
+            <h3>Availability: Keeping the Lights On</h3>
+            <p><strong>Definition:</strong> Authorized users can access the system when they need it.</p>
+            
+            <div class="attack-scenario">
+                <strong>🔴 Attack Scenario:</strong> DDoS attack floods your hosting provider. The academy goes offline for 48 hours.
+            </div>
+
+            <p><strong>Real Impact:</strong> Revenue loss, reputation damage, student frustration. Bad, but <em>recoverable</em>. You can tweet "we're under attack, back soon" and most people understand.</p>
+
+            <div class="note-box">
+                <strong>Key Insight:</strong> CIA is a framework, not a checklist. Different assets require different priorities. A payment processor needs <strong>Integrity</strong> above all (wrong amounts = disaster). A news site needs <strong>Availability</strong> (offline during breaking news = lost revenue). Your academy needs <strong>Integrity</strong> first (malicious lessons = game over).
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Crown Jewels: What Actually Matters</h2>
+            <p>Not all assets are created equal. Losing your Twitter password is annoying. Losing your domain registrar credentials is apocalyptic. Let's identify the crown jewels using tw¡st3d_¡nk Academy as the case study.</p>
+
+            <h3>Threat Modeling tw¡st3d_¡nk Academy</h3>
+            <p>Here are the critical assets, ranked by impact if compromised:</p>
+
+            <div class="tier-grid">
+                <div class="tier-card tier-1">
+                    <h4>🔴 Tier 1: Nuclear Keys (Domain & Infrastructure)</h4>
+                    <p><strong>Assets:</strong> Namecheap registrar account, GitHub Pages hosting, DNS control</p>
+                    <p><strong>If compromised:</strong> Attacker can redirect twist3dink.xyz to a phishing site, inject malware into lessons, or hold domain for ransom. Total control. Game over.</p>
+                    <p><strong>Defense priority:</strong> Maximum. Hardware MFA, unique email, registrar lock, monitoring.</p>
+                </div>
+
+                <div class="tier-card tier-2">
+                    <h4>🟠 Tier 2: Supply Chain (Content Integrity)</h4>
+                    <p><strong>Assets:</strong> GitHub repository, lesson content, code</p>
+                    <p><strong>If compromised:</strong> Malicious code in lessons. Students get hacked, trust destroyed forever.</p>
+                    <p><strong>Defense priority:</strong> High. GitHub MFA, branch protection, Git Guardian, code review.</p>
+                </div>
+
+                <div class="tier-card tier-3">
+                    <h4>🟡 Tier 3: Trust Foundation (User Data)</h4>
+                    <p><strong>Assets:</strong> Student progress (localStorage only—no server-side DB), email list (future)</p>
+                    <p><strong>If compromised:</strong> Privacy violation, reputation damage, but no supply chain attack.</p>
+                    <p><strong>Defense priority:</strong> Medium. Client-side storage, no sensitive data collection.</p>
+                </div>
+
+                <div class="tier-card tier-4">
+                    <h4>🔵 Tier 4: Revenue Stream (Availability)</h4>
+                    <p><strong>Assets:</strong> Site uptime, GitHub Pages reliability</p>
+                    <p><strong>If compromised:</strong> Lost revenue, student frustration, but <em>recoverable</em>.</p>
+                    <p><strong>Defense priority:</strong> Medium. Backups, monitoring, incident response plan.</p>
+                </div>
+
+                <div class="tier-card tier-5">
+                    <h4>⚪ Tier 5: Soft Targets (Reputation)</h4>
+                    <p><strong>Assets:</strong> Social media accounts, public presence</p>
+                    <p><strong>If compromised:</strong> Embarrassing, annoying, but not catastrophic.</p>
+                    <p><strong>Defense priority:</strong> Low. Standard MFA, separate passwords.</p>
+                </div>
+            </div>
+
+            <div class="note-box">
+                <strong>The Key Question:</strong> "If I could only defend ONE thing perfectly, what would it be?" For tw¡st3d_¡nk Academy, the answer is <strong>Tier 1: Domain & Infrastructure</strong>. Because if that falls, you can't even tell people you've been compromised. You're locked out of your own operation.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Defense Priorities: Why Integrity > Confidentiality > Availability</h2>
+            <p>Here's the controversial take that makes sense when you think like an attacker:</p>
+
+            <h3>Integrity First: Supply Chain Attacks Are Permanent</h3>
+            <p>If someone injects malicious code into your lessons and students get hacked, <strong>your reputation is destroyed forever</strong>. It doesn't matter if you catch it in 10 minutes—the damage is done. Trust is the only non-renewable resource in education/security.</p>
+
+            <div class="attack-scenario">
+                <strong>🔴 Real World Example:</strong> In 2020, SolarWinds was compromised and malicious code was injected into their software updates. Even though SolarWinds caught it eventually, <strong>18,000+ customers</strong> were already compromised. The brand never recovered.
+            </div>
+
+            <h3>Confidentiality Second: Reconnaissance Enables Future Attacks</h3>
+            <p>If someone steals your domain credentials but <em>doesn't use them immediately</em>, they now have a persistent backdoor. They can study your infrastructure, plan the perfect attack, and strike when it hurts most.</p>
+
+            <h3>Availability Last: Downtime Is Recoverable</h3>
+            <p>If your site goes down, you can tweet "We're under attack, back soon." Most people understand. You lose revenue, but you don't lose <em>trust</em>. And trust is the only thing you can't buy back.</p>
+
+            <div class="note-box">
+                <strong>Exception:</strong> If you're running a hospital's patient monitoring system, <strong>Availability</strong> becomes Tier 1 because downtime = people die. Context matters. But for an educational platform? Integrity is king.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Single Points of Failure: The Email Revelation</h2>
+            <p>Here's the insight that changes everything about how you architect security:</p>
+
+            <h3>The Problem</h3>
+            <p>Most people use ONE email address for everything:</p>
+            <ul>
+                <li>Domain registrar (Namecheap)</li>
+                <li>Hosting (GitHub)</li>
+                <li>Social media</li>
+                <li>Public contact (listed on site)</li>
+                <li>Password resets</li>
+            </ul>
+
+            <p><strong>What happens when that email gets compromised?</strong></p>
+
+            <div class="attack-scenario">
+                <strong>🔴 Attack Chain:</strong>
+                <ol>
+                    <li>Attacker compromises your email (phishing, data breach, weak password)</li>
+                    <li>Uses "forgot password" on Namecheap → domain stolen</li>
+                    <li>Uses "forgot password" on GitHub → repository hijacked</li>
+                    <li>Redirects domain to phishing site, injects malware into lessons</li>
+                    <li>Game over. Total compromise in <30 minutes.</li>
+                </ol>
+            </div>
+
+            <h3>The Solution: Email Segregation</h3>
+            <p>Separate your Tier 1 email (domain/hosting control) from everything else:</p>
+
+            <ul>
+                <li><strong>Tier 1 Email:</strong> <code>registrar@privatedomain.com</code> (ONLY for Namecheap/DNS, never shared publicly)</li>
+                <li><strong>Hosting Email:</strong> <code>hosting@privatedomain.com</code> (ONLY for GitHub/hosting)</li>
+                <li><strong>Public Email:</strong> <code>contact@twist3dink.xyz</code> (listed on site, expect compromise)</li>
+                <li><strong>Social Email:</strong> <code>social@twist3dink.xyz</code> (Twitter, Discord, etc.)</li>
+            </ul>
+
+            <p><strong>Why this matters:</strong> If your public email gets compromised, the attacker <em>can't</em> reset your domain password because they don't know the Tier 1 email even exists. You've broken the attack chain.</p>
+
+            <div class="note-box">
+                <strong>Defense in Depth:</strong> Even with email segregation, you still need hardware MFA on the Tier 1 email. But now you're defending from multiple angles. If MFA fails, email segregation catches it. If email segregation fails, MFA catches it. Layered defenses.
+            </div>
+        </div>
+
+        <div class="exercise-box">
+            <h3>🔧 Hands-On Exercise: Threat Model Your Operation</h3>
+            <p>Now it's your turn. You're going to threat model your own business/project/infrastructure using the same framework.</p>
+
+            <div class="exercise-prompt">
+                <strong>Step 1:</strong> What are you defending? (Your business, project, personal infrastructure?)
+            </div>
+            <textarea id="exercise-1" placeholder="Example: I'm running a freelance web development business with 10 active clients..."></textarea>
+
+            <div class="exercise-prompt">
+                <strong>Step 2:</strong> List your crown jewels in priority order. What are your Tier 1-5 assets?
+            </div>
+            <textarea id="exercise-2" placeholder="Tier 1: Domain registrar credentials&#10;Tier 2: Client project repositories&#10;Tier 3: ..."></textarea>
+
+            <div class="exercise-prompt">
+                <strong>Step 3:</strong> For your TOP 3 crown jewels, answer: What's the impact if this is compromised?
+            </div>
+            <textarea id="exercise-3" placeholder="If domain stolen: Can't deliver client projects, can't communicate with clients, reputation destroyed..."></textarea>
+
+            <div class="exercise-prompt">
+                <strong>Step 4:</strong> Do you have any single points of failure? (One email for everything? One password manager? One backup location?)
+            </div>
+            <textarea id="exercise-4" placeholder="Yes - I use one Gmail account for domain, hosting, and client communication..."></textarea>
+
+            <div class="exercise-prompt">
+                <strong>Step 5:</strong> Based on this threat model, what's your TOP PRIORITY fix? What's the ONE thing you'd harden first?
+            </div>
+            <textarea id="exercise-5" placeholder="Separate my domain registrar email from public emails, add hardware MFA to registrar account..."></textarea>
+
+            <div class="note-box">
+                <strong>💾 Your Answers:</strong> These are saved locally in your browser. You can come back to this lesson anytime to review or update your threat model.
+            </div>
+        </div>
+
+        <div class="success-criteria">
+            <h3>✅ You've Mastered This Lesson If You Can:</h3>
+            <ul>
+                <li>Explain the CIA Triad without looking it up</li>
+                <li>Identify your crown jewels in priority order</li>
+                <li>Articulate WHY some assets matter more than others in YOUR context</li>
+                <li>Spot single points of failure in your infrastructure</li>
+                <li>Justify your defense priorities with real-world impact scenarios</li>
+            </ul>
+            <p><strong>The Real Test:</strong> If someone asked "Why is Integrity more important than Availability for your business?" could you explain it in 2 minutes using concrete examples? If yes, you're ready to move on.</p>
+        </div>
+
+        <button id="complete-btn" onclick="markComplete()">Mark Lesson as Complete</button>
+
+        <div class="nav-section">
+            <button onclick="scrollToTop()">Back to Top ↑</button>
+            <div class="nav-buttons">
+                <a href="../">← Course Overview</a>
+                <a href="../lesson-2/">Next Lesson: Your OPSEC Baseline →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Save exercise answers
+        const exerciseFields = ['exercise-1', 'exercise-2', 'exercise-3', 'exercise-4', 'exercise-5'];
+        
+        exerciseFields.forEach(id => {
+            const field = document.getElementById(id);
+            
+            // Load saved answer
+            const saved = localStorage.getItem(`course0-lesson1-${id}`);
+            if (saved) {
+                field.value = saved;
+            }
+            
+            // Auto-save on change
+            field.addEventListener('input', () => {
+                localStorage.setItem(`course0-lesson1-${id}`, field.value);
+            });
+        });
+
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('course0-progress');
+                return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            } catch (e) {
+                console.error('Error loading progress:', e);
+                return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            }
+        }
+
+        function saveProgress(progress) {
+            try {
+                localStorage.setItem('course0-progress', JSON.stringify(progress));
+                return true;
+            } catch (e) {
+                console.error('Error saving progress:', e);
+                return false;
+            }
+        }
+
+        function markComplete() {
+            const btn = document.getElementById('complete-btn');
+            const currentLessonNumber = 1
