@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3: Email Segregation & Single Points of Failure | Course 0 - tw¡st3d_¡nk Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-header {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
+
+        .lesson-header h1 {
+            color: #00ff88;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-meta {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-objectives {
+            background: #0f1a15;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .lesson-objectives h3 {
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-objectives ul {
+            margin-left: 1.5rem;
+        }
+
+        .lesson-header button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .lesson-header button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .content-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
+
+        .content-section h2 {
+            color: #00ff88;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section h3 {
+            color: #00ff88;
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .content-section ul, .content-section ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .content-section li {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .note-box {
+            background: #1a1a1a;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #2a1a1a;
+            border-left: 4px solid #ff4444;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box strong {
+            color: #ff4444;
+        }
+
+        .attack-chain {
+            background: #2a1a1a;
+            border: 2px solid #ff4444;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .attack-chain h3 {
+            color: #ff4444;
+            margin-bottom: 1rem;
+        }
+
+        .attack-step {
+            background: #1a1a1a;
+            padding: 1rem;
+            margin: 0.8rem 0;
+            border-left: 4px solid #ff4444;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .attack-step::before {
+            content: "→";
+            position: absolute;
+            left: -30px;
+            color: #ff4444;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .attack-step:first-child::before {
+            content: "🎯";
+        }
+
+        .email-architecture {
+            background: #0f1a15;
+            border: 2px solid #00ff88;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .email-architecture h3 {
+            color: #00ff88;
+            margin-bottom: 1.5rem;
+        }
+
+        .email-tier {
+            background: #0a0a0a;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border-left: 4px solid #333;
+        }
+
+        .email-tier.tier-1 { border-color: #ff4444; }
+        .email-tier.tier-2 { border-color: #ff8844; }
+        .email-tier.tier-3 { border-color: #44aaff; }
+        .email-tier.tier-4 { border-color: #666; }
+
+        .email-tier h4 {
+            margin-bottom: 0.8rem;
+        }
+
+        .email-tier.tier-1 h4 { color: #ff4444; }
+        .email-tier.tier-2 h4 { color: #ff8844; }
+        .email-tier.tier-3 h4 { color: #44aaff; }
+        .email-tier.tier-4 h4 { color: #666; }
+
+        .email-example {
+            background: #1a1a1a;
+            padding: 0.8rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #00ff88;
+            margin: 0.5rem 0;
+        }
+
+        .spof-diagram {
+            background: #1a1a1a;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .spof-before, .spof-after {
+            background: #0a0a0a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .spof-before {
+            border: 2px solid #ff4444;
+        }
+
+        .spof-after {
+            border: 2px solid #00ff88;
+        }
+
+        .spof-before h4 {
+            color: #ff4444;
+            margin-bottom: 1rem;
+        }
+
+        .spof-after h4 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .implementation-guide {
+            background: #0f1a15;
+            border: 2px solid #00ff88;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .implementation-guide h3 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .step-box {
+            background: #0a0a0a;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border-left: 4px solid #00ff88;
+        }
+
+        .step-box h4 {
+            color: #00ff88;
+            margin-bottom: 0.8rem;
+        }
+
+        .migration-checklist {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .migration-checklist h4 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .checklist li {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: #0a0a0a;
+            border-radius: 4px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checklist li:hover {
+            background: #1a1a1a;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .checklist li.checked .checkbox {
+            background: #00ff88;
+            border-color: #00ff88;
+        }
+
+        .checklist li.checked .checkbox::after {
+            content: "✓";
+            color: #0a0a0a;
+            font-weight: 700;
+        }
+
+        .checklist-text {
+            flex: 1;
+        }
+
+        .checklist li.checked .checklist-text {
+            opacity: 0.7;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            background: #0a0a0a;
+            border: 2px solid #333;
+            color: #e0e0e0;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            margin: 1rem 0;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+
+        #complete-btn {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            margin: 2rem 0;
+            transition: all 0.3s;
+        }
+
+        #complete-btn:hover {
+            background: #00dd77;
+        }
+
+        #complete-btn.completed {
+            background: #333;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            cursor: default;
+        }
+
+        #complete-btn.locked {
+            background: #333;
+            color: #666;
+            border: 2px solid #666;
+            cursor: not-allowed;
+        }
+
+        #complete-btn.error {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .nav-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 2rem;
+        }
+
+        .nav-section button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .nav-section button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-buttons a {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .nav-buttons a:nth-child(1),
+        .nav-buttons a:nth-child(2) {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .nav-buttons a:nth-child(1):hover,
+        .nav-buttons a:nth-child(2):hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .nav-buttons a:nth-child(3) {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: 2px solid #00ff88;
+        }
+
+        .nav-buttons a:nth-child(3):hover {
+            background: #00dd77;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .lesson-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .content-section {
+                padding: 1.5rem;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .nav-buttons a {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <h1>Lesson 3: Email Segregation & Single Points of Failure</h1>
+            <p class="lesson-meta">Estimated time: 30 minutes | XP Reward: 50</p>
+            
+            <div class="lesson-objectives">
+                <h3>🎯 What You'll Learn</h3>
+                <ul>
+                    <li>Why one email = one point of total compromise</li>
+                    <li>How to architect email infrastructure that breaks attack chains</li>
+                    <li>The 4-tier email segregation model</li>
+                    <li>Step-by-step migration from one email to segregated architecture</li>
+                    <li>How to maintain segregation without cognitive overload</li>
+                </ul>
+            </div>
+            
+            <button onclick="scrollToBottom()">Skip to Exercise ↓</button>
+        </div>
+
+        <div class="content-section">
+            <h2>The $100 Million Email Mistake</h2>
+            <p>In 2016, hackers compromised the CEO of Ubiquiti Networks' email account. From there, they impersonated executives and tricked the finance team into wiring <strong>$46.7 million</strong> to fraudulent accounts.</p>
+
+            <p>One email. One phishing link. $46.7 million gone.</p>
+
+            <p>But here's the thing: the attackers didn't stop at the email. They used password resets to gain access to internal systems, file storage, and financial accounts—all because those systems used <em>the same email</em> for authentication.</p>
+
+            <p>That's a single point of failure (SPOF). One credential that, when compromised, gives an attacker the keys to everything.</p>
+
+            <div class="warning-box">
+                <strong>🔴 The SPOF Problem:</strong> If you use one email for your domain registrar, hosting, social media, public contact, and password resets—congratulations, you've built a house of cards. One phishing attack. One data breach. One SIM swap. Game over.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>The Attack Chain: How One Email Becomes Total Compromise</h2>
+            <p>Let's map the attack from the adversary's perspective. You're the target. They want your domain.</p>
+
+            <div class="attack-chain">
+                <h3>🎯 Attack Scenario: Domain Hijacking via Email</h3>
+                
+                <div class="attack-step">
+                    <strong>Step 1: Initial Compromise</strong>
+                    <p>Attacker phishes your email (the one you use for everything). You click a convincing fake Google login page. They now have your email credentials.</p>
+                </div>
+
+                <div class="attack-step">
+                    <strong>Step 2: Reconnaissance</strong>
+                    <p>Attacker searches your inbox for "Namecheap", "domain", "registrar", "hosting". They now know exactly what services you use and where your infrastructure lives.</p>
+                </div>
+
+                <div class="attack-step">
+                    <strong>Step 3: Password Reset Attack</strong>
+                    <p>Attacker goes to Namecheap.com, clicks "Forgot Password", enters your email. Reset link arrives in the compromised inbox. They click it, set new password. Your domain is now theirs.</p>
+                </div>
+
+                <div class="attack-step">
+                    <strong>Step 4: Lateral Movement</strong>
+                    <p>Using the same technique, attacker resets passwords for: GitHub (hijacks repository), social media (posts scam links), hosting (injects malware). Total control in <30 minutes.</p>
+                </div>
+
+                <div class="attack-step">
+                    <strong>Step 5: Lockout</strong>
+                    <p>Attacker changes your email password, adds 2FA to lock you out, enables email forwarding to monitor your recovery attempts. You're now powerless to stop them.</p>
+                </div>
+            </div>
+
+            <p><strong>Total time to compromise:</strong> 15-45 minutes, depending on how fast the attacker works.</p>
+
+            <p><strong>Total cost to recover:</strong> Days to weeks. Reputation damage. Potential data breach. Lost revenue. Destroyed trust.</p>
+
+            <div class="note-box">
+                <strong>Key Insight:</strong> The email isn't the target—it's the <em>key</em>. Attackers don't care about your emails. They care that your email grants access to everything else. That's why email segregation is defense-in-depth 101.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>The 4-Tier Email Architecture</h2>
+            <p>Instead of one email for everything, we architect email infrastructure based on <em>criticality</em>. Each tier has different exposure levels and different defenses.</p>
+
+            <div class="email-architecture">
+                <h3>tw¡st3d_¡nk Academy Email Model</h3>
+
+                <div class="email-tier tier-1">
+                    <h4>🔴 Tier 1: Nuclear Keys (Domain Control)</h4>
+                    <p><strong>Purpose:</strong> ONLY for domain registrar and DNS management</p>
+                    <p><strong>Exposure:</strong> Never shared publicly, never used for signups, never listed anywhere</p>
+                    <div class="email-example">registrar@privatedomain.com</div>
+                    <p><strong>Defense:</strong> Hardware MFA, unique 30+ character password, no recovery email (physical recovery codes only)</p>
+                    <p><strong>Why:</strong> If this is compromised, attacker can redirect your entire domain. This is apocalyptic. Protect it like nuclear launch codes.</p>
+                </div>
+
+                <div class="email-tier tier-2">
+                    <h4>🟠 Tier 2: Infrastructure Control (Hosting/Repository)</h4>
+                    <p><strong>Purpose:</strong> GitHub, hosting providers, CDN, infrastructure services</p>
+                    <p><strong>Exposure:</strong> Never shared publicly, but may be visible in Git commits or service records</p>
+                    <div class="email-example">hosting@twist3dink.xyz</div>
+                    <p><strong>Defense:</strong> Hardware MFA, unique password, recovery codes offline</p>
+                    <p><strong>Why:</strong> Compromise here = supply chain attack. Attacker can inject malicious code into your lessons/site.</p>
+                </div>
+
+                <div class="email-tier tier-3">
+                    <h4>🔵 Tier 3: Public-Facing (Contact/Support)</h4>
+                    <p><strong>Purpose:</strong> Listed on website, student communication, public inquiries</p>
+                    <p><strong>Exposure:</strong> Completely public, expect phishing and spam</p>
+                    <div class="email-example">contact@twist3dink.xyz</div>
+                    <p><strong>Defense:</strong> Standard MFA, aggressive spam filtering, assume it WILL be compromised eventually</p>
+                    <p><strong>Why:</strong> This email is a honeypot. It's public by design. But it should have ZERO access to Tier 1/2 systems.</p>
+                </div>
+
+                <div class="email-tier tier-4">
+                    <h4>⚪ Tier 4: Social/Marketing (Everything Else)</h4>
+                    <p><strong>Purpose:</strong> Twitter, Discord, Reddit, newsletter signups, vendor accounts</p>
+                    <p><strong>Exposure:</strong> Public, third-party databases, expect data breaches</p>
+                    <div class="email-example">social@twist3dink.xyz</div>
+                    <p><strong>Defense:</strong> Standard MFA, unique passwords per service</p>
+                    <p><strong>Why:</strong> Compromise here is annoying, not catastrophic. Can't reset domain or hosting passwords from this email.</p>
+                </div>
+            </div>
+
+            <div class="note-box">
+                <strong>The Key Principle:</strong> Each tier is isolated. Compromise of Tier 4 doesn't cascade to Tier 3. Compromise of Tier 3 doesn't cascade to Tier 2. Compromise of Tier 2 doesn't cascade to Tier 1. You've broken the attack chain.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Before & After: Breaking the Single Point of Failure</h2>
+
+            <div class="spof-diagram">
+                <div class="spof-before">
+                    <h4>🔴 BEFORE: Single Point of Failure</h4>
+                    <p><strong>one.email@gmail.com</strong> controls:</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Namecheap domain registrar</li>
+                        <li>GitHub repository</li>
+                        <li>Twitter account</li>
+                        <li>Public contact form</li>
+                        <li>Password manager account</li>
+                        <li>Email recovery options for ALL of the above</li>
+                    </ul>
+                    <p style="margin-top: 1rem; color: #ff4444;"><strong>Result:</strong> Attacker compromises one email → total control in 30 minutes</p>
+                </div>
+
+                <div class="spof-after">
+                    <h4>🟢 AFTER: Segregated Architecture</h4>
+                    <p>Each tier is isolated:</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li><strong>registrar@private.com</strong> → Namecheap only (never shared)</li>
+                        <li><strong>hosting@twist3dink.xyz</strong> → GitHub only</li>
+                        <li><strong>contact@twist3dink.xyz</strong> → Public-facing, listed on site</li>
+                        <li><strong>social@twist3dink.xyz</strong> → Twitter, Discord, etc.</li>
+                    </ul>
+                    <p style="margin-top: 1rem; color: #00ff88;"><strong>Result:</strong> Attacker compromises public email → can't reset domain or hosting passwords (don't know those emails exist)</p>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>Critical Understanding:</strong> Email segregation works because the attacker <em>doesn't know</em> your Tier 1 email exists. It's never mentioned publicly. It's never in your inbox (because you never use it for signups). It's invisible. Security through isolation, not obscurity.
+            </div>
+        </div>
+
+        <div class="implementation-guide">
+            <h3>🔧 Implementation: Step-by-Step Migration</h3>
+            <p>Migrating from one email to segregated architecture takes 2-3 hours. Here's how to do it without breaking anything.</p>
+
+            <div class="step-box">
+                <h4>Step 1: Create Your Email Tiers (30 minutes)</h4>
+                <p>Set up 4 new email addresses:</p>
+                <ul>
+                    <li><strong>Tier 1:</strong> Use a separate domain or Gmail with a unique, never-before-used address</li>
+                    <li><strong>Tier 2-4:</strong> Create aliases on your main domain (contact@, hosting@, social@)</li>
+                </ul>
+                <p><strong>Recommendation:</strong> Use ProtonMail or Gmail for Tier 1 (free, reliable). Use your domain's email hosting for Tiers 2-4.</p>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 2: Migrate Tier 1 (Domain Registrar) (45 minutes)</h4>
+                <ol>
+                    <li>Log into Namecheap with your current email</li>
+                    <li>Go to Account Settings → Email Address</li>
+                    <li>Change primary email to your new Tier 1 email</li>
+                    <li>Verify the change (check new inbox for confirmation)</li>
+                    <li>Enable hardware MFA if not already enabled</li>
+                    <li>Enable registrar lock</li>
+                    <li>Generate and print recovery codes (store offline)</li>
+                </ol>
+                <p><strong>Test:</strong> Log out, use "Forgot Password" with NEW email, verify reset link works</p>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 3: Migrate Tier 2 (Hosting/GitHub) (30 minutes)</h4>
+                <ol>
+                    <li>Log into GitHub with current email</li>
+                    <li>Settings → Emails → Add new email (Tier 2)</li>
+                    <li>Verify new email</li>
+                    <li>Set new email as primary</li>
+                    <li>Optionally remove old email (or keep as backup during transition)</li>
+                    <li>Verify hardware MFA still works</li>
+                </ol>
+                <p><strong>Test:</strong> Log out, verify you can log in with new email</p>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 4: Update Public References (15 minutes)</h4>
+                <ul>
+                    <li>Update website contact page with Tier 3 email</li>
+                    <li>Update social media profiles with Tier 4 email</li>
+                    <li>Update email signature</li>
+                    <li>Add SPF/DKIM records for new domain emails (prevents spoofing)</li>
+                </ul>
+            </div>
+
+            <div class="step-box">
+                <h4>Step 5: Document Everything (30 minutes)</h4>
+                <p>Create a secure document (offline or encrypted) that maps:</p>
+                <ul>
+                    <li>Which email controls which service</li>
+                    <li>Where recovery codes are stored</li>
+                    <li>Emergency contact procedures if locked out</li>
+                </ul>
+                <p><strong>Store:</strong> Encrypted file on external drive + printed copy in safe</p>
+            </div>
+        </div>
+
+        <div class="migration-checklist">
+            <h4>✅ Migration Checklist</h4>
+            <p>Track your progress through email segregation:</p>
+            <ul class="checklist" id="migration-checklist">
+                <li data-item="migration-1"><div class="checkbox"></div><div class="checklist-text">Created Tier 1 email (registrar only, never shared)</div></li>
+                <li data-item="migration-2"><div class="checkbox"></div><div class="checklist-text">Created Tier 2 email (hosting/infrastructure)</div></li>
+                <li data-item="migration-3"><div class="checkbox"></div><div class="checklist-text">Created Tier 3 email (public contact)</div></li>
+                <li data-item="migration-4"><div class="checkbox"></div><div class="checklist-text">Created Tier 4 email (social/marketing)</div></li>
+                <li data-item="migration-5"><div class="checkbox"></div><div class="checklist-text">Migrated domain registrar to Tier 1 email</div></li>
+                <li data-item="migration-6"><div class="checkbox"></div><div class="checklist-text">Enabled hardware MFA on domain registrar</div></li>
+                <li data-item="migration-7"><div class="checkbox"></div><div class="checklist-text">Migrated GitHub/hosting to Tier 2 email</div></li>
+                <li data-item="migration-8"><div class="checkbox"></div><div class="checklist-text">Updated website with Tier 3 contact email</div></li>
+                <li data
