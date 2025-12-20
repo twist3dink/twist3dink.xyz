@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 2: Your OPSEC Baseline | Course 0 - tw¡st3d_¡nk Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-header {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
+
+        .lesson-header h1 {
+            color: #00ff88;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-meta {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-objectives {
+            background: #0f1a15;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .lesson-objectives h3 {
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-objectives ul {
+            margin-left: 1.5rem;
+        }
+
+        .lesson-header button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .lesson-header button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .content-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
+
+        .content-section h2 {
+            color: #00ff88;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section h3 {
+            color: #00ff88;
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .content-section ul, .content-section ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .content-section li {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .note-box {
+            background: #1a1a1a;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #2a1a1a;
+            border-left: 4px solid #ff4444;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box strong {
+            color: #ff4444;
+        }
+
+        .audit-section {
+            background: #0f1a15;
+            border: 2px solid #00ff88;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .audit-section h3 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .audit-category {
+            background: #0a0a0a;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .audit-category h4 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .checklist li {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: #1a1a1a;
+            border-radius: 4px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checklist li:hover {
+            background: #2a2a2a;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .checklist li.checked .checkbox {
+            background: #00ff88;
+            border-color: #00ff88;
+        }
+
+        .checklist li.checked .checkbox::after {
+            content: "✓";
+            color: #0a0a0a;
+            font-weight: 700;
+        }
+
+        .checklist-text {
+            flex: 1;
+        }
+
+        .checklist li.checked .checklist-text {
+            opacity: 0.7;
+        }
+
+        .score-card {
+            background: #0f1a15;
+            border: 2px solid #00ff88;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .score-card h3 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .score-number {
+            font-size: 3rem;
+            color: #00ff88;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .score-label {
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .maturity-grid {
+            display: grid;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .maturity-level {
+            background: #0a0a0a;
+            border-left: 4px solid #333;
+            padding: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .maturity-level.level-1 { border-color: #ff4444; }
+        .maturity-level.level-2 { border-color: #ff8844; }
+        .maturity-level.level-3 { border-color: #ffaa44; }
+        .maturity-level.level-4 { border-color: #00ff88; }
+        .maturity-level.level-5 { border-color: #44aaff; }
+
+        .maturity-level h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .maturity-level.level-1 h4 { color: #ff4444; }
+        .maturity-level.level-2 h4 { color: #ff8844; }
+        .maturity-level.level-3 h4 { color: #ffaa44; }
+        .maturity-level.level-4 h4 { color: #00ff88; }
+        .maturity-level.level-5 h4 { color: #44aaff; }
+
+        .gap-analysis {
+            background: #2a1a1a;
+            border-left: 4px solid #ff8844;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .gap-analysis h3 {
+            color: #ff8844;
+            margin-bottom: 1rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            background: #0a0a0a;
+            border: 2px solid #333;
+            color: #e0e0e0;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            margin: 1rem 0;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+
+        .action-plan {
+            background: #0f1a15;
+            border: 2px solid #00ff88;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .action-plan h3 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .priority-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        .priority-high {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .priority-medium {
+            background: #ff8844;
+            color: #fff;
+        }
+
+        .priority-low {
+            background: #44aaff;
+            color: #fff;
+        }
+
+        #complete-btn {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            margin: 2rem 0;
+            transition: all 0.3s;
+        }
+
+        #complete-btn:hover {
+            background: #00dd77;
+        }
+
+        #complete-btn.completed {
+            background: #333;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            cursor: default;
+        }
+
+        #complete-btn.locked {
+            background: #333;
+            color: #666;
+            border: 2px solid #666;
+            cursor: not-allowed;
+        }
+
+        #complete-btn.error {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .nav-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 2rem;
+        }
+
+        .nav-section button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .nav-section button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-buttons a {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .nav-buttons a:nth-child(1),
+        .nav-buttons a:nth-child(2) {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .nav-buttons a:nth-child(1):hover,
+        .nav-buttons a:nth-child(2):hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .nav-buttons a:nth-child(3) {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: 2px solid #00ff88;
+        }
+
+        .nav-buttons a:nth-child(3):hover {
+            background: #00dd77;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .lesson-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .content-section {
+                padding: 1.5rem;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .nav-buttons a {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <h1>Lesson 2: Your OPSEC Baseline</h1>
+            <p class="lesson-meta">Estimated time: 30 minutes | XP Reward: 50</p>
+            
+            <div class="lesson-objectives">
+                <h3>🎯 What You'll Learn</h3>
+                <ul>
+                    <li>Audit your existing security posture against industry standards</li>
+                    <li>Identify what you're already doing right (give yourself credit!)</li>
+                    <li>Spot critical gaps that need immediate attention</li>
+                    <li>Distinguish between "quick wins" and "long-term projects"</li>
+                    <li>Build a prioritized action plan based on your threat model</li>
+                </ul>
+            </div>
+            
+            <button onclick="scrollToBottom()">Skip to Exercise ↓</button>
+        </div>
+
+        <div class="content-section">
+            <h2>You're Not Starting from Zero</h2>
+            <p>Here's the thing: <strong>you're already defending yourself</strong>. You have passwords. You probably have MFA on some accounts. Maybe you're using a password manager. You're not walking around the internet naked.</p>
+
+            <p>The problem is you don't have a <em>baseline</em>—a clear picture of where you actually stand. Are you doing enough? Too much in some areas and not enough in others? What's your biggest vulnerability right now?</p>
+
+            <p>This lesson is about <strong>honest assessment without judgment</strong>. No shame for gaps. No gold stars for perfection. Just: "Here's where I am. Here's where I need to be. Here's the path between them."</p>
+
+            <div class="note-box">
+                <strong>Reference Point:</strong> We'll use tw¡st3d_¡nk Academy's OPSEC as the example. Not because it's perfect (it's not), but because it's <em>documented</em>. You'll see exactly what defenses are in place and why.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>The tw¡st3d_¡nk Academy Baseline</h2>
+            <p>Let's audit the academy's current security posture. This is the "after" picture—the result of threat modeling and intentional hardening.</p>
+
+            <h3>✅ What's Already Protected</h3>
+
+            <div class="audit-category">
+                <h4>Identity & Access</h4>
+                <ul>
+                    <li><strong>Email segregation:</strong> Separate emails for registrar (Tier 1), hosting (Tier 2), public contact, social media</li>
+                    <li><strong>Hardware MFA:</strong> YubiKey + Flipper Zero as U2F tokens on all Tier 1/2 accounts</li>
+                    <li><strong>Least privilege:</strong> Non-admin daily account, separate admin account for installations only</li>
+                    <li><strong>Password manager:</strong> Unique passwords for every service, 20+ character entropy</li>
+                </ul>
+            </div>
+
+            <div class="audit-category">
+                <h4>Infrastructure</h4>
+                <ul>
+                    <li><strong>Domain security:</strong> Namecheap registrar lock enabled, dedicated email never shared publicly</li>
+                    <li><strong>DNS monitoring:</strong> Alerts for any DNS record changes</li>
+                    <li><strong>GitHub hardening:</strong> 3-form MFA (password + hardware token + recovery codes), Git Guardian scanning for secrets</li>
+                    <li><strong>Branch protection:</strong> Main branch requires PR reviews, no direct commits</li>
+                </ul>
+            </div>
+
+            <div class="audit-category">
+                <h4>Backup & Recovery</h4>
+                <ul>
+                    <li><strong>3-2-1 rule:</strong> Git (primary), local clone (secondary), external drive (tertiary)</li>
+                    <li><strong>Tested recovery:</strong> Can restore from backup in <15 minutes</li>
+                    <li><strong>Documentation:</strong> Recovery procedures documented and accessible offline</li>
+                </ul>
+            </div>
+
+            <h3>⚠️ Known Gaps (Being Addressed)</h3>
+            <ul>
+                <li>No automated DNS monitoring (currently manual checks)</li>
+                <li>Recovery codes stored digitally (should be printed and secured physically)</li>
+                <li>No formal incident response runbook (in progress)</li>
+                <li>Limited logging of access patterns (can't detect anomalous logins)</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Key Insight:</strong> This isn't perfect. But it's <em>intentional</em>. Every defense was chosen based on the threat model from Lesson 1. The gaps are documented and prioritized. That's the difference between "security theater" and "actual security."
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Security Maturity Model</h2>
+            <p>Where do you fall on the spectrum? This isn't about shame—it's about honest assessment so you know what to fix first.</p>
+
+            <div class="maturity-grid">
+                <div class="maturity-level level-1">
+                    <h4>🔴 Level 1: Reactive (High Risk)</h4>
+                    <p><strong>Characteristics:</strong> Using same password across sites, no MFA, one email for everything, no backups, password resets via email.</p>
+                    <p><strong>Vulnerability:</strong> One compromised password = total compromise. One phished email = game over.</p>
+                    <p><strong>Action:</strong> Start with email segregation and hardware MFA on Tier 1 accounts. This is emergency-level risk.</p>
+                </div>
+
+                <div class="maturity-level level-2">
+                    <h4>🟠 Level 2: Basic Hygiene (Medium Risk)</h4>
+                    <p><strong>Characteristics:</strong> Unique passwords, SMS-based MFA, one email for important accounts, occasional backups.</p>
+                    <p><strong>Vulnerability:</strong> SIM swapping attacks, email as single point of failure, SMS interception.</p>
+                    <p><strong>Action:</strong> Upgrade to hardware MFA, separate Tier 1 email, automate backups.</p>
+                </div>
+
+                <div class="maturity-level level-3">
+                    <h4>🟡 Level 3: Intermediate Defense (Moderate)</h4>
+                    <p><strong>Characteristics:</strong> Hardware MFA on critical accounts, multiple emails, 3-2-1 backups, password manager.</p>
+                    <p><strong>Vulnerability:</strong> Still has gaps in monitoring, incident response not documented, recovery procedures untested.</p>
+                    <p><strong>Action:</strong> Add monitoring, document incident response, test recovery procedures quarterly.</p>
+                </div>
+
+                <div class="maturity-level level-4">
+                    <h4>🟢 Level 4: Defense-in-Depth (Low Risk)</h4>
+                    <p><strong>Characteristics:</strong> Email segregation, hardware MFA everywhere, registrar lock, automated monitoring, documented incident response, tested backups.</p>
+                    <p><strong>Vulnerability:</strong> Still vulnerable to sophisticated supply chain attacks or zero-day exploits.</p>
+                    <p><strong>Action:</strong> Add code signing, automated security scanning, SOC 2 compliance if handling customer data.</p>
+                </div>
+
+                <div class="maturity-level level-5">
+                    <h4>🔵 Level 5: Paranoid (Minimal Risk)</h4>
+                    <p><strong>Characteristics:</strong> Air-gapped backup systems, offline recovery codes in physical safe, code signing, security audits, penetration testing, SOC 2 Type II.</p>
+                    <p><strong>Vulnerability:</strong> Nation-state actors, physical access attacks, social engineering at scale.</p>
+                    <p><strong>Action:</strong> At this point, you're probably over-secured for your threat model unless you're handling classified data.</p>
+                </div>
+            </div>
+
+            <div class="note-box">
+                <strong>Target Level:</strong> For most solo operators or small teams, <strong>Level 3-4 is the sweet spot</strong>. Level 1-2 is high risk. Level 5 is overkill unless you're defending state secrets or managing millions in crypto.
+            </div>
+        </div>
+
+        <div class="audit-section">
+            <h3>🔍 Your Security Audit</h3>
+            <p>Time to assess your current posture. Check every box that applies to your operation. Be <strong>brutally honest</strong>—this is for you, not for a grade.</p>
+
+            <div class="audit-category">
+                <h4>Identity & Access Management</h4>
+                <ul class="checklist" id="checklist-iam">
+                    <li data-item="iam-1"><div class="checkbox"></div><div class="checklist-text">I use unique passwords for every account (not reused)</div></li>
+                    <li data-item="iam-2"><div class="checkbox"></div><div class="checklist-text">I have a password manager (LastPass, 1Password, Bitwarden, etc.)</div></li>
+                    <li data-item="iam-3"><div class="checkbox"></div><div class="checklist-text">I have MFA enabled on my domain registrar</div></li>
+                    <li data-item="iam-4"><div class="checkbox"></div><div class="checklist-text">I have MFA enabled on my hosting/GitHub</div></li>
+                    <li data-item="iam-5"><div class="checkbox"></div><div class="checklist-text">I use hardware MFA (YubiKey, hardware token, not just SMS)</div></li>
+                    <li data-item="iam-6"><div class="checkbox"></div><div class="checklist-text">I have separate emails for domain vs hosting vs public contact</div></li>
+                    <li data-item="iam-7"><div class="checkbox"></div><div class="checklist-text">My Tier 1 email (domain registrar) is never shared publicly</div></li>
+                    <li data-item="iam-8"><div class="checkbox"></div><div class="checklist-text">I use least privilege (non-admin account for daily use)</div></li>
+                </ul>
+            </div>
+
+            <div class="audit-category">
+                <h4>Infrastructure Security</h4>
+                <ul class="checklist" id="checklist-infra">
+                    <li data-item="infra-1"><div class="checkbox"></div><div class="checklist-text">My domain has registrar lock enabled</div></li>
+                    <li data-item="infra-2"><div class="checkbox"></div><div class="checklist-text">I monitor DNS changes (alerts for modifications)</div></li>
+                    <li data-item="infra-3"><div class="checkbox"></div><div class="checklist-text">My GitHub/hosting has branch protection rules</div></li>
+                    <li data-item="infra-4"><div class="checkbox"></div><div class="checklist-text">I scan code for secrets/credentials before committing</div></li>
+                    <li data-item="infra-5"><div class="checkbox"></div><div class="checklist-text">I have uptime monitoring for my site/service</div></li>
+                    <li data-item="infra-6"><div class="checkbox"></div><div class="checklist-text">I know how to check access logs for suspicious activity</div></li>
+                </ul>
+            </div>
+
+            <div class="audit-category">
+                <h4>Backup & Recovery</h4>
+                <ul class="checklist" id="checklist-backup">
+                    <li data-item="backup-1"><div class="checkbox"></div><div class="checklist-text">I have backups of my critical data/code</div></li>
+                    <li data-item="backup-2"><div class="checkbox"></div><div class="checklist-text">Backups are stored in at least 2 different locations</div></li>
+                    <li data-item="backup-3"><div class="checkbox"></div><div class="checklist-text">I have tested recovery from backup (actually restored data)</div></li>
+                    <li data-item="backup-4"><div class="checkbox"></div><div class="checklist-text">My recovery procedures are documented</div></li>
+                    <li data-item="backup-5"><div class="checkbox"></div><div class="checklist-text">I have offline access to recovery codes/credentials</div></li>
+                </ul>
+            </div>
+
+            <div class="audit-category">
+                <h4>Incident Response</h4>
+                <ul class="checklist" id="checklist-incident">
+                    <li data-item="incident-1"><div class="checkbox"></div><div class="checklist-text">I know what to do if my domain is hijacked</div></li>
+                    <li data-item="incident-2"><div class="checkbox"></div><div class="checklist-text">I know what to do if my primary email is compromised</div></li>
+                    <li data-item="incident-3"><div class="checkbox"></div><div class="checklist-text">I have a documented incident response plan</div></li>
+                    <li data-item="incident-4"><div class="checkbox"></div><div class="checklist-text">I know how to contact my registrar/host in an emergency</div></li>
+                </ul>
+            </div>
+
+            <div class="score-card">
+                <h3>Your Security Score</h3>
+                <div class="score-number" id="security-score">0/23</div>
+                <div class="score-label" id="score-label">Calculate your baseline</div>
+            </div>
+        </div>
+
+        <div class="gap-analysis">
+            <h3>🔍 Gap Analysis</h3>
+            <p>Based on your audit, identify your <strong>top 3 critical gaps</strong>—the things that make you most vulnerable right now.</p>
+            <textarea id="gap-analysis" placeholder="Example:&#10;1. No hardware MFA on domain registrar (SMS can be SIM swapped)&#10;2. Using one email for domain, hosting, and public contact (single point of failure)&#10;3. Haven't tested backup recovery procedures (don't know if they actually work)"></textarea>
+        </div>
+
+        <div class="action-plan">
+            <h3>📋 Your Action Plan</h3>
+            <p>Now prioritize your fixes. Not everything can be done today, but some things NEED to be done today.</p>
+
+            <h4><span class="priority-tag priority-high">HIGH</span> Do This Week (Emergency Fixes)</h4>
+            <textarea id="action-high" placeholder="Example: Enable hardware MFA on Namecheap and GitHub. Order YubiKey if don't have one."></textarea>
+
+            <h4><span class="priority-tag priority-medium">MEDIUM</span> Do This Month (Important but Not Urgent)</h4>
+            <textarea id="action-medium" placeholder="Example: Set up email segregation. Create separate registrar email. Test backup recovery."></textarea>
+
+            <h4><span class="priority-tag priority-low">LOW</span> Do This Quarter (Nice to Have)</h4>
+            <textarea id="action-low" placeholder="Example: Document incident response procedures. Set up automated DNS monitoring. Print recovery codes."></textarea>
+
+            <div class="note-box">
+                <strong>💾 Your Action Plan:</strong> Saved locally in your browser. Come back to this lesson to track progress and update priorities.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Quick Wins vs Long-Term Projects</h2>
+            <p>Some security improvements take 10 minutes. Others take weeks. Let's distinguish between them so you can get momentum fast.</p>
+
+            <h3>⚡ Quick Wins (Do Today)</h3>
+            <ul>
+                <li><strong>Enable registrar lock:</strong> Log into Namecheap, find domain settings, toggle "Registrar Lock" to ON. Takes 2 minutes.</li>
+                <li><strong>Add recovery codes:</strong> Generate and save MFA recovery codes offline (print or write down). 5 minutes per account.</li>
+                <li><strong>Create separate email:</strong> Make a new Gmail/ProtonMail for domain registrar only. 10 minutes.</li>
+                <li><strong>Test one backup:</strong> Restore one file from your backup to verify it works. 15 minutes.</li>
+                <li><strong>Check login history:</strong> Review recent logins on critical accounts for suspicious activity. 10 minutes.</li>
+            </ul>
+
+            <h3>🏗️ Long-Term Projects (Schedule Time)</h3>
+            <ul>
+                <li><strong>Full email segregation:</strong> Create separate emails for each tier, update all accounts, migrate systems. 2-3 hours.</li>
+                <li><strong>Hardware MFA rollout:</strong> Purchase tokens, set up on all critical accounts, test recovery. 4-6 hours.</li>
+                <li><strong>Incident response documentation:</strong> Write runbooks for each disaster scenario, test procedures. 4-8 hours.</li>
+                <li><strong>Automated monitoring:</strong> Set up DNS monitoring, uptime checks, alert systems. 3-4 hours.</li>
+                <li><strong>3-2-1 backup system:</strong> Configure automated backups to three locations, schedule regular tests. 6+ hours.</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Strategy:</strong> Do 2-3 quick wins this week to build momentum. Schedule one long-term project per month. Security is a marathon, not a sprint—but quick wins prove you're moving.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Success Criteria</h2>
+            <p>You've mastered this lesson if you can answer these questions:</p>
+
+            <ul>
+                <li>What's your current security maturity level (1-5)?</li>
+                <li>What are your top 3 critical gaps right now?</li>
+                <li>What's your highest priority fix (the thing you'll do this week)?</li>
+                <li>Can you distinguish between "quick wins" and "long-term projects"?</li>
+                <li>Do you have a written action plan with deadlines?</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>The Real Test:</strong> If someone asked "What's your biggest security vulnerability right now?" could you answer in one sentence? If yes, you have clarity. If no, revisit your audit.
+            </div>
+        </div>
+
+        <button id="complete-btn" onclick="markComplete()">Complete Previous Lesson First</button>
+
+        <div class="nav-section">
+            <button onclick="scrollToTop()">Back to Top ↑</button>
+            <div class="nav-buttons">
+                <a href="../lesson-1/">← Previous Lesson</a>
+                <a href="../../">Course Overview</a>
+                <a href="../lesson-3/">Next Lesson →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Checklist functionality
+        const checklists = ['iam', 'infra', 'backup', 'incident'];
+        let totalChecked = 0;
+        const totalItems = 23;
+
+        function loadChecklist() {
+            checklists.forEach(category => {
+                const items = document.querySelectorAll(`#checklist-${category} li`);
+                items.forEach(item => {
+                    const itemId = item.dataset.item;
+                    const saved = localStorage.getItem(`course0-lesson2-${itemId}`);
+                    if (saved === 'true') {
+                        item.classList.add('checked');
+                        totalChecked++;
+                    }
+                });
+            });
+            updateScore();
+        }
+
+        function updateScore() {
+            const scoreEl = document.getElementById('security-score');
+            const labelEl = document.getElementById('score-label');
+            scoreEl.textContent = `${totalChecked}/${totalItems}`;
+
+            let level = '';
+            let color = '';
+            if (totalChecked < 6) {
+                level = 'Level 1: Reactive (High Risk)';
+                color = '#ff4444';
+            } else if (totalChecked < 12) {
+                level = 'Level 2: Basic Hygiene';
+                color = '#ff8844';
+            } else if (totalChecked < 18) {
+                level = 'Level 3: Intermediate Defense';
+                color = '#ffaa44';
+            } else if (totalChecked < 22) {
+                level = 'Level 4: Defense-in-Depth';
+                color = '#00ff88';
+            } else {
+                level = 'Level 5: Paranoid';
+                color = '#44aaff';
+            }
+
+            labelEl.textContent = level;
+            scoreEl.style.color = color;
+        }
+
+        // Handle checklist clicks
+        document.addEventListener('click', (e) => {
+            const listItem = e.target.closest('.checklist li');
+            if (listItem) {
+                const itemId = listItem.dataset.item;
+                const isChecked = listItem.classList.contains('checked');
+                
+                if (isChecked) {
+                    listItem.classList.remove('checked');
+                    localStorage.setItem(`course0-lesson2-${itemId}`, 'false');
+                    totalChecked--;
+                } else {
+                    listItem.classList.add('checked');
+                    localStorage.setItem(`course0-lesson2-${itemId}`, 'true');
+                    totalChecked++;
+                }
+                
+                updateScore();
+            }
+        });
+
+        // Save text fields
+        const textFields = ['gap-analysis', 'action-high', 'action-medium', 'action-low'];
+        
+        textFields.forEach(id => {
+            const field = document.getElementById(id);
+            
+            // Load saved answer
+            const saved = localStorage.getItem(`course0-lesson2-${id}`);
+            if (saved) {
+                field.value = saved;
+            }
+            
+            // Auto-save on change
+            field.addEventListener('input', () => {
+                localStorage.setItem(`course0-lesson2-${id}`, field.value);
+            });
+        });
+
+        // Progress tracking
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('course0-progress');
+                return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            } catch (e) {
+                console.error('Error loading progress:', e);
+                return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            }
+        }
+
+        function saveProgress(progress) {
+            try {
+                localStorage.setItem('course0-progress', JSON.stringify(progress));
+                return true;
+            } catch (e) {
+                console.error('Error saving progress:', e);
+                return false;
+            }
+        }
+
+        function markComplete() {
+            const btn = document.getElementById('complete-btn');
+            const currentLessonNumber = 2;
+            const progress = loadProgress();
+            
+            if (!progress.completedLessons.includes(currentLessonNumber - 1)) {
+                return;
+            }
+            
+            if (!progress.completedLessons.includes(currentLessonNumber)) {
+                progress.completedLessons.push(currentLessonNumber);
+                progress.totalXP += 50;
+                
+                if (progress.currentLesson === currentLessonNumber) {
+                    progress.currentLesson = currentLessonNumber + 1;
+                }
+                
+                const saved = saveProgress(progress);
+                
+                if (saved) {
+                    btn.textContent = '✓ Lesson Complete';
+                    btn.classList.remove('locked');
+                    btn.classList.add('completed');
+                } else {
+                    btn.textContent = 'Error - Try Again';
+                    btn.classList.add('error');
+                    setTimeout(() => {
+                        btn.textContent = 'Mark Lesson as Complete';
+                        btn.classList.remove('error');
+                    }, 2000);
+                }
+            }
+        }
+
+        window.addEventListener('load', () => {
+            loadChecklist();
+            
+            const progress = loadProgress();
+            const currentLessonNumber = 2;
+            const btn = document.getElementById('complete-btn');
+            
+            if (progress.completedLessons.includes(currentLessonNumber)) {
+                btn.textContent = '✓ Lesson Complete';
+                btn.classList.add('completed');
+            }
+            else if (progress.completedLessons.includes(currentLessonNumber - 1)) {
+                btn.textContent = 'Mark Lesson as Complete';
+                btn.classList.remove('locked');
+            }
+            else {
+                btn.textContent = 'Complete Previous Lesson First';
+                btn.classList.add('locked');
+            }
+        });
+    </script>
+</body>
+</html>
