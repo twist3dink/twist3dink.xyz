@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course 0: Cybersecurity Foundations - tw¡st3d_¡nk Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            color: #00ff88;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ff88;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            color: #00ff88;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .prerequisites {
+            list-style: none;
+        }
+
+        .prerequisites li {
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: #0a0a0a;
+            border-radius: 4px;
+            border-left: 3px solid #00ff88;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .prerequisites li::before {
+            content: "✓";
+            color: #00ff88;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .progress-bar-container {
+            background: #0a0a0a;
+            border-radius: 10px;
+            height: 30px;
+            margin: 2rem 0;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #00ff88, #00dd77);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a0a0a;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .module-section {
+            margin: 3rem 0;
+        }
+
+        .module-header {
+            background: #0f1a15;
+            border-left: 4px solid #00ff88;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .module-header h3 {
+            color: #00ff88;
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .module-description {
+            color: #999;
+            font-size: 0.95rem;
+        }
+
+        .lessons-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .lesson-card {
+            background: #0a0a0a;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lesson-card.unlocked {
+            border-color: #00ff88;
+            cursor: pointer;
+        }
+
+        .lesson-card.unlocked:hover {
+            background: #1a1a1a;
+            transform: translateY(-2px);
+        }
+
+        .lesson-card.completed {
+            border-color: #00ff88;
+            background: #0f1f15;
+        }
+
+        .lesson-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-number {
+            font-size: 0.9rem;
+            color: #00ff88;
+            font-weight: 700;
+        }
+
+        .lesson-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .status-badge.completed {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .status-badge.unlocked {
+            background: transparent;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .status-badge.locked {
+            background: #333;
+            color: #666;
+        }
+
+        .lesson-title {
+            font-size: 1.4rem;
+            color: #e0e0e0;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-card.locked .lesson-title {
+            color: #666;
+        }
+
+        .lesson-description {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-meta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .lesson-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .lesson-card.unlocked .lesson-meta {
+            color: #999;
+        }
+
+        .start-button {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 1.5rem;
+            background: #00ff88;
+            color: #0a0a0a;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .start-button:hover {
+            background: #00dd77;
+        }
+
+        .lesson-card.locked .start-button {
+            display: none;
+        }
+
+        .lock-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            opacity: 0.3;
+        }
+
+        .lesson-card.unlocked .lock-icon {
+            display: none;
+        }
+
+        .note-box {
+            background: #1a1a1a;
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .philosophy-box {
+            background: #0f1a15;
+            border: 2px solid #00ff88;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .philosophy-box h3 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .lesson-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .lesson-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ Course 0: Cybersecurity Foundations</h1>
+            <p>Build Infrastructure, No Anxiety - Defense-in-Depth for Real Operations</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number" id="completed-count">0</span>
+                <span class="stat-label">Lessons Completed</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">9</span>
+                <span class="stat-label">Total Lessons</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">~6.5 Hours</span>
+                <span class="stat-label">Total Duration</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="xp-count">0</span>
+                <span class="stat-label">XP Earned</span>
+            </div>
+        </div>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar" style="width: 0%">
+                <span id="progress-text">0% Complete</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 What This Course Is</h2>
+            <div class="philosophy-box">
+                <h3>Build Infrastructure, No Anxiety</h3>
+                <p>This isn't a beginner course. You're already operating—running a business, managing infrastructure, building something that matters. This course is about <strong>hardening what you already have</strong> using threat modeling, defense-in-depth, and the hacker mindset.</p>
+                <p style="margin-top: 1rem;">We're using <strong>tw¡st3d_¡nk Academy as the case study</strong>. Every lesson maps real security concepts to actual infrastructure decisions. No abstract theory. No "imagine a company." Just: "Here's my domain. Here's how it could be attacked. Here's how I defend it."</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📋 Prerequisites</h2>
+            <ul class="prerequisites">
+                <li>You're already running something (business, project, infrastructure)</li>
+                <li>You understand basic technical concepts (domains, DNS, hosting)</li>
+                <li>You want to defend what you've built without paranoia paralysis</li>
+                <li>You're willing to think like an attacker to build better defenses</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📚 Course Curriculum</h2>
+            <div class="note-box">
+                <strong>🔒 Sequential Learning:</strong> Lessons unlock as you complete them. Each lesson builds on the previous one, creating a complete mental model of defense-in-depth.
+            </div>
+
+            <!-- Module 1: The Threat Landscape -->
+            <div class="module-section">
+                <div class="module-header">
+                    <h3>Module 1: The Threat Landscape</h3>
+                    <p class="module-description">Understand what you're defending and why. Identify crown jewels, prioritize threats, and eliminate single points of failure.</p>
+                </div>
+
+                <div class="lessons-grid">
+                    <!-- Lesson 1 -->
+                    <div class="lesson-card unlocked" data-lesson="1">
+                        <div class="lock-icon">🔓</div>
+                        <div class="lesson-header">
+                            <span class="lesson-number">LESSON 1</span>
+                            <div class="lesson-status">
+                                <span class="status-badge unlocked">Start</span>
+                            </div>
+                        </div>
+                        <h3 class="lesson-title">CIA Triad & Threat Modeling</h3>
+                        <p class="lesson-description">
+                            Confidentiality, Integrity, Availability—but which matters most? Learn to identify crown jewels, prioritize defenses, and think like an attacker targeting your infrastructure.
+                        </p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 45 minutes</span>
+                            <span>⭐ 50 XP</span>
+                            <span>🎯 Intermediate</span>
+                        </div>
+                        <a href="lessons/lesson-1/" class="start-button">Start Lesson →</a>
+                    </div>
+
+                    <!-- Lesson 2 -->
+                    <div class="lesson-card locked" data-lesson="2">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lesson-header">
+                            <span class="lesson-number">LESSON 2</span>
+                            <div class="lesson-status">
+                                <span class="status-badge locked">Locked</span>
+                            </div>
+                        </div>
+                        <h3 class="lesson-title">Your OPSEC Baseline</h3>
+                        <p class="lesson-description">
+                            Audit your existing security posture. What are you already doing right? What's your biggest gap? We'll assess your current defenses and identify quick wins vs long-term projects.
+                        </p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 30 minutes</span>
+                            <span>⭐ 50 XP</span>
+                            <span>🎯 Intermediate</span>
+                        </div>
+                        <a href="lessons/lesson-2/" class="start-button">Start Lesson →</a>
+                    </div>
+
+                    <!-- Lesson 3 -->
+                    <div class="lesson-card locked" data-lesson="3">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lesson-header">
+                            <span class="lesson-number">LESSON 3</span>
+                            <div class="lesson-status">
+                                <span class="status-badge locked">Locked</span>
+                            </div>
+                        </div>
+                        <h3 class="lesson-title">Email Segregation & Single Points of Failure</h3>
+                        <p class="lesson-description">
+                            One email = one point of compromise = game over. Learn to architect email infrastructure that breaks attack chains and protects Tier 1 assets from public exposure.
+                        </p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 30 minutes</span>
+                            <span>⭐ 50 XP</span>
+                            <span>🎯 Intermediate</span>
+                        </div>
+                        <a href="lessons/lesson-3/" class="start-button">Start Lesson →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 2: Hardening Infrastructure -->
+            <div class="module-section">
+                <div class="module-header">
+                    <h3>Module 2: Hardening Infrastructure</h3>
+                    <p class="module-description">Lock down the nuclear keys. Domain security, hosting hardening, backups, and monitoring—the practical implementation of defense-in-depth.</p>
+                </div>
+
+                <div class="lessons-grid">
+                    <!-- Lesson 4 -->
+                    <div class="lesson-card locked" data-lesson="4">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lesson-header">
+                            <span class="lesson-number">LESSON 4</span>
+                            <div class="lesson-status">
+                                <span class="status-badge locked">Locked</span>
+                            </div>
+                        </div>
+                        <h3 class="lesson-title">Domain Security</h3>
+                        <p class="lesson-description">
+                            Your domain is the nuclear key. Learn registrar hardening, DNS security, registrar lock, DNSSEC, and how to prevent domain hijacking—the attack that ends everything.
+                        </p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 45 minutes</span>
+                            <span>⭐ 50 XP</span>
+                            <span>🎯 Advanced</span>
+                        </div>
+                        <a href="lessons/lesson-4/" class="start-button">Start Lesson →</a>
+                    </div>
+
+                    <!-- Lesson 5 -->
+                    <div class="lesson-card locked" data-lesson="5">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lesson-header">
+                            <span class="lesson-number">LESSON 5</span>
+                            <div class="lesson-status">
+                                <span class="status-badge locked">Locked</span>
+                            </div>
+                        </div>
+                        <h3 class="lesson-title">Hosting Security</h3>
+                        <p class="lesson-description">
+                            GitHub Pages, Netlify, or custom hosting—each has unique attack vectors. Learn repository protection, branch rules, webhook security, and supply chain defense.
+                        </p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 30 minutes</span>
+                            <span>⭐ 50 XP</span>
+                            <span>🎯 Advanced</span>
+                        </div>
+                        <a href="lessons/lesson-5/" class="start-button">Start Lesson →</a>
+                    </div>
+
+                    <!-- Lesson 6 -->
+                    <div class="lesson-card locked" data-lesson="6">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lesson-header">
+                            <span class="lesson-number">LESSON 6</span>
+                            <div class="lesson-status">
+                                <span class="status-badge locked">Locked</span>
+                            </div>
+                        </div>
+                        <h3 class="lesson-title">Backup Strategy</h3>
+                        <p class="lesson-description">
+                            3-2-1 backup rule in practice. Where to store backups, how often to run them, testing recovery procedures, and why "Git is not a backup."
+                        </p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 30 minutes</span>
+                            <span>⭐ 50 XP</span>
+                            <span>🎯 Intermediate</span>
+                        </div>
+                        <a href="lessons/lesson-6/" class="start-button">Start Lesson →</a>
+                    </div>
+
+                    <!-- Lesson 7 -->
+                    <div class="lesson-card locked" data-lesson="7">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lesson-header">
+                            <span class="lesson-number">LESSON 7</span>
+                            <div class="lesson-status">
+                                <span class="status-badge locked">Locked</span>
+                            </div>
+                        </div>
+                        <h3 class="lesson-title">Monitoring & Alerting</h3>
+                        <p class="lesson-description">
+                            You can't defend what you can't see. Learn uptime monitoring, DNS change alerts, unauthorized access detection, and how to know when you're under attack.
+                        </p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 45 minutes</span>
+                            <span>⭐ 50 XP</span>
+                            <span>🎯 Advanced</span>
+                        </div>
+                        <a href="lessons/lesson-7/" class="start-button">Start Lesson →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 3: Incident Response -->
+            <div class="module-section">
+                <div class="module-header">
+                    <h3>Module 3: Incident Response</h3>
+                    <p class="module-description">When defense fails. How to respond when compromised, recovery procedures, and post-mortem analysis to prevent repeat attacks.</p>
+                </div>
+
+                <div class="lessons-grid">
+                    <!-- Lesson 8 -->
+                    <div class="lesson-card locked" data-lesson="8">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lesson-header">
+                            <span class="lesson-number">LESSON 8</span>
+                            <div class="lesson-status">
+                                <span class="status-badge locked">Locked</span>
+                            </div>
+                        </div>
+                        <h3 class="lesson-title">When Things Go Wrong</h3>
+                        <p class="lesson-description">
+                            Incident response playbook. Domain hijacked? Email compromised? Hosting breached? Step-by-step response procedures for worst-case scenarios.
+                        </p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 45 minutes</span>
+                            <span>⭐ 50 XP</span>
+                            <span>🎯 Advanced</span>
+                        </div>
+                        <a href="lessons/lesson-8/" class="start-button">Start Lesson →</a>
+                    </div>
+
+                    <!-- Lesson 9 -->
+                    <div class="lesson-card locked" data-lesson="9">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lesson-header">
+                            <span class="lesson-number">LESSON 9</span>
+                            <div class="lesson-status">
+                                <span class="status-badge locked">Locked</span>
+                            </div>
+                        </div>
+                        <h3 class="lesson-title">Recovery & Post-Mortem</h3>
+                        <p class="lesson-description">
+                            After the breach. How to recover trust, conduct post-mortem analysis, identify root causes, and architect defenses that prevent repeat attacks. Close the loop.
+                        </p>
+                        <div class="lesson-meta">
+                            <span>⏱️ 30 minutes</span>
+                            <span>⭐ 50 XP</span>
+                            <span>🎯 Advanced</span>
+                        </div>
+                        <a href="lessons/lesson-9/" class="start-button">Start Lesson →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎓 What You'll Learn</h2>
+            <ul class="prerequisites">
+                <li>Threat modeling real infrastructure (not theory)</li>
+                <li>Defense-in-depth implementation for domains, hosting, email</li>
+                <li>How to prioritize security investments based on actual risk</li>
+                <li>Incident response procedures for worst-case scenarios</li>
+                <li>The hacker mindset: think like an attacker to build better defenses</li>
+                <li>Practical OPSEC that doesn't require paranoia or perfection</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('course0-progress');
+                return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            } catch (e) {
+                console.error('Error loading progress:', e);
+                return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            }
+        }
+
+        function updateUI() {
+            const progress = loadProgress();
+            const totalLessons = 9;
+            
+            // Update stats
+            document.getElementById('completed-count').textContent = progress.completedLessons.length;
+            document.getElementById('xp-count').textContent = progress.totalXP;
+            
+            // Update progress bar
+            const percentage = Math.round((progress.completedLessons.length / totalLessons) * 100);
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = percentage + '% Complete';
+            
+            // Update lesson cards
+            for (let i = 1; i <= totalLessons; i++) {
+                const card = document.querySelector(`[data-lesson="${i}"]`);
+                const statusBadge = card.querySelector('.status-badge');
+                
+                if (progress.completedLessons.includes(i)) {
+                    // Lesson is completed
+                    card.classList.remove('locked', 'unlocked');
+                    card.classList.add('completed');
+                    statusBadge.classList.remove('locked', 'unlocked');
+                    statusBadge.classList.add('completed');
+                    statusBadge.textContent = '✓ Complete';
+                } else if (i === 1 || progress.completedLessons.includes(i - 1)) {
+                    // Lesson is unlocked (first lesson or previous lesson completed)
+                    card.classList.remove('locked', 'completed');
+                    card.classList.add('unlocked');
+                    statusBadge.classList.remove('locked', 'completed');
+                    statusBadge.classList.add('unlocked');
+                    statusBadge.textContent = 'Start';
+                } else {
+                    // Lesson is locked
+                    card.classList.remove('unlocked', 'completed');
+                    card.classList.add('locked');
+                    statusBadge.classList.remove('unlocked', 'completed');
+                    statusBadge.classList.add('locked');
+                    statusBadge.textContent = 'Locked';
+                }
+            }
+        }
+
+        // Prevent navigation to locked lessons
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.lesson-card');
+            if (card && card.classList.contains('locked')) {
+                e.preventDefault();
+                const lessonNumber = card.dataset.lesson;
+                alert(`🔒 Lesson ${lessonNumber} is locked. Complete the previous lesson to unlock it!`);
+            }
+        });
+
+        // Update UI on page load
+        window.addEventListener('load', updateUI);
+
+        // Update UI when returning to page (in case progress changed)
+        window.addEventListener('focus', updateUI);
+    </script>
+</body>
+</html>
