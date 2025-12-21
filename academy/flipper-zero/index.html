@@ -1,565 +1,494 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flipper Zero Mastery Course - tw¡st3d_¡nk Academy</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flipper Zero Mastery Course - tw¡st3d_¡nk Academy</title>
 
-        body {
-            font-family: 'Atkinson Hyperlegible', sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            line-height: 1.6;
-            padding: 2rem 1rem;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
+    body {
+      font-family: 'Atkinson Hyperlegible', sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
 
-        .header h1 {
-            color: #00ff88;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
+    .container { max-width: 1000px; margin: 0 auto; }
 
-        .header p {
-            color: #999;
-            font-size: 1.1rem;
-        }
+    .header { text-align: center; margin-bottom: 3rem; }
+    .header h1 { color: #00ff88; font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .header p { color: #999; font-size: 1.1rem; }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 3rem;
-        }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
 
-        .stat-card {
-            background: #1a1a1a;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid #333;
-            text-align: center;
-        }
+    .stat-card {
+      background: #1a1a1a;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #333;
+      text-align: center;
+    }
 
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #00ff88;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #00ff88;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
 
-        .stat-label {
-            color: #999;
-            font-size: 0.9rem;
-        }
+    .stat-label { color: #999; font-size: 0.9rem; }
 
-        .section {
-            background: #1a1a1a;
-            padding: 2rem;
-            border-radius: 8px;
-            border: 1px solid #333;
-            margin-bottom: 2rem;
-        }
+    .section {
+      background: #1a1a1a;
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid #333;
+      margin-bottom: 2rem;
+    }
 
-        .section h2 {
-            color: #00ff88;
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-        }
+    .section h2 {
+      color: #00ff88;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
 
-        .prerequisites {
-            list-style: none;
-        }
+    .prerequisites { list-style: none; }
 
-        .prerequisites li {
-            padding: 0.8rem;
-            margin-bottom: 0.5rem;
-            background: #0a0a0a;
-            border-radius: 4px;
-            border-left: 3px solid #00ff88;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+    .prerequisites li {
+      padding: 0.8rem;
+      margin-bottom: 0.5rem;
+      background: #0a0a0a;
+      border-radius: 4px;
+      border-left: 3px solid #00ff88;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-        .prerequisites li::before {
-            content: "✓";
-            color: #00ff88;
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
+    .prerequisites li::before {
+      content: "✓";
+      color: #00ff88;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
 
-        .lessons-grid {
-            display: grid;
-            gap: 1.5rem;
-        }
+    .note-box {
+      background: #1a1a1a;
+      border-left: 4px solid #00ff88;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border-radius: 4px;
+    }
 
-        .lesson-card {
-            background: #0a0a0a;
-            border: 2px solid #333;
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
+    .lessons-grid { display: grid; gap: 1.5rem; }
 
-        .lesson-card.unlocked {
-            border-color: #00ff88;
-            cursor: pointer;
-        }
+    .lesson-card {
+      background: #0a0a0a;
+      border: 2px solid #333;
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .lesson-card.unlocked:hover {
-            background: #1a1a1a;
-            transform: translateY(-2px);
-        }
+    .lesson-card.unlocked { border-color: #00ff88; }
+    .lesson-card.unlocked:hover { background: #1a1a1a; transform: translateY(-2px); }
+    .lesson-card.completed { border-color: #00ff88; background: #0f1f15; }
+    .lesson-card.locked { opacity: 0.5; cursor: not-allowed; }
 
-        .lesson-card.completed {
-            border-color: #00ff88;
-            background: #0f1f15;
-        }
+    .lesson-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
 
-        .lesson-card.locked {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+    .lesson-number { font-size: 0.9rem; color: #00ff88; font-weight: 700; }
 
-        .lesson-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
+    .lesson-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
 
-        .lesson-number {
-            font-size: 0.9rem;
-            color: #00ff88;
-            font-weight: 700;
-        }
+    .status-badge {
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
 
-        .lesson-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-        }
+    .status-badge.completed { background: #00ff88; color: #0a0a0a; }
+    .status-badge.unlocked { background: transparent; border: 1px solid #00ff88; color: #00ff88; }
+    .status-badge.locked { background: #333; color: #666; }
 
-        .status-badge {
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
+    .lesson-title { font-size: 1.4rem; color: #e0e0e0; margin-bottom: 0.5rem; }
+    .lesson-card.locked .lesson-title { color: #666; }
 
-        .status-badge.completed {
-            background: #00ff88;
-            color: #0a0a0a;
-        }
+    .lesson-description { color: #999; font-size: 1rem; margin-bottom: 1rem; }
 
-        .status-badge.unlocked {
-            background: transparent;
-            border: 1px solid #00ff88;
-            color: #00ff88;
-        }
+    .lesson-meta {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: #666;
+    }
 
-        .status-badge.locked {
-            background: #333;
-            color: #666;
-        }
+    .lesson-meta span { display: flex; align-items: center; gap: 0.3rem; }
 
-        .lesson-title {
-            font-size: 1.4rem;
-            color: #e0e0e0;
-            margin-bottom: 0.5rem;
-        }
+    .lesson-card.unlocked .lesson-meta,
+    .lesson-card.completed .lesson-meta { color: #999; }
 
-        .lesson-card.locked .lesson-title {
-            color: #666;
-        }
+    .start-button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.8rem 1.5rem;
+      background: #00ff88;
+      color: #0a0a0a;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 700;
+      transition: all 0.3s;
+    }
 
-        .lesson-description {
-            color: #999;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
+    .start-button:hover { background: #00dd77; }
+    .lesson-card.locked .start-button { display: none; }
 
-        .lesson-meta {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            font-size: 0.9rem;
-            color: #666;
-        }
+    .lock-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      opacity: 0.3;
+    }
 
-        .lesson-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
+    .lesson-card.unlocked .lock-icon,
+    .lesson-card.completed .lock-icon { display: none; }
 
-        .lesson-card.unlocked .lesson-meta {
-            color: #999;
-        }
+    .progress-bar-container {
+      background: #0a0a0a;
+      border-radius: 10px;
+      height: 30px;
+      margin: 2rem 0;
+      overflow: hidden;
+      border: 1px solid #333;
+    }
 
-        .start-button {
-            display: inline-block;
-            margin-top: 1rem;
-            padding: 0.8rem 1.5rem;
-            background: #00ff88;
-            color: #0a0a0a;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 700;
-            transition: all 0.3s;
-        }
+    .progress-bar {
+      background: linear-gradient(90deg, #00ff88, #00dd77);
+      height: 100%;
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0a0a0a;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
 
-        .start-button:hover {
-            background: #00dd77;
-        }
+    /* Non-annoying lock notice (instead of alert spam) */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      background: #1a1a1a;
+      border: 1px solid #333;
+      padding: 0.9rem 1rem;
+      border-radius: 8px;
+      color: #e0e0e0;
+      max-width: 680px;
+      width: calc(100% - 2rem);
+      display: none;
+      z-index: 9999;
+    }
 
-        .lesson-card.locked .start-button {
-            display: none;
-        }
+    .toast strong { color: #00ff88; }
+    .toast .toast-row { display: flex; gap: 1rem; align-items: center; justify-content: space-between; }
+    .toast button {
+      background: transparent;
+      border: 2px solid #00ff88;
+      color: #00ff88;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      white-space: nowrap;
+    }
 
-        .lock-icon {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            opacity: 0.3;
-        }
+    .toast button:hover { background: #00ff88; color: #0a0a0a; }
 
-        .lesson-card.unlocked .lock-icon {
-            display: none;
-        }
-
-        .note-box {
-            background: #1a1a1a;
-            border-left: 4px solid #00ff88;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 4px;
-        }
-
-        .progress-bar-container {
-            background: #0a0a0a;
-            border-radius: 10px;
-            height: 30px;
-            margin: 2rem 0;
-            overflow: hidden;
-            border: 1px solid #333;
-        }
-
-        .progress-bar {
-            background: linear-gradient(90deg, #00ff88, #00dd77);
-            height: 100%;
-            transition: width 0.5s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #0a0a0a;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .lesson-header {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .lesson-meta {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-    </style>
+    @media (max-width: 768px) {
+      .header h1 { font-size: 2rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .lesson-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .lesson-meta { flex-direction: column; gap: 0.5rem; }
+      body { padding: 1.5rem 0.75rem; }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🐬 Flipper Zero Mastery</h1>
-            <p>Complete Course - From Beginner to Advanced</p>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <span class="stat-number" id="completed-count">0</span>
-                <span class="stat-label">Lessons Completed</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number">6</span>
-                <span class="stat-label">Total Lessons</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number">~2h 15m</span>
-                <span class="stat-label">Total Duration</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number" id="xp-count">0</span>
-                <span class="stat-label">XP Earned</span>
-            </div>
-        </div>
-
-        <div class="progress-bar-container">
-            <div class="progress-bar" id="progress-bar" style="width: 0%">
-                <span id="progress-text">0% Complete</span>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>📋 Course Prerequisites</h2>
-            <ul class="prerequisites">
-                <li>Flipper Zero device (or willingness to learn theory first)</li>
-                <li>Basic curiosity about wireless technologies</li>
-                <li>Commitment to ethical and legal use</li>
-                <li>No prior hacking experience required!</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>📚 Course Curriculum</h2>
-            <div class="note-box">
-                <strong>🔒 Sequential Learning:</strong> Lessons unlock as you complete them. Focus on one lesson at a time to build a solid foundation!
-            </div>
-            
-            <div class="lessons-grid" id="lessons-grid">
-                <!-- Lesson 1 -->
-                <div class="lesson-card unlocked" data-lesson="1">
-                    <div class="lock-icon">🔓</div>
-                    <div class="lesson-header">
-                        <span class="lesson-number">LESSON 1</span>
-                        <div class="lesson-status">
-                            <span class="status-badge unlocked">Start</span>
-                        </div>
-                    </div>
-                    <h3 class="lesson-title">Getting Started with Flipper Zero</h3>
-                    <p class="lesson-description">
-                        Introduction to your Flipper Zero, understanding its capabilities, hardware overview, and essential legal/ethical guidelines for responsible use.
-                    </p>
-                    <div class="lesson-meta">
-                        <span>⏱️ 15 minutes</span>
-                        <span>⭐ 50 XP</span>
-                        <span>📝 Beginner</span>
-                    </div>
-                    <a href="lessons/lesson-1/" class="start-button">Start Lesson →</a>
-                </div>
-
-                <!-- Lesson 2 -->
-                <div class="lesson-card locked" data-lesson="2">
-                    <div class="lock-icon">🔒</div>
-                    <div class="lesson-header">
-                        <span class="lesson-number">LESSON 2</span>
-                        <div class="lesson-status">
-                            <span class="status-badge locked">Locked</span>
-                        </div>
-                    </div>
-                    <h3 class="lesson-title">Navigating the Flipper Interface</h3>
-                    <p class="lesson-description">
-                        Master the menu system, understand button functions, configure settings, and learn to use the file browser efficiently.
-                    </p>
-                    <div class="lesson-meta">
-                        <span>⏱️ 20 minutes</span>
-                        <span>⭐ 50 XP</span>
-                        <span>📝 Beginner</span>
-                    </div>
-                    <a href="lessons/lesson-2/" class="start-button">Start Lesson →</a>
-                </div>
-
-                <!-- Lesson 3 -->
-                <div class="lesson-card locked" data-lesson="3">
-                    <div class="lock-icon">🔒</div>
-                    <div class="lesson-header">
-                        <span class="lesson-number">LESSON 3</span>
-                        <div class="lesson-status">
-                            <span class="status-badge locked">Locked</span>
-                        </div>
-                    </div>
-                    <h3 class="lesson-title">Sub-GHz Fundamentals</h3>
-                    <p class="lesson-description">
-                        Explore radio frequencies, learn to capture and replay signals, understand protocols like Princeton and KeeLoq, and follow legal guidelines.
-                    </p>
-                    <div class="lesson-meta">
-                        <span>⏱️ 25 minutes</span>
-                        <span>⭐ 50 XP</span>
-                        <span>📝 Intermediate</span>
-                    </div>
-                    <a href="lessons/lesson-3/" class="start-button">Start Lesson →</a>
-                </div>
-
-                <!-- Lesson 4 -->
-                <div class="lesson-card locked" data-lesson="4">
-                    <div class="lock-icon">🔒</div>
-                    <div class="lesson-header">
-                        <span class="lesson-number">LESSON 4</span>
-                        <div class="lesson-status">
-                            <span class="status-badge locked">Locked</span>
-                        </div>
-                    </div>
-                    <h3 class="lesson-title">RFID & NFC Basics</h3>
-                    <p class="lesson-description">
-                        Understand different card types (125kHz, 13.56MHz), learn reading and emulation techniques, explore MIFARE Classic vulnerabilities, and security considerations.
-                    </p>
-                    <div class="lesson-meta">
-                        <span>⏱️ 25 minutes</span>
-                        <span>⭐ 50 XP</span>
-                        <span>📝 Intermediate</span>
-                    </div>
-                    <a href="lessons/lesson-4/" class="start-button">Start Lesson →</a>
-                </div>
-
-                <!-- Lesson 5 -->
-                <div class="lesson-card locked" data-lesson="5">
-                    <div class="lock-icon">🔒</div>
-                    <div class="lesson-header">
-                        <span class="lesson-number">LESSON 5</span>
-                        <div class="lesson-status">
-                            <span class="status-badge locked">Locked</span>
-                        </div>
-                    </div>
-                    <h3 class="lesson-title">Infrared Communication</h3>
-                    <p class="lesson-description">
-                        Master IR remote control, learn signal capture and replay, use the universal remote database, and create custom remote configurations.
-                    </p>
-                    <div class="lesson-meta">
-                        <span>⏱️ 20 minutes</span>
-                        <span>⭐ 50 XP</span>
-                        <span>📝 Intermediate</span>
-                    </div>
-                    <a href="lessons/lesson-5/" class="start-button">Start Lesson →</a>
-                </div>
-
-                <!-- Lesson 6 -->
-                <div class="lesson-card locked" data-lesson="6">
-                    <div class="lock-icon">🔒</div>
-                    <div class="lesson-header">
-                        <span class="lesson-number">LESSON 6</span>
-                        <div class="lesson-status">
-                            <span class="status-badge locked">Locked</span>
-                        </div>
-                    </div>
-                    <h3 class="lesson-title">BadUSB & GPIO</h3>
-                    <p class="lesson-description">
-                        Learn automated keystroke injection, write Ducky Script, understand GPIO hardware interaction, and explore advanced security testing with strict safety protocols.
-                    </p>
-                    <div class="lesson-meta">
-                        <span>⏱️ 30 minutes</span>
-                        <span>⭐ 50 XP</span>
-                        <span>📝 Advanced</span>
-                    </div>
-                    <a href="lessons/lesson-6/" class="start-button">Start Lesson →</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>🎓 What You'll Learn</h2>
-            <ul class="prerequisites">
-                <li>Wireless protocol fundamentals (Sub-GHz, RFID, NFC, IR)</li>
-                <li>Security testing methodologies and ethical hacking principles</li>
-                <li>Hardware interaction through GPIO pins</li>
-                <li>Automated system interaction with BadUSB</li>
-                <li>Legal and ethical boundaries in security research</li>
-                <li>Practical skills for penetration testing and IoT security</li>
-            </ul>
-        </div>
+  <div class="container">
+    <div class="header">
+      <h1>🐬 Flipper Zero Mastery</h1>
+      <p>Complete Course - From Beginner to Advanced</p>
     </div>
 
-    <script>
-        function loadProgress() {
-            try {
-                const saved = localStorage.getItem('flipper-progress');
-                return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
-            } catch (e) {
-                console.error('Error loading progress:', e);
-                return { currentLesson: 1, completedLessons: [], totalXP: 0 };
-            }
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-number" id="completed-count">0</span>
+        <span class="stat-label">Lessons Completed</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="total-lessons">6</span>
+        <span class="stat-label">Total Lessons</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="total-duration">~2h 15m</span>
+        <span class="stat-label">Total Duration</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="xp-count">0</span>
+        <span class="stat-label">XP Earned</span>
+      </div>
+    </div>
+
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progress-bar" style="width: 0%">
+        <span id="progress-text">0% Complete</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>📋 Course Prerequisites</h2>
+      <ul class="prerequisites">
+        <li>Flipper Zero device (or willingness to learn theory first)</li>
+        <li>Basic curiosity about wireless technologies</li>
+        <li>Commitment to ethical and legal use</li>
+        <li>No prior hacking experience required!</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>📚 Course Curriculum</h2>
+      <div class="note-box">
+        <strong>🔒 Sequential Learning:</strong> Lessons unlock as you complete them. Focus on one lesson at a time to build a solid foundation.
+      </div>
+
+      <div class="lessons-grid" id="lessons-grid">
+        <!-- Cards are rendered by JS for consistency -->
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🎓 What You'll Learn</h2>
+      <ul class="prerequisites">
+        <li>Wireless protocol fundamentals (Sub-GHz, RFID, NFC, IR)</li>
+        <li>Security testing methodologies and ethical hacking principles</li>
+        <li>Hardware interaction through GPIO pins</li>
+        <li>Automated system interaction with BadUSB</li>
+        <li>Legal and ethical boundaries in security research</li>
+        <li>Practical skills for penetration testing and IoT security</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <div class="toast-row">
+      <div id="toast-msg">Message</div>
+      <button type="button" id="toast-close">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Single source of truth for course data
+    const COURSE = {
+      totalLessons: 6,
+      // Keep duration as display text; you can compute later if you move to numeric minutes.
+      totalDurationText: "~2h 15m",
+      lessons: [
+        {
+          n: 1,
+          title: "Getting Started with Flipper Zero",
+          minutes: 15,
+          xp: 50,
+          level: "Beginner",
+          path: "lessons/lesson-1/",
+          description: "Introduction to your Flipper Zero, understanding its capabilities, hardware overview, and essential legal/ethical guidelines for responsible use."
+        },
+        {
+          n: 2,
+          title: "Navigating the Flipper Interface",
+          minutes: 20,
+          xp: 50,
+          level: "Beginner",
+          path: "lessons/lesson-2/",
+          description: "Master the menu system, understand button functions, configure settings, and learn to use the file browser efficiently."
+        },
+        {
+          n: 3,
+          title: "Sub-GHz Fundamentals",
+          minutes: 25,
+          xp: 50,
+          level: "Intermediate",
+          path: "lessons/lesson-3/",
+          description: "Explore radio frequencies, learn to capture and replay signals, understand protocols like Princeton and KeeLoq, and follow legal guidelines."
+        },
+        {
+          n: 4,
+          title: "RFID & NFC Basics",
+          minutes: 25,
+          xp: 50,
+          level: "Intermediate",
+          path: "lessons/lesson-4/",
+          description: "Understand different card types (125kHz, 13.56MHz), learn reading and emulation techniques, and explore security considerations."
+        },
+        {
+          n: 5,
+          title: "Infrared Communication",
+          minutes: 20,
+          xp: 50,
+          level: "Intermediate",
+          path: "lessons/lesson-5/",
+          description: "Master IR remote control, learn signal capture and replay, use the universal remote database, and create custom remote configurations."
+        },
+        {
+          n: 6,
+          title: "BadUSB & GPIO",
+          minutes: 30,
+          xp: 50,
+          level: "Advanced",
+          path: "lessons/lesson-6/",
+          description: "Learn safe, type-only BadUSB proof loops and GPIO pinout verification with strict safety protocols (no shells, no downloads, no persistence)."
         }
+      ]
+    };
 
-        function updateUI() {
-            const progress = loadProgress();
-            const totalLessons = 6;
-            
-            // Update stats
-            document.getElementById('completed-count').textContent = progress.completedLessons.length;
-            document.getElementById('xp-count').textContent = progress.totalXP;
-            
-            // Update progress bar
-            const percentage = Math.round((progress.completedLessons.length / totalLessons) * 100);
-            document.getElementById('progress-bar').style.width = percentage + '%';
-            document.getElementById('progress-text').textContent = percentage + '% Complete';
-            
-            // Update lesson cards
-            for (let i = 1; i <= totalLessons; i++) {
-                const card = document.querySelector(`[data-lesson="${i}"]`);
-                const statusBadge = card.querySelector('.status-badge');
-                
-                if (progress.completedLessons.includes(i)) {
-                    // Lesson is completed
-                    card.classList.remove('locked', 'unlocked');
-                    card.classList.add('completed');
-                    statusBadge.classList.remove('locked', 'unlocked');
-                    statusBadge.classList.add('completed');
-                    statusBadge.textContent = '✓ Complete';
-                } else if (i === 1 || progress.completedLessons.includes(i - 1)) {
-                    // Lesson is unlocked (first lesson or previous lesson completed)
-                    card.classList.remove('locked', 'completed');
-                    card.classList.add('unlocked');
-                    statusBadge.classList.remove('locked', 'completed');
-                    statusBadge.classList.add('unlocked');
-                    statusBadge.textContent = 'Start';
-                } else {
-                    // Lesson is locked
-                    card.classList.remove('unlocked', 'completed');
-                    card.classList.add('locked');
-                    statusBadge.classList.remove('unlocked', 'completed');
-                    statusBadge.classList.add('locked');
-                    statusBadge.textContent = 'Locked';
-                }
-            }
-        }
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem('flipper-progress');
+        return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+      } catch (e) {
+        console.error('Error loading progress:', e);
+        return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+      }
+    }
 
-        // Prevent navigation to locked lessons
-        document.addEventListener('click', (e) => {
-            const card = e.target.closest('.lesson-card');
-            if (card && card.classList.contains('locked')) {
-                e.preventDefault();
-                const lessonNumber = card.dataset.lesson;
-                alert(`🔒 Lesson ${lessonNumber} is locked. Complete the previous lesson to unlock it!`);
-            }
-        });
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const msg = document.getElementById('toast-msg');
+      msg.innerHTML = message; // message is only constructed by our code (not user input)
+      toast.style.display = 'block';
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => { toast.style.display = 'none'; }, 3500);
+    }
 
-        // Update UI on page load
-        window.addEventListener('load', updateUI);
+    function renderLessons(progress) {
+      const grid = document.getElementById('lessons-grid');
+      grid.innerHTML = '';
 
-        // Update UI when returning to page (in case progress changed)
-        window.addEventListener('focus', updateUI);
-    </script>
+      for (const lesson of COURSE.lessons) {
+        const completed = progress.completedLessons.includes(lesson.n);
+        const unlocked = (lesson.n === 1) || progress.completedLessons.includes(lesson.n - 1);
+
+        const card = document.createElement('div');
+        card.className = 'lesson-card ' + (completed ? 'completed' : (unlocked ? 'unlocked' : 'locked'));
+        card.dataset.lesson = String(lesson.n);
+
+        const status = completed ? '✓ Complete' : (unlocked ? 'Start' : 'Locked');
+        const badgeClass = completed ? 'completed' : (unlocked ? 'unlocked' : 'locked');
+        const lockIcon = completed ? '✅' : (unlocked ? '🔓' : '🔒');
+
+        card.innerHTML = `
+          <div class="lock-icon">${lockIcon}</div>
+          <div class="lesson-header">
+            <span class="lesson-number">LESSON ${lesson.n}</span>
+            <div class="lesson-status">
+              <span class="status-badge ${badgeClass}">${status}</span>
+            </div>
+          </div>
+          <h3 class="lesson-title">${lesson.title}</h3>
+          <p class="lesson-description">${lesson.description}</p>
+          <div class="lesson-meta">
+            <span>⏱️ ${lesson.minutes} minutes</span>
+            <span>⭐ ${lesson.xp} XP</span>
+            <span>📝 ${lesson.level}</span>
+          </div>
+          <a class="start-button" href="${lesson.path}">Start Lesson →</a>
+        `;
+
+        grid.appendChild(card);
+      }
+    }
+
+    function updateStats(progress) {
+      const completedCount = progress.completedLessons.length;
+
+      document.getElementById('completed-count').textContent = String(completedCount);
+      document.getElementById('xp-count').textContent = String(progress.totalXP);
+
+      document.getElementById('total-lessons').textContent = String(COURSE.totalLessons);
+      document.getElementById('total-duration').textContent = COURSE.totalDurationText;
+
+      const percentage = Math.round((completedCount / COURSE.totalLessons) * 100);
+      document.getElementById('progress-bar').style.width = percentage + '%';
+      document.getElementById('progress-text').textContent = percentage + '% Complete';
+    }
+
+    function updateUI() {
+      const progress = loadProgress();
+      renderLessons(progress);
+      updateStats(progress);
+    }
+
+    function handleGridClick(e) {
+      const card = e.target.closest('.lesson-card');
+      if (!card) return;
+
+      if (card.classList.contains('locked')) {
+        e.preventDefault();
+        const n = card.dataset.lesson;
+        showToast(`<strong>Lesson ${n} is locked.</strong> Complete the previous lesson to unlock it.`);
+        return;
+      }
+
+      // For unlocked/completed: allow normal navigation via the link.
+      // If the user clicks the card background (not the link), route them to the lesson anyway.
+      const link = card.querySelector('a.start-button');
+      if (link && e.target !== link) {
+        window.location.href = link.getAttribute('href');
+      }
+    }
+
+    window.addEventListener('load', () => {
+      updateUI();
+      document.getElementById('lessons-grid')?.addEventListener('click', handleGridClick);
+      document.getElementById('toast-close')?.addEventListener('click', () => {
+        document.getElementById('toast').style.display = 'none';
+      });
+    });
+
+    window.addEventListener('focus', updateUI);
+  </script>
 </body>
 </html>
