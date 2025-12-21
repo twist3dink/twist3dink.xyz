@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 2: Navigating the Interface | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+    <title>Lesson 2: Setup + File Ops | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
@@ -90,7 +90,7 @@
             letter-spacing: 0.3px;
         }
 
-        .content-section ul {
+        .content-section ul, .content-section ol {
             margin: 1rem 0 1rem 2rem;
         }
 
@@ -247,245 +247,174 @@
 <body>
     <div class="container">
         <div class="lesson-header">
-            <h1>Lesson 2: Navigating the Flipper Interface</h1>
-            <p class="lesson-meta">Estimated time: 20 minutes | XP Reward: 50</p>
+            <h1>Lesson 2: Setup + File Ops (So You Don’t Lose Your Work)</h1>
+            <p class="lesson-meta">Estimated time: 25–35 minutes | XP Reward: 50</p>
             <button onclick="scrollToBottom()">Skip to Bottom ↓</button>
         </div>
 
         <div class="content-section">
-            <h2>The Main Menu</h2>
-            <p>When you power on your Flipper Zero, you're greeted by the home screen featuring your animated dolphin companion. Press any directional button or OK to access the main menu, which serves as your gateway to all of Flipper's capabilities.</p>
-
-            <p>The main menu is organized into distinct sections, each representing a different wireless technology or functionality:</p>
-
-            <h3>125kHz RFID</h3>
-            <p>Low-frequency RFID operations for reading and emulating common access cards, key fobs, and pet identification tags. This frequency is widely used in building access control and animal tracking.</p>
-
-            <h3>NFC (Near Field Communication)</h3>
-            <p>High-frequency 13.56MHz operations for contactless cards, including payment cards, transit passes, and modern access control systems. NFC supports more complex protocols and data structures than 125kHz RFID.</p>
-
-            <h3>Sub-GHz</h3>
-            <p>Radio frequency communication below 1 GHz, used by garage door openers, car key fobs, wireless doorbells, weather stations, and many other remote control devices. This is one of Flipper's most versatile modules.</p>
-
-            <h3>Infrared</h3>
-            <p>IR remote control emulation for TVs, air conditioners, projectors, and other consumer electronics. Flipper can learn new remotes and comes with an extensive database of universal remote codes.</p>
-
-            <h3>iButton</h3>
-            <p>1-Wire protocol devices, commonly used for physical access control systems, particularly in commercial and industrial settings. These look like small metal buttons that touch a reader.</p>
-
-            <h3>Bad USB</h3>
-            <p>USB Human Interface Device (HID) emulation, allowing Flipper to act as a keyboard or mouse. This enables automated keystroke injection for penetration testing and system automation.</p>
-
-            <h3>U2F (Universal 2nd Factor)</h3>
-            <p>Two-factor authentication key emulation for securing online accounts. Flipper can store and use U2F credentials for enhanced account security.</p>
-
-            <h3>GPIO</h3>
-            <p>General Purpose Input/Output access for connecting external hardware, sensors, and custom projects. This opens up endless possibilities for hardware hacking and IoT experimentation.</p>
+            <h2>Objective</h2>
+            <p>By the end of this lesson you will have a stable setup, a basic backup, and you’ll successfully transfer a file to/from your Flipper Zero. This is the foundation that keeps every later lesson from turning into chaos.</p>
 
             <div class="note-box">
-                <strong>Navigation Tip:</strong> The main menu wraps around - if you keep pressing down, you'll eventually circle back to the top. The interface is designed for one-handed operation with muscle memory in mind.
+                <strong>Rules (non-negotiable):</strong>
+                <ul>
+                    <li>Only test on devices you own or have explicit permission to test.</li>
+                    <li>We are using official/standard workflows for this track. Custom firmware is out of scope here.</li>
+                </ul>
             </div>
         </div>
 
         <div class="content-section">
-            <h2>Button Functions</h2>
-            <p>Mastering the button layout is essential for efficient navigation. Flipper's control scheme is intuitive but has some nuances worth understanding:</p>
-
-            <h3>The Directional Pad (D-Pad)</h3>
+            <h2>Prereqs (2 minutes)</h2>
             <ul>
-                <li><strong>Up/Down:</strong> Navigate through menu items, scroll through lists, adjust values</li>
-                <li><strong>Left/Right:</strong> Switch between tabs, change settings, adjust parameters</li>
-                <li><strong>OK (Center Press):</strong> Select menu items, confirm actions, interact with objects</li>
-            </ul>
-
-            <h3>The Back Button</h3>
-            <p>Located below the screen, this button has multiple functions depending on context:</p>
-            <ul>
-                <li><strong>Single press:</strong> Return to previous menu or cancel current action</li>
-                <li><strong>Long press (home screen):</strong> Quick access to settings and system information</li>
-                <li><strong>Long press (3 seconds when off):</strong> Power on the device</li>
-                <li><strong>Long press (3 seconds when on):</strong> Power menu with shutdown and reboot options</li>
-            </ul>
-
-            <h3>Long Press Behaviors</h3>
-            <p>Many menu items support long-press actions that provide additional options or shortcuts. For example, long-pressing on a saved file often brings up options to rename, delete, or get information about it.</p>
-
-            <div class="note-box">
-                <strong>Pro Tip:</strong> When in doubt, press Back to return to a familiar screen. The interface is designed to be forgiving - you won't accidentally damage anything or lose data by exploring.
-            </div>
-        </div>
-
-        <div class="content-section">
-            <h2>The Dolphin</h2>
-            <p>Your virtual companion isn't just decoration - it's an integral part of the Flipper Zero experience and a clever gamification system that encourages exploration and learning.</p>
-
-            <h3>Leveling Up</h3>
-            <p>The dolphin gains experience points (XP) as you use your Flipper. Every action you take - reading an RFID card, capturing a Sub-GHz signal, using the IR remote - earns XP. As you accumulate XP, your dolphin levels up and unlocks new animations and expressions.</p>
-
-            <h3>Animation Changes</h3>
-            <p>Different dolphin levels feature unique idle animations, reactions, and behaviors. Higher-level dolphins have more personality and interactive elements. This serves as a visual representation of your growing expertise with the device.</p>
-
-            <h3>Interactive Features</h3>
-            <p>Press OK on the home screen to pet your dolphin - it will react with happy animations. The dolphin also responds to certain actions throughout the interface, providing subtle feedback on what you're doing.</p>
-
-            <h3>Easter Eggs</h3>
-            <p>The Flipper community has discovered various hidden features and special dolphin behaviors. Exploring the interface with curiosity often reveals these delightful surprises. We won't spoil them all - discovering them yourself is part of the fun!</p>
-
-            <div class="note-box">
-                <strong>Fun Fact:</strong> The dolphin's design was inspired by the idea that dolphins are playful, intelligent creatures that communicate through sound waves - much like how Flipper Zero communicates through radio waves!
-            </div>
-        </div>
-
-        <div class="content-section">
-            <h2>Settings Menu</h2>
-            <p>Access settings by long-pressing the Back button from the home screen, or by navigating to the Settings option in the main menu. Understanding these options helps you customize Flipper to your preferences and keep it running smoothly.</p>
-
-            <h3>System Settings</h3>
-            <ul>
-                <li><strong>Device Info:</strong> View firmware version, hardware revision, serial number, and storage information</li>
-                <li><strong>Region:</strong> Set your geographic region to comply with local radio frequency regulations</li>
-                <li><strong>Date & Time:</strong> Configure time settings (important for certain protocols and logging)</li>
-                <li><strong>Auto Lock:</strong> Set automatic screen lock timeout for privacy</li>
-                <li><strong>LCD Settings:</strong> Adjust brightness and screen timeout to balance visibility with battery life</li>
-            </ul>
-
-            <h3>Bluetooth Configuration</h3>
-            <p>Flipper Zero includes Bluetooth Low Energy (BLE) for wireless connectivity:</p>
-            <ul>
-                <li>Pair with the official mobile app for remote control</li>
-                <li>Transfer files wirelessly between Flipper and smartphone</li>
-                <li>Access remote logging and debugging features</li>
-                <li>Enable or disable Bluetooth to save battery when not needed</li>
-            </ul>
-
-            <h3>Display Options</h3>
-            <p>Customize the visual experience:</p>
-            <ul>
-                <li><strong>Theme:</strong> Choose different color schemes or animations</li>
-                <li><strong>Clock Display:</strong> Toggle clock visibility on home screen</li>
-                <li><strong>Notifications:</strong> Configure how alerts and messages appear</li>
-            </ul>
-
-            <h3>Storage Management</h3>
-            <p>Monitor and manage your SD card storage:</p>
-            <ul>
-                <li>View total and available storage space</li>
-                <li>Format SD card (caution: erases all data)</li>
-                <li>Browse internal vs external storage</li>
-                <li>Manage save files and databases</li>
-            </ul>
-
-            <h3>Firmware Updates</h3>
-            <p>Keep your Flipper current with the latest features and security patches:</p>
-            <ul>
-                <li><strong>Update Channel:</strong> Choose between stable releases or development builds</li>
-                <li><strong>Update via SD Card:</strong> Manual firmware installation from update files</li>
-                <li><strong>Update via App:</strong> Wireless updates through the mobile application</li>
+                <li>Flipper Zero + USB-C cable</li>
+                <li>MicroSD card installed (recommended; most users should have one)</li>
+                <li>A computer with USB (Windows/macOS/Linux)</li>
+                <li>Battery above 30%</li>
             </ul>
 
             <div class="warning-box">
-                <strong>Important:</strong> Never interrupt a firmware update in progress. Ensure your battery is above 30% before starting an update to prevent potential issues.
+                <strong>Important:</strong> Do not interrupt firmware updates. If you start an update, finish it.
             </div>
         </div>
 
         <div class="content-section">
-            <h2>File Browser</h2>
-            <p>Flipper's file browser is your window into the device's storage system, where all captured signals, saved configurations, and custom files are stored.</p>
+            <h2>What Exists Inside the UI (Fast Map)</h2>
+            <p>You don’t need to memorize everything. You need to know where to check device info, where files live, and how to get back home without panicking.</p>
 
-            <h3>SD Card Navigation</h3>
-            <p>The file system is organized into clear folders:</p>
+            <h3>Two spots you must be able to find</h3>
             <ul>
-                <li><strong>/subghz/</strong> - Captured and saved Sub-GHz signals</li>
-                <li><strong>/nfc/</strong> - NFC card dumps and emulation files</li>
-                <li><strong>/rfid/</strong> - 125kHz RFID card data</li>
-                <li><strong>/infrared/</strong> - IR remote control files</li>
-                <li><strong>/ibutton/</strong> - iButton key data</li>
-                <li><strong>/badusb/</strong> - Bad USB script files</li>
-                <li><strong>/apps/</strong> - Third-party applications and plugins</li>
-            </ul>
-
-            <h3>File Management</h3>
-            <p>Navigate through folders using the D-pad. When you select a file, you'll see options to:</p>
-            <ul>
-                <li><strong>Open/Run:</strong> Execute or emulate the file</li>
-                <li><strong>Info:</strong> View file details and metadata</li>
-                <li><strong>Edit:</strong> Modify compatible file types</li>
-                <li><strong>Rename:</strong> Change the file name</li>
-                <li><strong>Delete:</strong> Remove the file (with confirmation)</li>
-            </ul>
-
-            <h3>Supported File Types</h3>
-            <p>Flipper works with various file formats specific to each module:</p>
-            <ul>
-                <li><strong>.sub</strong> - Sub-GHz signal files</li>
-                <li><strong>.nfc</strong> - NFC dump files</li>
-                <li><strong>.rfid</strong> - RFID card data</li>
-                <li><strong>.ir</strong> - Infrared remote files</li>
-                <li><strong>.txt</strong> - BadUSB scripts (Ducky Script format)</li>
-                <li><strong>.fap</strong> - Flipper Application Package (third-party apps)</li>
+                <li><strong>Device Info:</strong> Settings → Device Info (firmware version, storage, etc.)</li>
+                <li><strong>File Browser:</strong> Browse files on internal storage / SD card</li>
             </ul>
 
             <div class="note-box">
-                <strong>Organization Tip:</strong> Create subfolders within each module's directory to organize your files by category. For example, /subghz/cars/, /subghz/garage-doors/, etc. This makes finding specific captures much easier as your library grows.
+                <strong>Navigation tip:</strong> If you get lost, press Back until you’re somewhere familiar. The UI is forgiving.
             </div>
         </div>
 
         <div class="content-section">
-            <h2>Quick Tips</h2>
-            <p>Here are some essential best practices to get the most out of your Flipper Zero:</p>
+            <h2>Step-by-Step: Setup + Backup + Transfer</h2>
 
-            <h3>Battery Management</h3>
-            <ul>
-                <li>Flipper uses a 2000mAh rechargeable lithium battery that lasts 3-7 days with typical use</li>
-                <li>The device can operate while charging via USB-C</li>
-                <li>Disable Bluetooth when not in use to extend battery life significantly</li>
-                <li>Lower screen brightness reduces power consumption</li>
-                <li>The battery indicator shows remaining charge - plan ahead for extended field work</li>
-            </ul>
-
-            <h3>SD Card Recommendations</h3>
-            <p>While Flipper has internal storage, an SD card dramatically expands its capabilities:</p>
-            <ul>
-                <li><strong>Size:</strong> 8-32GB is plenty for most users; supports up to 128GB</li>
-                <li><strong>Speed:</strong> Use Class 10 or UHS-I cards for best performance</li>
-                <li><strong>Format:</strong> FAT32 file system is required</li>
-                <li><strong>Quality:</strong> Use reputable brands to avoid corruption and read errors</li>
-            </ul>
-
-            <h3>Firmware Update Process</h3>
-            <p>Keeping firmware current ensures you have the latest features and security improvements:</p>
-
+            <h3>Step 1 — Verify device info (3–5 minutes)</h3>
             <ol>
-                <li><strong>Check current version:</strong> Settings → Device Info</li>
-                <li><strong>Visit official website:</strong> flipperzero.one or use the mobile app</li>
-                <li><strong>Download firmware:</strong> Choose stable or development channel</li>
-                <li><strong>Install update:</strong> Via mobile app (easiest) or SD card</li>
-                <li><strong>Verify installation:</strong> Check version after reboot</li>
+                <li>On Flipper: go to <strong>Settings → Device Info</strong>.</li>
+                <li>Write down (or take a photo of) your <strong>Firmware version</strong> and <strong>Storage</strong> status.</li>
             </ol>
 
+            <h3>Step 2 — Confirm your SD card is usable (3–8 minutes)</h3>
+            <ol>
+                <li>Open the <strong>File Browser</strong>.</li>
+                <li>Confirm you can see the SD card and browse folders.</li>
+                <li>If the SD card is missing or errors out, jump to the Troubleshooting section.</li>
+            </ol>
+
+            <h3>Step 3 — Create a backup folder on your computer (2 minutes)</h3>
+            <p>Create a folder on your computer (anywhere you want), named exactly:</p>
+            <ul>
+                <li><strong>flipper-backup</strong></li>
+            </ul>
+
+            <h3>Step 4 — Connect and transfer ONE test file (10 minutes)</h3>
+            <ol>
+                <li>Connect the Flipper to your computer via USB.</li>
+                <li>Using your standard file transfer method (qFlipper or file access), create a plain text file on your computer named:
+                    <ul>
+                        <li><strong>hello-flipper.txt</strong></li>
+                    </ul>
+                </li>
+                <li>Put <strong>one line of text</strong> inside it, e.g. “Lesson 2 transfer test”.</li>
+                <li>Transfer <strong>hello-flipper.txt</strong> onto the Flipper (any folder you can easily find again).</li>
+                <li>Then transfer the same file back from Flipper → computer into your <strong>flipper-backup</strong> folder.</li>
+            </ol>
+
+            <h3>Step 5 — Make a minimal backup (5–10 minutes)</h3>
+            <p>Copy the following from Flipper storage into <strong>flipper-backup</strong> (whatever exists on your device):</p>
+            <ul>
+                <li><strong>/infrared/</strong> (or IR files)</li>
+                <li><strong>/nfc/</strong></li>
+                <li><strong>/rfid/</strong></li>
+                <li><strong>/subghz/</strong></li>
+                <li><strong>/badusb/</strong></li>
+            </ul>
+
             <div class="note-box">
-                <strong>Custom Firmware:</strong> The community has created alternative firmware options like Unleashed and Xtreme that offer additional features. These are safe to use but void some warranties. Research thoroughly before switching from official firmware.
+                <strong>Why this matters:</strong> When you start collecting captures, you will eventually want to organize, rename, and experiment. Backups keep you bold.
             </div>
         </div>
 
         <div class="content-section">
-            <h2>Practice Exercise</h2>
-            <p>Now that you understand the interface, take 10 minutes to explore your Flipper:</p>
+            <h2>Deliverables (Proof Pack)</h2>
+            <p>To finish Lesson 2, you must produce these artifacts. No artifacts = not finished.</p>
 
-            <ol>
-                <li>Navigate through each main menu option and observe what's available</li>
-                <li>Long-press the Back button to access quick settings</li>
-                <li>Check your firmware version in Settings → Device Info</li>
-                <li>Browse the file system and familiarize yourself with the folder structure</li>
-                <li>Pet your dolphin on the home screen and watch its reaction</li>
-                <li>Adjust your screen brightness to a comfortable level</li>
-                <li>Enable or configure Bluetooth if you have the mobile app</li>
-            </ol>
+            <ul>
+                <li><strong>D2.1</strong> — Photo/screenshot of <strong>Settings → Device Info</strong> showing firmware version.</li>
+                <li><strong>D2.2</strong> — A computer folder named <strong>flipper-backup</strong> containing:
+                    <ul>
+                        <li><strong>hello-flipper.txt</strong> (the file that made a round trip)</li>
+                        <li>Copies of any of the module folders/files listed in Step 5 that exist on your Flipper</li>
+                    </ul>
+                </li>
+                <li><strong>D2.3</strong> — A short note (2–5 sentences) answering:
+                    <ul>
+                        <li>Where did you place <strong>hello-flipper.txt</strong> on the Flipper?</li>
+                        <li>What was the hardest part of transfer/backup for you?</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
 
-            <p>Don't worry about understanding what each module does yet - we'll cover the functionality in detail in upcoming lessons. For now, focus on becoming comfortable with navigation and menu structure.</p>
+        <div class="content-section">
+            <h2>Verification</h2>
+            <p>Check these boxes. If you can’t honestly check a box, you’re not done yet.</p>
+            <ul>
+                <li>I can find <strong>Device Info</strong> on the Flipper without guessing.</li>
+                <li>I can browse the <strong>File Browser</strong> and locate the folder where I put <strong>hello-flipper.txt</strong>.</li>
+                <li><strong>hello-flipper.txt</strong> successfully transferred <strong>computer → Flipper → computer</strong>.</li>
+                <li>My <strong>flipper-backup</strong> folder exists and contains my files.</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Troubleshooting (common failures)</h2>
+
+            <h3>Flipper not detected / transfer tool can’t connect</h3>
+            <ul>
+                <li>Try a different USB cable (many “charge-only” cables exist).</li>
+                <li>Try a different USB port.</li>
+                <li>Reboot Flipper (power menu) and reconnect.</li>
+            </ul>
+
+            <h3>SD card not showing / errors</h3>
+            <ul>
+                <li>Reseat the SD card.</li>
+                <li>Confirm it’s formatted correctly (FAT32 is commonly required).</li>
+                <li>If you must format, back up anything important first.</li>
+            </ul>
+
+            <h3>You can’t find the file you transferred</h3>
+            <ul>
+                <li>Search the folder you chose slowly; don’t assume it “didn’t transfer.”</li>
+                <li>Use a single obvious location for now (we’re training consistency).</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>Do not “fix it” by installing random firmware or mystery tools.</strong>
+                If the official workflow is failing, we diagnose the workflow. We don’t escalate into side quests.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Finished Means</h2>
+            <ul>
+                <li>I produced D2.1, D2.2, and D2.3.</li>
+                <li>I can repeat the transfer workflow without re-reading this page.</li>
+                <li>I understand where my future captures will be saved and how to back them up.</li>
+            </ul>
 
             <div class="note-box">
-                <strong>Next Up:</strong> In Lesson 3, we'll dive into our first practical module - Sub-GHz communication. You'll learn how to capture and analyze radio signals from everyday devices around your home.
+                <strong>Next Up:</strong> In Lesson 3, we do a clean win with <strong>Infrared</strong>: record → save → replay on a device you own.
             </div>
         </div>
 
@@ -540,22 +469,22 @@
             const btn = document.getElementById('complete-btn');
             const currentLessonNumber = 2;
             const progress = loadProgress();
-            
+
             // Check if previous lesson is completed
             if (!progress.completedLessons.includes(currentLessonNumber - 1)) {
                 return; // Don't allow completion if locked
             }
-            
+
             if (!progress.completedLessons.includes(currentLessonNumber)) {
                 progress.completedLessons.push(currentLessonNumber);
                 progress.totalXP += 50;
-                
+
                 if (progress.currentLesson === currentLessonNumber) {
                     progress.currentLesson = currentLessonNumber + 1;
                 }
-                
+
                 const saved = saveProgress(progress);
-                
+
                 if (saved) {
                     btn.textContent = '✓ Lesson Complete';
                     btn.classList.remove('locked');
@@ -575,7 +504,7 @@
             const progress = loadProgress();
             const currentLessonNumber = 2;
             const btn = document.getElementById('complete-btn');
-            
+
             // Check if this lesson is completed
             if (progress.completedLessons.includes(currentLessonNumber)) {
                 btn.textContent = '✓ Lesson Complete';
