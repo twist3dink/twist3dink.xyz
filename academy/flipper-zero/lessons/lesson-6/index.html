@@ -54,7 +54,10 @@
       transition: all 0.3s;
     }
 
-    .lesson-header button:hover { background: #00ff88; color: #0a0a0a; }
+    .lesson-header button:hover {
+      background: #00ff88;
+      color: #0a0a0a;
+    }
 
     .content-section {
       background: #1a1a1a;
@@ -82,31 +85,11 @@
       letter-spacing: 0.3px;
     }
 
-    .content-section ul, .content-section ol {
-      margin: 1rem 0 1rem 2rem;
-    }
-
-    .content-section li {
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.3px;
-    }
-
-    .code-block {
-      background: #0a0a0a;
-      border: 1px solid #333;
-      border-radius: 4px;
-      padding: 1rem;
-      margin: 1rem 0;
-      font-family: 'Courier New', monospace;
-      font-size: 0.95rem;
-      overflow-x: auto;
-      color: #00ff88;
-      white-space: pre-wrap;
-    }
+    .content-section ul, .content-section ol { margin: 1rem 0 1rem 2rem; }
+    .content-section li { font-size: 1.1rem; margin-bottom: 0.5rem; letter-spacing: 0.3px; }
 
     .note-box {
-      background: #1a1a1a;
+      background: #141414;
       border-left: 4px solid #00ff88;
       padding: 1rem;
       margin: 1.5rem 0;
@@ -122,6 +105,19 @@
     }
 
     .warning-box strong { color: #ff4444; }
+
+    .code-block {
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 1rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.95rem;
+      color: #00ff88;
+      white-space: pre;
+    }
 
     #complete-btn {
       background: #00ff88;
@@ -154,7 +150,10 @@
       cursor: not-allowed;
     }
 
-    #complete-btn.error { background: #ff4444; color: #fff; }
+    #complete-btn.error {
+      background: #ff4444;
+      color: #fff;
+    }
 
     .nav-section {
       background: #1a1a1a;
@@ -178,7 +177,10 @@
       transition: all 0.3s;
     }
 
-    .nav-section button:hover { background: #00ff88; color: #0a0a0a; }
+    .nav-section button:hover {
+      background: #00ff88;
+      color: #0a0a0a;
+    }
 
     .nav-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
 
@@ -226,51 +228,46 @@
 
 <body>
   <div class="container">
-
     <div class="lesson-header">
       <h1>Lesson 6: BadUSB & GPIO</h1>
       <p class="lesson-meta">Estimated time: 30 minutes | XP Reward: 50</p>
       <button onclick="scrollToBottom()">Skip to Bottom ↓</button>
     </div>
 
-    <!-- ✅ NEW SECTION: Beginner-friendly "Stop the Noise" guide -->
+    <!-- NEW SECTION: Stop the Noise -->
     <div class="content-section">
       <h2>Stop the Noise: Where Does This Go?</h2>
       <p>
-        Real talk: a lot of guides say “put this here” like you’ve memorized the anatomy of an HTML page.
+        Real talk: most “beginner” guides say “paste this here” like you’ve memorized the anatomy of an HTML page.
         If you’re new, that’s not “easy” — it’s guessing. This section removes the guesswork.
       </p>
 
       <h3>Two rules that prevent 90% of beginner pain</h3>
       <ul>
-        <li><strong>CSS goes inside</strong> <code>&lt;style&gt; ... &lt;/style&gt;</code> (design only).</li>
-        <li><strong>HTML content goes inside</strong> <code>&lt;body&gt; ... &lt;/body&gt;</code> (text/sections/buttons).</li>
+        <li><strong>CSS</strong> goes inside <code>&lt;style&gt;...&lt;/style&gt;</code> (design only).</li>
+        <li><strong>HTML content</strong> goes inside <code>&lt;body&gt;...&lt;/body&gt;</code> (sections, text, buttons).</li>
       </ul>
 
       <div class="note-box">
-        <strong>Translation:</strong> If it starts with <code>&lt;div&gt;</code>, it is HTML. It belongs in the <strong>body</strong>.
-        If it starts with <code>.something {</code>, it is CSS. It belongs in the <strong>style</strong>.
+        <strong>Translation:</strong>
+        If it starts with <code>&lt;div&gt;</code> it’s HTML. If it looks like <code>.class { ... }</code> it’s CSS.
+        Mixing them is the #1 “why did my page explode” bug.
       </div>
 
-      <h3>Exactly where your new “Objective / Deliverables” blocks belong</h3>
+      <h3>Exactly where your “Objective / Deliverables” blocks belong</h3>
       <ol>
-        <li>Find this in the file: <code>&lt;div class="lesson-header"&gt; ... &lt;/div&gt;</code></li>
-        <li>Paste your new sections <strong>directly under it</strong>.</li>
-        <li>Do not paste any <code>&lt;div&gt;</code> inside <code>&lt;style&gt;</code>.</li>
+        <li>Find <code>&lt;div class="lesson-header"&gt; ... &lt;/div&gt;</code> (the title box above).</li>
+        <li>Paste new content sections <em>directly under it</em> (which is exactly where this block is now).</li>
+        <li>Never paste <code>&lt;div&gt;</code> inside <code>&lt;style&gt;</code>. Ever.</li>
       </ol>
-
-      <div class="warning-box">
-        <strong>Common mistake:</strong> If your page suddenly looks unstyled or broken, you probably put HTML inside the CSS.
-        That is the #1 “why is my site cursed” bug.
-      </div>
     </div>
 
-    <!-- ✅ NEW SECTION: Objective + proof loops (your inserted content, correctly placed) -->
+    <!-- NEW SECTION: Objective -->
     <div class="content-section">
       <h2>Objective</h2>
       <p>
-        Complete two safe proof loops: (1) BadUSB “type-only” automation on your own computer,
-        and (2) GPIO safety + pinout verification on the Flipper.
+        Complete two safe proof loops: (1) BadUSB “type-only” automation on your own computer, and
+        (2) GPIO safety + pinout verification on the Flipper.
         The goal is controlled learning and documentation — not “doing damage fast.”
       </p>
 
@@ -284,11 +281,12 @@
       </div>
     </div>
 
+    <!-- NEW SECTION: BadUSB Safe Demo -->
     <div class="content-section">
       <h2>BadUSB (Safe Demo)</h2>
       <p>
-        BadUSB works because computers trust USB keyboards automatically.
-        In this exercise, you prove that trust model safely by typing text into a window you opened yourself.
+        BadUSB works because computers trust USB keyboards automatically. In this exercise, you prove that trust model
+        safely by typing text into a window you opened yourself.
       </p>
 
       <h3>BadUSB Exercise: Type-Only Script</h3>
@@ -299,11 +297,10 @@
       </ol>
 
       <div class="note-box">
-        <strong>Important:</strong> This script should only type text + press Enter.
-        No OS shortcuts, no app launching, no system commands.
+        <strong>Important:</strong> This script should only type text + press Enter. No shortcuts, no app launching, no system commands.
       </div>
 
-      <h3>demo-type-only.txt (the exact script)</h3>
+      <h3><code>demo-type-only.txt</code> (exact script)</h3>
       <div class="code-block">REM Title: demo-type-only
 REM Purpose: Safe proof of BadUSB typing
 REM Target: YOUR OWN computer only
@@ -313,7 +310,7 @@ STRING BadUSB test successful.
 ENTER
 STRING Lesson 6 proof loop complete.
 ENTER
-STRING I understand that USB keyboards are trusted by default.
+STRING I understand USB keyboards are trusted by default.
 ENTER</div>
 
       <h3>Deliverables (BadUSB Proof Pack)</h3>
@@ -333,18 +330,18 @@ ENTER</div>
       </ul>
     </div>
 
+    <!-- NEW SECTION: GPIO Safe Verification -->
     <div class="content-section">
       <h2>GPIO (Safe Verification)</h2>
       <p>
-        GPIO is where you can physically damage your device if you wing it.
-        So the proof loop here is: identify power + ground, and lock in the safety rules
-        before you ever wire anything.
+        GPIO is where you can physically damage your device if you wing it. So the proof loop here is: identify power + ground,
+        and lock in the safety rules before you ever wire anything.
       </p>
 
       <h3>GPIO Exercise: Pinout + Safety Checklist</h3>
       <ol>
         <li>On Flipper, open the <strong>GPIO</strong> app/menu.</li>
-        <li>Find the pin reference: <strong>on-device reference screen</strong> OR the <strong>pin labels</strong> on the device OR an <strong>official pinout reference</strong> you have saved/printed.</li>
+        <li>Find your GPIO reference: on-device reference screen <em>or</em> pin labels on the device <em>or</em> an official pinout you’ve saved/printed.</li>
         <li>Identify the <strong>3.3V</strong> pin and at least one <strong>GND</strong> pin.</li>
       </ol>
 
@@ -354,7 +351,7 @@ ENTER</div>
 
       <h3>Deliverables (GPIO Proof Pack)</h3>
       <ul>
-        <li><strong>D6.4</strong> — Photo of your GPIO reference (screen OR pin labels OR official pinout reference)</li>
+        <li><strong>D6.4</strong> — Photo of your GPIO reference (screen OR pin labels OR official pinout)</li>
         <li><strong>D6.5</strong> — 5-line GPIO Safety Checklist:
           <ul>
             <li><strong>Logic level used:</strong> 3.3V</li>
@@ -367,9 +364,7 @@ ENTER</div>
       </ul>
 
       <div class="note-box">
-        <strong>Optional (not required):</strong> If you already own an LED + resistor + jumper wires,
-        you can do a basic output test using any built-in manual GPIO toggle feature.
-        Do not attempt this if you don’t already know what you’re doing.
+        <strong>Optional (not required):</strong> If you already own an LED + resistor + jumper wires, you can do a basic output test using a built-in manual GPIO toggle feature (if your firmware has it). Don’t freestyle wiring if you’re unsure.
       </div>
     </div>
 
@@ -382,73 +377,14 @@ ENTER</div>
       </ul>
     </div>
 
-    <!-- ✅ ORIGINAL LESSON CONTENT CONTINUES (kept as-is below) -->
-
-    <div class="content-section">
-      <h2>What is BadUSB?</h2>
-      <p>BadUSB is a security exploit that takes advantage of the trust computers place in USB devices. When you plug in a USB keyboard, your computer automatically trusts it and accepts whatever keystrokes it sends. BadUSB attacks exploit this by making a device pretend to be a keyboard and then rapidly typing commands to compromise the system.</p>
-
-      <h3>USB Human Interface Device (HID) Attacks</h3>
-      <p>Human Interface Devices (HIDs) are peripherals like keyboards, mice, and game controllers. Operating systems trust HIDs implicitly because they're essential for user interaction. This trust creates a security vulnerability:</p>
-
-      <ul>
-        <li>When you plug in a keyboard, the OS doesn't ask "should I trust this keyboard?"</li>
-        <li>It immediately starts accepting keystrokes</li>
-        <li>The keyboard could type anything - including malicious commands</li>
-        <li>The OS has no way to distinguish between human keystrokes and automated ones</li>
-      </ul>
-
-      <h3>Flipper Acts as Keyboard/Mouse</h3>
-      <p>When you connect Flipper Zero to a computer via USB and run a BadUSB script, Flipper identifies itself as a keyboard (and optionally mouse). The computer sees it as a legitimate input device and processes whatever "keystrokes" Flipper sends. This happens in milliseconds, often faster than a human could react.</p>
-
-      <h3>Automated Keystroke Injection</h3>
-      <p>BadUSB scripts can:</p>
-      <ul>
-        <li>Open applications (calculator, terminal, web browser)</li>
-        <li>Execute system commands</li>
-        <li>Download and run files from the internet</li>
-        <li>Modify system settings</li>
-        <li>Extract data and upload it to remote servers</li>
-        <li>Disable security features</li>
-      </ul>
-
-      <p>All of this happens automatically when the script runs, without any user interaction beyond plugging in the USB device.</p>
-
-      <h3>Legitimate Uses vs Malicious Uses</h3>
-      <p><strong>Legitimate uses of BadUSB:</strong></p>
-      <ul>
-        <li><strong>Penetration testing:</strong> Authorized security assessments of computer systems</li>
-        <li><strong>IT automation:</strong> Rapid deployment of configurations across multiple machines</li>
-        <li><strong>Personal productivity:</strong> Automating repetitive tasks on your own computers</li>
-        <li><strong>Education:</strong> Learning about USB security vulnerabilities</li>
-        <li><strong>Accessibility:</strong> Creating custom input solutions for users with disabilities</li>
-      </ul>
-
-      <p><strong>Malicious uses (illegal and unethical):</strong></p>
-      <ul>
-        <li>Unauthorized access to computer systems</li>
-        <li>Data theft or corporate espionage</li>
-        <li>Installing malware or ransomware</li>
-        <li>Disabling security systems without permission</li>
-        <li>Any use on computers you don't own or have authorization to test</li>
-      </ul>
-
-      <div class="warning-box">
-        <strong>⚠️ CRITICAL LEGAL WARNING</strong>
-        <p style="margin-top: 0.5rem;">BadUSB attacks on computers you don't own or don't have explicit written authorization to test are illegal under computer fraud laws in virtually every jurisdiction.</p>
-      </div>
-    </div>
-
-    <!-- keep the rest of your original content sections here unchanged -->
-
-    <button id="complete-btn" onclick="markComplete()">Complete Previous Lesson First</button>
+    <button id="complete-btn" class="locked" onclick="markComplete()">Complete Previous Lesson First</button>
 
     <div class="nav-section">
       <button onclick="scrollToTop()">Back to Top ↑</button>
       <div class="nav-buttons">
         <a href="../lesson-5/">← Previous Lesson</a>
-        <a href="../../">🎓 Course Overview</a>
-        <a href="https://twist3dink.xyz/academy/">🏠 Back to Academy</a>
+        <a href="../../">Course Overview</a>
+        <a href="https://twist3dink.xyz/academy/">Back to Academy</a>
       </div>
     </div>
   </div>
@@ -487,9 +423,8 @@ ENTER</div>
       const currentLessonNumber = 6;
       const progress = loadProgress();
 
-      if (!progress.completedLessons.includes(currentLessonNumber - 1)) {
-        return;
-      }
+      // Gate: must complete Lesson 5 first
+      if (!progress.completedLessons.includes(currentLessonNumber - 1)) return;
 
       if (!progress.completedLessons.includes(currentLessonNumber)) {
         progress.completedLessons.push(currentLessonNumber);
@@ -502,7 +437,7 @@ ENTER</div>
         const saved = saveProgress(progress);
 
         if (saved) {
-          btn.textContent = '✓ Lesson Complete - Course Finished! 🎓';
+          btn.textContent = '✓ Lesson Complete - Course Finished!';
           btn.classList.remove('locked');
           btn.classList.add('completed');
         } else {
@@ -522,14 +457,12 @@ ENTER</div>
       const btn = document.getElementById('complete-btn');
 
       if (progress.completedLessons.includes(currentLessonNumber)) {
-        btn.textContent = '✓ Lesson Complete - Course Finished! 🎓';
+        btn.textContent = '✓ Lesson Complete - Course Finished!';
         btn.classList.add('completed');
-      }
-      else if (progress.completedLessons.includes(currentLessonNumber - 1)) {
+      } else if (progress.completedLessons.includes(currentLessonNumber - 1)) {
         btn.textContent = 'Mark Lesson as Complete';
         btn.classList.remove('locked');
-      }
-      else {
+      } else {
         btn.textContent = 'Complete Previous Lesson First';
         btn.classList.add('locked');
       }
