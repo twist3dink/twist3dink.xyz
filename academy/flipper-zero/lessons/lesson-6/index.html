@@ -349,4 +349,191 @@ ENTER</div>
       </ol>
 
       <div class="warning-box">
-        <strong>Hardware rule:</strong> Treat GPIO as <strong>3.3V
+        <strong>Hardware rule:</strong> Treat GPIO as <strong>3.3V logic only</strong>. Overvoltage can permanently damage pins.
+      </div>
+
+      <h3>Deliverables (GPIO Proof Pack)</h3>
+      <ul>
+        <li><strong>D6.4</strong> — Photo of your GPIO reference (screen OR pin labels OR official pinout reference)</li>
+        <li><strong>D6.5</strong> — 5-line GPIO Safety Checklist:
+          <ul>
+            <li><strong>Logic level used:</strong> 3.3V</li>
+            <li><strong>Never connect this voltage directly:</strong> 5V / 12V</li>
+            <li><strong>Must share this reference with external circuits:</strong> GND</li>
+            <li><strong>LED protection component:</strong> Current-limiting resistor (220Ω–330Ω)</li>
+            <li><strong>My rule before wiring:</strong> “Power off, re-check, then connect.”</li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="note-box">
+        <strong>Optional (not required):</strong> If you already own an LED + resistor + jumper wires,
+        you can do a basic output test using any built-in manual GPIO toggle feature.
+        Do not attempt this if you don’t already know what you’re doing.
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2>Finished Means</h2>
+      <ul>
+        <li>D6.1 + D6.2 + D6.3 exist (BadUSB proof loop complete).</li>
+        <li>D6.4 + D6.5 exist (GPIO proof loop complete).</li>
+        <li>You can explain what you did in one minute without drifting into “cooler stuff.”</li>
+      </ul>
+    </div>
+
+    <!-- ✅ ORIGINAL LESSON CONTENT CONTINUES (kept as-is below) -->
+
+    <div class="content-section">
+      <h2>What is BadUSB?</h2>
+      <p>BadUSB is a security exploit that takes advantage of the trust computers place in USB devices. When you plug in a USB keyboard, your computer automatically trusts it and accepts whatever keystrokes it sends. BadUSB attacks exploit this by making a device pretend to be a keyboard and then rapidly typing commands to compromise the system.</p>
+
+      <h3>USB Human Interface Device (HID) Attacks</h3>
+      <p>Human Interface Devices (HIDs) are peripherals like keyboards, mice, and game controllers. Operating systems trust HIDs implicitly because they're essential for user interaction. This trust creates a security vulnerability:</p>
+
+      <ul>
+        <li>When you plug in a keyboard, the OS doesn't ask "should I trust this keyboard?"</li>
+        <li>It immediately starts accepting keystrokes</li>
+        <li>The keyboard could type anything - including malicious commands</li>
+        <li>The OS has no way to distinguish between human keystrokes and automated ones</li>
+      </ul>
+
+      <h3>Flipper Acts as Keyboard/Mouse</h3>
+      <p>When you connect Flipper Zero to a computer via USB and run a BadUSB script, Flipper identifies itself as a keyboard (and optionally mouse). The computer sees it as a legitimate input device and processes whatever "keystrokes" Flipper sends. This happens in milliseconds, often faster than a human could react.</p>
+
+      <h3>Automated Keystroke Injection</h3>
+      <p>BadUSB scripts can:</p>
+      <ul>
+        <li>Open applications (calculator, terminal, web browser)</li>
+        <li>Execute system commands</li>
+        <li>Download and run files from the internet</li>
+        <li>Modify system settings</li>
+        <li>Extract data and upload it to remote servers</li>
+        <li>Disable security features</li>
+      </ul>
+
+      <p>All of this happens automatically when the script runs, without any user interaction beyond plugging in the USB device.</p>
+
+      <h3>Legitimate Uses vs Malicious Uses</h3>
+      <p><strong>Legitimate uses of BadUSB:</strong></p>
+      <ul>
+        <li><strong>Penetration testing:</strong> Authorized security assessments of computer systems</li>
+        <li><strong>IT automation:</strong> Rapid deployment of configurations across multiple machines</li>
+        <li><strong>Personal productivity:</strong> Automating repetitive tasks on your own computers</li>
+        <li><strong>Education:</strong> Learning about USB security vulnerabilities</li>
+        <li><strong>Accessibility:</strong> Creating custom input solutions for users with disabilities</li>
+      </ul>
+
+      <p><strong>Malicious uses (illegal and unethical):</strong></p>
+      <ul>
+        <li>Unauthorized access to computer systems</li>
+        <li>Data theft or corporate espionage</li>
+        <li>Installing malware or ransomware</li>
+        <li>Disabling security systems without permission</li>
+        <li>Any use on computers you don't own or have authorization to test</li>
+      </ul>
+
+      <div class="warning-box">
+        <strong>⚠️ CRITICAL LEGAL WARNING</strong>
+        <p style="margin-top: 0.5rem;">BadUSB attacks on computers you don't own or don't have explicit written authorization to test are illegal under computer fraud laws in virtually every jurisdiction.</p>
+      </div>
+    </div>
+
+    <!-- keep the rest of your original content sections here unchanged -->
+
+    <button id="complete-btn" onclick="markComplete()">Complete Previous Lesson First</button>
+
+    <div class="nav-section">
+      <button onclick="scrollToTop()">Back to Top ↑</button>
+      <div class="nav-buttons">
+        <a href="../lesson-5/">← Previous Lesson</a>
+        <a href="../../">🎓 Course Overview</a>
+        <a href="https://twist3dink.xyz/academy/">🏠 Back to Academy</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function scrollToBottom() {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' });
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem('flipper-progress');
+        return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+      } catch (e) {
+        console.error('Error loading progress:', e);
+        return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+      }
+    }
+
+    function saveProgress(progress) {
+      try {
+        localStorage.setItem('flipper-progress', JSON.stringify(progress));
+        return true;
+      } catch (e) {
+        console.error('Error saving progress:', e);
+        return false;
+      }
+    }
+
+    function markComplete() {
+      const btn = document.getElementById('complete-btn');
+      const currentLessonNumber = 6;
+      const progress = loadProgress();
+
+      if (!progress.completedLessons.includes(currentLessonNumber - 1)) {
+        return;
+      }
+
+      if (!progress.completedLessons.includes(currentLessonNumber)) {
+        progress.completedLessons.push(currentLessonNumber);
+        progress.totalXP += 50;
+
+        if (progress.currentLesson === currentLessonNumber) {
+          progress.currentLesson = currentLessonNumber + 1;
+        }
+
+        const saved = saveProgress(progress);
+
+        if (saved) {
+          btn.textContent = '✓ Lesson Complete - Course Finished! 🎓';
+          btn.classList.remove('locked');
+          btn.classList.add('completed');
+        } else {
+          btn.textContent = 'Error - Try Again';
+          btn.classList.add('error');
+          setTimeout(() => {
+            btn.textContent = 'Mark Lesson as Complete';
+            btn.classList.remove('error');
+          }, 2000);
+        }
+      }
+    }
+
+    window.addEventListener('load', () => {
+      const progress = loadProgress();
+      const currentLessonNumber = 6;
+      const btn = document.getElementById('complete-btn');
+
+      if (progress.completedLessons.includes(currentLessonNumber)) {
+        btn.textContent = '✓ Lesson Complete - Course Finished! 🎓';
+        btn.classList.add('completed');
+      }
+      else if (progress.completedLessons.includes(currentLessonNumber - 1)) {
+        btn.textContent = 'Mark Lesson as Complete';
+        btn.classList.remove('locked');
+      }
+      else {
+        btn.textContent = 'Complete Previous Lesson First';
+        btn.classList.add('locked');
+      }
+    });
+  </script>
+</body>
+</html>
