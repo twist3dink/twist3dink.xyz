@@ -268,4 +268,179 @@
 
             <h3>Step 3 — Confirm saved files (proof you can find them)</h3>
             <ol>
-                <li>Go to <
+                <li>Go to <strong>NFC → Saved</strong> and/or <strong>RFID → Saved</strong>.</li>
+                <li>Confirm both saved entries are visible.</li>
+                <li>Open each saved entry and verify it shows the same info you saw when reading.</li>
+            </ol>
+        </div>
+
+        <div class="content-section">
+            <h2>Deliverables (Proof Pack)</h2>
+            <p>To finish Lesson 4, create these artifacts. Keep it simple and auditable.</p>
+
+            <ul>
+                <li><strong>D4.1</strong> — Two saved reads on the Flipper (Item A + Item B) with meaningful names.</li>
+                <li><strong>D4.2</strong> — Two “Tag Reports” (copy/paste template below into your notes app or a file):</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Tag Report template (copy this twice):</strong>
+                <ul style="margin-top: 0.5rem;">
+                    <li><strong>Tag name:</strong> (your saved file name)</li>
+                    <li><strong>Ownership:</strong> Mine / I have permission</li>
+                    <li><strong>Type:</strong> NFC 13.56MHz or RFID 125kHz</li>
+                    <li><strong>What Flipper identified:</strong> (card/tag family)</li>
+                    <li><strong>Visible identifiers:</strong> (UID, ATQA/SAK, etc. — whatever is shown)</li>
+                    <li><strong>Protected/locked?</strong> Yes/No/Unknown (based on what Flipper reports)</li>
+                    <li><strong>Notes:</strong> 1–3 lines (anything weird, any errors, placement tips)</li>
+                </ul>
+            </div>
+
+            <ul>
+                <li><strong>D4.3</strong> — One photo/screenshot per item showing the read result or the saved entry screen.</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Verification</h2>
+            <ul>
+                <li>I can read and save two tags/cards I own.</li>
+                <li>I can find them again under Saved.</li>
+                <li>I created two Tag Reports + collected proof screenshots/photos.</li>
+                <li>I can explain in one sentence the difference between 125kHz RFID and 13.56MHz NFC.</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Troubleshooting</h2>
+
+            <h3>It won’t read at all</h3>
+            <ul>
+                <li>Move the card slowly around the back of the Flipper — antenna position matters.</li>
+                <li>Hold steady for 1–2 seconds (don’t tap-and-run).</li>
+                <li>Try the other module (NFC vs 125kHz RFID).</li>
+            </ul>
+
+            <h3>It reads but only shows minimal info</h3>
+            <ul>
+                <li>That’s normal for many secure implementations.</li>
+                <li>Your deliverable is “document what’s visible,” not “break encryption.”</li>
+            </ul>
+
+            <h3>It says protected / keys required / partial read</h3>
+            <ul>
+                <li>Also normal. Record that outcome in the Tag Report.</li>
+                <li>Do not chase key extraction here — out of scope for this track.</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>Do not test random badges you find in public.</strong> If you don’t own it, it’s not “practice,” it’s evidence.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Finished Means</h2>
+            <ul>
+                <li>D4.1 + D4.2 + D4.3 exist.</li>
+                <li>You can repeat read → save → find saved without help.</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Next Up:</strong> Lesson 5 moves into <strong>Sub-GHz</strong> safely: receive, label, and understand (no mischief).
+            </div>
+        </div>
+
+        <button id="complete-btn" onclick="markComplete()">Complete Previous Lesson First</button>
+
+        <div class="nav-section">
+            <button onclick="scrollToTop()">Back to Top ↑</button>
+            <div class="nav-buttons">
+                <a href="../lesson-3/">← Previous Lesson</a>
+                <a href="../../">Course Overview</a>
+                <a href="../lesson-5/">Next Lesson →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('flipper-progress');
+                return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            } catch (e) {
+                console.error('Error loading progress:', e);
+                return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            }
+        }
+
+        function saveProgress(progress) {
+            try {
+                localStorage.setItem('flipper-progress', JSON.stringify(progress));
+                return true;
+            } catch (e) {
+                console.error('Error saving progress:', e);
+                return false;
+            }
+        }
+
+        function markComplete() {
+            const btn = document.getElementById('complete-btn');
+            const currentLessonNumber = 4;
+            const progress = loadProgress();
+
+            if (!progress.completedLessons.includes(currentLessonNumber - 1)) { return; }
+
+            if (!progress.completedLessons.includes(currentLessonNumber)) {
+                progress.completedLessons.push(currentLessonNumber);
+                progress.totalXP += 50;
+
+                if (progress.currentLesson === currentLessonNumber) {
+                    progress.currentLesson = currentLessonNumber + 1;
+                }
+
+                const saved = saveProgress(progress);
+
+                if (saved) {
+                    btn.textContent = '✓ Lesson Complete';
+                    btn.classList.remove('locked');
+                    btn.classList.add('completed');
+                } else {
+                    btn.textContent = 'Error - Try Again';
+                    btn.classList.add('error');
+                    setTimeout(() => {
+                        btn.textContent = 'Mark Lesson as Complete';
+                        btn.classList.remove('error');
+                    }, 2000);
+                }
+            }
+        }
+
+        window.addEventListener('load', () => {
+            const progress = loadProgress();
+            const currentLessonNumber = 4;
+            const btn = document.getElementById('complete-btn');
+
+            if (progress.completedLessons.includes(currentLessonNumber)) {
+                btn.textContent = '✓ Lesson Complete';
+                btn.classList.add('completed');
+            }
+            else if (progress.completedLessons.includes(currentLessonNumber - 1)) {
+                btn.textContent = 'Mark Lesson as Complete';
+                btn.classList.remove('locked');
+            }
+            else {
+                btn.textContent = 'Complete Previous Lesson First';
+                btn.classList.add('locked');
+            }
+        });
+    </script>
+</body>
+</html>
