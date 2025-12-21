@@ -1,4 +1,53 @@
-<div class="content-section">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 6: BadUSB & GPIO | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-header {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
+
+        .lesson-header h1 {
+            color: #00ff88;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-meta {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        <div class="content-section">
   <h2>Objective</h2>
   <p>Complete two safe proof loops: (1) BadUSB “type-only” automation on your own computer, and (2) GPIO safety + pinout verification on the Flipper. The goal is controlled learning and documentation — not “doing damage fast.”</p>
 
@@ -86,3 +135,838 @@
     <li>You can explain what you did in one minute without drifting into “cooler stuff.”</li>
   </ul>
 </div>
+      }
+
+        #complete-btn.locked {
+            background: #333;
+            color: #666;
+            border: 2px solid #666;
+            cursor: not-allowed;
+        }
+
+        #complete-btn.error {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .nav-section {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 2rem;
+        }
+
+        .nav-section button {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .nav-section button:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-buttons a {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .nav-buttons a:nth-child(1),
+        .nav-buttons a:nth-child(2) {
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .nav-buttons a:nth-child(1):hover,
+        .nav-buttons a:nth-child(2):hover {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .nav-buttons a:nth-child(3) {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: 2px solid #00ff88;
+        }
+
+        .nav-buttons a:nth-child(3):hover {
+            background: #00dd77;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .lesson-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .content-section {
+                padding: 1.5rem;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .nav-buttons a {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <h1>Lesson 6: BadUSB & GPIO</h1>
+            <p class="lesson-meta">Estimated time: 30 minutes | XP Reward: 50</p>
+            <button onclick="scrollToBottom()">Skip to Bottom ↓</button>
+        </div>
+
+        <div class="content-section">
+            <h2>What is BadUSB?</h2>
+            <p>BadUSB is a security exploit that takes advantage of the trust computers place in USB devices. When you plug in a USB keyboard, your computer automatically trusts it and accepts whatever keystrokes it sends. BadUSB attacks exploit this by making a device pretend to be a keyboard and then rapidly typing commands to compromise the system.</p>
+
+            <h3>USB Human Interface Device (HID) Attacks</h3>
+            <p>Human Interface Devices (HIDs) are peripherals like keyboards, mice, and game controllers. Operating systems trust HIDs implicitly because they're essential for user interaction. This trust creates a security vulnerability:</p>
+
+            <ul>
+                <li>When you plug in a keyboard, the OS doesn't ask "should I trust this keyboard?"</li>
+                <li>It immediately starts accepting keystrokes</li>
+                <li>The keyboard could type anything - including malicious commands</li>
+                <li>The OS has no way to distinguish between human keystrokes and automated ones</li>
+            </ul>
+
+            <h3>Flipper Acts as Keyboard/Mouse</h3>
+            <p>When you connect Flipper Zero to a computer via USB and run a BadUSB script, Flipper identifies itself as a keyboard (and optionally mouse). The computer sees it as a legitimate input device and processes whatever "keystrokes" Flipper sends. This happens in milliseconds, often faster than a human could react.</p>
+
+            <h3>Automated Keystroke Injection</h3>
+            <p>BadUSB scripts can:</p>
+            <ul>
+                <li>Open applications (calculator, terminal, web browser)</li>
+                <li>Execute system commands</li>
+                <li>Download and run files from the internet</li>
+                <li>Modify system settings</li>
+                <li>Extract data and upload it to remote servers</li>
+                <li>Disable security features</li>
+            </ul>
+
+            <p>All of this happens automatically when the script runs, without any user interaction beyond plugging in the USB device.</p>
+
+            <h3>Legitimate Uses vs Malicious Uses</h3>
+            <p><strong>Legitimate uses of BadUSB:</strong></p>
+            <ul>
+                <li><strong>Penetration testing:</strong> Authorized security assessments of computer systems</li>
+                <li><strong>IT automation:</strong> Rapid deployment of configurations across multiple machines</li>
+                <li><strong>Personal productivity:</strong> Automating repetitive tasks on your own computers</li>
+                <li><strong>Education:</strong> Learning about USB security vulnerabilities</li>
+                <li><strong>Accessibility:</strong> Creating custom input solutions for users with disabilities</li>
+            </ul>
+
+            <p><strong>Malicious uses (illegal and unethical):</strong></p>
+            <ul>
+                <li>Unauthorized access to computer systems</li>
+                <li>Data theft or corporate espionage</li>
+                <li>Installing malware or ransomware</li>
+                <li>Disabling security systems without permission</li>
+                <li>Any use on computers you don't own or have authorization to test</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ CRITICAL LEGAL WARNING</strong>
+                <p style="margin-top: 0.5rem;">BadUSB attacks on computers you don't own or don't have explicit written authorization to test are illegal under computer fraud laws in virtually every jurisdiction. Penalties include:</p>
+                <ul style="margin-top: 0.5rem;">
+                    <li>Federal criminal charges (Computer Fraud and Abuse Act in the US)</li>
+                    <li>Significant fines and imprisonment</li>
+                    <li>Civil lawsuits from affected parties</li>
+                    <li>Permanent criminal record affecting employment</li>
+                </ul>
+                <p style="margin-top: 0.5rem;">"Just testing" or "I was curious" are not legal defenses. Only test on your own systems.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>BadUSB Safety First</h2>
+            <p>Before we explore how to create BadUSB scripts, let's establish clear safety guidelines.</p>
+
+            <h3>Only Test on Your Own Devices</h3>
+            <p>This cannot be emphasized enough: Only run BadUSB scripts on computers you personally own. Not your employer's computer, not school computers, not your friend's laptop "as a prank," not public computers, and definitely not computers in stores or libraries.</p>
+
+            <p>Even if you have legitimate access to a computer for other purposes, that doesn't grant you permission to test security exploits on it. Get explicit written authorization first.</p>
+
+            <h3>Can Cause System Damage if Misused</h3>
+            <p>BadUSB scripts execute commands at computer speed. A poorly written script can:</p>
+            <ul>
+                <li>Delete important system files</li>
+                <li>Modify critical configurations</li>
+                <li>Fill up disk space</li>
+                <li>Create infinite loops that crash the system</li>
+                <li>Make the computer unbootable</li>
+            </ul>
+
+            <p>Always test scripts in a safe environment first (virtual machine or test computer) before running them on your primary machine.</p>
+
+            <h3>Legal Implications</h3>
+            <p>Computer fraud laws are strict and broadly written. Using BadUSB on unauthorized systems can result in:</p>
+            <ul>
+                <li><strong>Criminal prosecution:</strong> Federal and state charges for computer intrusion</li>
+                <li><strong>Civil liability:</strong> Lawsuits for damages, lost data, or business disruption</li>
+                <li><strong>Academic consequences:</strong> Expulsion from schools and universities</li>
+                <li><strong>Employment termination:</strong> Immediate firing and industry blacklisting</li>
+                <li><strong>Professional consequences:</strong> Loss of security certifications and career opportunities</li>
+            </ul>
+
+            <h3>Ethical Boundaries</h3>
+            <p>Beyond legal considerations, ethical hackers follow a code of conduct:</p>
+            <ul>
+                <li><strong>Authorization:</strong> Never test without explicit permission</li>
+                <li><strong>Scope:</strong> Stay within agreed boundaries of testing</li>
+                <li><strong>Disclosure:</strong> Report vulnerabilities responsibly to those who can fix them</li>
+                <li><strong>No harm:</strong> Don't cause damage, even when authorized to test</li>
+                <li><strong>Privacy:</strong> Respect data confidentiality</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Professional Standard:</strong> Legitimate penetration testers carry written contracts, have liability insurance, and follow strict rules of engagement. Anything less is not security testing - it's hacking.
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ EDUCATIONAL PURPOSES DISCLAIMER</strong>
+                <p style="margin-top: 0.5rem;">The code examples and techniques in this lesson are provided strictly for educational purposes to understand USB security vulnerabilities. tw¡st3d_¡nk Academy and the course creators assume no responsibility for any misuse of this information. You are solely responsible for ensuring your actions comply with all applicable laws and regulations.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Creating BadUSB Scripts</h2>
+            <p>BadUSB scripts use Ducky Script, a simple scripting language originally developed for the USB Rubber Ducky penetration testing tool.</p>
+
+            <h3>Ducky Script Language Basics</h3>
+            <p>Ducky Script is designed to be human-readable and straightforward. Scripts are plain text files with a .txt extension, stored in the /badusb/ folder on your Flipper's SD card.</p>
+
+            <p><strong>Basic structure:</strong></p>
+            <ul>
+                <li>Each line represents one command or keystroke</li>
+                <li>Commands are case-sensitive</li>
+                <li>Comments start with REM (remark)</li>
+                <li>Scripts execute line-by-line from top to bottom</li>
+            </ul>
+
+            <h3>Common Commands</h3>
+
+            <p><strong>DELAY</strong> - Pause execution for specified milliseconds</p>
+            <div class="code-block">DELAY 1000
+REM Waits for 1 second (1000 milliseconds)</div>
+
+            <p><strong>STRING</strong> - Type out text exactly as written</p>
+            <div class="code-block">STRING Hello World
+REM Types the text "Hello World"</div>
+
+            <p><strong>ENTER</strong> - Press the Enter/Return key</p>
+            <div class="code-block">ENTER
+REM Presses Enter key once</div>
+
+            <p><strong>GUI</strong> - Windows key (Windows), Command key (Mac), Super key (Linux)</p>
+            <div class="code-block">GUI r
+REM Windows: Opens Run dialog (Win+R)
+REM Mac: Opens Spotlight (Cmd+R)</div>
+
+            <p><strong>ALT</strong> - Alt key modifier</p>
+            <div class="code-block">ALT F4
+REM Closes the active window</div>
+
+            <p><strong>CTRL</strong> - Control key modifier</p>
+            <div class="code-block">CTRL c
+REM Copies selected text</div>
+
+            <p><strong>Other useful keys:</strong> SHIFT, TAB, ESCAPE, BACKSPACE, DELETE, UP, DOWN, LEFT, RIGHT, HOME, END, PAGEUP, PAGEDOWN</p>
+
+            <h3>Script Structure</h3>
+            <p>A well-structured BadUSB script includes:</p>
+
+            <ol>
+                <li><strong>Header comments:</strong> Description of what the script does</li>
+                <li><strong>Initial delay:</strong> Give the system time to recognize the USB device</li>
+                <li><strong>Command sequence:</strong> Your actual automation steps</li>
+                <li><strong>Cleanup:</strong> Close windows or return system to normal state</li>
+            </ol>
+
+            <div class="code-block">REM Title: Example Script Template
+REM Description: What this script does
+REM Author: Your name
+REM Target: Windows 10/11
+
+REM Wait for device recognition
+DELAY 2000
+
+REM Your commands here
+GUI r
+DELAY 500
+STRING notepad
+ENTER
+DELAY 1000
+STRING Script executed successfully!
+
+REM End of script</div>
+
+            <h3>Testing Safely</h3>
+            <p>Before running any BadUSB script on your computer:</p>
+            <ul>
+                <li><strong>Read through the entire script</strong> to understand what it will do</li>
+                <li><strong>Test in a virtual machine</strong> first (VirtualBox, VMware)</li>
+                <li><strong>Save your work</strong> in other applications before testing</li>
+                <li><strong>Be ready to unplug</strong> Flipper immediately if something goes wrong</li>
+                <li><strong>Start with simple, harmless scripts</strong> before attempting complex ones</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Example Scripts</h2>
+            <p>Let's look at practical examples that demonstrate BadUSB capabilities safely.</p>
+
+            <div class="warning-box">
+                <strong>⚠️ EDUCATIONAL PURPOSES ONLY</strong>
+                <p style="margin-top: 0.5rem;">These scripts are teaching examples only. Only run them on computers you own. tw¡st3d_¡nk Academy assumes no responsibility for misuse.</p>
+            </div>
+
+            <h3>Simple "Hello World"</h3>
+            <p>This basic script opens Notepad and types a message - perfect for testing:</p>
+
+            <div class="code-block">REM Title: Hello World
+REM Description: Opens Notepad and types a message
+REM Target: Windows
+
+DELAY 2000
+GUI r
+DELAY 500
+STRING notepad
+ENTER
+DELAY 1000
+STRING Hello from Flipper Zero!
+ENTER
+STRING This is a BadUSB demonstration.
+ENTER
+STRING Educational purposes only.</div>
+
+            <p><strong>What it does:</strong></p>
+            <ol>
+                <li>Waits 2 seconds for USB recognition</li>
+                <li>Opens Run dialog (Win+R)</li>
+                <li>Types "notepad" and presses Enter</li>
+                <li>Waits for Notepad to open</li>
+                <li>Types three lines of text</li>
+            </ol>
+
+            <h3>Opening Applications</h3>
+            <p>Scripts can launch any application on the system:</p>
+
+            <div class="code-block">REM Title: Open Calculator
+REM Description: Opens the Windows Calculator
+REM Target: Windows 10/11
+
+DELAY 2000
+GUI r
+DELAY 500
+STRING calc
+ENTER</div>
+
+            <div class="code-block">REM Title: Open Browser to URL
+REM Description: Opens default browser to a specific website
+REM Target: Windows
+
+DELAY 2000
+GUI r
+DELAY 500
+STRING https://www.example.com
+ENTER</div>
+
+            <h3>Running Commands</h3>
+            <p>More advanced scripts can execute system commands:</p>
+
+            <div class="code-block">REM Title: System Information Display
+REM Description: Opens Command Prompt and displays system info
+REM Target: Windows
+REM Educational purposes only - run on your own system
+
+DELAY 2000
+GUI r
+DELAY 500
+STRING cmd
+ENTER
+DELAY 1000
+STRING systeminfo
+ENTER
+REM Wait to read information
+DELAY 10000
+REM Close command prompt
+STRING exit
+ENTER</div>
+
+            <p><strong>Explanation:</strong></p>
+            <ul>
+                <li>Opens Run dialog</li>
+                <li>Launches Command Prompt</li>
+                <li>Executes systeminfo command</li>
+                <li>Waits 10 seconds to view output</li>
+                <li>Closes the window</li>
+            </ul>
+
+            <h3>Demonstration Payloads Only</h3>
+            <p>The internet contains many BadUSB "payloads" designed to compromise systems. We deliberately do NOT include those here. The examples provided are:</p>
+            <ul>
+                <li>Harmless and reversible</li>
+                <li>Designed for learning, not exploitation</li>
+                <li>Safe to run on your own test systems</li>
+                <li>Focused on understanding the technology, not causing harm</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Responsible Learning:</strong> Understanding how BadUSB works helps you defend against it. The goal is to make you more security-conscious, not to provide attack tools. If you encounter potentially harmful scripts online, recognize them for what they are and don't run them.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Understanding GPIO</h2>
+            <p>GPIO (General Purpose Input/Output) pins are one of Flipper Zero's most versatile features, opening up possibilities for hardware interaction and custom projects.</p>
+
+            <h3>General Purpose Input/Output Pins</h3>
+            <p>GPIO pins are digital interfaces that can be programmed to:</p>
+            <ul>
+                <li><strong>Read signals (Input):</strong> Detect button presses, sensor readings, or signals from other devices</li>
+                <li><strong>Send signals (Output):</strong> Control LEDs, relays, motors, or other electronic components</li>
+                <li><strong>Communicate (Protocols):</strong> Exchange data using UART, SPI, or I2C protocols</li>
+            </ul>
+
+            <h3>Reading Sensors</h3>
+            <p>GPIO input mode allows Flipper to read data from various sensors:</p>
+            <ul>
+                <li><strong>Temperature sensors:</strong> DHT11, DHT22, DS18B20</li>
+                <li><strong>Motion sensors:</strong> PIR (passive infrared) detectors</li>
+                <li><strong>Light sensors:</strong> Photoresistors, photodiodes</li>
+                <li><strong>Buttons and switches:</strong> Simple on/off inputs</li>
+                <li><strong>Distance sensors:</strong> Ultrasonic or infrared ranging</li>
+            </ul>
+
+            <h3>Controlling LEDs and Devices</h3>
+            <p>GPIO output mode lets Flipper control external hardware:</p>
+            <ul>
+                <li><strong>LEDs:</strong> Turn on/off, create patterns, brightness control (with PWM)</li>
+                <li><strong>Relays:</strong> Switch high-power devices on/off</li>
+                <li><strong>Servos:</strong> Control mechanical movement</li>
+                <li><strong>Displays:</strong> Drive small OLED or LCD screens</li>
+                <li><strong>Buzzers:</strong> Create tones and alerts</li>
+            </ul>
+
+            <h3>Pin Layout and Functions</h3>
+            <p>Flipper Zero has 18 GPIO pins arranged in two rows. Key pins include:</p>
+            <ul>
+                <li><strong>Power pins:</strong> 3.3V output (for powering sensors/components) and Ground (GND)</li>
+                <li><strong>Digital pins:</strong> Can be configured as input or output</li>
+                <li><strong>UART pins:</strong> RX (receive) and TX (transmit) for serial communication</li>
+                <li><strong>SPI pins:</strong> CLK (clock), MOSI (master out), MISO (master in), CS (chip select)</li>
+                <li><strong>I2C pins:</strong> SDA (data) and SCL (clock)</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Pin Reference:</strong> Always check the official Flipper Zero documentation for the exact pin layout before connecting hardware. Incorrect connections can damage Flipper or your components.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>GPIO Basics</h2>
+            <p>Working with GPIO requires understanding electrical fundamentals and proper connection techniques.</p>
+
+            <h3>Pin Modes: Input, Output, UART, SPI, I2C</h3>
+
+            <p><strong>Input Mode:</strong></p>
+            <ul>
+                <li>Pin reads external voltage levels</li>
+                <li>Detects HIGH (3.3V) or LOW (0V) states</li>
+                <li>Used for buttons, switches, and sensors</li>
+                <li>Often requires pull-up or pull-down resistors</li>
+            </ul>
+
+            <p><strong>Output Mode:</strong></p>
+            <ul>
+                <li>Pin generates voltage to control external devices</li>
+                <li>Can be set HIGH (3.3V) or LOW (0V)</li>
+                <li>Used to drive LEDs, relays, and other components</li>
+                <li>Limited current output (typically 20mA per pin)</li>
+            </ul>
+
+            <p><strong>UART (Universal Asynchronous Receiver/Transmitter):</strong></p>
+            <ul>
+                <li>Serial communication protocol</li>
+                <li>Two wires: TX (transmit) and RX (receive)</li>
+                <li>Used for debugging, GPS modules, serial devices</li>
+                <li>Configurable baud rate (speed)</li>
+            </ul>
+
+            <p><strong>SPI (Serial Peripheral Interface):</strong></p>
+            <ul>
+                <li>Fast, synchronous communication</li>
+                <li>Four wires: CLK, MOSI, MISO, CS</li>
+                <li>Used for displays, SD cards, sensors</li>
+                <li>Supports multiple devices on same bus</li>
+            </ul>
+
+            <p><strong>I2C (Inter-Integrated Circuit):</strong></p>
+            <ul>
+                <li>Two-wire communication protocol</li>
+                <li>SDA (data) and SCL (clock)</li>
+                <li>Multiple devices can share the same bus</li>
+                <li>Common in sensors, displays, and expansion modules</li>
+            </ul>
+
+            <h3>Voltage Levels (3.3V)</h3>
+            <p>Flipper Zero operates at 3.3V logic levels. This is critical to remember:</p>
+            <ul>
+                <li><strong>3.3V is HIGH:</strong> Logic "1" or "on"</li>
+                <li><strong>0V (GND) is LOW:</strong> Logic "0" or "off"</li>
+                <li><strong>Do NOT connect 5V devices directly</strong> - they can damage Flipper's GPIO pins</li>
+                <li>Use level shifters when interfacing with 5V Arduino or other 5V devices</li>
+            </ul>
+
+            <h3>Ground and Power Pins</h3>
+            <p>Proper power and ground connections are essential:</p>
+            <ul>
+                <li><strong>Ground (GND):</strong> Common reference point for all signals, must be connected between Flipper and external devices</li>
+                <li><strong>3.3V Power:</strong> Can provide limited power to external circuits (check maximum current draw)</li>
+                <li><strong>5V Power:</strong> Available from USB when connected, can power higher-current devices</li>
+            </ul>
+
+            <h3>Protection Circuits</h3>
+            <p>While Flipper has some built-in protection, it's not invincible:</p>
+            <ul>
+                <li>Pins have limited current capacity - use resistors with LEDs</li>
+                <li>No reverse polarity protection - connecting power backwards can cause damage</li>
+                <li>ESD (electrostatic discharge) can damage sensitive circuits</li>
+                <li>Always double-check connections before applying power</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ HARDWARE SAFETY</strong>
+                <p style="margin-top: 0.5rem;">Working with GPIO can permanently damage your Flipper if done incorrectly. Always:</p>
+                <ul style="margin-top: 0.5rem;">
+                    <li>Verify voltage levels before connecting</li>
+                    <li>Check pin assignments against documentation</li>
+                    <li>Use appropriate current-limiting resistors</li>
+                    <li>Never short power to ground</li>
+                    <li>Start with simple, low-power projects</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Practical GPIO Projects</h2>
+            <p>Let's explore some beginner-friendly GPIO projects you can build with Flipper Zero.</p>
+
+            <h3>Reading Button Presses</h3>
+            <p>The simplest GPIO project: detect when a button is pressed.</p>
+
+            <p><strong>Components needed:</strong></p>
+            <ul>
+                <li>Tactile push button</li>
+                <li>10kΩ resistor (pull-down resistor)</li>
+                <li>Breadboard and jumper wires</li>
+            </ul>
+
+            <p><strong>Basic connection:</strong></p>
+            <ul>
+                <li>Connect one side of button to a GPIO pin</li>
+                <li>Connect other side to GND</li>
+                <li>Enable internal pull-up resistor in software</li>
+                <li>Pin reads LOW when button pressed, HIGH when released</li>
+            </ul>
+
+            <p>This simple circuit teaches fundamental concepts like pull-up/pull-down resistors and debouncing (handling button bounce noise).</p>
+
+            <h3>Controlling LEDs</h3>
+            <p>The classic "Hello World" of electronics: blinking an LED.</p>
+
+            <p><strong>Components needed:</strong></p>
+            <ul>
+                <li>LED (any color)</li>
+                <li>220Ω or 330Ω current-limiting resistor</li>
+                <li>Breadboard and jumper wires</li>
+            </ul>
+
+            <p><strong>Connection:</strong></p>
+            <ul>
+                <li>GPIO pin → Resistor → LED anode (longer leg, positive)</li>
+                <li>LED cathode (shorter leg, negative) → GND</li>
+                <li>Set GPIO pin HIGH to turn LED on, LOW to turn it off</li>
+            </ul>
+
+            <p><strong>Why the resistor?</strong> LEDs will draw too much current without a current-limiting resistor, potentially damaging both the LED and Flipper's GPIO pin. The resistor limits current to a safe level (typically 10-20mA).</p>
+
+            <h3>Sensor Integration</h3>
+            <p>More advanced projects involve reading data from sensors.</p>
+
+            <p><strong>DHT22 Temperature/Humidity Sensor Example:</strong></p>
+            <ul>
+                <li>Connect DHT22 VCC to Flipper 3.3V</li>
+                <li>Connect DHT22 GND to Flipper GND</li>
+                <li>Connect DHT22 DATA pin to a GPIO pin</li>
+                <li>Use community firmware or custom scripts to read sensor values</li>
+            </ul>
+
+            <p>Sensors open up possibilities like weather stations, environmental monitoring, and home automation projects.</p>
+
+            <h3>UART Communication</h3>
+            <p>UART allows Flipper to communicate with other devices serially.</p>
+
+            <p><strong>Common UART applications:</strong></p>
+            <ul>
+                <li><strong>GPS modules:</strong> Read location data</li>
+                <li><strong>Bluetooth modules:</strong> Wireless communication</li>
+                <li><strong>Arduino/ESP32:</strong> Interface with other microcontrollers</li>
+                <li><strong>Debug consoles:</strong> Access device debug output</li>
+            </ul>
+
+            <p><strong>Basic UART connection:</strong></p>
+            <ul>
+                <li>Flipper TX → Device RX (transmit to receive)</li>
+                <li>Flipper RX → Device TX (receive from transmit)</li>
+                <li>Common GND between both devices</li>
+                <li>Match baud rates (9600, 115200, etc.)</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Project Ideas:</strong> GPIO capabilities make Flipper a platform for countless projects - home automation controllers, data loggers, custom input devices, hardware security testers, and IoT prototypes. The community shares projects and code on GitHub and forums.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Safety with GPIO</h2>
+            <p>Working with hardware requires caution to avoid damaging your Flipper or connected components.</p>
+
+            <h3>Never Connect to Higher Voltages</h3>
+            <p>Flipper's GPIO pins are designed for 3.3V logic. Connecting higher voltages will cause permanent damage:</p>
+            <ul>
+                <li><strong>5V devices:</strong> Use a level shifter or voltage divider</li>
+                <li><strong>12V systems:</strong> Use optocouplers or relays for isolation</li>
+                <li><strong>AC voltage:</strong> Never connect directly - use appropriate isolation and conversion</li>
+            </ul>
+
+            <p>There is no "maybe it will work" with overvoltage - it WILL damage the pins immediately and irreversibly.</p>
+
+            <h3>Check Polarity</h3>
+            <p>Many components are polarity-sensitive:</p>
+            <ul>
+                <li><strong>LEDs:</strong> Anode (long leg) to positive, cathode (short leg) to ground</li>
+                <li><strong>Electrolytic capacitors:</strong> Negative terminal clearly marked, wrong polarity can cause explosion</li>
+                <li><strong>Diodes:</strong> Current flows one direction only</li>
+                <li><strong>Sensors:</strong> VCC/Power and GND connections must be correct</li>
+            </ul>
+
+            <h3>Use Current-Limiting Resistors</h3>
+            <p>Resistors protect both Flipper and your components:</p>
+            <ul>
+                <li><strong>LEDs:</strong> 220Ω-330Ω resistor prevents overcurrent</li>
+                <li><strong>Pull-up/Pull-down:</strong> 10kΩ typical for button inputs</li>
+                <li><strong>Base resistors:</strong> For transistor circuits</li>
+            </ul>
+
+            <p>Calculate proper resistor values using Ohm's Law: R = V / I</p>
+
+            <h3>Avoid Shorts</h3>
+            <p>Short circuits can destroy GPIO pins or damage Flipper's power supply:</p>
+            <ul>
+                <li>Never connect power directly to ground</li>
+                <li>Check for stray wires or metal objects on your breadboard</li>
+                <li>Use jumper wires carefully - loose connections can cause shorts</li>
+                <li>Power off before making connection changes</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ HARDWARE DAMAGE WARNING</strong>
+                <p style="margin-top: 0.5rem;">GPIO mistakes can permanently destroy your Flipper Zero. There is no software fix for burned-out pins. Always double-check connections before powering on, start with low-power projects, and when in doubt, consult experienced makers or the Flipper community.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Final Thoughts</h2>
+            <p>Congratulations! You've reached the end of the tw¡st3d_¡nk Academy Flipper Zero course. Over six lessons, you've learned:</p>
+
+            <ul>
+                <li><strong>Lesson 1:</strong> What Flipper Zero is and its capabilities</li>
+                <li><strong>Lesson 2:</strong> How to navigate the interface and settings</li>
+                <li><strong>Lesson 3:</strong> Sub-GHz radio communication and signal capture</li>
+                <li><strong>Lesson 4:</strong> RFID and NFC technologies</li>
+                <li><strong>Lesson 5:</strong> Infrared remote control</li>
+                <li><strong>Lesson 6:</strong> BadUSB automation and GPIO hardware interaction</li>
+            </ul>
+
+            <h3>BadUSB and GPIO: Power with Responsibility</h3>
+            <p>The topics in this final lesson represent some of Flipper's most powerful - and potentially dangerous - capabilities. BadUSB can automate computer tasks or compromise systems. GPIO can create amazing hardware projects or damage equipment if misused.</p>
+
+            <p>The key takeaway: <strong>knowledge is only as valuable as the ethics guiding its use.</strong></p>
+
+            <h3>Where to Go From Here</h3>
+            <p>Your journey with Flipper Zero is just beginning:</p>
+
+            <ul>
+                <li><strong>Join the community:</strong> Official forums, Discord servers, and subreddits are full of helpful makers and hackers</li>
+                <li><strong>Explore custom firmware:</strong> Unleashed and Xtreme firmware offer additional features</li>
+                <li><strong>Build projects:</strong> Combine multiple Flipper features into useful tools</li>
+                <li><strong>Learn more:</strong> Study wireless protocols, cryptography, and hardware security in depth</li>
+                <li><strong>Contribute back:</strong> Share your discoveries, help beginners, improve documentation</li>
+            </ul>
+
+            <h3>Professional Development</h3>
+            <p>If security interests you as a career path:</p>
+            <ul>
+                <li>Pursue security certifications (CEH, OSCP, CISSP)</li>
+                <li>Study computer science and networking fundamentals</li>
+                <li>Participate in CTF (Capture The Flag) competitions</li>
+                <li>Contribute to open-source security projects</li>
+                <li>Always operate ethically and legally</li>
+            </ul>
+
+            <h3>Stay Curious, Stay Ethical</h3>
+            <p>The hacker mindset is about curiosity, creativity, and understanding how things work. It's about making technology more secure, not exploiting it. The most respected security professionals are those who:</p>
+
+            <ul>
+                <li>Operate transparently within legal boundaries</li>
+                <li>Prioritize helping others over personal gain</li>
+                <li>Disclose vulnerabilities responsibly</li>
+                <li>Mentor newcomers and share knowledge</li>
+                <li>Continually learn and adapt</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Thank You!</strong> Thank you for completing the tw¡st3d_¡nk Academy Flipper Zero course. We hope you've gained valuable knowledge and skills. Remember: use what you've learned to make technology more secure and accessible for everyone. Happy hacking (the ethical kind)! 🐬
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ FINAL REMINDER</strong>
+                <p style="margin-top: 0.5rem;">Everything taught in this course is for educational purposes only. tw¡st3d_¡nk Academy and course creators assume absolutely no responsibility for any misuse of these techniques or information. You are solely responsible for ensuring all your actions comply with applicable laws and regulations. When in doubt, don't do it without proper authorization.</p>
+            </div>
+        </div>
+
+        <button id="complete-btn" onclick="markComplete()">Complete Previous Lesson First</button>
+
+        <div class="nav-section">
+            <button onclick="scrollToTop()">Back to Top ↑</button>
+            <div class="nav-buttons">
+                <a href="../lesson-5/">← Previous Lesson</a>
+                <a href="../../">🎓 Course Overview</a>
+                <a href="https://twist3dink.xyz/academy/">🏠 Back to Academy</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'instant'
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'instant'
+            });
+        }
+
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('flipper-progress');
+                return saved ? JSON.parse(saved) : { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            } catch (e) {
+                console.error('Error loading progress:', e);
+                return { currentLesson: 1, completedLessons: [], totalXP: 0 };
+            }
+        }
+
+        function saveProgress(progress) {
+            try {
+                localStorage.setItem('flipper-progress', JSON.stringify(progress));
+                return true;
+            } catch (e) {
+                console.error('Error saving progress:', e);
+                return false;
+            }
+        }
+
+        function markComplete() {
+            const btn = document.getElementById('complete-btn');
+            const currentLessonNumber = 6;
+            const progress = loadProgress();
+            
+            if (!progress.completedLessons.includes(currentLessonNumber - 1)) {
+                return;
+            }
+            
+            if (!progress.completedLessons.includes(currentLessonNumber)) {
+                progress.completedLessons.push(currentLessonNumber);
+                progress.totalXP += 50;
+                
+                if (progress.currentLesson === currentLessonNumber) {
+                    progress.currentLesson = currentLessonNumber + 1;
+                }
+                
+                const saved = saveProgress(progress);
+                
+                if (saved) {
+                    btn.textContent = '✓ Lesson Complete - Course Finished! 🎓';
+                    btn.classList.remove('locked');
+                    btn.classList.add('completed');
+                } else {
+                    btn.textContent = 'Error - Try Again';
+                    btn.classList.add('error');
+                    setTimeout(() => {
+                        btn.textContent = 'Mark Lesson as Complete';
+                        btn.classList.remove('error');
+                    }, 2000);
+                }
+            }
+        }
+
+        window.addEventListener('load', () => {
+            const progress = loadProgress();
+            const currentLessonNumber = 6;
+            const btn = document.getElementById('complete-btn');
+            
+            if (progress.completedLessons.includes(currentLessonNumber)) {
+                btn.textContent = '✓ Lesson Complete - Course Finished! 🎓';
+                btn.classList.add('completed');
+            }
+            else if (progress.completedLessons.includes(currentLessonNumber - 1)) {
+                btn.textContent = 'Mark Lesson as Complete';
+                btn.classList.remove('locked');
+            }
+            else {
+                btn.textContent = 'Complete Previous Lesson First';
+                btn.classList.add('locked');
+            }
+        });
+    </script>
+</body>
+</html>
