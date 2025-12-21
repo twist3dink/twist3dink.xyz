@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 3: Sub-GHz Fundamentals | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+    <title>Lesson 3: Infrared (Record → Save → Replay) | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Atkinson Hyperlegible', sans-serif;
@@ -22,10 +18,7 @@
             padding: 2rem 1rem;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .container { max-width: 900px; margin: 0 auto; }
 
         .lesson-header {
             background: #1a1a1a;
@@ -41,11 +34,7 @@
             margin-bottom: 1rem;
         }
 
-        .lesson-meta {
-            color: #999;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
+        .lesson-meta { color: #999; font-size: 1rem; margin-bottom: 1rem; }
 
         .lesson-header button {
             background: transparent;
@@ -59,10 +48,7 @@
             transition: all 0.3s;
         }
 
-        .lesson-header button:hover {
-            background: #00ff88;
-            color: #0a0a0a;
-        }
+        .lesson-header button:hover { background: #00ff88; color: #0a0a0a; }
 
         .content-section {
             background: #1a1a1a;
@@ -72,17 +58,8 @@
             margin-bottom: 2rem;
         }
 
-        .content-section h2 {
-            color: #00ff88;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .content-section h3 {
-            color: #00ff88;
-            font-size: 1.2rem;
-            margin: 1.5rem 0 0.8rem 0;
-        }
+        .content-section h2 { color: #00ff88; font-size: 1.5rem; margin-bottom: 1rem; }
+        .content-section h3 { color: #00ff88; font-size: 1.2rem; margin: 1.5rem 0 0.8rem 0; }
 
         .content-section p {
             font-size: 1.1rem;
@@ -90,9 +67,7 @@
             letter-spacing: 0.3px;
         }
 
-        .content-section ul, .content-section ol {
-            margin: 1rem 0 1rem 2rem;
-        }
+        .content-section ul, .content-section ol { margin: 1rem 0 1rem 2rem; }
 
         .content-section li {
             font-size: 1.1rem;
@@ -116,9 +91,7 @@
             border-radius: 4px;
         }
 
-        .warning-box strong {
-            color: #ff4444;
-        }
+        .warning-box strong { color: #ff4444; }
 
         #complete-btn {
             background: #00ff88;
@@ -135,9 +108,7 @@
             transition: all 0.3s;
         }
 
-        #complete-btn:hover {
-            background: #00dd77;
-        }
+        #complete-btn:hover { background: #00dd77; }
 
         #complete-btn.completed {
             background: #333;
@@ -153,10 +124,7 @@
             cursor: not-allowed;
         }
 
-        #complete-btn.error {
-            background: #ff4444;
-            color: #fff;
-        }
+        #complete-btn.error { background: #ff4444; color: #fff; }
 
         .nav-section {
             background: #1a1a1a;
@@ -180,16 +148,9 @@
             transition: all 0.3s;
         }
 
-        .nav-section button:hover {
-            background: #00ff88;
-            color: #0a0a0a;
-        }
+        .nav-section button:hover { background: #00ff88; color: #0a0a0a; }
 
-        .nav-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
+        .nav-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
 
         .nav-buttons a {
             flex: 1;
@@ -221,348 +182,189 @@
             border: 2px solid #00ff88;
         }
 
-        .nav-buttons a:nth-child(3):hover {
-            background: #00dd77;
-        }
+        .nav-buttons a:nth-child(3):hover { background: #00dd77; }
 
         @media (max-width: 768px) {
-            body {
-                padding: 1rem 0.5rem;
-            }
-
-            .lesson-header h1 {
-                font-size: 1.5rem;
-            }
-
-            .content-section {
-                padding: 1.5rem;
-            }
-
-            .nav-buttons {
-                flex-direction: column;
-            }
-
-            .nav-buttons a {
-                min-width: 100%;
-            }
+            body { padding: 1rem 0.5rem; }
+            .lesson-header h1 { font-size: 1.5rem; }
+            .content-section { padding: 1.5rem; }
+            .nav-buttons { flex-direction: column; }
+            .nav-buttons a { min-width: 100%; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="lesson-header">
-            <h1>Lesson 3: Sub-GHz Fundamentals</h1>
-            <p class="lesson-meta">Estimated time: 25 minutes | XP Reward: 50</p>
+            <h1>Lesson 3: Infrared (Record → Save → Replay)</h1>
+            <p class="lesson-meta">Estimated time: 20–30 minutes | XP Reward: 50</p>
             <button onclick="scrollToBottom()">Skip to Bottom ↓</button>
         </div>
 
         <div class="content-section">
-            <h2>What is Sub-GHz?</h2>
-            <p>Sub-GHz refers to radio frequencies below 1 gigahertz (GHz). These frequencies are part of the electromagnetic spectrum used for wireless communication over short to medium distances. Unlike WiFi or Bluetooth which operate at 2.4 GHz or 5 GHz, sub-GHz frequencies offer better penetration through walls and obstacles, making them ideal for remote control applications.</p>
-
-            <h3>Common Frequencies</h3>
-            <p>Flipper Zero can transmit and receive on several sub-GHz bands, though available frequencies depend on your region due to regulatory restrictions:</p>
-
-            <ul>
-                <li><strong>315 MHz:</strong> Popular in North America for garage door openers, car key fobs, and security systems</li>
-                <li><strong>433 MHz:</strong> Widely used internationally for remote controls, wireless doorbells, weather stations, and IoT devices</li>
-                <li><strong>868 MHz:</strong> Common in Europe for home automation, smart meters, and industrial sensors</li>
-                <li><strong>915 MHz:</strong> Used in North America for similar applications as 868 MHz in Europe</li>
-            </ul>
-
-            <h3>Real-World Applications</h3>
-            <p>Sub-GHz technology is everywhere in our daily lives:</p>
-            <ul>
-                <li><strong>Garage Door Openers:</strong> Most residential garage doors use 310-390 MHz signals</li>
-                <li><strong>Car Key Fobs:</strong> Remote unlock, lock, and trunk release functions</li>
-                <li><strong>Wireless Doorbells:</strong> Battery-powered transmitters that don't require wiring</li>
-                <li><strong>Weather Stations:</strong> Outdoor sensors transmitting temperature and humidity data</li>
-                <li><strong>Tire Pressure Monitors:</strong> Sensors in vehicle tires reporting pressure levels</li>
-                <li><strong>Home Security Systems:</strong> Window and door sensors communicating with alarm panels</li>
-            </ul>
+            <h2>Objective</h2>
+            <p>Get your first clean, undeniable win: record IR from a remote you own, save it, and replay it successfully. If this lesson works, you’ll trust your workflow for the rest of the track.</p>
 
             <div class="note-box">
-                <strong>Why Sub-GHz?</strong> Lower frequencies travel farther and penetrate obstacles better than higher frequencies. A 433 MHz signal can easily pass through walls, making it perfect for remote controls that need to work from outside your home or across large distances.
-            </div>
-        </div>
-
-        <div class="content-section">
-            <h2>How Sub-GHz Communication Works</h2>
-            <p>Understanding the basics of radio communication helps you make sense of what Flipper is capturing and replaying.</p>
-
-            <h3>Transmitter and Receiver Basics</h3>
-            <p>Every wireless system has two components:</p>
-            <ul>
-                <li><strong>Transmitter:</strong> Converts electrical signals into radio waves and broadcasts them through an antenna (your car key fob button press)</li>
-                <li><strong>Receiver:</strong> Captures radio waves with an antenna and converts them back into electrical signals (the car's receiver module)</li>
-            </ul>
-
-            <p>When you press a button on a remote control, the transmitter encodes your command (like "unlock door") into a specific radio signal pattern and broadcasts it. The receiver listens for this pattern and, when recognized, executes the corresponding action.</p>
-
-            <h3>Modulation Types</h3>
-            <p>Modulation is how information is encoded onto a radio carrier wave. Think of it as different "languages" for transmitting data:</p>
-
-            <ul>
-                <li><strong>AM (Amplitude Modulation):</strong> Changes the signal strength to encode data, similar to how AM radio works</li>
-                <li><strong>FM (Frequency Modulation):</strong> Varies the frequency slightly to encode information</li>
-                <li><strong>ASK (Amplitude Shift Keying):</strong> Simple on/off modulation, like Morse code with radio waves</li>
-                <li><strong>FSK (Frequency Shift Keying):</strong> Switches between two frequencies to represent binary data (0s and 1s)</li>
-            </ul>
-
-            <p>Flipper Zero automatically detects the modulation type used by most common devices, making signal analysis easier.</p>
-
-            <h3>Signal Strength and Range</h3>
-            <p>The effective range of sub-GHz communication depends on several factors:</p>
-            <ul>
-                <li>Transmitter power output (typically 10-100 milliwatts for consumer devices)</li>
-                <li>Antenna design and quality</li>
-                <li>Environmental obstacles (walls, metal structures, interference)</li>
-                <li>Receiver sensitivity</li>
-            </ul>
-
-            <p>Flipper Zero's range varies by frequency but typically matches or slightly exceeds the original device's range when replaying captured signals.</p>
-        </div>
-
-        <div class="content-section">
-            <h2>Using Flipper's Sub-GHz Module</h2>
-            <p>Navigate to the Sub-GHz menu from the home screen to access five primary functions:</p>
-
-            <h3>Read RAW</h3>
-            <p>This is your go-to tool for capturing unknown or unrecognized signals. Raw mode records the actual radio waveform without trying to decode it, making it useful for:</p>
-            <ul>
-                <li>Capturing signals from devices Flipper doesn't recognize</li>
-                <li>Recording complex or proprietary protocols</li>
-                <li>Analyzing timing and modulation patterns</li>
-            </ul>
-            <p>Raw captures are larger files and may not work perfectly on replay, but they're invaluable for learning and experimentation.</p>
-
-            <h3>Read</h3>
-            <p>Use this mode when you want Flipper to automatically identify and decode known protocols. When activated, Flipper listens on the configured frequency and displays decoded information when it recognizes a signal. This mode works with:</p>
-            <ul>
-                <li>Princeton protocol (common in garage openers and simple remotes)</li>
-                <li>KeeLoq (used in many car key fobs)</li>
-                <li>Star Line (vehicle security systems)</li>
-                <li>And dozens of other recognized protocols</li>
-            </ul>
-
-            <h3>Saved</h3>
-            <p>Access your library of previously captured signals. Each saved file includes the frequency, modulation, and protocol information needed to replay it. You can organize saves into folders for easy management.</p>
-
-            <h3>Add Manually</h3>
-            <p>For advanced users, this allows creating custom signals by manually entering frequency, modulation type, and data values. Useful for reconstructing known protocols or testing specific signal parameters.</p>
-
-            <h3>Frequency Analyzer</h3>
-            <p>This powerful tool scans the radio spectrum to find active frequencies in your environment. It displays signal strength across different frequencies, helping you identify which channels are in use. Perfect for discovering what frequency a device uses before attempting to capture it.</p>
-
-            <div class="note-box">
-                <strong>Pro Tip:</strong> Always start with Frequency Analyzer when working with an unknown device. It tells you exactly where to look, saving time and increasing your chances of a successful capture.
-            </div>
-        </div>
-
-        <div class="content-section">
-            <h2>Capturing a Signal</h2>
-            <p>Let's walk through capturing a signal from a wireless device you own:</p>
-
-            <h3>Step-by-Step Process</h3>
-            <ol>
-                <li><strong>Identify your target:</strong> Choose a device you own (wireless doorbell, garage remote, etc.)</li>
-                <li><strong>Open Sub-GHz menu:</strong> Navigate to Sub-GHz from the main menu</li>
-                <li><strong>Select capture mode:</strong>
-                    <ul>
-                        <li>Use "Read" if you know the device uses a common protocol</li>
-                        <li>Use "Read RAW" for unknown devices or better compatibility</li>
-                    </ul>
-                </li>
-                <li><strong>Set frequency:</strong> Select the appropriate frequency for your region and device (often 433.92 MHz or 315 MHz)</li>
-                <li><strong>Position devices:</strong> Hold your remote near Flipper (within 1 foot for best results)</li>
-                <li><strong>Start capture:</strong> Press OK to begin listening</li>
-                <li><strong>Activate remote:</strong> Press the button on your device once</li>
-                <li><strong>Observe feedback:</strong> Flipper will show signal detection and strength</li>
-                <li><strong>Save capture:</strong> Press OK to save, then name your file descriptively</li>
-            </ol>
-
-            <h3>Reading the Signal Data</h3>
-            <p>After capturing, Flipper displays information about the signal:</p>
-            <ul>
-                <li><strong>Frequency:</strong> The exact frequency detected (e.g., 433.920 MHz)</li>
-                <li><strong>Protocol:</strong> Identified protocol name (if recognized)</li>
-                <li><strong>Key:</strong> The unique data code transmitted</li>
-                <li><strong>Bit length:</strong> Number of bits in the transmission</li>
-                <li><strong>TE (Time Element):</strong> Timing information for the signal</li>
-            </ul>
-
-            <h3>Saving Captures</h3>
-            <p>When saving, you'll be prompted to name your file. Use descriptive names that help you remember what the capture does:</p>
-            <ul>
-                <li>✓ Good: "garage_door_open" or "doorbell_frontdoor"</li>
-                <li>✗ Poor: "signal1" or "test"</li>
-            </ul>
-
-            <h3>Naming Conventions</h3>
-            <p>Develop a consistent naming system to stay organized:</p>
-            <ul>
-                <li>Include device type: garage, car, doorbell, fan</li>
-                <li>Include function: open, close, unlock, button1</li>
-                <li>Include location if relevant: frontdoor, bedroom, workshop</li>
-                <li>Use underscores or hyphens instead of spaces</li>
-            </ul>
-
-            <div class="note-box">
-                <strong>Troubleshooting Captures:</strong> If Flipper doesn't detect your signal, try moving closer to the device, checking that you're on the correct frequency, or using Read RAW mode for better compatibility.
-            </div>
-        </div>
-
-        <div class="content-section">
-            <h2>Replaying Signals</h2>
-            <p>Once you've captured a signal, replaying it is straightforward - but there are important considerations.</p>
-
-            <h3>How to Transmit Saved Signals</h3>
-            <ol>
-                <li>Navigate to Sub-GHz → Saved</li>
-                <li>Browse to your saved signal file</li>
-                <li>Select the file and press OK</li>
-                <li>Choose "Emulate" or "Send" option</li>
-                <li>Press OK to transmit the signal</li>
-            </ol>
-
-            <p>Flipper will broadcast the saved signal at the same frequency and with the same modulation as captured. The transmission typically lasts a fraction of a second, just like pressing the original remote button.</p>
-
-            <h3>Legal Considerations</h3>
-            <div class="warning-box">
-                <strong>⚠️ CRITICAL LEGAL WARNING</strong>
-                <p style="margin-top: 0.5rem;">Only replay signals for devices you own or have explicit permission to control. Transmitting signals to systems you don't own is illegal and can result in:</p>
-                <ul style="margin-top: 0.5rem;">
-                    <li>Criminal charges for unauthorized access</li>
-                    <li>FCC violations (United States) or equivalent regulatory penalties</li>
-                    <li>Civil liability for damages</li>
-                    <li>Confiscation of equipment</li>
+                <strong>Scope + safety:</strong>
+                <ul>
+                    <li>Only record/replay IR for devices you own or have explicit permission to control.</li>
+                    <li>IR is line-of-sight. If it doesn’t work, it’s usually angle/distance—not magic.</li>
                 </ul>
             </div>
-
-            <h3>Testing on Your Own Devices Only</h3>
-            <p>The golden rule: If you don't own it, don't transmit to it. This includes:</p>
-            <ul>
-                <li>Your neighbor's garage door</li>
-                <li>Vehicles in a parking lot</li>
-                <li>Store security systems</li>
-                <li>Smart home devices in other people's homes</li>
-            </ul>
-
-            <p>Testing on your own devices is legal and educational. It helps you understand security vulnerabilities in your own systems and make informed decisions about upgrades or security improvements.</p>
         </div>
 
         <div class="content-section">
-            <h2>Common Sub-GHz Protocols</h2>
-            <p>Understanding protocol types helps you predict what you can and cannot capture or replay.</p>
-
-            <h3>Rolling Codes vs Fixed Codes</h3>
-            <p><strong>Fixed Code Systems:</strong></p>
+            <h2>Prereqs</h2>
             <ul>
-                <li>Transmit the same signal every time you press the button</li>
-                <li>Simple and cheap to implement</li>
-                <li>Can be captured and replayed perfectly</li>
-                <li>Common in older garage doors, basic remotes, and budget devices</li>
-                <li>Security vulnerability: anyone who captures the signal can replay it</li>
+                <li>Flipper Zero</li>
+                <li>Any IR remote you own (TV remote, LED lights, fan, AC, projector, etc.)</li>
+                <li>Your target device in the same room</li>
             </ul>
 
-            <p><strong>Rolling Code Systems (Hopping Codes):</strong></p>
-            <ul>
-                <li>Generate a new, unique code for each button press</li>
-                <li>Both transmitter and receiver stay synchronized using a shared algorithm</li>
-                <li>After use, each code becomes invalid</li>
-                <li>Common in modern car key fobs and newer garage openers</li>
-                <li>Much more secure against replay attacks</li>
-            </ul>
-
-            <h3>Princeton Protocol</h3>
-            <p>One of the most common fixed-code protocols. Used in countless inexpensive wireless devices including doorbells, simple RF remotes, and older garage openers. Princeton signals are easy to capture and replay.</p>
-
-            <h3>KeeLoq Protocol</h3>
-            <p>A rolling code system used primarily in automotive key fobs and some garage door openers. KeeLoq is designed to prevent replay attacks by changing the code with each transmission. While Flipper can capture KeeLoq signals, replaying them typically won't work due to the rolling code mechanism.</p>
-
-            <h3>Why Some Signals Can't Be Replayed</h3>
-            <p>Several factors can prevent successful signal replay:</p>
-            <ul>
-                <li><strong>Rolling codes:</strong> The captured code has already been used and is now invalid</li>
-                <li><strong>Encryption:</strong> Signal data is encrypted and can't be decoded without keys</li>
-                <li><strong>Challenge-response:</strong> System requires bidirectional communication</li>
-                <li><strong>Time-based codes:</strong> Signal includes timestamp validation</li>
-                <li><strong>Regional restrictions:</strong> Flipper may block certain frequencies in your region</li>
-            </ul>
-
-            <div class="note-box">
-                <strong>Learning Opportunity:</strong> When you encounter a signal that can't be replayed, it's an opportunity to learn about why. Research the protocol and understand the security mechanisms that protect it. This knowledge makes you a better security professional.
-            </div>
-        </div>
-
-        <div class="content-section">
-            <h2>Legal & Safety Warnings</h2>
-            
             <div class="warning-box">
-                <strong>⚠️ REGULATORY COMPLIANCE REQUIRED</strong>
-                <p style="margin-top: 0.5rem;">Radio frequency transmissions are regulated by government agencies worldwide. Understanding and following these regulations is not optional.</p>
-            </div>
-
-            <h3>FCC Regulations (United States)</h3>
-            <p>The Federal Communications Commission regulates all radio transmissions in the US:</p>
-            <ul>
-                <li><strong>Part 15 Compliance:</strong> Flipper operates under Part 15 rules as an unlicensed transmitter</li>
-                <li><strong>Power Limits:</strong> Must not exceed specified power output limits for each frequency band</li>
-                <li><strong>Interference:</strong> Must not cause harmful interference to licensed services</li>
-                <li><strong>Frequency Restrictions:</strong> Some frequencies are restricted or require licenses</li>
-            </ul>
-
-            <h3>Jamming is Illegal</h3>
-            <p>Intentionally interfering with wireless communications is a serious federal crime:</p>
-            <ul>
-                <li>Jamming or blocking any radio frequency is illegal</li>
-                <li>This includes WiFi, cellular, GPS, emergency services, and sub-GHz bands</li>
-                <li>Penalties include fines up to $112,500 and imprisonment</li>
-                <li>Flipper Zero is not designed for jamming and attempting to use it this way violates federal law</li>
-            </ul>
-
-            <h3>Only Test Your Own Devices</h3>
-            <p>We cannot overstate this enough: transmitting signals to control or interact with devices you don't own is illegal. Period. This applies even if:</p>
-            <ul>
-                <li>You're "just testing" or "curious"</li>
-                <li>The device is in a public place</li>
-                <li>You think the owner won't notice</li>
-                <li>You plan to tell the owner afterward</li>
-            </ul>
-
-            <p>Legal security testing requires written authorization and proper contracts. Unauthorized testing is hacking, regardless of intent.</p>
-
-            <h3>Interference Concerns</h3>
-            <p>Even when testing your own devices, be mindful of unintended interference:</p>
-            <ul>
-                <li>Your transmission might accidentally affect nearby similar devices</li>
-                <li>Multiple transmissions in quick succession could disrupt neighbors' equipment</li>
-                <li>Test in controlled environments when possible</li>
-                <li>If you notice your actions affecting others' systems, stop immediately</li>
-            </ul>
-
-            <div class="note-box">
-                <strong>Ethical Standard:</strong> True professionals in security and technology prioritize responsible disclosure and ethical behavior. The skills you're learning should make technology more secure, not exploit it for personal gain or amusement.
+                <strong>Reminder:</strong> Don’t point this at public TVs or other people’s devices “as a joke.” That’s how you become the villain in someone else’s story.
             </div>
         </div>
 
         <div class="content-section">
-            <h2>Key Takeaway</h2>
-            <p>Sub-GHz radio communication is one of Flipper Zero's most powerful and educational features. Understanding how wireless protocols work gives you insight into the invisible radio waves constantly surrounding us, from car key fobs to wireless doorbells to home security systems.</p>
+            <h2>IR Basics (what matters)</h2>
+            <p>Infrared remotes transmit bursts of light (invisible to your eyes) at a carrier frequency. Your device decodes patterns like “Volume Up” or “Power.”</p>
 
-            <p>The ability to capture and analyze these signals is incredibly valuable for security research, device testing, and understanding technology. However, this power must be wielded responsibly. Always:</p>
-
+            <h3>What makes IR easy</h3>
             <ul>
-                <li>Test only devices you own</li>
-                <li>Respect others' privacy and property</li>
-                <li>Follow local radio frequency regulations</li>
-                <li>Use knowledge to improve security, not exploit vulnerabilities</li>
+                <li>Most consumer IR commands are simple to record and replay.</li>
+                <li>No radio regulations, no pairing, no rolling codes (in most basic remotes).</li>
             </ul>
 
-            <p>As you experiment with Sub-GHz, you'll develop an intuition for how these systems work, which protocols are secure, and where vulnerabilities exist. This knowledge is the foundation for becoming a skilled security researcher.</p>
+            <h3>What makes IR fail</h3>
+            <ul>
+                <li>Bad alignment (not pointing at the IR receiver)</li>
+                <li>Too far away</li>
+                <li>Bright sunlight washing out the receiver</li>
+                <li>Some AC remotes use long/stateful messages (still doable, just more finicky)</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Step-by-step: Record → Save → Replay</h2>
+
+            <h3>Step 1 — Find the IR app/menu</h3>
+            <ol>
+                <li>From the main menu, open <strong>Infrared</strong>.</li>
+                <li>Look for the option to <strong>Learn new remote</strong> / <strong>Learn</strong> / <strong>Record</strong>.</li>
+            </ol>
+
+            <h3>Step 2 — Record 3 buttons</h3>
+            <p>Pick commands that give obvious feedback. Recommended set:</p>
+            <ul>
+                <li><strong>Power</strong> (only if it’s safe to toggle)</li>
+                <li><strong>Volume Up</strong></li>
+                <li><strong>Volume Down</strong></li>
+            </ul>
+
+            <ol>
+                <li>Start “learn/record” on Flipper.</li>
+                <li>Hold your remote <strong>2–6 inches</strong> from the Flipper’s IR receiver area.</li>
+                <li>Press and release the button once.</li>
+                <li>Repeat for a total of 3 buttons.</li>
+            </ol>
 
             <div class="note-box">
-                <strong>Coming Next:</strong> In Lesson 4, we'll explore RFID and NFC technologies - the systems behind access cards, contactless payments, and modern identification systems. You'll learn the differences between various card types and how to analyze their security.
+                <strong>Practical tip:</strong> If it fails, don’t spam buttons. Adjust distance/angle first, then try again.
+            </div>
+
+            <h3>Step 3 — Save as a named remote profile</h3>
+            <ol>
+                <li>Save your learned remote with a name like:
+                    <ul>
+                        <li><strong>tv-livingroom</strong> or <strong>led-strip-bedroom</strong></li>
+                    </ul>
+                </li>
+                <li>Confirm it appears under <strong>Infrared → Saved</strong> (or similar).</li>
+            </ol>
+
+            <h3>Step 4 — Replay and confirm it works</h3>
+            <ol>
+                <li>Open your saved remote profile.</li>
+                <li>Point the Flipper at the device’s IR receiver (usually near the screen edge or a small dark window).</li>
+                <li>Send <strong>Volume Up</strong>, then <strong>Volume Down</strong>.</li>
+                <li>Confirm the device responds.</li>
+            </ol>
+
+            <div class="warning-box">
+                <strong>Don’t “test” Power repeatedly</strong> if it interrupts someone’s setup or causes issues. Use volume/channel/light brightness for safer verification.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Deliverables (Proof Pack)</h2>
+            <p>To finish Lesson 3, you must produce these artifacts. No proof, no completion.</p>
+
+            <ul>
+                <li><strong>D3.1</strong> — A photo/screenshot showing your saved IR remote profile name on the Flipper.</li>
+                <li><strong>D3.2</strong> — Evidence the replay worked (choose one):
+                    <ul>
+                        <li>Short video of the device responding, or</li>
+                        <li>Two photos: before/after (e.g., volume level indicator, light brightness change)</li>
+                    </ul>
+                </li>
+                <li><strong>D3.3</strong> — A 2–5 sentence note:
+                    <ul>
+                        <li>What device did you control?</li>
+                        <li>What commands did you record?</li>
+                        <li>What failed (if anything) and what fixed it?</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Verification</h2>
+            <ul>
+                <li>I have a saved IR profile with a meaningful name.</li>
+                <li>I can replay at least two commands and see the device respond.</li>
+                <li>I have D3.1, D3.2, and D3.3 created and stored with my other lesson artifacts.</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Troubleshooting</h2>
+
+            <h3>Flipper records “something” but replay does nothing</h3>
+            <ul>
+                <li>Get closer (2–6 inches) and re-record.</li>
+                <li>Try a darker room (sunlight can interfere with IR receivers).</li>
+                <li>Make sure you’re aiming at the device’s IR receiver (not just “at the TV”).</li>
+            </ul>
+
+            <h3>Recording fails / “timeout”</h3>
+            <ul>
+                <li>Hold steady and press the remote button once (no long holds unless prompted).</li>
+                <li>Replace remote batteries if it’s weak.</li>
+                <li>Try a different button to confirm the remote is transmitting.</li>
+            </ul>
+
+            <h3>AC remote is weird</h3>
+            <ul>
+                <li>AC remotes often send long “state” packets. Start with TV/LED remote if you want an easy first win.</li>
+                <li>If you stick with AC: record twice and compare results—consistency matters.</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Reality check:</strong> If IR doesn’t work, it’s almost never “Flipper is broken.” It’s distance, angle, or the wrong receiver spot.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Finished Means</h2>
+            <ul>
+                <li>D3.1 + D3.2 + D3.3 exist.</li>
+                <li>You can repeat record → save → replay without rereading this page.</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>Next Up:</strong> Lesson 4 moves into <strong>NFC/RFID</strong> (read and document your own tags safely).
             </div>
         </div>
 
@@ -580,17 +382,11 @@
 
     <script>
         function scrollToBottom() {
-            window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'instant'
-            });
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' });
         }
 
         function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'instant'
-            });
+            window.scrollTo({ top: 0, behavior: 'instant' });
         }
 
         function loadProgress() {
@@ -617,21 +413,19 @@
             const btn = document.getElementById('complete-btn');
             const currentLessonNumber = 3;
             const progress = loadProgress();
-            
-            if (!progress.completedLessons.includes(currentLessonNumber - 1)) {
-                return;
-            }
-            
+
+            if (!progress.completedLessons.includes(currentLessonNumber - 1)) { return; }
+
             if (!progress.completedLessons.includes(currentLessonNumber)) {
                 progress.completedLessons.push(currentLessonNumber);
                 progress.totalXP += 50;
-                
+
                 if (progress.currentLesson === currentLessonNumber) {
                     progress.currentLesson = currentLessonNumber + 1;
                 }
-                
+
                 const saved = saveProgress(progress);
-                
+
                 if (saved) {
                     btn.textContent = '✓ Lesson Complete';
                     btn.classList.remove('locked');
@@ -651,16 +445,14 @@
             const progress = loadProgress();
             const currentLessonNumber = 3;
             const btn = document.getElementById('complete-btn');
-            
+
             if (progress.completedLessons.includes(currentLessonNumber)) {
                 btn.textContent = '✓ Lesson Complete';
                 btn.classList.add('completed');
-            }
-            else if (progress.completedLessons.includes(currentLessonNumber - 1)) {
+            } else if (progress.completedLessons.includes(currentLessonNumber - 1)) {
                 btn.textContent = 'Mark Lesson as Complete';
                 btn.classList.remove('locked');
-            }
-            else {
+            } else {
                 btn.textContent = 'Complete Previous Lesson First';
                 btn.classList.add('locked');
             }
