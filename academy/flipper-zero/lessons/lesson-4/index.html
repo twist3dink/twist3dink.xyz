@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lesson 4: NFC/RFID — Read + Document Your Tags | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../assets/css/course.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <main id="main" class="container" data-lesson-number="4" data-xp="50" data-total-lessons="6">
+    <header class="lesson-header">
+      <h1>Lesson 4: NFC/RFID — Read + Document Your Tags</h1>
+      <p class="lesson-meta">Estimated time: 0 minutes | XP Reward: 50</p>
+      <button id="skip-bottom-btn" class="button" type="button">Skip to Bottom ↓</button>
+    </header>
+
+<section class="content-section">
+<h2>Objective</h2>
+<p>Read at least two tags/cards you personally own (NFC and/or 125kHz RFID), save the reads, and document what you learned in a simple “Tag Report.” This lesson is about understanding what the Flipper can see — not trying to get into places.</p>
+<div class="warning-box">
+<strong>Boundary (non-negotiable):</strong>
+<ul>
+<li>Only scan tags/cards you own or have explicit permission to test.</li>
+<li>We are not practicing “emulation to access systems” in this track. If you’re authorized to use your own badge, that’s your real life — but it’s not a required exercise here.</li>
+</ul>
+</div>
+</section>
+
+<section class="content-section">
+<h2>Quick mental model (what matters)</h2>
+<h3>Two buckets</h3>
+<ul>
+<li><strong>125kHz RFID (low frequency):</strong> Usually simpler. Often an ID/number broadcasted repeatedly.</li>
+<li><strong>13.56MHz NFC (high frequency):</strong> More complex. Can have memory sectors and authentication.</li>
+</ul>
+<h3>What you’re trying to learn</h3>
+<ul>
+<li>Can the Flipper identify the <strong>type</strong> (NFC vs RFID, and the family)?</li>
+<li>What <strong>public</strong> identifiers are visible (UID, ATQA/SAK, etc.)?</li>
+<li>Does it show <strong>protected sectors</strong> or limited access?</li>
+</ul>
+<div class="note-box">
+<strong>Reality check:</strong> “Not readable beyond UID” is not a failure. That’s modern security doing its job.
+            </div>
+</section>
+
+<section class="content-section">
+<h2>Prereqs</h2>
+<ul>
+<li>Flipper Zero</li>
+<li>At least 2 items you own, for example:
+                    <ul>
+<li>NFC sticker/tag</li>
+<li>Gym card you own</li>
+<li>Transit card you own</li>
+<li>Key fob that is yours (125kHz or NFC)</li>
+</ul>
+</li>
+</ul>
+<div class="note-box">
+<strong>Best starter combo:</strong> 1 NFC sticker + 1 random RFID/NFC fob you own. Transit/payment cards can be finicky; don’t pick hard-mode first.
+            </div>
+</section>
+
+<section class="content-section">
+<h2>Step-by-step: Read + Save (two items)</h2>
+<h3>Step 1 — Read item A (try NFC first)</h3>
+<ol>
+<li>Go to <strong>NFC → Read</strong>.</li>
+<li>Hold item A to the back of the Flipper. Hold steady for 1–2 seconds.</li>
+<li>If it reads: write down what it says (type/UID/etc.) and <strong>Save</strong> with a meaningful name.</li>
+<li>If NFC shows nothing: try <strong>125kHz RFID → Read</strong> for the same item A.</li>
+</ol>
+<h3>Step 2 — Read item B</h3>
+<ol>
+<li>Repeat the same process for item B.</li>
+<li>Save item B with a meaningful name.</li>
+</ol>
+<h3>Step 3 — Confirm saved files (proof you can find them)</h3>
+<ol>
+<li>Go to <strong>NFC → Saved</strong> and/or <strong>RFID → Saved</strong>.</li>
+<li>Confirm both saved entries are visible.</li>
+<li>Open each saved entry and verify it shows the same info you saw when reading.</li>
+</ol>
+</section>
+
+<section class="content-section">
+<h2>Deliverables (Proof Pack)</h2>
+<p>To finish Lesson 4, create these artifacts. Keep it simple and auditable.</p>
+<ul>
+<li><strong>D4.1</strong> — Two saved reads on the Flipper (Item A + Item B) with meaningful names.</li>
+<li><strong>D4.2</strong> — Two “Tag Reports” (copy/paste template below into your notes app or a file):</li>
+</ul>
+<div class="note-box">
+<strong>Tag Report template (copy this twice):</strong>
+<ul>
+<li><strong>Tag name:</strong> (your saved file name)</li>
+<li><strong>Ownership:</strong> Mine / I have permission</li>
+<li><strong>Type:</strong> NFC 13.56MHz or RFID 125kHz</li>
+<li><strong>What Flipper identified:</strong> (card/tag family)</li>
+<li><strong>Visible identifiers:</strong> (UID, ATQA/SAK, etc. — whatever is shown)</li>
+<li><strong>Protected/locked?</strong> Yes/No/Unknown (based on what Flipper reports)</li>
+<li><strong>Notes:</strong> 1–3 lines (anything weird, any errors, placement tips)</li>
+</ul>
+</div>
+<ul>
+<li><strong>D4.3</strong> — One photo/screenshot per item showing the read result or the saved entry screen.</li>
+</ul>
+</section>
+
+<section class="content-section">
+<h2>Verification</h2>
+<ul>
+<li>I can read and save two tags/cards I own.</li>
+<li>I can find them again under Saved.</li>
+<li>I created two Tag Reports + collected proof screenshots/photos.</li>
+<li>I can explain in one sentence the difference between 125kHz RFID and 13.56MHz NFC.</li>
+</ul>
+</section>
+
+<section class="content-section">
+<h2>Troubleshooting</h2>
+<h3>It won’t read at all</h3>
+<ul>
+<li>Move the card slowly around the back of the Flipper — antenna position matters.</li>
+<li>Hold steady for 1–2 seconds (don’t tap-and-run).</li>
+<li>Try the other module (NFC vs 125kHz RFID).</li>
+</ul>
+<h3>It reads but only shows minimal info</h3>
+<ul>
+<li>That’s normal for many secure implementations.</li>
+<li>Your deliverable is “document what’s visible,” not “break encryption.”</li>
+</ul>
+<h3>It says protected / keys required / partial read</h3>
+<ul>
+<li>Also normal. Record that outcome in the Tag Report.</li>
+<li>Do not chase key extraction here — out of scope for this track.</li>
+</ul>
+<div class="warning-box">
+<strong>Do not test random badges you find in public.</strong> If you don’t own it, it’s not “practice,” it’s evidence.
+            </div>
+</section>
+
+<section class="content-section">
+<h2>Finished Means</h2>
+<ul>
+<li>D4.1 + D4.2 + D4.3 exist.</li>
+<li>You can repeat read → save → find saved without help.</li>
+</ul>
+<div class="note-box">
+<strong>Next Up:</strong> Lesson 5 moves into <strong>Sub-GHz</strong> safely: receive, label, and understand (no mischief).
+            </div>
+</section>
+
+    <button id="complete-btn" class="button locked" type="button">Complete Previous Lesson First</button>
+
+    <nav class="nav-section" aria-label="Lesson navigation">
+      <button id="back-top-btn" class="button" type="button">Back to Top ↑</button>
+      <div class="nav-buttons">
+        <a class="secondary" href="../lesson-3/">← Previous Lesson</a>
+        <a class="secondary" href="../../">Course Overview</a>
+        <a class="primary" href="https://twist3dink.xyz/academy/">Back to Academy</a>
+      </div>
+    </nav>
+
+  </main>
+
+  <script type="module" src="../../assets/js/lesson.js"></script>
+</body>
+</html>

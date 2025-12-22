@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flipper Zero Mastery Course - tw¡st3d_¡nk Academy</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/css/course.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <main id="main" class="container">
+    <header class="header">
+      <h1>🐬 Flipper Zero Mastery</h1>
+      <p>Complete Course - From Beginner to Advanced</p>
+    </header>
+
+    <section class="section" aria-label="Course stats">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-number" id="completed-count">0</span>
+          <span class="stat-label">Lessons Completed</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="total-lessons">6</span>
+          <span class="stat-label">Total Lessons</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="total-duration">~0m</span>
+          <span class="stat-label">Total Duration</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="xp-count">0</span>
+          <span class="stat-label">XP Earned</span>
+        </div>
+      </div>
+
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar" style="width: 0%">
+          <span id="progress-text">0% Complete</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>📋 Course Prerequisites</h2>
+      <ul class="prerequisites">
+        <li>Flipper Zero device (or willingness to learn theory first)</li>
+        <li>Basic curiosity about wireless technologies</li>
+        <li>Commitment to ethical and legal use</li>
+        <li>No prior hacking experience required</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>📚 Course Curriculum</h2>
+      <div class="note-box">
+        <strong>Sequential Learning:</strong> Lessons unlock as you complete them.
+      </div>
+      <div class="lessons-grid" id="lessons-grid"></div>
+    </section>
+  </main>
+
+  <div class="toast" id="lock-toast" role="status" aria-live="polite">
+    <div class="toast-row">
+      <div id="lock-msg">Locked</div>
+      <button class="button" type="button" id="lock-close">Close</button>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/overview.js"></script>
+</body>
+</html>

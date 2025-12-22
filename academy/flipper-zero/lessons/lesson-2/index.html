@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lesson 2: Setup + File Ops (So You Don’t Lose Your Work) | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../assets/css/course.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <main id="main" class="container" data-lesson-number="2" data-xp="50" data-total-lessons="6">
+    <header class="lesson-header">
+      <h1>Lesson 2: Setup + File Ops (So You Don’t Lose Your Work)</h1>
+      <p class="lesson-meta">Estimated time: 0 minutes | XP Reward: 50</p>
+      <button id="skip-bottom-btn" class="button" type="button">Skip to Bottom ↓</button>
+    </header>
+
+<section class="content-section">
+<h2>Objective</h2>
+<p>By the end of this lesson you will have a stable setup, a basic backup, and you’ll successfully transfer a file to/from your Flipper Zero. This is the foundation that keeps every later lesson from turning into chaos.</p>
+<div class="note-box">
+<strong>Rules (non-negotiable):</strong>
+<ul>
+<li>Only test on devices you own or have explicit permission to test.</li>
+<li>We are using official/standard workflows for this track. Custom firmware is out of scope here.</li>
+</ul>
+</div>
+</section>
+
+<section class="content-section">
+<h2>Prereqs (2 minutes)</h2>
+<ul>
+<li>Flipper Zero + USB-C cable</li>
+<li>MicroSD card installed (recommended; most users should have one)</li>
+<li>A computer with USB (Windows/macOS/Linux)</li>
+<li>Battery above 30%</li>
+</ul>
+<div class="warning-box">
+<strong>Important:</strong> Do not interrupt firmware updates. If you start an update, finish it.
+            </div>
+</section>
+
+<section class="content-section">
+<h2>What Exists Inside the UI (Fast Map)</h2>
+<p>You don’t need to memorize everything. You need to know where to check device info, where files live, and how to get back home without panicking.</p>
+<h3>Two spots you must be able to find</h3>
+<ul>
+<li><strong>Device Info:</strong> Settings → Device Info (firmware version, storage, etc.)</li>
+<li><strong>File Browser:</strong> Browse files on internal storage / SD card</li>
+</ul>
+<div class="note-box">
+<strong>Navigation tip:</strong> If you get lost, press Back until you’re somewhere familiar. The UI is forgiving.
+            </div>
+</section>
+
+<section class="content-section">
+<h2>Step-by-Step: Setup + Backup + Transfer</h2>
+<h3>Step 1 — Verify device info (3–5 minutes)</h3>
+<ol>
+<li>On Flipper: go to <strong>Settings → Device Info</strong>.</li>
+<li>Write down (or take a photo of) your <strong>Firmware version</strong> and <strong>Storage</strong> status.</li>
+</ol>
+<h3>Step 2 — Confirm your SD card is usable (3–8 minutes)</h3>
+<ol>
+<li>Open the <strong>File Browser</strong>.</li>
+<li>Confirm you can see the SD card and browse folders.</li>
+<li>If the SD card is missing or errors out, jump to the Troubleshooting section.</li>
+</ol>
+<h3>Step 3 — Create a backup folder on your computer (2 minutes)</h3>
+<p>Create a folder on your computer (anywhere you want), named exactly:</p>
+<ul>
+<li><strong>flipper-backup</strong></li>
+</ul>
+<h3>Step 4 — Connect and transfer ONE test file (10 minutes)</h3>
+<ol>
+<li>Connect the Flipper to your computer via USB.</li>
+<li>Using your standard file transfer method (qFlipper or file access), create a plain text file on your computer named:
+                    <ul>
+<li><strong>hello-flipper.txt</strong></li>
+</ul>
+</li>
+<li>Put <strong>one line of text</strong> inside it, e.g. “Lesson 2 transfer test”.</li>
+<li>Transfer <strong>hello-flipper.txt</strong> onto the Flipper (any folder you can easily find again).</li>
+<li>Then transfer the same file back from Flipper → computer into your <strong>flipper-backup</strong> folder.</li>
+</ol>
+<h3>Step 5 — Make a minimal backup (5–10 minutes)</h3>
+<p>Copy the following from Flipper storage into <strong>flipper-backup</strong> (whatever exists on your device):</p>
+<ul>
+<li><strong>/infrared/</strong> (or IR files)</li>
+<li><strong>/nfc/</strong></li>
+<li><strong>/rfid/</strong></li>
+<li><strong>/subghz/</strong></li>
+<li><strong>/badusb/</strong></li>
+</ul>
+<div class="note-box">
+<strong>Why this matters:</strong> When you start collecting captures, you will eventually want to organize, rename, and experiment. Backups keep you bold.
+            </div>
+</section>
+
+<section class="content-section">
+<h2>Deliverables (Proof Pack)</h2>
+<p>To finish Lesson 2, you must produce these artifacts. No artifacts = not finished.</p>
+<ul>
+<li><strong>D2.1</strong> — Photo/screenshot of <strong>Settings → Device Info</strong> showing firmware version.</li>
+<li><strong>D2.2</strong> — A computer folder named <strong>flipper-backup</strong> containing:
+                    <ul>
+<li><strong>hello-flipper.txt</strong> (the file that made a round trip)</li>
+<li>Copies of any of the module folders/files listed in Step 5 that exist on your Flipper</li>
+</ul>
+</li>
+<li><strong>D2.3</strong> — A short note (2–5 sentences) answering:
+                    <ul>
+<li>Where did you place <strong>hello-flipper.txt</strong> on the Flipper?</li>
+<li>What was the hardest part of transfer/backup for you?</li>
+</ul>
+</li>
+</ul>
+</section>
+
+<section class="content-section">
+<h2>Verification</h2>
+<p>Check these boxes. If you can’t honestly check a box, you’re not done yet.</p>
+<ul>
+<li>I can find <strong>Device Info</strong> on the Flipper without guessing.</li>
+<li>I can browse the <strong>File Browser</strong> and locate the folder where I put <strong>hello-flipper.txt</strong>.</li>
+<li><strong>hello-flipper.txt</strong> successfully transferred <strong>computer → Flipper → computer</strong>.</li>
+<li>My <strong>flipper-backup</strong> folder exists and contains my files.</li>
+</ul>
+</section>
+
+<section class="content-section">
+<h2>Troubleshooting (common failures)</h2>
+<h3>Flipper not detected / transfer tool can’t connect</h3>
+<ul>
+<li>Try a different USB cable (many “charge-only” cables exist).</li>
+<li>Try a different USB port.</li>
+<li>Reboot Flipper (power menu) and reconnect.</li>
+</ul>
+<h3>SD card not showing / errors</h3>
+<ul>
+<li>Reseat the SD card.</li>
+<li>Confirm it’s formatted correctly (FAT32 is commonly required).</li>
+<li>If you must format, back up anything important first.</li>
+</ul>
+<h3>You can’t find the file you transferred</h3>
+<ul>
+<li>Search the folder you chose slowly; don’t assume it “didn’t transfer.”</li>
+<li>Use a single obvious location for now (we’re training consistency).</li>
+</ul>
+<div class="warning-box">
+<strong>Do not “fix it” by installing random firmware or mystery tools.</strong>
+                If the official workflow is failing, we diagnose the workflow. We don’t escalate into side quests.
+            </div>
+</section>
+
+<section class="content-section">
+<h2>Finished Means</h2>
+<ul>
+<li>I produced D2.1, D2.2, and D2.3.</li>
+<li>I can repeat the transfer workflow without re-reading this page.</li>
+<li>I understand where my future captures will be saved and how to back them up.</li>
+</ul>
+<div class="note-box">
+<strong>Next Up:</strong> In Lesson 3, we do a clean win with <strong>Infrared</strong>: record → save → replay on a device you own.
+            </div>
+</section>
+
+    <button id="complete-btn" class="button locked" type="button">Complete Previous Lesson First</button>
+
+    <nav class="nav-section" aria-label="Lesson navigation">
+      <button id="back-top-btn" class="button" type="button">Back to Top ↑</button>
+      <div class="nav-buttons">
+        <a class="secondary" href="../lesson-1/">← Previous Lesson</a>
+        <a class="secondary" href="../../">Course Overview</a>
+        <a class="primary" href="https://twist3dink.xyz/academy/">Back to Academy</a>
+      </div>
+    </nav>
+
+  </main>
+
+  <script type="module" src="../../assets/js/lesson.js"></script>
+</body>
+</html>

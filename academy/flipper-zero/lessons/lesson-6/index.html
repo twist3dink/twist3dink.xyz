@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lesson 6: BadUSB & GPIO | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../assets/css/course.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <main id="main" class="container" data-lesson-number="6" data-xp="50" data-total-lessons="6">
+    <header class="lesson-header">
+      <h1>Lesson 6: BadUSB & GPIO</h1>
+      <p class="lesson-meta">Estimated time: 30 minutes | XP Reward: 50</p>
+      <button id="skip-bottom-btn" class="button" type="button">Skip to Bottom ↓</button>
+    </header>
+
+<section class="content-section">
+<h2>Stop the Noise: Where Does This Go?</h2>
+<p>
+        Real talk: most “beginner” guides say “paste this here” like you’ve memorized the anatomy of an HTML page.
+        If you’re new, that’s not “easy” — it’s guessing. This section removes the guesswork.
+      </p>
+<h3>Two rules that prevent 90% of beginner pain</h3>
+<ul>
+<li><strong>CSS</strong> goes inside <code>&lt;style&gt;...&lt;/style&gt;</code> (design only).</li>
+<li><strong>HTML content</strong> goes inside <code>&lt;body&gt;...&lt;/body&gt;</code> (sections, text, buttons).</li>
+</ul>
+<div class="note-box">
+<strong>Translation:</strong>
+        If it starts with <code>&lt;div&gt;</code> it’s HTML. If it looks like <code>.class { ... }</code> it’s CSS.
+        Mixing them is the #1 “why did my page explode” bug.
+      </div>
+<h3>Exactly where your “Objective / Deliverables” blocks belong</h3>
+<ol>
+<li>Find <code>&lt;div class="lesson-header"&gt; ... &lt;/div&gt;</code> (the title box above).</li>
+<li>Paste new content sections <em>directly under it</em> (which is exactly where this block is now).</li>
+<li>Never paste <code>&lt;div&gt;</code> inside <code>&lt;style&gt;</code>. Ever.</li>
+</ol>
+</section>
+
+<section class="content-section">
+<h2>Objective</h2>
+<p>
+        Complete two safe proof loops: (1) BadUSB “type-only” automation on your own computer, and
+        (2) GPIO safety + pinout verification on the Flipper.
+        The goal is controlled learning and documentation — not “doing damage fast.”
+      </p>
+<div class="warning-box">
+<strong>Boundary (non-negotiable):</strong>
+<ul>
+<li>Only run BadUSB on computers you own (or have explicit written permission to test).</li>
+<li>No command shells, no downloads, no persistence, no “hidden” behavior.</li>
+<li>If you can’t explain what your script does in one sentence, don’t run it.</li>
+</ul>
+</div>
+</section>
+
+<section class="content-section">
+<h2>BadUSB (Safe Demo)</h2>
+<p>
+        BadUSB works because computers trust USB keyboards automatically. In this exercise, you prove that trust model
+        safely by typing text into a window you opened yourself.
+      </p>
+<h3>BadUSB Exercise: Type-Only Script</h3>
+<ol>
+<li>On your computer, open a text editor (Notepad, TextEdit, Notes, etc.).</li>
+<li>Click inside the editor so the text area is focused.</li>
+<li>On Flipper: open <strong>BadUSB</strong> and run your script file.</li>
+</ol>
+<div class="note-box">
+<strong>Important:</strong> This script should only type text + press Enter. No shortcuts, no app launching, no system commands.
+      </div>
+<h3><code>demo-type-only.txt</code> (exact script)</h3>
+<div class="code-block">REM Title: demo-type-only
+REM Purpose: Safe proof of BadUSB typing
+REM Target: YOUR OWN computer only
+
+DELAY 1000
+STRING BadUSB test successful.
+ENTER
+STRING Lesson 6 proof loop complete.
+ENTER
+STRING I understand USB keyboards are trusted by default.
+ENTER</div>
+<h3>Deliverables (BadUSB Proof Pack)</h3>
+<ul>
+<li><strong>D6.1</strong> — One BadUSB script saved to <strong>/badusb/</strong> named: <strong>demo-type-only.txt</strong></li>
+<li><strong>D6.2</strong> — Photo/screenshot showing the typed output in your editor</li>
+<li><strong>D6.3</strong> — “Run Report” (5–8 lines):
+          <ul>
+<li><strong>Device:</strong> (your computer)</li>
+<li><strong>Ownership:</strong> Mine</li>
+<li><strong>Focused window:</strong> (what was active)</li>
+<li><strong>What it typed:</strong></li>
+<li><strong>Did it behave as expected?</strong></li>
+<li><strong>One lesson learned:</strong> (about USB trust)</li>
+</ul>
+</li>
+</ul>
+</section>
+
+<section class="content-section">
+<h2>GPIO (Safe Verification)</h2>
+<p>
+        GPIO is where you can physically damage your device if you wing it. So the proof loop here is: identify power + ground,
+        and lock in the safety rules before you ever wire anything.
+      </p>
+<h3>GPIO Exercise: Pinout + Safety Checklist</h3>
+<ol>
+<li>On Flipper, open the <strong>GPIO</strong> app/menu.</li>
+<li>Find your GPIO reference: on-device reference screen <em>or</em> pin labels on the device <em>or</em> an official pinout you’ve saved/printed.</li>
+<li>Identify the <strong>3.3V</strong> pin and at least one <strong>GND</strong> pin.</li>
+</ol>
+<div class="warning-box">
+<strong>Hardware rule:</strong> Treat GPIO as <strong>3.3V logic only</strong>. Overvoltage can permanently damage pins.
+      </div>
+<h3>Deliverables (GPIO Proof Pack)</h3>
+<ul>
+<li><strong>D6.4</strong> — Photo of your GPIO reference (screen OR pin labels OR official pinout)</li>
+<li><strong>D6.5</strong> — 5-line GPIO Safety Checklist:
+          <ul>
+<li><strong>Logic level used:</strong> 3.3V</li>
+<li><strong>Never connect this voltage directly:</strong> 5V / 12V</li>
+<li><strong>Must share this reference with external circuits:</strong> GND</li>
+<li><strong>LED protection component:</strong> Current-limiting resistor (220Ω–330Ω)</li>
+<li><strong>My rule before wiring:</strong> “Power off, re-check, then connect.”</li>
+</ul>
+</li>
+</ul>
+<div class="note-box">
+<strong>Optional (not required):</strong> If you already own an LED + resistor + jumper wires, you can do a basic output test using a built-in manual GPIO toggle feature (if your firmware has it). Don’t freestyle wiring if you’re unsure.
+      </div>
+</section>
+
+<section class="content-section">
+<h2>Finished Means</h2>
+<ul>
+<li>D6.1 + D6.2 + D6.3 exist (BadUSB proof loop complete).</li>
+<li>D6.4 + D6.5 exist (GPIO proof loop complete).</li>
+<li>You can explain what you did in one minute without drifting into “cooler stuff.”</li>
+</ul>
+</section>
+
+    <button id="complete-btn" class="button locked" type="button">Complete Previous Lesson First</button>
+
+    <nav class="nav-section" aria-label="Lesson navigation">
+      <button id="back-top-btn" class="button" type="button">Back to Top ↑</button>
+      <div class="nav-buttons">
+        <a class="secondary" href="../lesson-5/">← Previous Lesson</a>
+        <a class="secondary" href="../../">Course Overview</a>
+        <a class="primary" href="https://twist3dink.xyz/academy/">Back to Academy</a>
+      </div>
+    </nav>
+
+  </main>
+
+  <script type="module" src="../../assets/js/lesson.js"></script>
+</body>
+</html>
