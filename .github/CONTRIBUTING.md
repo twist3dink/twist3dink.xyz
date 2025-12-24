@@ -38,11 +38,12 @@ Use the canonical templates:
 - `academy/flipper-zero/templates/TEMPLATE_LESSON.html`
 - `academy/flipper-zero/templates/TEMPLATE_OVERVIEW.html`
 
-Do not “freestyle” new patterns into lesson pages.
+> Do not “freestyle” new patterns into lesson pages.
+
+> **Security that is enforced doesn't feel heroic, but if you stay ready, you'll never have to get ready.**
+
 
 ## Before you open a PR
 Run the hardening checks:
 ```bash
 ./scripts/validate-html-hardening.sh
-
-> **Security that is enforced doesn't feel heroic, but if you stay ready, so you never have to get ready.**
