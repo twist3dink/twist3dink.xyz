@@ -445,21 +445,21 @@
     </style>
 </head>
 <body>
-    <!-- Accessibility Bar -->
-    <div class="accessibility-bar">
-        <div class="accessibility-controls">
-            <div class="control-group">
-                <label>Text:</label>
-                <button class="btn-control" onclick="adjustFontSize(-1)">A-</button>
-                <button class="btn-control" onclick="adjustFontSize(1)">A+</button>
-            </div>
-            <button class="btn-control" onclick="toggleDyslexiaMode()">Dyslexia</button>
-            <button class="btn-control" onclick="toggleHighContrast()">Contrast</button>
-            <button class="btn-control" onclick="toggleReducedMotion()">Motion</button>
-        </div>
+   <!-- Accessibility Bar -->
+<div class="accessibility-bar">
+  <div class="accessibility-controls">
+    <div class="control-group">
+      <label>Text:</label>
+      <button class="btn-control" type="button" data-action="font-down">A-</button>
+      <button class="btn-control" type="button" data-action="font-up">A+</button>
     </div>
 
-    <!-- Navigation -->
+    <button class="btn-control" type="button" data-action="dyslexia">Dyslexia</button>
+    <button class="btn-control" type="button" data-action="contrast">Contrast</button>
+    <button class="btn-control" type="button" data-action="motion">Motion</button>
+  </div>
+</div>
+
     <nav>
         <div class="nav-content">
             <a href="/" class="logo">tw¡st3d_¡nk</a>
@@ -469,7 +469,7 @@
                 <span></span>
                 <span></span>
             </button>
-
+    <!-- Navigation -->
             <div class="nav-links" id="navLinks">
                 <a href="/academy/">Academy</a>
                 <a href="/writing/">Writing</a>
