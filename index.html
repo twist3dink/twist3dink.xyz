@@ -466,7 +466,7 @@
         <div class="nav-content">
             <a href="/" class="logo">tw¡st3d_¡nk</a>
             
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <button type="button" data-action=">toggleMobileMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -487,7 +487,7 @@
             <h1 class="hero-hook">Welcome to the Other Side of the Mirror</h1>
             <p class="hero-tagline">I spent years trapped behind glass, watching my confident self live the life I was too afraid to claim. This is the escape route I wish existed.</p>
         </div>
-        <div class="scroll-indicator" onclick="document.querySelector('.story-section').scrollIntoView({behavior: 'smooth'})">
+        <div class="scroll-indicator" type="button" data-action="document.querySelector('.story-section').scrollIntoView({behavior: 'smooth'})">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
                 <path d="M12 5v14M19 12l-7 7-7-7"/>
             </svg>
