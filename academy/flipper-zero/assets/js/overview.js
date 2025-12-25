@@ -25,35 +25,75 @@ function render(progress) {
   qs('#progress-text').textContent = pct + '% Complete';
 
   const grid = qs('#lessons-grid');
-  grid.innerHTML = '';
+  grid.innerHTML = '';  // Safe: Controlled empty string, no user data
 
   for (const lesson of COURSE.lessons) {
     const completed = isCompleted(progress, lesson.n);
     const unlocked = isUnlocked(progress, lesson.n);
 
+    // Create main card
     const card = document.createElement('div');
-    card.className = 'lesson-card ' + (completed ? 'completed' : (unlocked ? 'unlocked' : 'locked'));
+    card.className = `lesson-card ${completed ? 'completed' : (unlocked ? 'unlocked' : 'locked')}`;
     card.dataset.lesson = String(lesson.n);
 
-    const status = completed ? '✓ Complete' : (unlocked ? 'Start' : 'Locked');
-    const badgeClass = completed ? 'completed' : (unlocked ? 'unlocked' : 'locked');
+    // Lesson header row
+    const headerRow = document.createElement('div');
+    headerRow.className = 'lesson-header-row';
 
-    card.innerHTML = `
-      <div class="lesson-header-row">
-        <span class="lesson-number">LESSON ${lesson.n}</span>
-        <div class="lesson-status">
-          <span class="status-badge ${badgeClass}">${status}</span>
-        </div>
-      </div>
-      <h3 class="lesson-title">${lesson.title}</h3>
-      <p class="lesson-description">${lesson.description}</p>
-      <div class="lesson-meta-row">
-        <span>⏱️ ${lesson.minutes} minutes</span>
-        <span>⭐ ${lesson.xp} XP</span>
-        <span>📝 ${lesson.level}</span>
-      </div>
-      <a class="start-button" href="${lesson.path}">Start Lesson →</a>
-    `;
+    const lessonNumber = document.createElement('span');
+    lessonNumber.className = 'lesson-number';
+    lessonNumber.textContent = `LESSON ${lesson.n}`;
+    headerRow.appendChild(lessonNumber);
+
+    const statusDiv = document.createElement('div');
+    statusDiv.className = 'lesson-status';
+
+    const statusBadge = document.createElement('span');
+    const badgeClass = completed ? 'completed' : (unlocked ? 'unlocked' : 'locked');
+    statusBadge.className = `status-badge ${badgeClass}`;
+    statusBadge.textContent = completed ? '✓ Complete' : (unlocked ? 'Start' : 'Locked');
+    statusDiv.appendChild(statusBadge);
+
+    headerRow.appendChild(statusDiv);
+    card.appendChild(headerRow);
+
+    // Lesson title
+    const title = document.createElement('h3');
+    title.className = 'lesson-title';
+    title.textContent = lesson.title;
+    card.appendChild(title);
+
+    // Lesson description
+    const description = document.createElement('p');
+    description.className = 'lesson-description';
+    description.textContent = lesson.description;
+    card.appendChild(description);
+
+    // Lesson meta row
+    const metaRow = document.createElement('div');
+    metaRow.className = 'lesson-meta-row';
+
+    const timeSpan = document.createElement('span');
+    timeSpan.textContent = `⏱️ ${lesson.minutes} minutes`;
+    metaRow.appendChild(timeSpan);
+
+    const xpSpan = document.createElement('span');
+    xpSpan.textContent = `⭐ ${lesson.xp} XP`;
+    metaRow.appendChild(xpSpan);
+
+    const levelSpan = document.createElement('span');
+    levelSpan.textContent = `📝 ${lesson.level}`;
+    metaRow.appendChild(levelSpan);
+
+    card.appendChild(metaRow);
+
+    // Start button link
+    const startLink = document.createElement('a');
+    startLink.className = 'start-button';
+    startLink.href = lesson.path;
+    startLink.textContent = 'Start Lesson →';
+    card.appendChild(startLink);
+
     grid.appendChild(card);
   }
 }
