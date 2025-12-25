@@ -1,1 +1,5 @@
-<script defer src="/assets/js/accessibility.js"></script>
+(() => {
+  'use strict';
+
+  console.log('Accessibility JS loaded');
+})();
