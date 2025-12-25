@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:title" content="tw¡st3d_¡nk - The Other Side of the Mirror">
     <meta property="og:description" content="I spent years trapped behind glass. This academy is the escape route I wish existed.">
-    <meta property="og:image" content="https://twist3dink.xyz/academy/assets/images/architect-hero.jpg">
     <title>tw¡st3d_¡nk - The Other Side of the Mirror</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -465,7 +466,7 @@
         <div class="nav-content">
             <a href="/" class="logo">tw¡st3d_¡nk</a>
             
-            <button type="button" data-action=">toggleMobileMenu()">
+            <button type="button" data-action="toggleMobileMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -486,9 +487,17 @@
             <h1 class="hero-hook">Welcome to the Other Side of the Mirror</h1>
             <p class="hero-tagline">I spent years trapped behind glass, watching my confident self live the life I was too afraid to claim. This is the escape route I wish existed.</p>
         </div>
-        <div class="scroll-indicator" <button type="button" data-action="document.querySelector('.story-section').scrollIntoView({behavior: 'smooth'})">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                <path d="M12 5v14M19 12l-7 7-7-7"/>
+       <div class="scroll-indicator">
+  <button 
+    type="button"
+    aria-label="Scroll to story section"
+    data-action="document.querySelector('.story-section').scrollIntoView({behavior: 'smooth'})"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+      <path d="M12 5v14M19 12l-7 7-7-7"/>
+    </svg>
+  </button>
+</div>
             </svg>
         </div>
     </section>
