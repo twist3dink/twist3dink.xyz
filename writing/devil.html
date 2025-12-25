@@ -329,6 +329,7 @@
             transition: none !important;
         }
     </style>
+    <script src="/assets/js/accessibility.js"></script>
 </head>
 <body>
     <!-- Accessibility Bar -->
@@ -336,12 +337,12 @@
         <div class="accessibility-controls">
             <div class="control-group">
                 <label>Text:</label>
-                <button class="btn-control" onclick="adjustFontSize(-1)">A-</button>
-                <button class="btn-control" onclick="adjustFontSize(1)">A+</button>
+                <button type="button" data-action="adjustFontSize(-1)">A-</button>
+                <button type="button" data-action="adjustFontSize(1)">A+</button>
             </div>
-            <button class="btn-control" onclick="toggleDyslexiaMode()">Dyslexia</button>
-            <button class="btn-control" onclick="toggleHighContrast()">Contrast</button>
-            <button class="btn-control" onclick="toggleReducedMotion()">Motion</button>
+            <button type="button" data-action="toggleDyslexiaMode()">Dyslexia</button>
+            <button type="button" data-action="toggleHighContrast()">Contrast</button>
+            <button type="button" data-action="toggleReducedMotion()">Motion</button>
         </div>
     </div>
 
