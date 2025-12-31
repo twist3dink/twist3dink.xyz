@@ -1,5 +1,7 @@
 /* devil.css - styles for writing/devil.css page extracted from original inline CSS */
-<style>
+/* devil.css */
+body { ... }
+
         * {
             margin: 0;
             padding: 0;
@@ -320,4 +322,3 @@
             animation: none !important;
             transition: none !important;
         }
-    </style>
