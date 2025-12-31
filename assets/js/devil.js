@@ -1,5 +1,7 @@
 /* devil.js - script for writing/devil.js page extracted from original inline js */
-<script>
+// devil.js
+(() => { ... })();
+
         // Accessibility Functions
         let fontSize = 16;
         const minFontSize = 12;
@@ -50,4 +52,3 @@
                 document.body.classList.add('reduce-motion');
             }
         });
-    </script>
