@@ -1,3 +1,4 @@
+/* devil.js - script for writing/devil.js page extracted from original inline js */
 <script>
         // Accessibility Functions
         let fontSize = 16;
