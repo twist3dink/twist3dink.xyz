@@ -243,3 +243,13 @@ a {
   text-underline-offset: 0.18em;
 }
 
+/* Margin reset: spacing is controlled by layout primitives, not defaults */
+h1, h2, h3, p, ul, ol, dl, blockquote, pre {
+  margin: 0;
+}
+
+ul, ol {
+  padding-left: var(--space-5);
+}
+
+
