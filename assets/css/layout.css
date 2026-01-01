@@ -23,3 +23,17 @@
 .page > section + section {
   margin-top: var(--section-gap);
 }
+
+/* Vertical stack: consistent spacing between children */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-gap);
+}
+
+/* Variants */
+.stack-xs { gap: var(--space-2); }
+.stack-sm { gap: var(--space-3); }
+.stack-md { gap: var(--space-4); }
+.stack-lg { gap: var(--space-6); }
+.stack-xl { gap: var(--space-8); }
