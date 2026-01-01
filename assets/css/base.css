@@ -74,3 +74,39 @@
   font-size: var(--text-ui);
 }
 
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--t-2);
+  line-height: var(--lh-body);
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1;
+}
+
+.role-primary {
+  font-size: var(--t-5);
+  line-height: var(--lh-tight);
+  font-weight: 700;
+  margin: 0;
+}
+
+.role-clarifier {
+  font-size: var(--t-3);
+  line-height: 1.4;
+  font-weight: 400;
+  margin-top: var(--space-2);
+}
+
+h2 {
+  font-size: var(--t-4);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+code, pre, .mono {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+}
+
