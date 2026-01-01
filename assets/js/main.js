@@ -31,4 +31,3 @@
     if (!header.contains(e.relatedTarget)) close();
   });
 })();
-
