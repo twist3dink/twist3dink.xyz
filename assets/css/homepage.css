@@ -19,8 +19,8 @@
 }
 
 .page-home .home-assertion { }
-.page-home .home-boundary  { }
-.page-home .home-exit      { }
+.page-home .home-boundary { }
+.page-home .home-exit { }
 
 /* Each homepage zone inherits section rhythm; inside each zone use stacks */
 .page-home .home-assertion,
@@ -31,9 +31,3 @@
 
 /* Absolutely keep this constraint */
 .page-home p { display: none; }
-
-<section class="home-assertion stack-lg">
-  <h1 class="role-primary"></h1>
-  <h2 class="role-clarifier"></h2>
-</section>
-
