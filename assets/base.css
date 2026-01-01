@@ -14,3 +14,19 @@
   --line-tight: 1.2;
   --line-normal: 1.5;
 }
+.role-primary {
+  font-size: var(--text-primary);
+  line-height: var(--line-tight);
+  margin: 0;
+}
+
+.role-clarifier {
+  font-size: var(--text-clarifier);
+  line-height: var(--line-normal);
+  margin-top: var(--space-2);
+}
+
+.exit-link,
+.boundary-item {
+  font-size: var(--text-ui);
+}
