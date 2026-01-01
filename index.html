@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:title" content="twist3d_ink - The Other Side of the Mirror">
-    <meta property="og:description" content="I spent years trapped behind glass. This academy is the escape route I wish existed.">
-    <title>twist3d_ink - The Other Side of the Mirror</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/home.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>twist3dink.xyz</title>
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <link rel="stylesheet" href="/assets/css/layout.css" />
+  <link rel="stylesheet" href="/assets/css/nav.css" />
+  <link rel="stylesheet" href="/assets/css/components.css" />
+  <link rel="stylesheet" href="/assets/css/homepage.css" />
+  <script src="/assets/js/main.js" defer></script>
 </head>
-    <a class="skip-link" href="#main">Skip to content</a>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header" data-nav>
   <div class="nav-shell">
     <a class="brand" href="/">twist3dink.xyz</a>
 
     <nav class="site-nav" aria-label="Primary">
-      <a class="nav-link" href="/academy/">Academy</a>
-      <a class="nav-link" href="/labs/">Labs</a>
-      <a class="nav-link" href="/docs/">Docs</a>
-      <a class="nav-link" href="/about/">About</a>
+      <a class="btn btn-primary" href="/academy/">Enter Academy</a>
+      <a class="btn" href="/labs/">Explore Labs</a>
+      <button class="btn btn-quiet" type="button">Learn more</button>
     </nav>
 
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer">
@@ -31,10 +31,9 @@
 
   <div class="nav-drawer" id="nav-drawer" hidden>
     <nav class="drawer-nav" aria-label="Mobile">
-      <a class="drawer-link" href="/academy/">Academy</a>
-      <a class="drawer-link" href="/labs/">Labs</a>
-      <a class="drawer-link" href="/docs/">Docs</a>
-      <a class="drawer-link" href="/about/">About</a>
+      <a class="btn btn-primary" href="/academy/">Enter Academy</a>
+      <a class="btn" href="/labs/">Explore Labs</a>
+      <button class="btn btn-quiet" type="button">Learn more</button>
     </nav>
   </div>
 </header>
@@ -43,51 +42,32 @@
   <!-- page content -->
 </main>
 
-<body>
-    <!-- Accessibility Toolbar -->
-    <div class="accessibility-bar">
-        <button type="button" data-action="toggle-contrast" aria-label="Toggle high contrast mode">High Contrast</button>
-        <button type="button" data-action="toggle-dyslexic" aria-label="Toggle dyslexia friendly font">Dyslexia Friendly</button>
-        <button type="button" data-action="decrease-font" aria-label="Decrease font size">A-</button>
-        <button type="button" data-action="increase-font" aria-label="Increase font size">A+</button>
-    </div>
+<main class="page page-home">
 
-    <header>
-        <nav class="site-nav">
-            <div class="logo">
-                <a href="/">twist3d_ink</a>
-            </div>
-            <button type="button" class="menu-button" data-action="toggleMobileMenu" aria-label="Toggle navigation menu">
-                ☰
-            </button>
-            <ul class="menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/writing/">Writing</a></li>
-                <li><a href="#story" data-action="scrollToStory">Story</a></li>
-            </ul>
-        </nav>
-    </header>
+  <!-- Zone 1: Primary Assertion -->
+  <section class="home-assertion stack-lg">
+    <h1 class="role-primary"></h1>
+    <h2 class="role-clarifier"></h2>
+  </section>
 
-    <main>
-        <section id="hero" class="hero">
-            <div class="hero-content">
-                <h1>The Other Side of the Mirror</h1>
-                <p>I spent years trapped behind glass. This academy is the escape route I wish existed.</p>
-                <a href="#story" class="cta" data-action="scrollToStory">Read The Story</a>
-            </div>
-        </section>
+  <!-- Zone 2: Scope Boundary -->
+  <section class="home-boundary">
+    <ul class="boundary-list">
+      <li class="boundary-item"></li>
+      <li class="boundary-item"></li>
+      <li class="boundary-item"></li>
+    </ul>
+  </section>
 
-        <section id="story" class="story">
-            <h2>Our Story</h2>
-            <p>Coming soon...</p>
-        </section>
-    </main>
+  <!-- Zone 3: Directional Commitments -->
+  <section class="home-exit">
+    <nav class="exit-nav">
+      <a class="exit-link" href="#"></a>
+      <a class="exit-link" href="#"></a>
+      <a class="exit-link" href="#"></a>
+    </nav>
+  </section>
 
-    <footer>
-        <p>&copy; 2025 twist3d_ink. All rights reserved.</p>
-    </footer>
-
-    <script src="/assets/js/home.js"></script>
-    <script src="/assets/js/accessibility.js"></script>
+</main>
 </body>
 </html>
