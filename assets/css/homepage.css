@@ -31,3 +31,9 @@
 
 /* Absolutely keep this constraint */
 .page-home p { display: none; }
+
+<section class="home-assertion stack-lg">
+  <h1 class="role-primary"></h1>
+  <h2 class="role-clarifier"></h2>
+</section>
+
