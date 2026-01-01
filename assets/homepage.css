@@ -1,1 +1,13 @@
+.page-home p {
+  display: none;
+}
+
+.page-home .role-primary + .role-primary {
+  display: none;
+}
+
+.page-home .exit-nav {
+  display: flex;
+  gap: var(--space-3);
+}
 
