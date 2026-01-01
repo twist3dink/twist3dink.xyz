@@ -11,3 +11,5 @@
   gap: var(--space-3);
 }
 
+/* /assets/css/homepage.css */
+.page-home p { display: none; }
