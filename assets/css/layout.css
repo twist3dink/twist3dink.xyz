@@ -1,9 +1,3 @@
-.page {
-  max-width: 72ch;
-  margin: 0 auto;
-  padding: var(--space-4) var(--space-2);
-}
-
 .page-home section {
   margin-bottom: var(--space-4);
 }
@@ -38,6 +32,7 @@
 .stack-lg { gap: var(--space-6); }
 .stack-xl { gap: var(--space-8); }
 
+/* Cluster: groups items horizontally with wrap */
 .cluster {
   display: flex;
   flex-wrap: wrap;
@@ -45,5 +40,6 @@
   gap: var(--space-3);
 }
 
+/* Variants */
 .cluster-sm { gap: var(--space-2); }
 .cluster-lg { gap: var(--space-5); }
