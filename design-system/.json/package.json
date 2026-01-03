@@ -1,6 +1,0 @@
-{
-  "scripts": {
-    "tokens:build": "node design-system/build/build-tokens.mjs",
-    "tokens:clean": "node -e \"require('fs').rmSync('design-system/outputs', {recursive:true, force:true})\" && node -e \"require('fs').mkdirSync('design-system/outputs', {recursive:true})\""
-  }
-}
