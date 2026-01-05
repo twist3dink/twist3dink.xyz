@@ -57,6 +57,15 @@ const isConsumptionToken = (token) => {
     fp.endsWith("tokens/themes/dark.json")
   );
 };
+const debugFilePathsOnce = (dictionary) => {
+  if (!TOKENS_VERBOSE) return;
+  const fps = [...new Set(dictionary.allTokens.map(t => (t.filePath || "").replaceAll("\\","/")))];
+  console.log("\nTOKENS_VERBOSE filePaths (unique):");
+  for (const fp of fps) console.log(" -", fp);
+  console.log("");
+};
+
+
 
 
 // Custom TS output: `as const` + inferred types.
