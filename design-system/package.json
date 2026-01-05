@@ -1,0 +1,13 @@
+{
+  "name": "twist3dink-design-system",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tokens:build": "node build/build-tokens.mjs",
+    "tokens:clean": "node -e \"require('fs').rmSync('outputs', { recursive: true, force: true })\" && node -e \"require('fs').mkdirSync('outputs', { recursive: true })\""
+  },
+  "devDependencies": {
+    "style-dictionary": "^4.3.0",
+    "jsonschema": "^1.4.1"
+  }
+}
