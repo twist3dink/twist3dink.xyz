@@ -199,7 +199,6 @@ function validateContracts({ base, semantic, context, aliases, themeLight, theme
   // (you can widen this list later as base expands)
 
   const baseNamespaces = ["color", "space", "size", "radius", "font", "weight", "duration", "easing", "z", "shadow"];
-
   for (const r of semRefs) {
 
     if (!startsWithAny(r, baseNamespaces)) errors.push(`semantic.json: illegal reference "{${r}}". Semantic may only reference base tokens.`);
