@@ -49,14 +49,15 @@ ensureDir(OUT_DIR);
 // semantic + context (+ themes), excluding base primitives and experimental aliases.
 // Base is included for reference resolution only.
 const isConsumptionToken = (token) => {
-  const fp = token?.filePath || "";
+  const fp = (token?.filePath || "").replaceAll("\\", "/");
   return (
-    fp.endsWith(path.join("tokens", "semantic.json")) ||
-    fp.endsWith(path.join("tokens", "context.json")) ||
-    fp.endsWith(path.join("tokens", "themes", "light.json")) ||
-    fp.endsWith(path.join("tokens", "themes", "dark.json"))
+    fp.endsWith("tokens/semantic.json") ||
+    fp.endsWith("tokens/context.json") ||
+    fp.endsWith("tokens/themes/light.json") ||
+    fp.endsWith("tokens/themes/dark.json")
   );
 };
+
 
 // Custom TS output: `as const` + inferred types.
 StyleDictionary.registerFormat({
