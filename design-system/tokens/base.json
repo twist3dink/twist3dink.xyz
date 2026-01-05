@@ -17,7 +17,7 @@
       }
     }
   },
-  "spacing": {
+  "space": {
     "2": { "value": "8px" },
     "3": { "value": "12px" },
     "4": { "value": "16px" }
