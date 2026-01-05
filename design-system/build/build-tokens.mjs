@@ -48,29 +48,19 @@ ensureDir(OUT_DIR);
 // We generate outputs for the *consumption* layer:
 // semantic + context (+ themes), excluding base primitives and experimental aliases.
 // Base is included for reference resolution only.
-const isConsumptionToken = (token) => {
-  const fp = (token?.filePath || "").replaceAll("\\", "/");
-  return (
-    fp.endsWith("tokens/semantic.json") ||
-    fp.endsWith("tokens/context.json") ||
-    fp.endsWith("tokens/themes/light.json") ||
-    fp.endsWith("tokens/themes/dark.json")
-  );
-};
-const debugFilePathsOnce = (dictionary) => {
-  if (!TOKENS_VERBOSE) return;
-  const fps = [...new Set(dictionary.allTokens.map(t => (t.filePath || "").replaceAll("\\","/")))];
-  console.log("\nTOKENS_VERBOSE filePaths (unique):");
-  for (const fp of fps) console.log(" -", fp);
-  console.log("");
-};
-if (TOKENS_VERBOSE) {
-  const kept = dictionary.allTokens.filter(isConsumptionToken).length;
-  console.log("Consumption tokens:", kept);
-}
-const kept = dictionary.allTokens.filter(isConsumptionToken).length;
-if (kept === 0) {
-  throw new Error(
+const CONSUMPTION_SUFFIXES = new Set([
+  "tokens/semantic.json",
+  "tokens/context.json",
+  "tokens/themes/light.json",
+  "tokens/themes/dark.json",
+]);
+
+const normPath = (p) => (p || "").replaceAll("\\", "/");
+
+const isConsumptionToken = (token) =>
+  CONSUMPTION_SUFFIXES.has(normPath(token?.filePath).split(/(?=tokens\/)/).pop()) ||
+  [...CONSUMPTION_SUFFIXES].some((s) => normPath(token?.filePath).endsWith(s));
+
     "Consumption token filter produced zero tokens. This is a build configuration error."
   );
 }
