@@ -17,7 +17,7 @@
     }
   },
   "shadow": {
-    "card": { "value": "{shadow.cardlight}" },
+    "card": { "value": "{shadow.md}" },
     "focusring": { "value": "{shadow.glowgreen}" }
   },
   "font": {
@@ -31,6 +31,14 @@
     "lineheight": {
       "body": { "value": "{font.lineheight.normal}" },
       "heading": { "value": "{font.lineheight.tight}" }
+    }
+  },
+
+  "componenttokens": {
+    "button": {
+      "paddingx": { "value": "{spacing.4}" },
+      "paddingy": { "value": "{spacing.3}" },
+      "radius": { "value": "{radius.2}" }
     }
   }
 }
