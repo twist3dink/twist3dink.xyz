@@ -27,7 +27,6 @@ design-system/outputs/
 .cache/
 .tmp/
 temp/
-
 # =========================
 # Environment
 # =========================
