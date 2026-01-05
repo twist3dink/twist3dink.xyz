@@ -282,8 +282,6 @@ if (contractErrors.length) {
 
 }
 
-
-
 // 3) Build outputs via Style Dictionary
 
 ensureDir(OUT_DIR);
@@ -294,80 +292,39 @@ ensureDir(OUT_DIR);
 
 // IMPORTANT: We will generate outputs for semantic layer (consumption), not base.
 
-const SD = StyleDictionary.extend({
-
+const sd = new StyleDictionary({
   source: files,
-
   platforms: {
-
     css: {
-
       transformGroup: "css",
-
-      buildPath: "design-system/outputs/",
-
+      buildPath: "outputs/",
       files: [
-
         {
-
           destination: "tokens.css",
-
           format: "css/variables",
-
           options: {
-
-            // Prefix avoids collisions
-
             selector: ":root",
-
             outputReferences: true
-
           }
-
         }
-
       ]
-
     },
-
     ts: {
-
       transformGroup: "js",
-
-      buildPath: "design-system/outputs/",
-
+      buildPath: "outputs/",
       files: [
-
         {
-
           destination: "tokens.ts",
-
           format: "javascript/es6",
-
           options: { outputReferences: true }
-
         }
-
       ]
-
     }
-
   }
-
 });
 
-
-
-// Determinism note: Style Dictionary output order can vary if object key order varies.
-
-// JSON preserves insertion order, so your token file authoring order becomes output order.
-
-// We will enforce "no reformatting tools that reorder keys" later in lint rules.
-
-
-
-SD.buildAllPlatforms();
-
+await sd.hasInitialized;
+await sd.buildAllPlatforms();
 
 
 // 4) Emit build fingerprint so CI can detect drift
