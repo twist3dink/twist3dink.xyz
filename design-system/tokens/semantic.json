@@ -1,10 +1,10 @@
 {
   "color": {
     "bg": {
-      "default": { "value": "{base.color.neutral.0}" }
+      "default": { "value": "{theme.color.bg.default}" }
     },
     "text": {
-      "default": { "value": "{base.color.neutral.900}" }
+      "default": { "value": "{theme.color.text.default}" }
     },
     "accent": {
       "default": { "value": "{base.color.accent.toxicgreen.500}" },
@@ -13,12 +13,12 @@
       "onaccent": { "value": "{base.color.neutral.900}" }
     },
     "focus": {
-      "ring": { "value": "{base.color.accent.toxicgreen.400}" }
+      "ring": { "value": "{theme.color.focus.ring}" }
     }
   },
   "shadow": {
-    "card": { "value": "{base.shadow.md}" },
-    "focusring": { "value": "{base.shadow.glowgreen}" }
+    "card": { "value": "{theme.shadow.card}" },
+    "focusring": { "value": "{theme.shadow.focusring}" }
   },
   "font": {
     "family": {

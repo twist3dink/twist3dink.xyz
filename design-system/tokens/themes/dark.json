@@ -1,17 +1,19 @@
 {
-  "color": {
-    "bg": {
-      "default": { "value": "{base.color.neutral.900}" }
+  "theme": {
+    "color": {
+      "bg": {
+        "default": { "value": "{base.color.neutral.900}" }
+      },
+      "text": {
+        "default": { "value": "{base.color.neutral.50}" }
+      },
+      "focus": {
+        "ring": { "value": "{base.color.accent.toxicgreen.300}" }
+      }
     },
-    "text": {
-      "default": { "value": "{base.color.neutral.50}" }
-    },
-    "focus": {
-      "ring": { "value": "{base.color.accent.toxicgreen.300}" }
+    "shadow": {
+      "card": { "value": "{base.shadow.carddark}" },
+      "focusring": { "value": "{base.shadow.glowgreen}" }
     }
-  },
-  "shadow": {
-    "card": { "value": "{base.shadow.carddark}" },
-    "focusring": { "value": "{base.shadow.glowgreen}" }
   }
 }

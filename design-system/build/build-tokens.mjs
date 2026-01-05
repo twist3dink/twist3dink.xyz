@@ -24,6 +24,18 @@ function ensureDir(p) {
   fs.mkdirSync(p, { recursive: true });
 }
 
+function readFileOrThrow(p, { hint } = {}) {
+  if (!fs.existsSync(p)) {
+    const extra = hint ? `\n${hint}` : "";
+    throw new Error(
+      `Expected output was not generated: ${p}` +
+        `\nThis typically indicates token collisions or a filter/source configuration that produced zero tokens.` +
+        extra
+    );
+  }
+  return fs.readFileSync(p, "utf8");
+}
+
 // 1) Validate tokens (schema + contracts) before building.
 const {
   HAS_LIGHT_THEME,
@@ -130,16 +142,24 @@ if (hasBothThemes) {
 
   // Combine into single consumption outputs
   const css = [
-    fs.readFileSync(path.join(OUT_DIR, "tokens.light.css"), "utf8"),
+    readFileOrThrow(path.join(OUT_DIR, "tokens.light.css"), {
+      hint: 'Re-run with TOKENS_VERBOSE=1 to see collision details.'
+    }),
     "",
-    fs.readFileSync(path.join(OUT_DIR, "tokens.dark.css"), "utf8"),
+    readFileOrThrow(path.join(OUT_DIR, "tokens.dark.css"), {
+      hint: 'Re-run with TOKENS_VERBOSE=1 to see collision details.'
+    }),
     ""
   ].join("\n");
   fs.writeFileSync(path.join(OUT_DIR, "tokens.css"), css);
 
   const ts = [
-    fs.readFileSync(path.join(OUT_DIR, "tokens.light.ts"), "utf8"),
-    fs.readFileSync(path.join(OUT_DIR, "tokens.dark.ts"), "utf8"),
+    readFileOrThrow(path.join(OUT_DIR, "tokens.light.ts"), {
+      hint: 'Re-run with TOKENS_VERBOSE=1 to see collision details.'
+    }),
+    readFileOrThrow(path.join(OUT_DIR, "tokens.dark.ts"), {
+      hint: 'Re-run with TOKENS_VERBOSE=1 to see collision details.'
+    }),
     "",
     "export type Tokens = typeof tokens;",
     "export type TokensDark = typeof tokensDark;",

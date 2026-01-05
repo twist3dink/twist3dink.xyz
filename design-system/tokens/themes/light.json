@@ -1,1 +1,19 @@
-{}
+{
+  "theme": {
+    "color": {
+      "bg": {
+        "default": { "value": "{base.color.neutral.0}" }
+      },
+      "text": {
+        "default": { "value": "{base.color.neutral.900}" }
+      },
+      "focus": {
+        "ring": { "value": "{base.color.accent.toxicgreen.400}" }
+      }
+    },
+    "shadow": {
+      "card": { "value": "{base.shadow.md}" },
+      "focusring": { "value": "{base.shadow.glowgreen}" }
+    }
+  }
+}

@@ -142,7 +142,18 @@ export function validateContracts({ base, semantic, context, aliases, themeLight
   // Base primitives live under the "base" namespace to avoid collisions with semantic/consumption tokens.
   const baseNamespaces = ["base"];
   // Consumption layer namespaces (what downstream apps use). Keep this list tight and expand deliberately.
-  const semanticNamespaces = ["base", "color", "space", "size", "radius", "font", "weight", "duration", "easing", "z", "shadow", "componenttokens"];
+  const semanticNamespaces = ["base", "theme", "color", "space", "size", "radius", "font", "weight", "duration", "easing", "z", "shadow", "componenttokens"];
+
+  // 3a) If both themes exist, they must define the same theme token paths.
+  // This prevents "works in light, breaks in dark" drift.
+  if (themeLight && themeDark && Object.keys(themeLight).length && Object.keys(themeDark).length) {
+    const onlyInLight = [...themeLightPaths].filter((p) => !themeDarkPaths.has(p));
+    const onlyInDark = [...themeDarkPaths].filter((p) => !themeLightPaths.has(p));
+    if (onlyInLight.length || onlyInDark.length) {
+      if (onlyInLight.length) errors.push(`themes: paths missing in dark.json: ${onlyInLight.join(", ")}`);
+      if (onlyInDark.length) errors.push(`themes: paths missing in light.json: ${onlyInDark.join(", ")}`);
+    }
+  }
 
   // Helpers to validate references found in token values.
   const validateRefsInLayer = ({ obj, label, allowedNamespaces, allowedPathSets }) => {
@@ -165,12 +176,12 @@ export function validateContracts({ base, semantic, context, aliases, themeLight
     });
   };
 
-  // semantic may reference base only
+  // semantic may reference base and theme (theme acts as an override layer)
   validateRefsInLayer({
     obj: semantic,
     label: "semantic.json",
-    allowedNamespaces: baseNamespaces,
-    allowedPathSets: [basePaths]
+    allowedNamespaces: ["base", "theme"],
+    allowedPathSets: [basePaths, themeLightPaths, themeDarkPaths]
   });
 
   // context may reference base or semantic (recommended: semantic)
