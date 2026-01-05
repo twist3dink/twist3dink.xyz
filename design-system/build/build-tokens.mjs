@@ -198,7 +198,7 @@ function validateContracts({ base, semantic, context, aliases, themeLight, theme
 
   // (you can widen this list later as base expands)
 
-  const baseNamespaces = ["color", "space", "size", "radius", "font", "weight", "duration", "easing", "z"];
+  const baseNamespaces = ["color", "space", "size", "radius", "font", "weight", "duration", "easing", "z", "shadow"];
 
   for (const r of semRefs) {
 
@@ -210,8 +210,7 @@ function validateContracts({ base, semantic, context, aliases, themeLight, theme
 
   // context refs must be either base namespaces or semantic namespaces
 
-  const semanticNamespaces = ["color", "space", "size", "radius", "font", "weight", "duration", "easing", "z"];
-
+  const semanticNamespaces = ["color", "space", "size", "radius", "font", "weight", "duration", "easing", "z", "shadow", "componenttokens"];
   for (const r of ctxRefs) {
 
     if (!startsWithAny(r, baseNamespaces) && !startsWithAny(r, semanticNamespaces)) {
