@@ -60,13 +60,9 @@ const normPath = (p) => (p || "").replaceAll("\\", "/");
 const isConsumptionToken = (token) =>
   CONSUMPTION_SUFFIXES.has(normPath(token?.filePath).split(/(?=tokens\/)/).pop()) ||
   [...CONSUMPTION_SUFFIXES].some((s) => normPath(token?.filePath).endsWith(s));
-
     "Consumption token filter produced zero tokens. This is a build configuration error."
   );
 }
-
-
-
 
 // Custom TS output: `as const` + inferred types.
 StyleDictionary.registerFormat({
