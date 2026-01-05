@@ -36,8 +36,8 @@
 
   "componenttokens": {
     "button": {
-      "paddingx": { "value": "{spacing.4}" },
-      "paddingy": { "value": "{spacing.3}" },
+      "paddingx": { "value": "{space.4}" },
+      "paddingy": { "value": "{space.3}" },
       "radius": { "value": "{radius.2}" }
     }
   }
