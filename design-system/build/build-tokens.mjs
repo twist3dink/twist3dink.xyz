@@ -333,7 +333,9 @@ const isConsumptionToken = (token) => {
 // Custom TS output (D2): `as const` + inferred types.
 StyleDictionary.registerFormat({
   name: "ts/const",
-  formatter: ({ dictionary, file }) => {
+  // Style Dictionary expects `format` (not `formatter`).
+  // Using `formatter` triggers: "Can't register format; format.format must be a function".
+  format: ({ dictionary, file }) => {
     const exportName = file?.options?.exportName || "tokens";
     const filterFn = typeof file.filter === "function" ? file.filter : () => true;
     const tokens = dictionary.allTokens.filter((t) => filterFn(t));
