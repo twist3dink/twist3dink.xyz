@@ -1,55 +1,17 @@
 {
   "color": {
     "bg": {
-      "canvas": {
-        "value": "{color.neutral.950}"
-      },
-      "surface": {
-        "value": "{color.neutral.900}"
-      },
-      "elevated": {
-        "value": "{color.neutral.800}"
-      }
+      "default": { "value": "{color.neutral.900}" }
     },
     "text": {
-      "primary": {
-        "value": "{color.neutral.50}"
-      },
-      "secondary": {
-        "value": "{color.neutral.300}"
-      },
-      "muted": {
-        "value": "{color.neutral.400}"
-      },
-      "inverse": {
-        "value": "{color.neutral.950}"
-      }
-    },
-    "border": {
-      "subtle": {
-        "value": "{color.neutral.800}"
-      },
-      "default": {
-        "value": "{color.neutral.700}"
-      }
-    },
-    "accent": {
-      "onAccent": {
-        "value": "{color.neutral.950}"
-      }
+      "default": { "value": "{color.neutral.50}" }
     },
     "focus": {
-      "ring": {
-        "value": "{color.accent.toxicGreen.300}"
-      }
+      "ring": { "value": "{color.accent.toxicgreen.300}" }
     }
   },
   "shadow": {
-    "card": {
-      "value": "0 10px 30px rgba(0,0,0,0.35)"
-    },
-    "accentGlow": {
-      "value": "{shadow.glowGreen}"
-    }
+    "card": { "value": "{shadow.carddark}" },
+    "focusring": { "value": "{shadow.glowgreen}" }
   }
 }
