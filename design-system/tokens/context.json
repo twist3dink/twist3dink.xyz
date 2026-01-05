@@ -1,9 +1,9 @@
 {
   "component": {
     "button": {
-      "paddingx": { "value": "{spacing.4}" },
-      "paddingy": { "value": "{spacing.3}" },
-      "radius": { "value": "{radius.2}" },
+      "paddingx": { "value": "{componenttokens.button.paddingx}" },
+      "paddingy": { "value": "{componenttokens.button.paddingy}" },
+      "radius": { "value": "{componenttokens.button.radius}" },
       "shadow": { "value": "{shadow.card}" },
       "focusring": { "value": "{shadow.focusring}" }
     }
