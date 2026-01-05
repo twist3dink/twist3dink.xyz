@@ -57,12 +57,15 @@ const CONSUMPTION_SUFFIXES = new Set([
 
 const normPath = (p) => (p || "").replaceAll("\\", "/");
 
-const isConsumptionToken = (token) =>
-  CONSUMPTION_SUFFIXES.has(normPath(token?.filePath).split(/(?=tokens\/)/).pop()) ||
-  [...CONSUMPTION_SUFFIXES].some((s) => normPath(token?.filePath).endsWith(s));
-    "Consumption token filter produced zero tokens. This is a build configuration error."
-  );
-}
+const assertConsumptionNonZero = (dictionary, label = "build") => {
+  const kept = dictionary.allTokens.filter(isConsumptionToken).length;
+  if (TOKENS_VERBOSE) console.log(`[tokens] ${label}: consumption tokens =`, kept);
+  if (kept === 0) {
+    throw new Error(
+      "Consumption token filter produced zero tokens. This is a build configuration error."
+    );
+  }
+};
 
 // Custom TS output: `as const` + inferred types.
 StyleDictionary.registerFormat({
