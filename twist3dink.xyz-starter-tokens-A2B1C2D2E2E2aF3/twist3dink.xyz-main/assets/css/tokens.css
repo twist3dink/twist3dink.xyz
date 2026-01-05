@@ -1,0 +1,24 @@
+:root {
+  /* Core spacing scale (rem-based) */
+  --space-0: 0;
+  --space-1: 0.25rem;  /* 4px  */
+  --space-2: 0.5rem;   /* 8px  */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.5rem;   /* 24px */
+  --space-6: 2rem;     /* 32px */
+  --space-7: 3rem;     /* 48px */
+  --space-8: 4rem;     /* 64px */
+  --space-9: 6rem;     /* 96px */
+  --space-10: 8rem;    /* 128px */
+
+  /* Page layout */
+  --page-gutter: var(--space-4);     /* default horizontal padding */
+  --page-max: 72ch;                  /* keep your readability constraint */
+  --section-gap: var(--space-8);     /* default section separation */
+  --stack-gap: var(--space-4);       /* default vertical stack spacing */
+
+  /* Radius (keep minimal; adjust later if needed) */
+  --radius-1: 0.25rem;
+  --radius-2: 0.5rem;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lesson {{N}}: {{TITLE}} | Flipper Zero Course - tw¡st3d_¡nk Academy</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../assets/css/course.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <main id="main" class="container"
+        data-lesson-number="{{N}}"
+        data-xp="{{XP}}"
+        data-total-lessons="{{TOTAL_LESSONS}}">
+
+    <header class="lesson-header">
+      <h1>Lesson {{N}}: {{TITLE}}</h1>
+      <p class="lesson-meta">Estimated time: {{MINUTES}} minutes | XP Reward: {{XP}}</p>
+      <button id="skip-bottom-btn" class="button" type="button">Skip to Bottom ↓</button>
+    </header>
+
+    <!-- Content Sections -->
+    {{CONTENT_SECTIONS}}
+
+    <button id="complete-btn" class="button locked" type="button">Complete Previous Lesson First</button>
+
+    <nav class="nav-section" aria-label="Lesson navigation">
+      <button id="back-top-btn" class="button" type="button">Back to Top ↑</button>
+      <div class="nav-buttons">
+        <a class="secondary" href="../lesson-{{PREV}}/">← Previous Lesson</a>
+        <a class="secondary" href="../../">Course Overview</a>
+        <a class="primary" href="https://twist3dink.xyz/academy/">Back to Academy</a>
+      </div>
+    </nav>
+  </main>
+
+  <script type="module" src="../../assets/js/lesson.js"></script>
+</body>
+</html>

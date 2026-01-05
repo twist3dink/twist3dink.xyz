@@ -1,0 +1,22 @@
+/* Font scaling */
+:root { --a11y-font-scale: 100%; }
+body { font-size: var(--a11y-font-scale); }
+
+/* High contrast */
+:root[data-high-contrast] {
+  filter: contrast(1.2);
+}
+
+/* Reduced motion */
+:root[data-reduced-motion] * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Dyslexia-friendly readability (no special font required) */
+:root[data-dyslexia] body {
+  letter-spacing: 0.02em;
+  word-spacing: 0.06em;
+  line-height: 1.6;
+}
