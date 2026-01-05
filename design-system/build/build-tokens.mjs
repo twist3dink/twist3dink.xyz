@@ -22,13 +22,29 @@ const ROOT = path.resolve(__dirname, "..");
 
 const TOKENS_DIR = path.join(ROOT, "tokens");
 
+// Note: Style Dictionary buildPath is relative to process.cwd() unless absolute.
+// Use an absolute path to make builds deterministic regardless of where the script is run.
 const OUT_DIR = path.join(ROOT, "outputs");
 
 const SCHEMA_PATH = path.join(ROOT, "schemas", "tokens.schema.json");
 
 
 
-const files = ["base.json", "semantic.json", "context.json", "aliases.json"].map(f => path.join(TOKENS_DIR, f));
+// Core token files (always present)
+const CORE_FILES = ["base.json", "semantic.json", "context.json"].map((f) => path.join(TOKENS_DIR, f));
+
+// Experimental aliases are blocked unless explicitly enabled (F3).
+const ENABLE_EXPERIMENTAL = process.env.ENABLE_EXPERIMENTAL === "1";
+const ALIASES_FILE = path.join(TOKENS_DIR, "aliases.json");
+
+// Theme overrides (E2/E2a). These files are optional; if missing, we build a single-theme output.
+const THEMES_DIR = path.join(TOKENS_DIR, "themes");
+const LIGHT_THEME_FILE = path.join(THEMES_DIR, "light.json");
+const DARK_THEME_FILE = path.join(THEMES_DIR, "dark.json");
+const HAS_LIGHT_THEME = fs.existsSync(LIGHT_THEME_FILE);
+const HAS_DARK_THEME = fs.existsSync(DARK_THEME_FILE);
+
+const files = [...CORE_FILES, ...(ENABLE_EXPERIMENTAL ? [ALIASES_FILE] : [])];
 
 
 
@@ -52,7 +68,7 @@ function sha256File(p) {
 
 /** Contract rules beyond JSON schema */
 
-function validateContracts({ base, semantic, context, aliases }) {
+function validateContracts({ base, semantic, context, aliases, themeLight, themeDark }) {
 
   const errors = [];
 
@@ -135,6 +151,10 @@ function validateContracts({ base, semantic, context, aliases }) {
   assertLeafs(context, (s) => isRef(s), "context.json");
 
   assertLeafs(aliases, (s) => isRef(s), "aliases.json");
+
+  // themes (optional) must also be refs only
+  if (themeLight && Object.keys(themeLight).length) assertLeafs(themeLight, (s) => isRef(s), "themes/light.json");
+  if (themeDark && Object.keys(themeDark).length) assertLeafs(themeDark, (s) => isRef(s), "themes/dark.json");
 
 
 
@@ -240,17 +260,23 @@ const v = new Validator();
 
 
 
-const base = readJSON(files[0]);
+const base = readJSON(CORE_FILES[0]);
+const semantic = readJSON(CORE_FILES[1]);
+const context = readJSON(CORE_FILES[2]);
+const aliases = ENABLE_EXPERIMENTAL ? readJSON(ALIASES_FILE) : { experimental: {} };
+const themeLight = HAS_LIGHT_THEME ? readJSON(LIGHT_THEME_FILE) : {};
+const themeDark = HAS_DARK_THEME ? readJSON(DARK_THEME_FILE) : {};
 
-const semantic = readJSON(files[1]);
+const schemasToValidate = [
+  ["base.json", base],
+  ["semantic.json", semantic],
+  ["context.json", context],
+  ...(ENABLE_EXPERIMENTAL ? [["aliases.json", aliases]] : []),
+  ...(HAS_LIGHT_THEME ? [["themes/light.json", themeLight]] : []),
+  ...(HAS_DARK_THEME ? [["themes/dark.json", themeDark]] : [])
+];
 
-const context = readJSON(files[2]);
-
-const aliases = readJSON(files[3]);
-
-
-
-for (const [name, json] of [["base.json", base], ["semantic.json", semantic], ["context.json", context], ["aliases.json", aliases]]) {
+for (const [name, json] of schemasToValidate) {
 
   const res = v.validate(json, schema);
 
@@ -270,7 +296,7 @@ for (const [name, json] of [["base.json", base], ["semantic.json", semantic], ["
 
 // 2) Contract validation
 
-const contractErrors = validateContracts({ base, semantic, context, aliases });
+const contractErrors = validateContracts({ base, semantic, context, aliases, themeLight, themeDark });
 
 if (contractErrors.length) {
 
@@ -292,53 +318,200 @@ ensureDir(OUT_DIR);
 
 // IMPORTANT: We will generate outputs for semantic layer (consumption), not base.
 
-const sd = new StyleDictionary({
-  source: files,
-  platforms: {
-    css: {
-      transformGroup: "css",
-      buildPath: "outputs/",
-      files: [
-        {
-          destination: "tokens.css",
-          format: "css/variables",
-          options: {
-            selector: ":root",
-            outputReferences: true
-          }
+// We generate outputs for the *consumption* layer.
+// By default that means semantic + context, excluding base primitives and experimental aliases.
+// We generate outputs for the *consumption* layer (B1): semantic + context.
+// Base is included for reference resolution only.
+const isConsumptionToken = (token) => {
+  const fp = token?.filePath || "";
+  return (
+    fp.endsWith(path.join("tokens", "semantic.json")) ||
+    fp.endsWith(path.join("tokens", "context.json")) ||
+    fp.endsWith(path.join("tokens", "themes", "light.json")) ||
+    fp.endsWith(path.join("tokens", "themes", "dark.json"))
+  );
+};
+
+// Custom TS output (D2): `as const` + inferred types.
+StyleDictionary.registerFormat({
+  name: "ts/const",
+  formatter: ({ dictionary, file }) => {
+    const exportName = file?.options?.exportName || "tokens";
+    const filterFn = typeof file.filter === "function" ? file.filter : () => true;
+    const tokens = dictionary.allTokens.filter((t) => filterFn(t));
+
+    const out = {};
+    for (const t of tokens) {
+      let cur = out;
+      for (let i = 0; i < t.path.length; i++) {
+        const k = t.path[i];
+        if (i === t.path.length - 1) {
+          cur[k] = t.value;
+        } else {
+          cur[k] = cur[k] || {};
+          cur = cur[k];
         }
-      ]
-    },
-    ts: {
-      transformGroup: "js",
-      buildPath: "outputs/",
-      files: [
-        {
-          destination: "tokens.ts",
-          format: "javascript/es6",
-          options: { outputReferences: true }
-        }
-      ]
+      }
     }
+
+    const json = JSON.stringify(out, null, 2);
+    return [
+      "/* Auto-generated by Style Dictionary. Do not edit manually. */",
+      `export const ${exportName} = ${json} as const;`,
+      `export type ${exportName[0].toUpperCase() + exportName.slice(1)} = typeof ${exportName};`,
+      ""
+    ].join("\n");
   }
 });
 
-await sd.hasInitialized;
-await sd.buildAllPlatforms();
+const cssFileFor = (destination, selector) => ({
+  destination,
+  format: "css/variables",
+  filter: isConsumptionToken,
+  options: {
+    selector,
+    prefix: "ds",
+    outputReferences: true
+  }
+});
 
+const tsFileFor = (destination, exportName) => ({
+  destination,
+  format: "ts/const",
+  filter: isConsumptionToken,
+  options: { exportName, outputReferences: true }
+});
 
+async function buildTheme({ theme, selector, themeFile, exportName }) {
+  const source = [...CORE_FILES, ...(ENABLE_EXPERIMENTAL ? [ALIASES_FILE] : [])];
+  if (themeFile) source.push(themeFile);
+
+  const sd = new StyleDictionary({
+    source,
+    platforms: {
+      css: {
+        transformGroup: "css",
+        buildPath: OUT_DIR + path.sep,
+        files: [cssFileFor(`tokens.${theme}.css`, selector)]
+      },
+      ts: {
+        transformGroup: "js",
+        buildPath: OUT_DIR + path.sep,
+        files: [tsFileFor(`tokens.${theme}.ts`, exportName)]
+      }
+    }
+  });
+
+  await sd.buildAllPlatforms();
+}
+
+// Build light + dark (E2/E2a) when theme files exist; otherwise build single-theme defaults.
+const hasBothThemes = HAS_LIGHT_THEME && HAS_DARK_THEME;
+if (hasBothThemes) {
+  await buildTheme({ theme: "light", selector: ":root", themeFile: LIGHT_THEME_FILE, exportName: "tokens" });
+  await buildTheme({ theme: "dark", selector: '[data-theme="dark"]', themeFile: DARK_THEME_FILE, exportName: "tokensDark" });
+
+  // Combine into single consumption outputs
+  const css = [
+    fs.readFileSync(path.join(OUT_DIR, "tokens.light.css"), "utf8"),
+    "",
+    fs.readFileSync(path.join(OUT_DIR, "tokens.dark.css"), "utf8"),
+    ""
+  ].join("\n");
+  fs.writeFileSync(path.join(OUT_DIR, "tokens.css"), css);
+
+  const ts = [
+    fs.readFileSync(path.join(OUT_DIR, "tokens.light.ts"), "utf8"),
+    fs.readFileSync(path.join(OUT_DIR, "tokens.dark.ts"), "utf8"),
+    "",
+    "export type Tokens = typeof tokens;",
+    "export type TokensDark = typeof tokensDark;",
+    ""
+  ].join("\n");
+  fs.writeFileSync(path.join(OUT_DIR, "tokens.ts"), ts);
+
+  // Cleanup intermediates
+  for (const f of ["tokens.light.css","tokens.dark.css","tokens.light.ts","tokens.dark.ts"]) {
+    fs.rmSync(path.join(OUT_DIR, f), { force: true });
+  }
+} else {
+  await buildTheme({ theme: "single", selector: ":root", themeFile: HAS_LIGHT_THEME ? LIGHT_THEME_FILE : null, exportName: "tokens" });
+  fs.renameSync(path.join(OUT_DIR, "tokens.single.css"), path.join(OUT_DIR, "tokens.css"));
+  fs.renameSync(path.join(OUT_DIR, "tokens.single.ts"), path.join(OUT_DIR, "tokens.ts"));
+}
+
+// Experimental outputs (F3): only emit when explicitly enabled.
+if (ENABLE_EXPERIMENTAL) {
+  const isExperimentalToken = (token) => {
+    const fp = token?.filePath || "";
+    return fp.endsWith(path.join("tokens", "aliases.json"));
+  };
+
+  const cssExpFileFor = (destination, selector) => ({
+    destination,
+    format: "css/variables",
+    filter: isExperimentalToken,
+    options: { selector, prefix: "ds", outputReferences: true }
+  });
+
+  const tsExpFileFor = (destination, exportName) => ({
+    destination,
+    format: "ts/const",
+    filter: isExperimentalToken,
+    options: { exportName, outputReferences: true }
+  });
+
+  async function buildExperimentalTheme({ theme, selector, themeFile, exportName }) {
+    const source = [...CORE_FILES, ALIASES_FILE];
+    if (themeFile) source.push(themeFile);
+    const sd = new StyleDictionary({
+      source,
+      platforms: {
+        css: { transformGroup: "css", buildPath: OUT_DIR + path.sep, files: [cssExpFileFor(`tokens.experimental.${theme}.css`, selector)] },
+        ts: { transformGroup: "js", buildPath: OUT_DIR + path.sep, files: [tsExpFileFor(`tokens.experimental.${theme}.ts`, exportName)] }
+      }
+    });
+    await sd.buildAllPlatforms();
+  }
+
+  if (hasBothThemes) {
+    await buildExperimentalTheme({ theme: "light", selector: ":root", themeFile: LIGHT_THEME_FILE, exportName: "tokensExperimental" });
+    await buildExperimentalTheme({ theme: "dark", selector: '[data-theme="dark"]', themeFile: DARK_THEME_FILE, exportName: "tokensExperimentalDark" });
+    fs.writeFileSync(
+      path.join(OUT_DIR, "tokens.experimental.css"),
+      [
+        fs.readFileSync(path.join(OUT_DIR, "tokens.experimental.light.css"), "utf8"),
+        "",
+        fs.readFileSync(path.join(OUT_DIR, "tokens.experimental.dark.css"), "utf8"),
+        ""
+      ].join("\n")
+    );
+    fs.writeFileSync(
+      path.join(OUT_DIR, "tokens.experimental.ts"),
+      [
+        fs.readFileSync(path.join(OUT_DIR, "tokens.experimental.light.ts"), "utf8"),
+        fs.readFileSync(path.join(OUT_DIR, "tokens.experimental.dark.ts"), "utf8"),
+        ""
+      ].join("\n")
+    );
+    for (const f of ["tokens.experimental.light.css","tokens.experimental.dark.css","tokens.experimental.light.ts","tokens.experimental.dark.ts"]) {
+      fs.rmSync(path.join(OUT_DIR, f), { force: true });
+    }
+  } else {
+    await buildExperimentalTheme({ theme: "single", selector: ":root", themeFile: HAS_LIGHT_THEME ? LIGHT_THEME_FILE : null, exportName: "tokensExperimental" });
+    fs.renameSync(path.join(OUT_DIR, "tokens.experimental.single.css"), path.join(OUT_DIR, "tokens.experimental.css"));
+    fs.renameSync(path.join(OUT_DIR, "tokens.experimental.single.ts"), path.join(OUT_DIR, "tokens.experimental.ts"));
+  }
+}
 // 4) Emit build fingerprint so CI can detect drift
 
 const fingerprint = {
-
-  base: sha256File(files[0]),
-
-  semantic: sha256File(files[1]),
-
-  context: sha256File(files[2]),
-
-  aliases: sha256File(files[3])
-
+  base: sha256File(CORE_FILES[0]),
+  semantic: sha256File(CORE_FILES[1]),
+  context: sha256File(CORE_FILES[2]),
+  ...(ENABLE_EXPERIMENTAL ? { aliases: sha256File(ALIASES_FILE) } : {}),
+  ...(HAS_LIGHT_THEME ? { themeLight: sha256File(LIGHT_THEME_FILE) } : {}),
+  ...(HAS_DARK_THEME ? { themeDark: sha256File(DARK_THEME_FILE) } : {})
 };
 
 fs.writeFileSync(path.join(OUT_DIR, "tokens.fingerprint.json"), JSON.stringify(fingerprint, null, 2));
