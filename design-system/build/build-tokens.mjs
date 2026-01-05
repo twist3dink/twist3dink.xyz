@@ -64,6 +64,16 @@ const debugFilePathsOnce = (dictionary) => {
   for (const fp of fps) console.log(" -", fp);
   console.log("");
 };
+if (TOKENS_VERBOSE) {
+  const kept = dictionary.allTokens.filter(isConsumptionToken).length;
+  console.log("Consumption tokens:", kept);
+}
+const kept = dictionary.allTokens.filter(isConsumptionToken).length;
+if (kept === 0) {
+  throw new Error(
+    "Consumption token filter produced zero tokens. This is a build configuration error."
+  );
+}
 
 
 
