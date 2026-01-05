@@ -1,29 +1,11 @@
 {
   "component": {
     "button": {
-      "paddingX": {
-        "value": "{space.md}"
-      },
-      "paddingY": {
-        "value": "{space.sm}"
-      },
-      "radius": {
-        "value": "{radius.control}"
-      },
-      "focusRing": {
-        "value": "0 0 0 3px rgba(0, 230, 63, 0.35)"
-      }
-    },
-    "card": {
-      "padding": {
-        "value": "{space.lg}"
-      },
-      "radius": {
-        "value": "{radius.card}"
-      },
-      "shadow": {
-        "value": "{shadow.card}"
-      }
+      "paddingx": { "value": "{spacing.4}" },
+      "paddingy": { "value": "{spacing.3}" },
+      "radius": { "value": "{radius.2}" },
+      "shadow": { "value": "{shadow.card}" },
+      "focusring": { "value": "{shadow.focusring}" }
     }
   }
 }
