@@ -41,7 +41,6 @@
   "shadow": {
     "sm": { "value": "0 1px 2px rgba(0,0,0,0.18)" },
     "md": { "value": "0 6px 16px rgba(0,0,0,0.22)" },
-    "cardlight": { "value": "{shadow.md}" },
     "carddark": { "value": "0 10px 30px rgba(0,0,0,0.35)" },
     "glowgreen": { "value": "0 0 0 3px rgba(0, 230, 63, 0.35)" }
   }
