@@ -1,44 +1,44 @@
 {
   "color": {
     "bg": {
-      "default": { "value": "{color.neutral.0}" }
+      "default": { "value": "{base.color.neutral.0}" }
     },
     "text": {
-      "default": { "value": "{color.neutral.900}" }
+      "default": { "value": "{base.color.neutral.900}" }
     },
     "accent": {
-      "default": { "value": "{color.accent.toxicgreen.500}" },
-      "hover": { "value": "{color.accent.toxicgreen.400}" },
-      "active": { "value": "{color.accent.toxicgreen.600}" },
-      "onaccent": { "value": "{color.neutral.900}" }
+      "default": { "value": "{base.color.accent.toxicgreen.500}" },
+      "hover": { "value": "{base.color.accent.toxicgreen.400}" },
+      "active": { "value": "{base.color.accent.toxicgreen.600}" },
+      "onaccent": { "value": "{base.color.neutral.900}" }
     },
     "focus": {
-      "ring": { "value": "{color.accent.toxicgreen.400}" }
+      "ring": { "value": "{base.color.accent.toxicgreen.400}" }
     }
   },
   "shadow": {
-    "card": { "value": "{shadow.md}" },
-    "focusring": { "value": "{shadow.glowgreen}" }
+    "card": { "value": "{base.shadow.md}" },
+    "focusring": { "value": "{base.shadow.glowgreen}" }
   },
   "font": {
     "family": {
-      "body": { "value": "{font.family.sans}" },
-      "code": { "value": "{font.family.mono}" }
+      "body": { "value": "{base.font.family.sans}" },
+      "code": { "value": "{base.font.family.mono}" }
     },
     "size": {
-      "body": { "value": "{font.size.body}" }
+      "body": { "value": "{base.font.size.body}" }
     },
     "lineheight": {
-      "body": { "value": "{font.lineheight.normal}" },
-      "heading": { "value": "{font.lineheight.tight}" }
+      "body": { "value": "{base.font.lineheight.normal}" },
+      "heading": { "value": "{base.font.lineheight.tight}" }
     }
   },
 
   "componenttokens": {
     "button": {
-      "paddingx": { "value": "{space.4}" },
-      "paddingy": { "value": "{space.3}" },
-      "radius": { "value": "{radius.2}" }
+      "paddingx": { "value": "{base.space.4}" },
+      "paddingy": { "value": "{base.space.3}" },
+      "radius": { "value": "{base.radius.2}" }
     }
   }
 }

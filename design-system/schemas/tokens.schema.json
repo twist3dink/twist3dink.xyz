@@ -1,21 +1,54 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "twist3dink design tokens",
   "type": "object",
-  "additionalProperties": {
-    "anyOf": [
-      { "type": "string" },
-      { "$ref": "#/$defs/node" }
-    ]
-  },
+  "additionalProperties": { "$ref": "#/$defs/groupOrToken" },
+
   "$defs": {
-    "node": {
+    "groupOrToken": {
+      "anyOf": [
+        { "$ref": "#/$defs/group" },
+        { "$ref": "#/$defs/token" }
+      ]
+    },
+
+    "group": {
       "type": "object",
-      "additionalProperties": {
-        "anyOf": [
-          { "type": "string" },
-          { "$ref": "#/$defs/node" }
-        ]
-      }
+      "description": "A namespace/group of tokens.",
+      "additionalProperties": { "$ref": "#/$defs/groupOrToken" }
+    },
+
+    "token": {
+      "type": "object",
+      "description": "A leaf token object compatible with Style Dictionary.",
+      "required": ["value"],
+      "properties": {
+        "value": { "$ref": "#/$defs/tokenValue" },
+        "type": { "type": "string" },
+        "description": { "type": "string" },
+        "comment": { "type": "string" },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+
+    "tokenValue": {
+      "anyOf": [
+        { "type": "string" },
+        { "type": "number" },
+        { "type": "boolean" },
+        {
+          "type": "array",
+          "items": { "$ref": "#/$defs/tokenValue" }
+        },
+        {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/tokenValue" }
+        }
+      ]
     }
   }
 }

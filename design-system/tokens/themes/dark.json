@@ -1,17 +1,17 @@
 {
   "color": {
     "bg": {
-      "default": { "value": "{color.neutral.900}" }
+      "default": { "value": "{base.color.neutral.900}" }
     },
     "text": {
-      "default": { "value": "{color.neutral.50}" }
+      "default": { "value": "{base.color.neutral.50}" }
     },
     "focus": {
-      "ring": { "value": "{color.accent.toxicgreen.300}" }
+      "ring": { "value": "{base.color.accent.toxicgreen.300}" }
     }
   },
   "shadow": {
-    "card": { "value": "{shadow.carddark}" },
-    "focusring": { "value": "{shadow.glowgreen}" }
+    "card": { "value": "{base.shadow.carddark}" },
+    "focusring": { "value": "{base.shadow.glowgreen}" }
   }
 }
