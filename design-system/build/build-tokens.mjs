@@ -6,11 +6,19 @@ import crypto from "node:crypto";
 
 import StyleDictionary from "style-dictionary";
 
+import { fileURLToPath } from "node:url";
+
 import { Validator } from "jsonschema";
 
 
 
-const ROOT = path.resolve(process.cwd(), "design-system");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// build-tokens.mjs lives in: design-system/build/
+// so ROOT is: design-system/
+const ROOT = path.resolve(__dirname, "..");
+
 
 const TOKENS_DIR = path.join(ROOT, "tokens");
 
