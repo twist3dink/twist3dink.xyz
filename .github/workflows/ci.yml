@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  design-system-tokens:
+    name: Design System — Tokens (lint, build, deterministic)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          # Prefer a version file if you have one; otherwise pick an LTS.
+          # If you have .nvmrc, uncomment the next line and remove node-version.
+          # node-version-file: .nvmrc
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: |
+            design-system/package-lock.json
+
+      - name: Ensure no tracked editor swap/backup files exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          bad="$(git ls-files | grep -E '(\.swp|\.swo|~)$' || true)"
+          if [ -n "$bad" ]; then
+            echo "Tracked editor swap/backup files detected:"
+            echo "$bad"
+            exit 1
+          fi
+
+      - name: Install (design-system)
+        working-directory: design-system
+        run: npm ci
+
+      - name: Tokens lint
+        working-directory: design-system
+        run: npm run tokens:lint
+
+      - name: Tokens build (clean)
+        working-directory: design-system
+        env:
+          TOKENS_VERBOSE: "1"
+        run: |
+          set -euo pipefail
+          rm -rf outputs
+          npm run tokens:build
+
+      - name: Determinism check (build twice, compare fingerprints)
+        working-directory: design-system
+        env:
+          TOKENS_VERBOSE: "1"
+        run: |
+          set -euo pipefail
+
+          # First fingerprint
+          test -f outputs/tokens.fingerprint.json
+          cp outputs/tokens.fingerprint.json /tmp/fp1.json
+
+          # Second clean build
+          rm -rf outputs
+          npm run tokens:build
+          test -f outputs/tokens.fingerprint.json
+
+          # Compare
+          diff -u /tmp/fp1.json outputs/tokens.fingerprint.json
+
+      - name: Working tree must remain clean (no accidental generated files)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --porcelain
+          test -z "$(git status --porcelain)"
