@@ -20,13 +20,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          # Prefer a version file if you have one; otherwise pick an LTS.
-          # If you have .nvmrc, uncomment the next line and remove node-version.
           node-version-file: .nvmrc
           cache: "npm"
           cache-dependency-path: |
             design-system/package-lock.json
-
+ 
       - name: Ensure no tracked editor swap/backup files exist
         shell: bash
         run: |
