@@ -1,6 +1,10 @@
 {
+  "name": "twist3dink.xyz",
+  "private": true,
   "scripts": {
     "tokens:lint": "cd design-system && npm run tokens:lint",
-    "tokens:build": "cd design-system && npm run tokens:build"
+    "tokens:build": "cd design-system && npm run tokens:build",
+    "tokens:clean": "cd design-system && npm run tokens:clean || true",
+    "ci": "npm run tokens:lint && npm run tokens:build"
   }
 }
