@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "tokens:lint": "cd design-system && npm run tokens:lint",
+    "tokens:build": "cd design-system && npm run tokens:build"
+  }
+}
