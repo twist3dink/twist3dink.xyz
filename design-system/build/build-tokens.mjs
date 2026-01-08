@@ -56,6 +56,13 @@ const CONSUMPTION_SUFFIXES = new Set([
 ]);
 
 const normPath = (p) => (p || "").replaceAll("\\", "/");
+const isConsumptionToken = (token) => {
+  const fp = normPath(token?.filePath);
+  for (const suffix of CONSUMPTION_SUFFIXES) {
+    if (fp.endsWith("/" + suffix) || fp.endsWith(suffix)) return true;
+  }
+  return false;
+};
 
 const assertConsumptionNonZero = (dictionary, label = "build") => {
   const kept = dictionary.allTokens.filter(isConsumptionToken).length;
