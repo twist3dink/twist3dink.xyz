@@ -148,6 +148,8 @@ async function buildTheme({ theme, selector, themeFile, exportName }) {
   });
 
   await sd.buildAllPlatforms();
+assertConsumptionNonZero(sd.dictionary, `theme:${theme}`);
+
 }
 
 // Build light + dark when theme files exist; otherwise build single-theme defaults.
