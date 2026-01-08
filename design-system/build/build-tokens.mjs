@@ -203,10 +203,10 @@ if (hasBothThemes) {
 // Experimental outputs: only emit when explicitly enabled.
 if (ENABLE_EXPERIMENTAL) {
   const isExperimentalToken = (token) => {
-    const fp = token?.filePath || "";
-    return fp.endsWith(path.join("tokens", "aliases.json"));
-  };
-
+  const fp = normPath(token?.filePath);
+  return fp.endsWith("/tokens/aliases.json") || fp.endsWith("tokens/aliases.json");
+};
+  
   const cssExpFileFor = (destination, selector) => ({
     destination,
     format: "css/variables",
