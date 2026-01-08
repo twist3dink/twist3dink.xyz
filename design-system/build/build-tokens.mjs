@@ -51,9 +51,10 @@ ensureDir(OUT_DIR);
 const CONSUMPTION_SUFFIXES = new Set([
   "tokens/semantic.json",
   "tokens/context.json",
-  "tokens/themes/light.json",
-  "tokens/themes/dark.json",
+  ...(HAS_LIGHT_THEME ? ["tokens/themes/light.json"] : []),
+  ...(HAS_DARK_THEME ? ["tokens/themes/dark.json"] : []),
 ]);
+
 
 const normPath = (p) => (p || "").replaceAll("\\", "/");
 const isConsumptionToken = (token) => {
