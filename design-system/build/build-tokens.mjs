@@ -307,12 +307,14 @@ if (ENABLE_EXPERIMENTAL) {
 
 // 3) Emit build fingerprint so CI can detect drift
 const fingerprint = {
-  base: sha256File(CORE_FILES[0]),
-  semantic: sha256File(CORE_FILES[1]),
-  context: sha256File(CORE_FILES[2]),
+  core: CORE_FILES.map(sha256File),
   ...(ENABLE_EXPERIMENTAL ? { aliases: sha256File(ALIASES_FILE) } : {}),
   ...(HAS_LIGHT_THEME ? { themeLight: sha256File(LIGHT_THEME_FILE) } : {}),
-  ...(HAS_DARK_THEME ? { themeDark: sha256File(DARK_THEME_FILE) } : {})
+  ...(HAS_DARK_THEME ? { themeDark: sha256File(DARK_THEME_FILE) } : {}),
+  buildScript: sha256File(new URL(import.meta.url).pathname),
+  flags: {
+    ENABLE_EXPERIMENTAL,
+  }
 };
 
 fs.writeFileSync(path.join(OUT_DIR, "tokens.fingerprint.json"), JSON.stringify(fingerprint, null, 2));
