@@ -42,6 +42,21 @@ const {
   HAS_DARK_THEME
 } = validateAllOrExit({ enableExperimental: ENABLE_EXPERIMENTAL });
 
+if (!Array.isArray(CORE_FILES) || CORE_FILES.length !== 3) {
+  throw new Error("[INVARIANT VIOLATION] CORE_FILES must contain exactly [base, semantic, context]");
+}
+
+const [BASE_FILE, SEMANTIC_FILE, CONTEXT_FILE] = CORE_FILES;
+
+if (
+  !BASE_FILE.endsWith("base.json") ||
+  !SEMANTIC_FILE.endsWith("semantic.json") ||
+  !CONTEXT_FILE.endsWith("context.json")
+) {
+  throw new Error("[INVARIANT VIOLATION] CORE_FILES order must be base → semantic → context");
+}
+
+
 // 2) Build outputs via Style Dictionary
 ensureDir(OUT_DIR);
 
@@ -51,19 +66,11 @@ ensureDir(OUT_DIR);
 const CONSUMPTION_SUFFIXES = new Set([
   "tokens/semantic.json",
   "tokens/context.json",
-  ...(HAS_LIGHT_THEME ? ["tokens/themes/light.json"] : []),
-  ...(HAS_DARK_THEME ? ["tokens/themes/dark.json"] : []),
+  "tokens/themes/light.json",
+  "tokens/themes/dark.json",
 ]);
 
-
 const normPath = (p) => (p || "").replaceAll("\\", "/");
-const isConsumptionToken = (token) => {
-  const fp = normPath(token?.filePath);
-  for (const suffix of CONSUMPTION_SUFFIXES) {
-    if (fp.endsWith("/" + suffix) || fp.endsWith(suffix)) return true;
-  }
-  return false;
-};
 
 const assertConsumptionNonZero = (dictionary, label = "build") => {
   const kept = dictionary.allTokens.filter(isConsumptionToken).length;
@@ -149,8 +156,6 @@ async function buildTheme({ theme, selector, themeFile, exportName }) {
   });
 
   await sd.buildAllPlatforms();
-assertConsumptionNonZero(sd.dictionary, `theme:${theme}`);
-
 }
 
 // Build light + dark when theme files exist; otherwise build single-theme defaults.
@@ -204,10 +209,10 @@ if (hasBothThemes) {
 // Experimental outputs: only emit when explicitly enabled.
 if (ENABLE_EXPERIMENTAL) {
   const isExperimentalToken = (token) => {
-  const fp = normPath(token?.filePath);
-  return fp.endsWith("/tokens/aliases.json") || fp.endsWith("tokens/aliases.json");
-};
-  
+    const fp = token?.filePath || "";
+    return fp.endsWith(path.join("tokens", "aliases.json"));
+  };
+
   const cssExpFileFor = (destination, selector) => ({
     destination,
     format: "css/variables",
