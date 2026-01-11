@@ -11,7 +11,11 @@ permissions:
 jobs:
   design-system-tokens:
     name: Design System — Tokens (lint, build, deterministic)
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout
@@ -44,33 +48,11 @@ jobs:
         working-directory: design-system
         run: npm run tokens:lint
 
-      - name: Tokens build (clean)
+      - name: Tokens verify (lint + build + determinism)
         working-directory: design-system
         env:
           TOKENS_VERBOSE: "1"
-        run: |
-          set -euo pipefail
-          rm -rf outputs
-          npm run tokens:build
-
-      - name: Determinism check (build twice, compare fingerprints)
-        working-directory: design-system
-        env:
-          TOKENS_VERBOSE: "1"
-        run: |
-          set -euo pipefail
-
-          # First fingerprint
-          test -f outputs/tokens.fingerprint.json
-          cp outputs/tokens.fingerprint.json /tmp/fp1.json
-
-          # Second clean build
-          rm -rf outputs
-          npm run tokens:build
-          test -f outputs/tokens.fingerprint.json
-
-          # Compare
-          diff -u /tmp/fp1.json outputs/tokens.fingerprint.json
+        run: npm run tokens:verify
 
       - name: Working tree must remain clean (no accidental generated files)
         shell: bash
