@@ -320,7 +320,7 @@ const fingerprint = {
   ...(ENABLE_EXPERIMENTAL ? { aliases: sha256File(ALIASES_FILE) } : {}),
   ...(HAS_LIGHT_THEME ? { themeLight: sha256File(LIGHT_THEME_FILE) } : {}),
   ...(HAS_DARK_THEME ? { themeDark: sha256File(DARK_THEME_FILE) } : {}),
-  buildScript: sha256File(new URL(import.meta.url).pathname),
+  buildScript: sha256File(new URL(import.meta.url).pathname.replace(/^\/[A-Za-z]:\//, "")),
   flags: {
     ENABLE_EXPERIMENTAL,
   }
