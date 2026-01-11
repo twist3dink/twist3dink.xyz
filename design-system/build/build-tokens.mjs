@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import StyleDictionary from "style-dictionary";
+import { fileURLToPath } from "node:url";
 
 import {
   ROOT,
@@ -320,7 +321,7 @@ const fingerprint = {
   ...(ENABLE_EXPERIMENTAL ? { aliases: sha256File(ALIASES_FILE) } : {}),
   ...(HAS_LIGHT_THEME ? { themeLight: sha256File(LIGHT_THEME_FILE) } : {}),
   ...(HAS_DARK_THEME ? { themeDark: sha256File(DARK_THEME_FILE) } : {}),
-  buildScript: sha256File(new URL(import.meta.url).pathname.replace(/^\/[A-Za-z]:\//, "")),
+  buildScript: sha256File(fileURLToPath(import.meta.url)),
   flags: {
     ENABLE_EXPERIMENTAL,
   }
