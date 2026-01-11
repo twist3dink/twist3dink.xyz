@@ -28,7 +28,7 @@ jobs:
           cache: "npm"
           cache-dependency-path: |
             design-system/package-lock.json
- 
+
       - name: Ensure no tracked editor swap/backup files exist
         shell: bash
         run: |
@@ -43,10 +43,6 @@ jobs:
       - name: Install (design-system)
         working-directory: design-system
         run: npm ci
-
-      - name: Tokens lint
-        working-directory: design-system
-        run: npm run tokens:lint
 
       - name: Tokens verify (lint + build + determinism)
         working-directory: design-system
