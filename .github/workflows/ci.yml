@@ -12,10 +12,16 @@ jobs:
   design-system-tokens:
     name: Design System — Tokens (lint, build, deterministic)
     runs-on: ${{ matrix.os }}
+
+    defaults:
+      run:
+        working-directory: design-system
+
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
+
 
     steps:
       - name: Checkout
