@@ -27,6 +27,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Configure git for deterministic behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Prevent platform-specific line-ending normalization from creating false diffs.
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+          git config --global core.safecrlf true
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -47,11 +56,9 @@ jobs:
           fi
 
       - name: Install (design-system)
-        working-directory: design-system
         run: npm ci
 
       - name: Tokens verify (lint + build + determinism)
-        working-directory: design-system
         env:
           TOKENS_VERBOSE: "1"
         run: npm run tokens:verify
