@@ -47,19 +47,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+            - name: Cache Node modules
+        uses: actions/cache@v3
         with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Purge stale npm metadata
-        run: |
-          rm -rf node_modules
-          rm -rf ~/.npm
-          npm cache clean --force
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
+        run: npm ci
+
         run: npm ci
 
       - name: Run HTML hardening checks
