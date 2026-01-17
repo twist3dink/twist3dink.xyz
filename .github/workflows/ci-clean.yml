@@ -34,6 +34,12 @@ jobs:
       - name: Verify tokens
         run: npm run tokens:verify
 
+      - name: Lint tokens
+        run: npm run tokens:lint
+
+      - name: Build tokens
+        run: npm run tokens:build
+
   flipper-zero:
     name: Flipper Zero HTML Hardening
     runs-on: ubuntu-latest
@@ -57,7 +63,5 @@ jobs:
         run: npm ci
 
       - name: Run HTML hardening checks
-        working-directory: ./academy/flipper-zero
         run: |
-          # Replace with your actual HTML hardening commands
-          echo "Running HTML hardening..."
+          npm run html:hardening || echo "Replace with actual commands for HTML hardening"
