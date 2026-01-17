@@ -1,0 +1,63 @@
+name: CI Clean
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  design-system:
+    name: Design System Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Purge stale npm metadata
+        run: |
+          rm -rf node_modules
+          rm -rf ~/.npm
+          npm cache clean --force
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify tokens
+        run: npm run tokens:verify
+
+  flipper-zero:
+    name: Flipper Zero HTML Hardening
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Purge stale npm metadata
+        run: |
+          rm -rf node_modules
+          rm -rf ~/.npm
+          npm cache clean --force
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run HTML hardening checks
+        working-directory: ./academy/flipper-zero
+        run: |
+          # Replace with your actual HTML hardening commands
+          echo "Running HTML hardening..."
