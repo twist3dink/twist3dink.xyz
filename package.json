@@ -2,10 +2,12 @@
   "name": "twist3dink-root",
   "private": true,
   "scripts": {
+	"assert:deterministic": "node scripts/assert-deterministic-build.mjs"  
+	"ci:preflight": "node scripts/ci-preflight.mjs"  
     "tokens:lint": "cd design-system && npm run tokens:lint",
     "tokens:build": "cd design-system && npm run tokens:build",
     "tokens:verify": "cd design-system && npm run tokens:verify",
     "tokens:clean": "cd design-system && npm run tokens:clean",
-    "ci:preflight": "node scripts/ci-preflight.mjs"
+    
   }
 }
