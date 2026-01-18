@@ -34,7 +34,7 @@ jobs:
       - name: CI Preflight Guardrails
         run: node scripts/ci-preflight.mjs
         
-        - name: Assert deterministic token build
+      - name: Assert deterministic token build
         run: node scripts/assert-deterministic-build.mjs
  
       - name: Verify tokens
