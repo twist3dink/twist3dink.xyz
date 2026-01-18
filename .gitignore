@@ -29,6 +29,7 @@ design-system/outputs/
 .cache/
 .tmp/
 temp/
+$RECYCLE.BIN/
 # =========================
 # Environment
 # =========================
