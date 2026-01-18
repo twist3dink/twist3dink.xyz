@@ -30,6 +30,7 @@ design-system/outputs/
 .tmp/
 temp/
 $RECYCLE.BIN/
+System Volume Information/
 # =========================
 # Environment
 # =========================
