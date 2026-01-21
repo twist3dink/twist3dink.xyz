@@ -1,45 +1,32 @@
 name: CI Clean
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  design-system:
-    name: Design System Checks
+  invariants:
+    name: Invariant Enforcement
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
+          cache: 'npm'
 
-      - name: Purge stale npm metadata
-        run: |
-          rm -rf node_modules
-          rm -rf ~/.npm
-          npm cache clean --force
+      - run: npm ci
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Run invariant assertions
+        run: node scripts/assertions/run-all.mjs
 
-      - name: CI Preflight Guardrails
-        run: node scripts/ci-preflight.mjs
-        
-      - name: Assert workspace boundaries
-        run: node scripts/assert-workspace-boundaries.mjs
-    
-      - name: Assert deterministic token build
-        run: node scripts/assert-deterministic-build.mjs
- 
+      - name: Run CI assertions
+        run: node scripts/assertions/run-all.mjs
+
+      - name: Run CI assertions
+        run: node scripts/assertions/run-all.mjs
+
       - name: Verify tokens
         run: npm run tokens:verify
 
