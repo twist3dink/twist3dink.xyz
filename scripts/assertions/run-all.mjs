@@ -19,4 +19,5 @@ CI Assertion System
 These checks enforce architectural and build invariants.
 Failures indicate violated guarantees, not random errors.
 `);
+	  process.exitCode = 1;
 
