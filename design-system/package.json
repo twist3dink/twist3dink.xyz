@@ -4,6 +4,7 @@
   "type": "module",
   "exports": {
     "./tokens": "./outputs/index.js"
+  },
   "description": "Token build pipeline for twist3dink.xyz (Style Dictionary)",
   "license": "UNLICENSED",
   "scripts": {

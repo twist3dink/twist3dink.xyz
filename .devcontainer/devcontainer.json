@@ -1,6 +1,6 @@
 {
   "name": "twist3dink.xyz",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
   "postCreateCommand": "cd design-system && npm ci",
   "customizations": {
     "vscode": {
